@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import UserIcon from '@mui/icons-material/Person'
 import { mainListItems, secondaryListItems } from "./ListItems";
+import Statistics from "./pages/Statistics";
 
 
 
@@ -137,7 +138,7 @@ function App() {
           }}
         >
           <Toolbar />
-
+          <Statistics/>
         </Box>
       </Box>
     </ThemeProvider>

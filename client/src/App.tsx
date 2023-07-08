@@ -4,9 +4,9 @@ import MuiDrawer from '@mui/material/Drawer';
 import React from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import UserIcon from '@mui/icons-material/Person'
 import { mainListItems, secondaryListItems } from "./ListItems";
-import { Fullscreen } from "@mui/icons-material";
+
 
 
 const drawerWidth: number = 240;
@@ -70,12 +70,12 @@ function App() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: 'flex'}}>
+      <Box sx={{ display: 'flex', maxWidth: "100vw" }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '25px', // keep right padding when drawer closed
             }}
           >
             <IconButton
@@ -84,7 +84,7 @@ function App() {
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
-                marginRight: '36px',
+
                 ...(open && { display: 'none' }),
               }}
             >
@@ -97,16 +97,16 @@ function App() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              My library
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+              <Badge>
+                <UserIcon />
               </Badge>
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} sx={{ height: '100vh' }}>
           <Toolbar
             sx={{
               display: 'flex',
@@ -127,53 +127,17 @@ function App() {
           </List>
         </Drawer>
         <Box
-          component="main"
+          alignContent={"center"}
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[200]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
+                : theme.palette.grey[800],
+            width: "100vw"
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4}}>
-            <Grid container spacing={4}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                   <Typography> Hello There </Typography>
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Typography> Hello There </Typography>
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Typography> Hello There </Typography>
-                </Paper>
-              </Grid>
-            </Grid>
-          </Container>
+
         </Box>
       </Box>
     </ThemeProvider>

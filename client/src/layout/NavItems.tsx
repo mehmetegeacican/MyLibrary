@@ -8,6 +8,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BookIcon from '@mui/icons-material/Book';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 
 export const mainListItems = (
@@ -20,7 +21,7 @@ export const mainListItems = (
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-       <BookIcon/>
+        <LocalLibraryIcon />
       </ListItemIcon>
       <ListItemText primary="Books" />
     </ListItemButton>
@@ -33,6 +34,12 @@ export const mainListItems = (
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Statistics" />
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <BookIcon />
       </ListItemIcon>
       <ListItemText primary="Categories" />
     </ListItemButton>

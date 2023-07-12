@@ -37,7 +37,7 @@ function App() {
             <Toolbar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/statistics" element={<Statistics />} />
+              <Route path="/books" element={<Statistics />} />
             </Routes>
           </Box>
         </Box>

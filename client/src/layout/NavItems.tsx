@@ -9,22 +9,28 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BookIcon from '@mui/icons-material/Book';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LocalLibraryIcon />
-      </ListItemIcon>
-      <ListItemText primary="Books" />
-    </ListItemButton>
+    <Link to="/">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" color='secondary' />
+      </ListItemButton>
+    </Link>
+
+    <Link to="/books">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <LocalLibraryIcon />
+        </ListItemIcon>
+        <ListItemText primary="Books" />
+      </ListItemButton>
+    </Link>
+
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />

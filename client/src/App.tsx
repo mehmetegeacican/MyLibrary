@@ -2,9 +2,10 @@ import { Box, CssBaseline, ThemeProvider, Toolbar, createTheme } from "@mui/mate
 
 import React from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Statistics from "./pages/Statistics";
+import Statistics from "./pages/Books";
 import Navbar from "./layout/Navbar";
 import SideNav from "./layout/SideNav";
+import Dashboard from "./pages/Dashboard";
 
 
 
@@ -35,7 +36,8 @@ function App() {
           >
             <Toolbar />
             <Routes>
-              <Route path="/" element={<Statistics />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/statistics" element={<Statistics />} />
             </Routes>
           </Box>
         </Box>

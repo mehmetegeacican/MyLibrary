@@ -1,6 +1,6 @@
 import { Container, Grid, Paper } from '@mui/material'
 
-export default function Statistics() {
+export default function Dashboard() {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>

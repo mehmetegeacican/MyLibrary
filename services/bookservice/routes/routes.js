@@ -1,12 +1,15 @@
 const express = require("express");
-const { executeGetAllBooks } = require("../model/book");
+const {
+    getAllBooks
+} = require('../controllers/bookController');
+
 
 
 const router = express.Router();
 
 
 //Routes
-router.use("/",async (req,res) => res.send(await executeGetAllBooks()));
+router.use("/",getAllBooks);
 
 
 module.exports = router;

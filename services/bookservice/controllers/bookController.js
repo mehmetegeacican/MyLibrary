@@ -5,12 +5,12 @@ const { executeGetAllBooks } = require("../model/book");
  * request
  * response 
  */
-const getAllBooks = async (req,res) => {
-    try{
+const getAllBooks = async (req, res) => {
+    try {
         const allBooks = await executeGetAllBooks();
         res.send(allBooks);
     }
-    catch(e){
+    catch (e) {
         console.log(e);
         return res.sendError(500);
     }

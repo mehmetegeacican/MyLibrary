@@ -12,7 +12,7 @@ const getAllBooks = async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        return res.sendError(500);
+        res.sendError(500);
     }
 }
 

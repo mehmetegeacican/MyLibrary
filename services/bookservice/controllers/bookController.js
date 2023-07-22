@@ -5,14 +5,14 @@ const { executeGetAllBooks } = require("../model/book");
  * request
  * response 
  */
-const getAllBooks = async (req,res) => {
-    try{
-        const allBooks = await executeGetAllBooks();
+const getAllBooks = async (req, res) => {
+    try {
+        const allBooks = await executeGetAllBooks(res);
         res.send(allBooks);
     }
-    catch(e){
+    catch (e) {
         console.log(e);
-        return res.sendError(500);
+        res.status(500).send({error: e});
     }
 }
 

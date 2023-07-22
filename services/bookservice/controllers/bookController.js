@@ -7,7 +7,7 @@ const { executeGetAllBooks } = require("../model/book");
  */
 const getAllBooks = async (req, res) => {
     try {
-        const allBooks = await executeGetAllBooks();
+        const allBooks = await executeGetAllBooks(res);
         res.send(allBooks);
     }
     catch (e) {

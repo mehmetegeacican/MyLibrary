@@ -17,6 +17,7 @@ const executeGetAllBooks = async () => {
     }
     catch(e){
         console.log(e);
+        throw new Error('Db Access Unsuccessful');
     }
     
 }

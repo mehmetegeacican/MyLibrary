@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { TabPanelInterface } from './data/BookTabs';
+import { TabPanelInterface } from '../../interfaces/TabInterfaces';
+
 
 
 export default function TabContent({value,items}:TabPanelInterface) {

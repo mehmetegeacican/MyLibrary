@@ -1,5 +1,5 @@
-import { Button, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material'
-import { BookDataExamples, BookTableHeader } from '../tabbar/data/BookTabs'
+import { Button, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
+
 import React from 'react';
 
 interface TableInterfaces {
@@ -37,10 +37,10 @@ export default function DataTable({headers,tableDatas}:TableInterfaces) {
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650, height: 5 }} aria-label="simple table">
+        <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+            <Table sx={{ minWidth: 650 }} aria-label="data table" stickyHeader>
                 <TableHead>
-                    <TableRow>
+                    <TableRow >
                         <TableCell align='center'> Filter </TableCell>
                         <TableCell align='center'> Export </TableCell>
                         <TableCell align='center'> Import </TableCell>

@@ -2,12 +2,11 @@
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
 import { Typography } from '@mui/material';
-import { TabInterface } from '../../../interfaces/TabInterfaces';
 import React from 'react';
-import LibraryAccordion from '../../accordions/LibraryAccordion';
-import { AccordionData } from '../../../interfaces/AccordionInterfaces';
-import DataTable from '../../tables/DataTable';
-
+import { TabInterface } from '../interfaces/TabInterfaces';
+import LibraryAccordion from '../components/accordions/LibraryAccordion';
+import { AccordionData } from '../interfaces/AccordionInterfaces';
+import DataTable from '../components/tables/DataTable';
 
 export const BookTabs:TabInterface[] = [
     {icon : (<BackupTableIcon />), label: "Table View" },

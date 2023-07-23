@@ -28,7 +28,6 @@ export default function Statistics() {
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 240,
                     }}>
                         <TabContent value={tabValue} items={BookTabContents}/>
                     </Paper>

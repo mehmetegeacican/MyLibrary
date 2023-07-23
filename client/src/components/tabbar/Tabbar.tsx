@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useEffect } from "react";
-import { TabInterface } from "./interfaces/TabInterfaces";
+import { TabInterface } from "../../interfaces/TabInterfaces";
 
 
 
@@ -11,20 +11,21 @@ interface TabProps {
 }
 
 
-export default function Tabbar({tabElements,tabValue,setTabValue}:TabProps) {
+export default function Tabbar({ tabElements, tabValue, setTabValue }: TabProps) {
     //Hookd
-    const [val,setVal] = React.useState<number>(0);
+    const [val, setVal] = React.useState<number>(0);
+
     //UseEffect for efficient rendering
     useEffect(() => {
         setTabValue(val);
-    },[val]);
-    
+    }, [val]);
+
     return (
         <Tabs value={tabValue} onChange={() => setTabValue(val)} centered>
-            {tabElements.map((tab:any,index:number) => {
-                    return <Tab key={index} value={index} icon ={tab.icon} label = {tab.label} onClick={() => setVal(index)}/>;
-                })
-            }            
+            {tabElements.map((tab: any, index: number) => {
+                return <Tab key={index} value={index} icon={tab.icon} label={tab.label} onClick={() => setVal(index)} />;
+            })
+            }
         </Tabs>
     )
 }

@@ -1,5 +1,4 @@
 import { Badge, IconButton, Toolbar, Typography, styled } from '@mui/material';
-import React from 'react'
 import { drawerWidth } from '../constants/sizes';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -59,6 +58,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
                     color="inherit"
                     noWrap
                     sx={{ flexGrow: 1 }}
+                    
                 >
                     My library
                 </Typography>

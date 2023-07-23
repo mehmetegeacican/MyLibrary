@@ -1,5 +1,4 @@
 import { Divider, IconButton, List, Toolbar, styled } from '@mui/material';
-import React from 'react';
 import MuiDrawer from '@mui/material/Drawer';
 import { drawerWidth } from '../constants/sizes';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';

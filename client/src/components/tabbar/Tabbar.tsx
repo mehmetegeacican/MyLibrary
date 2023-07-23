@@ -1,6 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useEffect } from "react";
-import { TabInterface } from "./data/BookTabs";
+import { TabInterface } from "./interfaces/TabInterfaces";
 
 
 

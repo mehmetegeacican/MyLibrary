@@ -1,4 +1,24 @@
-const { executeGetAllBooks } = require("../model/book");
+const { executeGetAllBooks, executeGetSpecificBook } = require("../model/book");
+
+
+
+/**
+ * Gets a Book By its ID
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getABookById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const theBook = await executeGetSpecificBook(res, id);
+        res.send(theBook);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send({ error: e });
+    }
+
+}
 
 /**
  * Get All Books Logic Section
@@ -12,11 +32,12 @@ const getAllBooks = async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({error: e});
+        res.status(500).send({ error: e });
     }
 }
 
 
 module.exports = {
-    getAllBooks
+    getAllBooks,
+    getABookById
 }

@@ -84,10 +84,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                                     <TableCell align='center'> {item.id}</TableCell>
                                     <TableCell align='center'> {item.name}</TableCell>
                                     <TableCell align='center'> {item.author}</TableCell>
-                                    <TableCell align='center'> <Button color='primary'> {item.category}</Button> </TableCell>
-                                    <TableCell align='center'><StatusChip statusLabel={item.Status} /> </TableCell>
-                                    <TableCell align='center'> {item.entered}</TableCell>
-                                    <TableCell align='center'> <Button color='primary'> {item.notes}</Button></TableCell>
+                                    <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
+                                    <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
+                                    <TableCell align='center'> {item.time_added}</TableCell>
+                                    <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
                                 </TableRow>
                             )
                         }

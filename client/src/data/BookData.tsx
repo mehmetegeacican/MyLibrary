@@ -2,11 +2,12 @@
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { TabInterface } from '../interfaces/TabInterfaces';
 import LibraryAccordion from '../components/accordions/LibraryAccordion';
 import { AccordionData } from '../interfaces/AccordionInterfaces';
 import DataTable from '../components/tables/DataTable';
+import { fetchAllBooks } from '../apis/bookApi';
 
 export const BookTabs:TabInterface[] = [
     {icon : (<BackupTableIcon />), label: "Table View" },
@@ -54,11 +55,25 @@ export const BookAccordionDatas:AccordionData[] = [
 export default function BookAccordions() {
     //Hooks
     const [expanded,setExpanded] = React.useState<string | false>(false);
+    const [books,setBooks] = React.useState<any>([]);
 
     const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    //UseCallBack 
+    const fetchData = useCallback(async() => {
+        const res = await fetchAllBooks();;
+        setBooks(res);
+    },[]);
+
+    //UseEffect
+    useEffect(() => {
+        fetchData();
+    },[]);
+
+    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books}/>);
 
     //Render
     return (

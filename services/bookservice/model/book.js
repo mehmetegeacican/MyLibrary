@@ -12,17 +12,43 @@ const executeGetAllBooks = async (res) => {
         //Step 2 -- Get the Result
         const result = await client.query('SELECT * FROM books');
         data = result.rows;
+        console.log("Hello");
         return data;
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({error:"Db Connection unsuccesful"})
+        res.status(500).send({ error: "Db Connection unsuccesful" })
     }
-    finally{
+    finally {
+        await closeDb(client);
+    }
+}
+
+/**
+ * Query Function to Get A Book Via It's ID
+ * @param {*} res 
+ * @param {*} id 
+ */
+const executeGetSpecificBook = async (res, id) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    let data;
+    try {
+        //Step 2 -- Get the Result
+        const result = await client.query(`SELECT * FROM books WHERE id = ${id}`);
+        data = result.rows;
+        return data;
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send({ error: "Db Connection unsuccesful" })
+    }
+    finally {
         await closeDb(client);
     }
 }
 
 module.exports = {
-    executeGetAllBooks
+    executeGetAllBooks,
+    executeGetSpecificBook
 }

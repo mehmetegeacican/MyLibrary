@@ -1,13 +1,18 @@
-import { Button, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
 
 import React from 'react';
+import StatusChip from '../chip/StatusChip';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExportIcon from '@mui/icons-material/GetApp';
+import ImportIcon from '@mui/icons-material/FileUpload';
 
 interface TableInterfaces {
     headers: string[];
     tableDatas: any; // A generic should be used 
 }
 
-export default function DataTable({headers,tableDatas}:TableInterfaces) {
+export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
@@ -41,10 +46,26 @@ export default function DataTable({headers,tableDatas}:TableInterfaces) {
             <Table sx={{ minWidth: 650 }} aria-label="data table" stickyHeader>
                 <TableHead>
                     <TableRow >
-                        <TableCell align='center'> Filter </TableCell>
-                        <TableCell align='center'> Export </TableCell>
-                        <TableCell align='center'> Import </TableCell>
-                        <TableCell align='center'> </TableCell>
+                        <TableCell align='center'>
+                            <IconButton aria-label="filter">
+                                <FilterListIcon />
+                            </IconButton>
+                        </TableCell>
+                        <TableCell align='center'>
+                            <IconButton aria-label="filter" color='success'>
+                                <ExportIcon />
+                            </IconButton>
+                        </TableCell>
+                        <TableCell align='center'>
+                            <IconButton aria-label="filter" color='default'>
+                                <ImportIcon />
+                            </IconButton>
+                        </TableCell>
+                        <TableCell align='center'>
+                            <IconButton aria-label="delete" color='error'>
+                                <DeleteIcon/>
+                            </IconButton>
+                        </TableCell>
                     </TableRow>
                     <TableRow>
                         {headers.map((header: string) => {
@@ -64,7 +85,7 @@ export default function DataTable({headers,tableDatas}:TableInterfaces) {
                                     <TableCell align='center'> {item.name}</TableCell>
                                     <TableCell align='center'> {item.author}</TableCell>
                                     <TableCell align='center'> <Button color='primary'> {item.category}</Button> </TableCell>
-                                    <TableCell align='center'> <Chip color='error' clickable label={item.Status}></Chip></TableCell>
+                                    <TableCell align='center'><StatusChip statusLabel={item.Status} /> </TableCell>
                                     <TableCell align='center'> {item.entered}</TableCell>
                                     <TableCell align='center'> <Button color='primary'> {item.notes}</Button></TableCell>
                                 </TableRow>

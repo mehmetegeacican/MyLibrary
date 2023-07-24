@@ -31,13 +31,13 @@ export const BookTableHeader:string[] = [
 
 export const BookDataExamples: any = [
     {id:1,name:"Book 1",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:2,name:"Book 2",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:3,name:"Book 3",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:4,name:"Book 4",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:5,name:"Book 5",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:6,name:"Book 6",author:"Author 1",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:7,name:"Book 7",author:"Author 2",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
-    {id:8,name:"Book 8",author:"Author 2",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
+    {id:2,name:"Book 2",author:"Author 1",category:"View",Status:"Reading",entered:"21.07.2023",notes:"view"},
+    {id:3,name:"Book 3",author:"Author 1",category:"View",Status:"Will Read",entered:"21.07.2023",notes:"view"},
+    {id:4,name:"Book 4",author:"Author 1",category:"View",Status:"Reading",entered:"21.07.2023",notes:"view"},
+    {id:5,name:"Book 5",author:"Author 1",category:"View",Status:"Will Read",entered:"21.07.2023",notes:"view"},
+    {id:6,name:"Book 6",author:"Author 1",category:"View",Status:"Will Read",entered:"21.07.2023",notes:"view"},
+    {id:7,name:"Book 7",author:"Author 2",category:"View",Status:"Will Read",entered:"21.07.2023",notes:"view"},
+    {id:8,name:"Book 8",author:"Author 2",category:"View",Status:"Will Read",entered:"21.07.2023",notes:"view"},
     {id:9,name:"Book 7",author:"Author 2",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
     {id:10,name:"Book 8",author:"Author 2",category:"View",Status:"Red",entered:"21.07.2023",notes:"view"},
 

@@ -48,13 +48,12 @@ describe('GET /api/v1/books/all', function () {
       expect(executeGetAllBooks).toHaveBeenCalledTimes(1);
     });
     it('Should Return a 500 Error if the db is not usable', async function () {
-      const mockError = 'DB Access unsuccessful';
+      const mockError = 'Db Connection Unsuccessful';
       executeGetAllBooks.mockRejectedValue(mockError);
-    
       const response = await request(app).get('/api/v1/books/all');
       //Expect and Verify
       expect(response.status).toBe(500);
-      //expect(response).toBe('DB Access unsuccessful');
+      expect(response.body.error).toBe(mockError);
       expect(executeGetAllBooks).toHaveBeenCalledTimes(1);
     });
   });
@@ -84,13 +83,13 @@ describe('GET /api/v1/books/:id', function () {
     });
     it('Should Return a 500 Error if the Db is not usable', async () => {
       //Given
-      const mockError = 'DB Access unsuccessful';
+      const mockError = 'Db Access Unsuccessful';
       executeGetSpecificBook.mockRejectedValue(mockError);
       //When
       const response = await request(app).get(`/api/v1/books/${mockBookData[0].id}`);
       //Then
       expect(response.status).toBe(500);
-      //expect(response.body.error).toBe('DB Access Unsuccessful');
+      expect(response.body.error).toBe(mockError);
       expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
     });
     it('Should return a 400 error if the parameter is not an integer', async  () => {

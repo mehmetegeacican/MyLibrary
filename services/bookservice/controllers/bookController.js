@@ -19,7 +19,8 @@ const getABookById = async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ error: e.message });
+        const errorMessage = e.message || 'Db Access Unsuccessful';
+        res.status(500).send({ error: errorMessage });
     }
 
 }
@@ -35,8 +36,9 @@ const getAllBooks = async (req, res) => {
         res.send(allBooks);
     }
     catch (e) {
-        console.log(e.message);
-        res.status(500).json({ error: e.message });
+        console.log(e);
+        const errorMessage = e.message || 'Db Connection Unsuccessful';
+        res.status(500).send({ error: errorMessage });
     }
 }
 

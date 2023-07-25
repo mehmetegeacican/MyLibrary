@@ -40,7 +40,7 @@ const executeGetSpecificBook = async (id) => {
     }
     catch (e) {
         console.log(e);
-        throw new Error("Db Connection unsuccesful");
+        throw new Error(`Db Connection unsuccesful, getABookById where id is ${id}`);
     }
     finally {
         await closeDb(client);

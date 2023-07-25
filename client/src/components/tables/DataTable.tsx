@@ -42,81 +42,88 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     }
 
     return (
-        <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-            <Table sx={{ minWidth: 650 }} aria-label="data table" stickyHeader>
-                <TableHead>
-                    <TableRow >
-                        <TableCell align='center'>
-                            <IconButton aria-label="filter">
-                                <FilterListIcon />
-                            </IconButton>
-                        </TableCell>
-                        <TableCell align='center'>
-                            <IconButton aria-label="filter" color='success'>
-                                <ExportIcon />
-                            </IconButton>
-                        </TableCell>
-                        <TableCell align='center'>
-                            <IconButton aria-label="filter" color='default'>
-                                <ImportIcon />
-                            </IconButton>
-                        </TableCell>
-                        <TableCell align='center'>
-                            <IconButton aria-label="delete" color='error'>
-                                <DeleteIcon/>
-                            </IconButton>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        {headers.map((header: string) => {
-                            return (
-                                <TableCell key={header} align='center'> {header} </TableCell>
-                            )
+        <>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow >
+                            <TableCell align='center'>
+                                <IconButton aria-label="filter">
+                                    <FilterListIcon />
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align='center'>
+                                <IconButton aria-label="filter" color='success'>
+                                    <ExportIcon />
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align='center'>
+                                <IconButton aria-label="filter" color='default'>
+                                    <ImportIcon />
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align='center'>
+                                <IconButton aria-label="delete" color='error'>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                </Table>
+            </TableContainer>
+            <TableContainer component={Paper} sx={{maxHeight:200,overflowY:'auto'}}>
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            {headers.map((header: string) => {
+                                return (
+                                    <TableCell key={header} align='center'> {header} </TableCell>
+                                )
+                            })}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody >
+                        {tableDatas.map((item: any, index: number) => {
+                            if (checkWhichRowsToShow(page, rowsPerPage, index)) {
+                                return (
+
+                                    <TableRow key={index}>
+                                        <TableCell align='center'> {item.id}</TableCell>
+                                        <TableCell align='center'> {item.name}</TableCell>
+                                        <TableCell align='center'> {item.author}</TableCell>
+                                        <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
+                                        <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
+                                        <TableCell align='center'> {item.time_added}</TableCell>
+                                        <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
+                                    </TableRow>
+                                )
+                            }
+                            else {
+                                return (
+                                    <TableRow key={index}></TableRow>
+                                )
+                            }
                         })}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {tableDatas.map((item: any, index: number) => {
-                        if (checkWhichRowsToShow(page, rowsPerPage, index)) {
-                            return (
-
-                                <TableRow key={index}>
-                                    <TableCell align='center'> {item.id}</TableCell>
-                                    <TableCell align='center'> {item.name}</TableCell>
-                                    <TableCell align='center'> {item.author}</TableCell>
-                                    <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                                    <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
-                                    <TableCell align='center'> {item.time_added}</TableCell>
-                                    <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
-                                </TableRow>
-                            )
-                        }
-                        else {
-                            return (
-                                <TableRow key={index}></TableRow>
-                            )
-                        }
-
-                    })}
-                </TableBody>
-            </Table>
-            <Table>
-                <TableFooter >
-                    <TableRow>
-                        <TablePagination
-                            align='center'
-                            rowsPerPageOptions={[1, 2, 3, 6]}
-                            colSpan={1}
-                            count={tableDatas.length}
-                            rowsPerPage={rowsPerPage}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            page={page} />
-                    </TableRow>
-                </TableFooter>
-            </Table>
-
-
-        </TableContainer>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableFooter >
+                        <TableRow>
+                            <TablePagination
+                                align='center'
+                                rowsPerPageOptions={[1, 2, 3, 6]}
+                                colSpan={1}
+                                count={tableDatas.length}
+                                rowsPerPage={rowsPerPage}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                page={page} />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+        </>
     )
 }

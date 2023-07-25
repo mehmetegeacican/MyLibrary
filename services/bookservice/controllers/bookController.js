@@ -2,7 +2,6 @@ const { executeGetAllBooks, executeGetSpecificBook } = require("../model/book");
 const {validationResult} = require('express-validator');
 
 
-
 /**
  * Gets a Book By its ID
  * @param {*} req 
@@ -10,17 +9,18 @@ const {validationResult} = require('express-validator');
  */
 const getABookById = async (req, res) => {
     try {
+        const { id } = req.params;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
         }
-        const { id } = req.params;
-        const theBook = await executeGetSpecificBook(res, id);
+        const theBook = await executeGetSpecificBook(id);
         res.send(theBook);
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ error: e });
+        const errorMessage = e.message || 'Db Access Unsuccessful';
+        res.status(500).send({ error: errorMessage });
     }
 
 }
@@ -32,12 +32,13 @@ const getABookById = async (req, res) => {
  */
 const getAllBooks = async (req, res) => {
     try {
-        const allBooks = await executeGetAllBooks(res);
+        const allBooks = await executeGetAllBooks();
         res.send(allBooks);
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ error: e });
+        const errorMessage = e.message || 'Db Connection Unsuccessful';
+        res.status(500).send({ error: errorMessage });
     }
 }
 

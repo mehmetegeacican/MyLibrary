@@ -12,7 +12,6 @@ const executeGetAllBooks = async (res) => {
         //Step 2 -- Get the Result
         const result = await client.query('SELECT * FROM books');
         data = result.rows;
-        console.log("Hello");
         return data;
     }
     catch (e) {

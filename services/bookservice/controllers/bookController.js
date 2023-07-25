@@ -1,4 +1,5 @@
 const { executeGetAllBooks, executeGetSpecificBook } = require("../model/book");
+const {validationResult} = require('express-validator');
 
 
 
@@ -9,6 +10,10 @@ const { executeGetAllBooks, executeGetSpecificBook } = require("../model/book");
  */
 const getABookById = async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+        }
         const { id } = req.params;
         const theBook = await executeGetSpecificBook(res, id);
         res.send(theBook);

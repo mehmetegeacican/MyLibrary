@@ -4,7 +4,7 @@ const { connectDb, closeDb } = require('../dbconnection');
  * @param {*Pool} client 
  * @returns rows 
  */
-const executeGetAllBooks = async (res) => {
+const executeGetAllBooks = async () => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
@@ -16,7 +16,7 @@ const executeGetAllBooks = async (res) => {
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ error: "Db Connection unsuccesful" })
+        throw new Error("Db Connection Unsuccessful");
     }
     finally {
         await closeDb(client);
@@ -28,7 +28,7 @@ const executeGetAllBooks = async (res) => {
  * @param {*} res 
  * @param {*} id 
  */
-const executeGetSpecificBook = async (res, id) => {
+const executeGetSpecificBook = async (id) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
@@ -40,7 +40,7 @@ const executeGetSpecificBook = async (res, id) => {
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ error: "Db Connection unsuccesful" })
+        throw new Error("Db Connection unsuccesful");
     }
     finally {
         await closeDb(client);

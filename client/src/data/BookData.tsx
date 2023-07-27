@@ -1,13 +1,14 @@
 
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
-import { Typography } from '@mui/material';
+import { Box, Container, Paper, Stack, Typography } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 import { TabInterface } from '../interfaces/TabInterfaces';
 import LibraryAccordion from '../components/accordions/LibraryAccordion';
 import { AccordionData } from '../interfaces/AccordionInterfaces';
 import DataTable from '../components/tables/DataTable';
 import { fetchAllBooks } from '../apis/bookApi';
+import StringValueField from '../components/forms/StringValueField';
 
 export const BookTabs:TabInterface[] = [
     {icon : (<BackupTableIcon />), label: "Table View" },
@@ -46,11 +47,29 @@ export const BookDataExamples: any = [
 
 export const BookAccordionDatas:AccordionData[] = [
     {title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={BookDataExamples}/>)},
-    {title: "Add Book", info: "Add a new Book", data: (<Typography component={'span'} variant={'body2'} > Create Form is Here</Typography>)}
+    {title: "Add Book", info: "Add a new Book", data: (<BookForms/>)}
 ]
-
-
-
+export function BookForms() {
+    // Variables -- Hooks 
+    const [bookName, setBookName] = React.useState<string>('White Fang');
+    const [author,setAuthor] = React.useState<string>('Jack London')
+    return(
+        <Box
+        component="form"
+        >
+            <Container>
+                <Stack spacing={2}>
+                    <Stack direction = {'row'} spacing={2} alignItems={'center'}>
+                        <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName}/>
+                        <StringValueField label='Please Enter the Author name' data={author} setter={setAuthor}/> 
+                    </Stack>
+                    
+                </Stack>
+            </Container>
+        </Box>
+        
+    )
+};
 
 export default function BookAccordions() {
     //Hooks

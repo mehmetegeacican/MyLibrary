@@ -59,7 +59,7 @@ const executeFindABookByNameAndAuthor = async (bookName,author) => {
     let data;
     try {
         //Step 2 -- Get the Result
-        const checkQuery = `SELECT * FROM books WHERE name = $1 AND author = $2`;
+        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(author) = UPPER($2)`;
         const values = [bookName, author];
         const result = await client.query(checkQuery, values);
         data = result.rows;

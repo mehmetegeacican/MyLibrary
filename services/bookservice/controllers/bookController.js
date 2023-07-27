@@ -1,5 +1,5 @@
-const { executeGetAllBooks, executeGetSpecificBook } = require("../model/book");
-const {validationResult} = require('express-validator');
+const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook } = require("../model/book");
+const { validationResult } = require('express-validator');
 
 
 /**
@@ -12,7 +12,7 @@ const getABookById = async (req, res) => {
         const { id } = req.params;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
         const theBook = await executeGetSpecificBook(id);
         res.send(theBook);
@@ -42,8 +42,35 @@ const getAllBooks = async (req, res) => {
     }
 }
 
+/**
+ * Controller Function to Add A new Book
+ * @param {*} req the request  
+ * @param {*} res the response 
+ */
+const addNewBook = async (req, res) => {
+    try {
+        //Step 1 -- Get the Variables 
+        const { bookName, author, bookCategories, bookStatus } = req.body;
+        //Step 2 -- Validation Result -- Check for Inputs         
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 3 -- Insertion
+        const result = await executeInsertNewBook(bookName, author, bookCategories, bookStatus);
+        res.status(201).send(result);
+    }
+    catch (e) {
+        console.log(e);
+        const errorMessage = e.message || 'Db Access Unsuccessful';
+        res.status(500).send({ error: errorMessage });
+    }
+
+};
+
 
 module.exports = {
     getAllBooks,
-    getABookById
+    getABookById,
+    addNewBook
 }

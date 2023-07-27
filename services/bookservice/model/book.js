@@ -48,6 +48,33 @@ const executeGetSpecificBook = async (id) => {
 }
 
 /**
+ * Query Function the check if a book exist
+ * @param {*string} bookName the book name
+ * @param {*string} author the author
+ * @returns 
+ */
+const executeFindABookByNameAndAuthor = async (bookName,author) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    let data;
+    try {
+        //Step 2 -- Get the Result
+        const checkQuery = `SELECT * FROM books WHERE name = $1 AND author = $2`;
+        const values = [bookName, author];
+        const result = await client.query(checkQuery, values);
+        data = result.rows;
+        return data;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
+
+/**
  * Query Function To Insert a New Book
  */
 const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
@@ -87,5 +114,6 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
 module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
-    executeInsertNewBook
+    executeInsertNewBook,
+    executeFindABookByNameAndAuthor
 }

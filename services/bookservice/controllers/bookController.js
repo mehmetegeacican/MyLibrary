@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook } = require("../model/book");
+const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor } = require("../model/book");
 const { validationResult } = require('express-validator');
 
 
@@ -55,6 +55,11 @@ const addNewBook = async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 3 -- Check if the Book Exists
+        const ifAlreadyexists = await executeFindABookByNameAndAuthor(bookName,author);
+        if(ifAlreadyexists.length > 0){
+            return res.status(400).json({error:"The Book Already Exists in the db!"})
         }
         //Step 3 -- Insertion
         const result = await executeInsertNewBook(bookName, author, bookCategories, bookStatus);

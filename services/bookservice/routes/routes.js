@@ -1,10 +1,12 @@
 const express = require("express");
 const {
     getAllBooks,
-    getABookById
+    getABookById,
+    addNewBook
 } = require('../controllers/bookController');
 const {
-    bookDataValidate
+    bookDataValidate,
+    addNewBookValidate
 } = require('../validators/book.validation');
 
 
@@ -13,8 +15,9 @@ const router = express.Router();
 
 
 //Routes
-router.use("/all", getAllBooks);
-router.use("/:id", bookDataValidate(), getABookById);
+router.get("/all", getAllBooks);
+router.get("/:id", bookDataValidate(), getABookById);
+router.post("/", addNewBookValidate(), addNewBook);
 
 
 module.exports = router;

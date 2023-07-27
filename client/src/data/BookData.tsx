@@ -1,7 +1,7 @@
 
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
-import { Box, Container, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Chip, Container, Divider, FormControlLabel, FormGroup, Paper, Stack, Typography } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 import { TabInterface } from '../interfaces/TabInterfaces';
 import LibraryAccordion from '../components/accordions/LibraryAccordion';
@@ -63,12 +63,13 @@ export function CreateBookForm() {
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
     const [selectedCategories,setSelectedCategories] = React.useState<ICategory[]>([]);
+    const [selectedStatus,setSelectedStatus] = React.useState<string>("Reading");
     return (
         <Box
             component="form"
         >
             <Container>
-                <Stack spacing={2}>
+                <Stack spacing={2} alignContent={'center'}>
                     <Stack direction={'row'} spacing={2} alignItems={'center'}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
                         <StringValueField label='Please Enter the Author name' data={author} setter={setAuthor} />
@@ -81,7 +82,14 @@ export function CreateBookForm() {
                         selected={selectedCategories} 
                         setSelected={setSelectedCategories} 
                     />
-
+                    <Divider/>
+                    <Stack direction={'row'} spacing={2} alignContent={'center'}>
+                        <Chip clickable onClick = {() => setSelectedStatus("Red")} label="Red" color="error" variant={selectedStatus === "Red" ? "filled" : "outlined" } />
+                        <Chip clickable onClick = {() => setSelectedStatus("Reading")} label="Reading" color="warning" variant={selectedStatus === "Reading" ? "filled" : "outlined" }  />
+                        <Chip clickable onClick = {() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined" }  />
+                    </Stack>
+                    <Divider/>
+                    <Button sx={{alignItems:"center",width:300}} variant='outlined'> Add </Button> 
                 </Stack>
             </Container>
         </Box>

@@ -21,7 +21,6 @@ const isArrayofStrings = (value) => {
             return false;
         }
     }
-
     return true;
 };
 
@@ -32,7 +31,7 @@ const addNewBookValidate = () => [
     check('author').isString().withMessage('Author Name must be a string'),
     check('bookStatus').notEmpty().withMessage('Status must not be empty'),
     check('bookStatus').isString().withMessage('Status must be a string'),
-    check('bookStatus').isIn('Red', 'Reading', 'Will Read').withMessage('Status can only be one of the three: Red, Reading, Will Read'),
+    check('bookStatus').isIn(['Red', 'Reading', 'Will Read']).withMessage('Status can only be one of the three: Red, Reading, Will Read'),
     check('bookCategories').custom(isArrayofStrings).withMessage('The Categories must be an array of strings'),
 ]
 

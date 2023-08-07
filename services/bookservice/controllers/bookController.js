@@ -63,12 +63,12 @@ const addNewBook = async (req, res) => {
         }
         //Step 3 -- Insertion
         const result = await executeInsertNewBook(bookName, author, bookCategories, bookStatus);
-        res.status(201).send(result);
+        res.status(201).json({message:result});
     }
     catch (e) {
         console.log(e);
         const errorMessage = e.message || 'Db Access Unsuccessful';
-        res.status(500).send({ error: errorMessage });
+        res.status(500).json({ error: errorMessage });
     }
 
 };

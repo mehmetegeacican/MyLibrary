@@ -25,7 +25,6 @@ const executeGetAllBooks = async () => {
 
 /**
  * Query Function to Get A Book Via It's ID
- * @param {*} res 
  * @param {*} id 
  */
 const executeGetSpecificBook = async (id) => {

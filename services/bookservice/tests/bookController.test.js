@@ -313,6 +313,23 @@ describe('POST /api/v1/books', function () {
     expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
+  it('should only accept book categories as array', async () => {
+    const invalidReqBody = {
+      bookName: 'New Book',
+      author: 'Author 1',
+      bookCategories: 'Category 1, Category 2',
+      bookStatus: 'Reading',
+    };
+    //When
+    const response = await request(app).post('/api/v1/books').send(invalidReqBody);
+    //Then
+    expect(response.status).toBe(400);
+    expect(response.body.errors.length).toEqual(1);
+    expect(response.body.errors[0].msg).toEqual("The Categories must be an array of strings");
+    //Verify
+    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
+  });
   it('should only accept book categories that are an array of string', async () => {
     const invalidReqBody = {
       bookName: 'New Book',

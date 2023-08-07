@@ -53,7 +53,7 @@ const executeGetSpecificBook = async (id) => {
  * @param {*string} author the author
  * @returns 
  */
-const executeFindABookByNameAndAuthor = async (bookName,author) => {
+const executeFindABookByNameAndAuthor = async (bookName, author) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
@@ -81,7 +81,7 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = "2023-01-01";
-    console.log(date);
+
     let category = "{";
     bookCategories.forEach((element, index) => {
         let value = "";
@@ -96,8 +96,7 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
     category += "}";
     try {
         //Step 2 -- Insert to the Table
-        const insertQuery = `INSERT INTO books (name, author, entered, category, status)
-        VALUES($1, $2, $3, $4, $5)`;
+        const insertQuery = `INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`;
         const values = [bookName, author, date, category, bookStatus];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";

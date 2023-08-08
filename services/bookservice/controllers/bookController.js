@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor } = require("../model/book");
+const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor, executeDeleteABookViaId } = require("../model/book");
 const { validationResult } = require('express-validator');
 
 
@@ -57,13 +57,13 @@ const addNewBook = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
         //Step 3 -- Check if the Book Exists
-        const ifAlreadyexists = await executeFindABookByNameAndAuthor(bookName,author);
-        if(ifAlreadyexists.length > 0){
-            return res.status(400).json({error:"The Book Already Exists in the db!"})
+        const ifAlreadyexists = await executeFindABookByNameAndAuthor(bookName, author);
+        if (ifAlreadyexists.length > 0) {
+            return res.status(400).json({ error: "The Book Already Exists in the db!" })
         }
         //Step 3 -- Insertion
         const result = await executeInsertNewBook(bookName, author, bookCategories, bookStatus);
-        res.status(201).json({message:result});
+        res.status(201).json({ message: result });
     }
     catch (e) {
         console.log(e);
@@ -73,9 +73,39 @@ const addNewBook = async (req, res) => {
 
 };
 
+/**
+ * Controller Function to Delete A Book Via ID
+ * @param {*} req the request 
+ * @param {*} res the response
+ */
+const deleteABook = async (req, res) => {
+    try {
+        const { id } = req.params;
+        //Step 1 -- Validate the ID
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 2 -- Check if Id exist
+        const book = await executeGetSpecificBook(id);
+        if (book.length === 0) {
+            return res.status(400).json({ error: "The Book with the given ID does not exist in the system!" });
+        }
+        //Step 2 -- Delete the Book
+        const result = await executeDeleteABookViaId(id);
+        res.status(200).json({ message: result });
+    }
+    catch (e) {
+        console.log(e);
+        const errorMessage = e.message || 'Db Access Unsuccessful';
+        res.status(500).json({ error: errorMessage });
+    }
+};
+
 
 module.exports = {
     getAllBooks,
     getABookById,
-    addNewBook
+    addNewBook,
+    deleteABook
 }

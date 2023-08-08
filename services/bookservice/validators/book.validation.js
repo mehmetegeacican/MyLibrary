@@ -1,6 +1,6 @@
 const { check } = require('express-validator');
 
-const bookDataValidate = () => [
+const bookDataIDValidate = () => [
     check('id').notEmpty().withMessage('ID is required'),
     check('id').isInt().withMessage('ID should be declared as an integer'),
 ];
@@ -36,6 +36,6 @@ const addNewBookValidate = () => [
 ]
 
 module.exports = {
-    bookDataValidate,
+    bookDataIDValidate,
     addNewBookValidate
 }

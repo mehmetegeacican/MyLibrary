@@ -117,6 +117,27 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
     }
 };
 
+
+/**
+ * Delete Via Id
+ */
+const executeDeleteABookViaId = async (id) => {
+    let client = await connectDb();
+    try {
+        const deleteQuery = `DELETE FROM books WHERE id=$1`;
+        const value = [id];
+        await client.query(deleteQuery, value);
+        return "Data Successfully deleted";
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
+
 const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
@@ -136,10 +157,12 @@ const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) =
     }
 };
 
+
 module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
     executeInsertNewBook,
     executeFindABookByNameAndAuthor,
+    executeDeleteABookViaId,
     executeUpdateBook
 }

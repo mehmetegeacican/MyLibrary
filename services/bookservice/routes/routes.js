@@ -3,6 +3,7 @@ const {
     getAllBooks,
     getABookById,
     addNewBook,
+    deleteABook,
     updateABook
 } = require('../controllers/bookController');
 const {
@@ -19,7 +20,9 @@ const router = express.Router();
 router.get("/all", getAllBooks);
 router.get("/:id", bookDataIDValidate(), getABookById);
 router.post("/", bookBodyValidate(), addNewBook);
+router.delete("/:id", bookDataIDValidate(), deleteABook);
 router.put("/:id",bookDataIDValidate(),bookBodyValidate(),updateABook);
+
 
 
 module.exports = router;

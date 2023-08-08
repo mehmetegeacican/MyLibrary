@@ -1,6 +1,6 @@
 const { check } = require('express-validator');
 
-const bookDataValidate = () => [
+const bookDataIDValidate = () => [
     check('id').notEmpty().withMessage('ID is required'),
     check('id').isInt().withMessage('ID should be declared as an integer'),
 ];
@@ -24,7 +24,7 @@ const isArrayofStrings = (value) => {
     return true;
 };
 
-const addNewBookValidate = () => [
+const bookBodyValidate = () => [
     check('bookName').notEmpty().withMessage('Book Name is Required'),
     check('bookName').isString().withMessage('Book Name must be a string'),
     check('author').notEmpty().withMessage('Author name is required'),
@@ -36,6 +36,6 @@ const addNewBookValidate = () => [
 ]
 
 module.exports = {
-    bookDataValidate,
-    addNewBookValidate
+    bookDataIDValidate,
+    bookBodyValidate
 }

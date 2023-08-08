@@ -2,11 +2,12 @@ const express = require("express");
 const {
     getAllBooks,
     getABookById,
-    addNewBook
+    addNewBook,
+    updateABook
 } = require('../controllers/bookController');
 const {
-    bookDataValidate,
-    addNewBookValidate
+    bookDataIDValidate,
+    bookBodyValidate
 } = require('../validators/book.validation');
 
 
@@ -16,8 +17,9 @@ const router = express.Router();
 
 //Routes
 router.get("/all", getAllBooks);
-router.get("/:id", bookDataValidate(), getABookById);
-router.post("/", addNewBookValidate(), addNewBook);
+router.get("/:id", bookDataIDValidate(), getABookById);
+router.post("/", bookBodyValidate(), addNewBook);
+router.put("/:id",bookDataIDValidate(),bookBodyValidate(),updateABook);
 
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor } = require("../model/book");
+const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor , executeUpdateBook} = require("../model/book");
 const { validationResult } = require('express-validator');
 
 
@@ -74,8 +74,50 @@ const addNewBook = async (req, res) => {
 };
 
 
+/**
+ * Controller Function to Update the Book
+ * @param {*} req the request
+ * @param {*} res the response 
+ */
+const updateABook = async (req,res) => {
+    try{
+        //Step 1 -- Get the Variables
+        const {id} = req.params;
+        const { bookName, author, bookCategories, bookStatus } = req.body;
+        //Step 2 -- Validate the Variables
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 3 -- Check if the ID exist
+        const ifIDDoesntExist = await executeGetSpecificBook(id);
+        if(ifIDDoesntExist.length === 0){
+            return res.status(400).json({error:"The ID does not exist!"});
+        }
+        //Step 4 -- Check if there is already a book with the same name and author in the system
+        const bookByNameAndAuth = await executeFindABookByNameAndAuthor(bookName,author);
+        if(bookByNameAndAuth.length > 0){
+            return res.status(400).json({error:"There already is a book with the updated name and author"});
+        }
+        //Step 5 -- Edit the Id
+        const result = await executeUpdateBook(id,bookName,author,bookCategories,bookStatus);
+        res.status(200).json({message: result});
+    }
+    catch(e){
+        console.log(e);
+        const errorMessage = e.message || 'Db Access Unsuccessful';
+        res.status(500).json({ error: errorMessage });
+    }
+};
+
+
+
+
+
+
 module.exports = {
     getAllBooks,
     getABookById,
-    addNewBook
+    addNewBook,
+    updateABook
 }

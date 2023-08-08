@@ -1,7 +1,5 @@
 const request = require('supertest');
 const app = require('../app');
-const { validationResult } = require('express-validator');
-const { addNewBookValidate } = require('../validators/book.validation');
 const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor, executeInsertNewBook } = require('../model/book');
 
 //Step 1 -- Mock the executeGetAllBooks Function

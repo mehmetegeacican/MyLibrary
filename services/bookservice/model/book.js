@@ -25,7 +25,6 @@ const executeGetAllBooks = async () => {
 
 /**
  * Query Function to Get A Book Via It's ID
- * @param {*} res 
  * @param {*} id 
  */
 const executeGetSpecificBook = async (id) => {
@@ -75,13 +74,10 @@ const executeFindABookByNameAndAuthor = async (bookName, author) => {
 }
 
 /**
- * Query Function To Insert a New Book
+ * Helper Function to Format the books based on the categories
+ * @param {*string[]} bookCategories 
  */
-const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
-    //Step 1 -- Open the Db
-    let client = await connectDb();
-    let date = "2023-01-01";
-
+const formatCategories = (bookCategories) => {
     let category = "{";
     bookCategories.forEach((element, index) => {
         let value = "";
@@ -94,6 +90,17 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
         category += value;
     });
     category += "}";
+    return category;
+};
+
+/**
+ * Query Function To Insert a New Book
+ */
+const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    let date = "2023-01-01";
+    const category = formatCategories(bookCategories);    
     try {
         //Step 2 -- Insert to the Table
         const insertQuery = `INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`;
@@ -109,6 +116,7 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
         await closeDb(client);
     }
 };
+
 
 /**
  * Delete Via Id
@@ -130,10 +138,31 @@ const executeDeleteABookViaId = async (id) => {
     }
 }
 
+const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    let date = "2023-01-01";
+    try{
+        const updateQuery = `UPDATE books SET "name"=$1, author=$2, entered=$3, category=$4, status=$5 WHERE id=$6`;
+        const values = [bookName,author,date,formatCategories(bookCategories),bookStatus,id];
+        await client.query(updateQuery,values);
+        return "Data Successfully updated";
+    }
+    catch(e){
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally{
+        await closeDb(client);
+    }
+};
+
+
 module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
     executeInsertNewBook,
     executeFindABookByNameAndAuthor,
-    executeDeleteABookViaId
+    executeDeleteABookViaId,
+    executeUpdateBook
 }

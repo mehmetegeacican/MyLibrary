@@ -24,7 +24,7 @@ const isArrayofStrings = (value) => {
     return true;
 };
 
-const addNewBookValidate = () => [
+const bookBodyValidate = () => [
     check('bookName').notEmpty().withMessage('Book Name is Required'),
     check('bookName').isString().withMessage('Book Name must be a string'),
     check('author').notEmpty().withMessage('Author name is required'),
@@ -37,5 +37,5 @@ const addNewBookValidate = () => [
 
 module.exports = {
     bookDataIDValidate,
-    addNewBookValidate
+    bookBodyValidate
 }

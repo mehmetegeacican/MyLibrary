@@ -127,7 +127,10 @@ const updateABook = async (req,res) => {
         }
         //Step 4 -- Check if there is already a book with the same name and author in the system
         const bookByNameAndAuth = await executeFindABookByNameAndAuthor(bookName,author);
-        if(bookByNameAndAuth.length > 0){
+        let filtered = bookByNameAndAuth.filter((item) => {
+            return item.id !== parseInt(id);
+        });
+        if(filtered.length > 0){
             return res.status(400).json({error:"There already is a book with the updated name and author"});
         }
         //Step 5 -- Edit the Id

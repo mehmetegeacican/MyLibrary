@@ -141,7 +141,15 @@ const executeDeleteABookViaId = async (id) => {
         }
     }
 }
-
+/**
+ * Update Via Id
+ * @param {*} id 
+ * @param {*} bookName 
+ * @param {*} author 
+ * @param {*} bookCategories 
+ * @param {*} bookStatus 
+ * @returns 
+ */
 const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) => {
     //Step 1 -- Open the Db
     let client = await connectDb();

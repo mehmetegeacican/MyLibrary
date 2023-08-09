@@ -113,7 +113,9 @@ const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus
         throw new Error("Db Connection Unsuccessful");
     }
     finally {
-        await closeDb(client);
+        if(client){
+            await closeDb(client);
+        }
     }
 };
 
@@ -134,7 +136,9 @@ const executeDeleteABookViaId = async (id) => {
         throw new Error("Db Connection Unsuccessful");
     }
     finally {
-        await closeDb(client);
+        if(client){
+            await closeDb(client);
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
-const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor, executeInsertNewBook } = require('../model/book');
+const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor, executeInsertNewBook, executeDeleteABookViaId } = require('../model/book');
 
 //Step 1 -- Mock the executeGetAllBooks Function
 jest.mock('../model/book', () => ({
@@ -8,6 +8,7 @@ jest.mock('../model/book', () => ({
   executeGetSpecificBook: jest.fn(),
   executeFindABookByNameAndAuthor: jest.fn(),
   executeInsertNewBook: jest.fn(),
+  executeDeleteABookViaId: jest.fn()
 }));
 
 //Step 2 -- Mock the Datas
@@ -345,4 +346,74 @@ describe('POST /api/v1/books', function () {
     expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
+});
+
+/**
+ * Test 5 -- api/v1/books/:id DELETE Scenarios
+ */
+describe('DELETE /api/v1/books/:id', function (){
+  beforeEach(() => {
+    // Reset the call count of the mock function before each test
+    executeDeleteABookViaId.mockClear();
+    executeGetSpecificBook.mockClear();
+    jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
+  });
+  afterEach(() => {
+    jest.restoreAllMocks(); // Restore console.log after each test
+  });
+
+  it('should successfully delete a book', async () => {
+    //Given
+    executeGetSpecificBook.mockResolvedValue(mockBookData[0]);
+    const mockDeletionResult = 'Data Successfully deleted';
+    executeDeleteABookViaId.mockResolvedValue(mockDeletionResult);
+    //When
+    const response = await request(app).delete(`/api/v1/books/${mockBookData[0].id}`)
+    //Then
+    expect(response.status).toBe(200);
+    expect(response.body.message).toEqual(mockDeletionResult);
+    //Verify
+    expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
+    expect(executeDeleteABookViaId).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return a 500 error if the db is not usable', async () => {
+    //Given
+    const mockError = 'Db Access Unsuccessful';
+    executeGetSpecificBook.mockRejectedValue(mockError);
+    //When
+    const response = await request(app).delete(`/api/v1/books/${mockBookData[0].id}`)
+    //Then
+    expect(response.status).toBe(500);
+    expect(response.body.error).toBe(mockError);
+    //Verify
+    expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
+    expect(executeDeleteABookViaId).toHaveBeenCalledTimes(0);
+  });
+
+  it('should return a 400 if the id is in the wrong format', async () => {
+    //Given
+    //When
+    const response = await request(app).delete(`/api/v1/books/test`);
+    //Then
+    expect(response.status).toBe(400);
+    expect(response.body.errors[0].msg).toBe('ID should be declared as an integer');
+    // Verify -- The SQL Query should not be called at all
+    expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
+    expect(executeDeleteABookViaId).toHaveBeenCalledTimes(0);
+  });
+
+  it('should return a 400 if there is no data with the given id found', async () => {
+    //Given
+    executeGetSpecificBook.mockResolvedValue([]);
+    //When
+    const response = await request(app).delete(`/api/v1/books/1`);
+    //Then
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe('The Book with the given ID does not exist in the system!');
+    //Verify
+    expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
+    expect(executeDeleteABookViaId).toHaveBeenCalledTimes(0);
+  });
+
 });

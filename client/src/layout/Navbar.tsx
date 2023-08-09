@@ -3,6 +3,8 @@ import { drawerWidth } from '../constants/sizes';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserIcon from '@mui/icons-material/Person'
+import React from 'react';
+import DropdownMenu from '../components/dropdown/DropdownMenu';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -33,8 +35,22 @@ const AppBar = styled(MuiAppBar, {
 
 
 export default function Navbar({ open, toggleDrawer }: NavbarProps) {
+    //Hooks
+    const [openMenu,setOpenMenu] = React.useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const handleToggle = (event:React.MouseEvent<HTMLElement>) => {
+        setOpenMenu((prevOpen) => !prevOpen);
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleClose = (event: Event | React.SyntheticEvent) => {
+        setAnchorEl(null);
+        setOpenMenu(false);
+      };
+
     return (
-        <AppBar position="absolute" open={open} color='secondary'>
+        <AppBar position="absolute" open={open} color='secondary' >
             <Toolbar
                 sx={{
                     pr: '25px', // keep right padding when drawer closed
@@ -62,10 +78,11 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
                 >
                     My library
                 </Typography>
-                <IconButton color="inherit">
+                <IconButton color="inherit" onClick={handleToggle}>
                     <Badge>
                         <UserIcon />
                     </Badge>
+                    <DropdownMenu open={openMenu} anchor={anchorEl || null}  handleClose={handleClose}/>
                 </IconButton>
             </Toolbar>
         </AppBar>

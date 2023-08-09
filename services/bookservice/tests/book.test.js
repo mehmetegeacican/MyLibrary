@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor , executeInsertNewBook} = require('../model/book');
+const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor , executeInsertNewBook, executeDeleteABookViaId} = require('../model/book');
 const { connectDb, closeDb } = require('../dbconnection');
 
 //Mock the ConnectDb & CloseDb
@@ -241,6 +241,52 @@ describe('executeInsertNewBook', () => {
         expect(mockClient.query).toHaveBeenCalledTimes(1);
         expect(closeDb).toHaveBeenCalledTimes(1);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
+    });
+});
+
+describe('executeDeleteABookViaId', () => {
+    beforeEach(() => {
+        // Reset the call count of the mock function before each test
+        connectDb.mockClear();
+        closeDb.mockClear();
+        // Mock the database closure function with a resolved Promise
+        closeDb.mockResolvedValue();
+        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+    });
+    afterEach(() => {
+        jest.restoreAllMocks(); // Restore console.log after each test
+    });
+    it('should execute delete a book via id query', async () => {
+        //Given
+        const mockClient = { query: jest.fn().mockResolvedValue() };
+        connectDb.mockResolvedValue(mockClient);
+        const mockId = 1;
+        //When
+        const result = await executeDeleteABookViaId(mockId);
+        //Then
+        expect(result).toBe('Data Successfully deleted');
+        expect(mockClient.query).toHaveBeenCalledWith('DELETE FROM books WHERE id=$1', [mockId]);
+        //Verify
+        expect(connectDb).toHaveBeenCalledTimes(1);
+        expect(mockClient.query).toHaveBeenCalledTimes(1);
+        expect(closeDb).toHaveBeenCalledTimes(1);
+        expect(closeDb).toHaveBeenCalledWith(mockClient);
+    });
+    it('should handle db error', async () => {
+       // Given
+       const mockClient = { query: jest.fn().mockRejectedValue('DB Error') };
+       connectDb.mockResolvedValue(mockClient);
+       const mockId = 1;
+       // Mock the database closure function to throw an error
+       const closeDbError = new Error('Db Access Unsuccessful');
+       closeDb.mockRejectedValue(closeDbError);
+       //When
+       await expect(executeDeleteABookViaId(mockId)).rejects.toThrow('Db Access Unsuccessful');
+       //Then
+       expect(connectDb).toHaveBeenCalledTimes(1);
+       expect(mockClient.query).toHaveBeenCalledTimes(1);
+       expect(closeDb).toHaveBeenCalledTimes(1);
+       expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
 });
   

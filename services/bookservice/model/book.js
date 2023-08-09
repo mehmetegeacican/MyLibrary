@@ -1,4 +1,5 @@
 const { connectDb, closeDb } = require('../dbconnection');
+const dayjs = require('dayjs'); 
 /**
  * Query Function to get All the Books
  * @param {*Pool} client 
@@ -99,7 +100,7 @@ const formatCategories = (bookCategories) => {
 const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
-    let date = "2023-01-01";
+    let date = dayjs().format('YYYY-MM-DD');
     const category = formatCategories(bookCategories);    
     try {
         //Step 2 -- Insert to the Table

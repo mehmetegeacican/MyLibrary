@@ -1,4 +1,4 @@
-import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 
 import React from 'react';
 import StatusChip from '../chip/StatusChip';
@@ -49,30 +49,38 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     <TableHead>
                         <TableRow >
                             <TableCell align='center'>
-                                <IconButton aria-label="filter">
-                                    <FilterListIcon />
-                                </IconButton>
+                                <Tooltip title="Filter Items" arrow placement="top-start">
+                                    <IconButton aria-label="filter">
+                                        <FilterListIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </TableCell>
                             <TableCell align='center'>
-                                <IconButton aria-label="filter" color='success'>
-                                    <ExportIcon />
-                                </IconButton>
+                                <Tooltip title="Export Items to Excel" arrow placement="top-start">
+                                    <IconButton aria-label="export" color='success'>
+                                        <ExportIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </TableCell>
                             <TableCell align='center'>
-                                <IconButton aria-label="filter" color='default'>
-                                    <ImportIcon />
-                                </IconButton>
+                                <Tooltip title="Import Excel File to Table" arrow placement="top-start">
+                                    <IconButton aria-label="filter" color='default'>
+                                        <ImportIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </TableCell>
                             <TableCell align='center'>
-                                <IconButton aria-label="delete" color='error'>
-                                    <DeleteIcon />
-                                </IconButton>
+                                <Tooltip title="Delete Multiple" arrow placement="top-start">
+                                    <IconButton aria-label="delete" color='error'>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </TableCell>
                         </TableRow>
                     </TableHead>
                 </Table>
             </TableContainer>
-            <TableContainer component={Paper} sx={{maxHeight:200,overflowY:'auto'}}>
+            <TableContainer component={Paper} sx={{ maxHeight: 200, overflowY: 'auto' }}>
                 <Table stickyHeader>
                     <TableHead>
                         <TableRow>

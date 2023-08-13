@@ -1,5 +1,4 @@
 
-import { ICategory } from '../../interfaces/DataInterfaces';
 import { postNewBook } from '../../apis/bookApi';
 import { useEffect } from 'react';
 

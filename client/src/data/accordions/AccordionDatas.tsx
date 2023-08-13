@@ -32,12 +32,12 @@ export default function BookAccordions() {
     const fetchData = useCallback(async () => {
         const res = await fetchAllBooks();;
         setBooks(res);
-    }, []);
+    }, [expanded]);
 
     //UseEffect
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
 

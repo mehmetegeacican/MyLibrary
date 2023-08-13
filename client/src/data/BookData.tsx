@@ -43,7 +43,9 @@ export const BookTableHeader: string[] = [
     "Category",
     "Status",
     "Entered to the system",
-    "Notes"
+    "Notes",
+    "Edit",
+    "Delete"
 ];
 
 

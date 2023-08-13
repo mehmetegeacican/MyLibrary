@@ -6,6 +6,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
+import EditIcon from '@mui/icons-material/Edit';
 import dayjs from 'dayjs';
 
 interface TableInterfaces {
@@ -104,6 +105,16 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                                         <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
                                         <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
+                                        <TableCell align='center'>
+                                            <IconButton aria-label="edit" color='info'>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                        <TableCell align='center'>
+                                            <IconButton aria-label="delete" color='error'>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 )
                             }

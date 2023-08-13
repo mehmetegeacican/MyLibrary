@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const PORT = 4000; //Env var should be used
+const PORT = 4001; //Env var should be used
 
 const ADDRESS = `http://localhost:${PORT}`; // Env should be used
 

@@ -11,7 +11,7 @@ import { CreateBookForm } from "../forms/CreateForms";
  */
 export const BookAccordionDatas: AccordionData[] = [
     { title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={[]} />) },
-    { title: "Add Book", info: "Add a new Book", data: (<CreateBookForm />) }
+    { title: "Add Book", info: "Add a new Book", data: (<CreateBookForm setTrigger = {() => console.log("Trigger")} />) }
 ]
 
 /**
@@ -22,6 +22,7 @@ export default function BookAccordions() {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [books, setBooks] = React.useState<any>([]);
+    const [trigger,setTrigger] = React.useState<boolean>(false);
   
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -30,11 +31,9 @@ export default function BookAccordions() {
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
-        if(expanded){
-            const res = await fetchAllBooks();
-            setBooks(res);
-        }
-    }, [expanded]); // A Context can be better maybe
+        const res = await fetchAllBooks();
+        setBooks(res);
+    }, [trigger]); // A Context can be better maybe
 
     //UseEffect
     useEffect(() => {
@@ -42,6 +41,7 @@ export default function BookAccordions() {
     }, [fetchData]);
 
     BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
+    BookAccordionDatas[1].data = (<CreateBookForm setTrigger={() => setTrigger(!trigger)}/>)
 
     //Render
     return (

@@ -10,7 +10,11 @@ import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
  * Create Form for Create Book
  * @returns rendered create book form component
  */
-export function CreateBookForm() {
+
+interface FormInterface {
+    setTrigger: Function;
+}
+export function CreateBookForm({setTrigger}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -30,6 +34,11 @@ export function CreateBookForm() {
         });
         return categoryNames;
     };
+
+    const submit = async () => {
+       await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+       setTrigger();
+    }
     return (
         <Box
             component="form"
@@ -55,7 +64,7 @@ export function CreateBookForm() {
                         <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
-                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus)}> Add </Button>
+                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

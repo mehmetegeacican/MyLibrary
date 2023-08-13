@@ -22,6 +22,13 @@ export function CreateBookForm() {
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
     const { error,success, message, createBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
+    //get strings of the categories
+    const getStringCategories = (categories:ICategory[]) => {
+        let categoryNames = categories.map((item:ICategory) => {
+            return item.name;
+        });
+        return categoryNames;
+    };
     return (
         <Box
             component="form"
@@ -47,7 +54,7 @@ export function CreateBookForm() {
                         <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
-                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => createBook(bookName, author, selectedCategories, selectedStatus)}> Add </Button>
+                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus)}> Add </Button>
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

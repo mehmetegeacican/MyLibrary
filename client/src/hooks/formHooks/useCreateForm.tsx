@@ -16,7 +16,7 @@ export  const useCreateForm = (error:boolean,setError:Function,message:string,se
   /**
    * Functions that are used for Data Addition
    */
-  const createBook = async (bookName:string,author:string,selectedCategories:ICategory[],selectedStatus:string) => {
+  const createBook = async (bookName:string,author:string,selectedCategories:string[],selectedStatus:string) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);

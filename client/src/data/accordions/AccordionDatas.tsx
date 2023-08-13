@@ -23,7 +23,7 @@ export default function BookAccordions() {
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [books, setBooks] = React.useState<any>([]);
     const [trigger,setTrigger] = React.useState<boolean>(false);
-  
+
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
@@ -35,6 +35,7 @@ export default function BookAccordions() {
         setBooks(res);
     }, [trigger]); // A Context can be better maybe
 
+
     //UseEffect
     useEffect(() => {
         fetchData();
@@ -42,6 +43,7 @@ export default function BookAccordions() {
 
     BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
     BookAccordionDatas[1].data = (<CreateBookForm setTrigger={() => setTrigger(!trigger)}/>)
+
 
     //Render
     return (

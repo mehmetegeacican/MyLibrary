@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/material";
+import { Box, Container, Stack, Divider, Chip, Button, Typography, Alert } from "@mui/material";
 import React from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
@@ -10,7 +10,6 @@ import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
  * Create Form for Create Book
  * @returns rendered create book form component
  */
-
 interface FormInterface {
     setTrigger: Function;
 }
@@ -26,7 +25,6 @@ export function CreateBookForm({setTrigger}:FormInterface) {
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
     const { error,success, message, createBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
-
     //get strings of the categories
     const getStringCategories = (categories:ICategory[]) => {
         let categoryNames = categories.map((item:ICategory) => {
@@ -39,6 +37,7 @@ export function CreateBookForm({setTrigger}:FormInterface) {
        await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
        setTrigger();
     }
+
     return (
         <Box
             component="form"

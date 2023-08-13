@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const PORT = 4001; //Env var should be used
+const PORT = 4000; //Env var should be used
 
 const ADDRESS = `http://localhost:${PORT}`; // Env should be used
 
@@ -15,5 +15,20 @@ export const fetchAllBooks = async () => {
     }
     catch {
         return [];
+    }
+}
+/**
+ * Posts a New Book
+ * @param requestBody 
+ * @returns 
+ */
+export const postNewBook = async (requestBody:object) => {
+    try{
+        const res = await axios.post(ADDRESS + '/api/v1/books',requestBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+        
     }
 }

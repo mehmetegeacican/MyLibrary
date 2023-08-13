@@ -22,7 +22,7 @@ export default function BookAccordions() {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [books, setBooks] = React.useState<any>([]);
-
+  
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
@@ -30,9 +30,11 @@ export default function BookAccordions() {
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
-        const res = await fetchAllBooks();;
-        setBooks(res);
-    }, [expanded]);
+        if(expanded){
+            const res = await fetchAllBooks();
+            setBooks(res);
+        }
+    }, [expanded]); // A Context can be better maybe
 
     //UseEffect
     useEffect(() => {

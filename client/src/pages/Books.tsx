@@ -2,7 +2,8 @@ import { Container, Grid, Paper } from '@mui/material'
 import Tabbar from '../components/tabbar/Tabbar'
 import React from 'react'
 import TabContent from '../components/tabbar/TabContent';
-import { BookTabContents, BookTabs } from '../data/BookData';
+import { BookTabContents, BookTabs } from '../data/tabs/TabDatas';
+
 
 export default function Statistics() {
     //State

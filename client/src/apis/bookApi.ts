@@ -17,3 +17,18 @@ export const fetchAllBooks = async () => {
         return [];
     }
 }
+/**
+ * Posts a New Book
+ * @param requestBody 
+ * @returns 
+ */
+export const postNewBook = async (requestBody:object) => {
+    try{
+        const res = await axios.post(ADDRESS + '/api/v1/books',requestBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+        
+    }
+}

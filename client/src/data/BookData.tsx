@@ -11,6 +11,7 @@ import { fetchAllBooks } from '../apis/bookApi';
 import StringValueField from '../components/forms/StringValueField';
 import MultipleSelectionAutocomplete from '../components/forms/MultipleSelectionAutocomplete';
 import { ICategory } from '../interfaces/DataInterfaces';
+import { BookTableHeader } from './tables/TableDatas';
 
 
 /**
@@ -32,22 +33,6 @@ export const BookTabContents: JSX.Element[] = [
     (<Typography component={'span'} variant={'body2'}> <BookAccordions /> </Typography>),
     (<Typography component={'span'} variant={'body2'}> CARD </Typography>)
 ];
-
-/**
- * Table Headers for Books
- */
-export const BookTableHeader: string[] = [
-    "Book ID",
-    "Name",
-    "Author",
-    "Category",
-    "Status",
-    "Entered to the system",
-    "Notes",
-    "Edit",
-    "Delete"
-];
-
 
 /**
  * Accordion Datas for Book Page

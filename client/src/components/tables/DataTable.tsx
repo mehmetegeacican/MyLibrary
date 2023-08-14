@@ -1,6 +1,6 @@
 import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import StatusChip from '../chip/StatusChip';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -55,7 +55,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
     }
 
     return (
-        <>
+        <Fragment>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -128,7 +128,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                         </TableCell>
                                         <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
                                         <SelectionModal options={[]} open={openSelection} handleClose={() => setOpenSelection(false)}/>
-                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} setTrigger={setTrigger}/>
+                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} setTrigger={setTrigger} data = {item}/>
                                     </TableRow>
                                     
                                 )
@@ -160,6 +160,6 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </>
+        </Fragment>
     )
 }

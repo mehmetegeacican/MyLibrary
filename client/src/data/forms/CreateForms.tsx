@@ -1,8 +1,8 @@
 import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
-import { ICategory } from "../../interfaces/DataInterfaces";
+import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
 
@@ -13,8 +13,9 @@ import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
 interface FormInterface {
     setTrigger: Function;
     format:string;
+    data?:IBook;
 }
-export function CreateBookForm({setTrigger,format}:FormInterface) {
+export function CreateBookForm({setTrigger,format, data}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -39,9 +40,16 @@ export function CreateBookForm({setTrigger,format}:FormInterface) {
        setTrigger();
     }
 
+    useEffect(() => {
+        if(data){
+            setBookName(data.name);
+            setAuthor(data.author);
+            setSelectedStatus(data.status);
+        }
+    },[data])
+
     return (
         <Box
-            component="form"
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
@@ -61,7 +69,7 @@ export function CreateBookForm({setTrigger,format}:FormInterface) {
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
                         <Chip clickable onClick={() => setSelectedStatus("Red")} label="Red" color="error" variant={selectedStatus === "Red" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Reading")} label="Reading" color="warning" variant={selectedStatus === "Reading" ? "filled" : "outlined"} />
-                        <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
+                        <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Read" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}

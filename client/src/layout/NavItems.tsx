@@ -31,12 +31,15 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Authors" />
-    </ListItemButton>
+    <Link to="/authors">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Authors" />
+      </ListItemButton>
+    </Link>
+
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />

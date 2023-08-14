@@ -6,6 +6,7 @@ import BookPage from "./pages/Books";
 import Navbar from "./layout/Navbar";
 import SideNav from "./layout/SideNav";
 import Dashboard from "./pages/Dashboard";
+import AuthorsPage from "./pages/Authors";
 
 
 
@@ -38,6 +39,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/books" element={<BookPage/>} />
+              <Route path="/authors" element={<AuthorsPage/>} />
             </Routes>
           </Box>
         </Box>

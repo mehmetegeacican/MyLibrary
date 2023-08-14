@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import DataTable from "../../components/tables/DataTable";
 import { AccordionData } from "../../interfaces/AccordionInterfaces";
-import { BookTableHeader } from "../tables/TableDatas";
+import { AuthorTableHeader, BookTableHeader } from "../tables/TableDatas";
 import { fetchAllBooks } from "../../apis/bookApi";
 import LibraryAccordion from "../../components/accordions/LibraryAccordion";
 import { CreateBookForm } from "../forms/CreateForms";
@@ -48,5 +48,25 @@ export default function BookAccordions() {
     //Render
     return (
         <LibraryAccordion expanded={expanded} handleChange={handleChange} accordions={BookAccordionDatas} />
+    )
+}
+
+
+export const AuthorAccordionDatas:AccordionData[] = [
+    { title: "View Authors", info: "View the Authors in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} setTrigger = {() => console.log("trigger")}/>) },
+]
+
+export const AuthorAccordions = () => {
+    //Hooks
+    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const [books, setBooks] = React.useState<any>([]);
+    const [trigger,setTrigger] = React.useState<boolean>(false);
+    //Handlers
+    const handleChange =
+        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpanded(isExpanded ? panel : false);
+        };
+    return(
+        <LibraryAccordion expanded={expanded} handleChange={handleChange} accordions={AuthorAccordionDatas} />
     )
 }

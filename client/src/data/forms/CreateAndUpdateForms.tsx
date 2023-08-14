@@ -7,7 +7,7 @@ import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
 
 /**
- * Create Form for Create Book
+ * Create & Update Forms for Book
  * @returns rendered create book form component
  */
 interface FormInterface {
@@ -15,7 +15,7 @@ interface FormInterface {
     format:string;
     data?:IBook;
 }
-export function CreateBookForm({setTrigger,format, data}:FormInterface) {
+export function BookForm({setTrigger,format, data}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');

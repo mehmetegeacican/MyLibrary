@@ -5,10 +5,15 @@ interface DeleteModalImnterface {
     open:boolean;
     handleClose: () => void;
     deleteData: () => void;
+    setTrigger: Function;
 }
 
-export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImnterface) {
-
+export default function DeleteModal({open,handleClose,deleteData,setTrigger}:DeleteModalImnterface) {
+    const handleDelete = async () => {
+        await deleteData();
+        setTrigger();
+        handleClose();
+    }
     return (
         <Dialog
             open={open}
@@ -26,7 +31,7 @@ export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImn
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={deleteData}>
+                <Button onClick={handleDelete}>
                     Delete
                 </Button>
             </DialogActions>

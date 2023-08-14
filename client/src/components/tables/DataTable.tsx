@@ -14,9 +14,10 @@ import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 interface TableInterfaces {
     headers: string[];
     tableDatas: any; // A generic should be used 
+    setTrigger:Function;
 }
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces) {
+export default function DataTable({ headers, tableDatas ,setTrigger}: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
@@ -119,7 +120,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
-                                        <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)}/>
+                                        <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
                                     </TableRow>
                                     
                                 )

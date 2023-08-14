@@ -4,7 +4,7 @@ import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelect
 import StringValueField from "../../components/forms/StringValueField";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
-import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
 
 /**
  * Create Form for Create Book
@@ -25,19 +25,19 @@ export function CreateBookForm({setTrigger,format, data}:FormInterface) {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,success, message, createBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const { error,success, message, createBook,updateBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
-    //get strings of the categories
-    const getStringCategories = (categories:ICategory[]) => {
-        let categoryNames = categories.map((item:ICategory) => {
-            return item.name;
-        });
-        return categoryNames;
-    };
+
 
     const submit = async () => {
-       await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+       if(format === "update" && data){
+         await updateBook(data.id.toString(),bookName,author,getStringCategories(selectedCategories),selectedStatus)
+       }
+       else{
+        await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+       }
        setTrigger();
+       
     }
 
     useEffect(() => {
@@ -45,6 +45,7 @@ export function CreateBookForm({setTrigger,format, data}:FormInterface) {
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
+            //setSelectedCategories(data.categories);
         }
     },[data])
 
@@ -73,6 +74,7 @@ export function CreateBookForm({setTrigger,format, data}:FormInterface) {
                     </Stack>
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

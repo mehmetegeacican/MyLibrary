@@ -14,6 +14,8 @@ export const defaultBookCategories = [
     { id: 2, name: "Sociology" },
     { id: 3, name: "Anthropology" },
     { id: 4, name: "Classics" },
+    { id: 4, name: "History" },
+    { id: 4, name: "Travel" },
 ];
 
 

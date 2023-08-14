@@ -4,7 +4,7 @@ import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelect
 import StringValueField from "../../components/forms/StringValueField";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
-import { getICategories, getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 
 /**
  * Create & Update Forms for Book
@@ -21,11 +21,11 @@ export function BookForm({setTrigger,format, data}:FormInterface) {
     const [author, setAuthor] = React.useState<string>('Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
     const [selectedStatus, setSelectedStatus] = React.useState<string>("Reading");
-    //The useCreateForm hook variables
+    //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,success, message, createBook,updateBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const { error,success, message, createBook,updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
 
 

@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
 import { BookForm } from "../../data/forms/CreateAndUpdateForms";
-import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import React, { useEffect } from "react";
 import { IBook } from "../../interfaces/DataInterfaces";
 
@@ -19,7 +19,7 @@ export default function UpdateModal({ open, handleClose, dataFormat, setTrigger,
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
 
-    const { error, message, success } = useCreateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
+    const { error, message, success } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     useEffect(() => {
         handleClose();

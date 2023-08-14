@@ -20,7 +20,7 @@ export const getICategories = (categories:string[]) => {
   return ogCategories
 }
 
-export const useCreateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
+export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks
   useEffect(() => {
     if (success) {

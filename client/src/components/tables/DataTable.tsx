@@ -113,7 +113,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                         <TableCell align='center'> {item.name}</TableCell>
                                         <TableCell align='center'> {item.author}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                                        <TableCell align='center'><StatusChip statusLabel={item.status} openModal={() => setOpenSelection(true)} /> </TableCell>
+                                        <TableCell align='center'><StatusChip statusLabel={item.status}/> </TableCell>
                                         <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
                                         <TableCell align='center'>

@@ -28,7 +28,6 @@ export default function SelectionModal({ options, open, handleClose }: Selection
                         <Chip clickable onClick={() => setSelectedStatus("Reading")} label="Reading" color="warning" variant={selectedStatus === "Reading" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
                    </Stack>
-                  
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

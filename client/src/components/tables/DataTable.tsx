@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import SelectionModal from '../modals/SelectionModal';
+import UpdateModal from '../modals/UpdateModal';
 
 interface TableInterfaces {
     headers: string[];
@@ -25,6 +26,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
     //Modal openings
     const [openDelete,setOpenDelete] = React.useState<boolean>(false);
     const [openSelection,setOpenSelection] = React.useState<boolean>(false);
+    const [openUpdate,setOpenUpdate] = React.useState<boolean>(false);
 
     const {deleteBook} = useDeleteModal();
     //Handlers
@@ -115,7 +117,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                         <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
                                         <TableCell align='center'>
-                                            <IconButton aria-label="edit" color='info'>
+                                            <IconButton aria-label="edit" color='info' onClick={() => setOpenUpdate(true)}>
                                                 <EditIcon />
                                             </IconButton>
                                         </TableCell>
@@ -126,6 +128,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                         </TableCell>
                                         <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
                                         <SelectionModal options={[]} open={openSelection} handleClose={() => setOpenSelection(false)}/>
+                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} setTrigger={setTrigger}/>
                                     </TableRow>
                                     
                                 )

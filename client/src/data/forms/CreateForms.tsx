@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Divider, Chip, Button, Typography, Alert } from "@mui/material";
+import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/material";
 import React from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
@@ -12,8 +12,9 @@ import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
  */
 interface FormInterface {
     setTrigger: Function;
+    format:string;
 }
-export function CreateBookForm({setTrigger}:FormInterface) {
+export function CreateBookForm({setTrigger,format}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -63,7 +64,7 @@ export function CreateBookForm({setTrigger}:FormInterface) {
                         <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
-                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>
+                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

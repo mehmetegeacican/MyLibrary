@@ -12,3 +12,11 @@ export const BookTableHeader: string[] = [
     "Edit",
     "Delete"
 ];
+
+export const AuthorTableHeader: string[] = [
+    "Author ID",
+    "Name",
+    "Books",
+    "Edit",
+    "Delete"
+]

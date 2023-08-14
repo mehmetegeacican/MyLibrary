@@ -22,7 +22,6 @@ export default function UpdateModal({ open, handleClose, dataFormat, setTrigger,
     const { error, message, success } = useCreateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     useEffect(() => {
-        console.log("Data",data);
         handleClose();
     },[data]);
 

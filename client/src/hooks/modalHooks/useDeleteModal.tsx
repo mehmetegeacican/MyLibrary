@@ -29,5 +29,5 @@ export const useDeleteModal = () => {
         }
     }
     //Return Values
-    return {deleteBook,error,message};
+    return {deleteBook,error,message,success};
 }

@@ -106,8 +106,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                     <TableBody >
                         {tableDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
-                                return (
-                                    
+                                return ( 
                                     <TableRow key={index}>
                                         <TableCell align='center'> {item.id}</TableCell>
                                         <TableCell align='center'> {item.name}</TableCell>

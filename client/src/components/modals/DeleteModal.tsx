@@ -8,6 +8,7 @@ interface DeleteModalImnterface {
 }
 
 export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImnterface) {
+
     return (
         <Dialog
             open={open}
@@ -25,7 +26,7 @@ export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImn
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => deleteData()} autoFocus>
+                <Button onClick={deleteData}>
                     Delete
                 </Button>
             </DialogActions>

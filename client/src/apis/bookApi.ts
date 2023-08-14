@@ -32,3 +32,18 @@ export const postNewBook = async (requestBody:object) => {
         
     }
 }
+
+/**
+ * The API Function to delete books 
+ * @param id the id
+ * @returns 
+ */
+export const deleteABook = async (id:string) => {
+    try{
+        const res = await axios.delete(ADDRESS + `/api/v1/books/${id}`);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}

@@ -23,7 +23,8 @@ export default function UpdateModal({ open, handleClose, dataFormat, setTrigger,
 
     useEffect(() => {
         handleClose();
-    },[data])
+    },[data]);
+    
     return (
         <Dialog
             open={open}

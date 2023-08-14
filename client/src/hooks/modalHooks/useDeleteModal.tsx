@@ -9,7 +9,6 @@ export const useDeleteModal = () => {
     //Functions
     const deleteBook = async (id:number) => {
         let stringId = id.toString();
-        console.log("Here",stringId);
         //Step 0 -- Reset
         setError(false);
         setMessage("");

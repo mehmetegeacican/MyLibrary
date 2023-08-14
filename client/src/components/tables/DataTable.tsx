@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import dayjs from 'dayjs';
 import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
+import SelectionModal from '../modals/SelectionModal';
 
 interface TableInterfaces {
     headers: string[];
@@ -21,7 +22,10 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    //Modal openings
     const [openDelete,setOpenDelete] = React.useState<boolean>(false);
+    const [openSelection,setOpenSelection] = React.useState<boolean>(false);
+
     const {deleteBook} = useDeleteModal();
     //Handlers
     const handleChangePage = (
@@ -107,7 +111,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                         <TableCell align='center'> {item.name}</TableCell>
                                         <TableCell align='center'> {item.author}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                                        <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
+                                        <TableCell align='center'><StatusChip statusLabel={item.status} openModal={() => setOpenSelection(true)} /> </TableCell>
                                         <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
                                         <TableCell align='center'>
@@ -121,6 +125,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                             </IconButton>
                                         </TableCell>
                                         <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
+                                        <SelectionModal options={[]} open={openSelection} handleClose={() => setOpenSelection(false)}/>
                                     </TableRow>
                                     
                                 )

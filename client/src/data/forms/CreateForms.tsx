@@ -4,7 +4,7 @@ import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelect
 import StringValueField from "../../components/forms/StringValueField";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
-import { getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { getICategories, getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
 
 /**
  * Create Form for Create Book
@@ -42,10 +42,11 @@ export function CreateBookForm({setTrigger,format, data}:FormInterface) {
 
     useEffect(() => {
         if(data){
+            console.log(data);
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
-            //setSelectedCategories(data.categories);
+            setSelectedCategories(getICategories(data.category));
         }
     },[data])
 

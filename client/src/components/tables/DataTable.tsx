@@ -1,6 +1,6 @@
 import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import StatusChip from '../chip/StatusChip';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -53,6 +53,10 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
 
         return check1 && check2;
     }
+
+    useEffect(() => {
+        console.log(tableDatas);
+    },[tableDatas]);
 
     return (
         <Fragment>

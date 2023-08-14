@@ -3,6 +3,7 @@
 import { postNewBook, updateABook } from '../../apis/bookApi';
 import { useEffect } from 'react';
 import { ICategory } from '../../interfaces/DataInterfaces';
+import { defaultBookCategories } from '../../data/BookData';
 
 //get strings of the categories
 export const getStringCategories = (categories: ICategory[]) => {
@@ -11,6 +12,13 @@ export const getStringCategories = (categories: ICategory[]) => {
   });
   return categoryNames;
 };
+
+export const getICategories = (categories:string[]) => {
+  let ogCategories: ICategory[] = defaultBookCategories.filter((item) => {
+    return categories.includes(item.name);
+  });
+  return ogCategories
+}
 
 export const useCreateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks

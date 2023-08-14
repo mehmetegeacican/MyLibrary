@@ -8,6 +8,7 @@ import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import EditIcon from '@mui/icons-material/Edit';
 import dayjs from 'dayjs';
+import DeleteModal from '../modals/DeleteModal';
 
 interface TableInterfaces {
     headers: string[];
@@ -18,6 +19,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    const [openDelete,setOpenDelete] = React.useState<boolean>(false);
     //Handlers
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -96,7 +98,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                         {tableDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
-
                                     <TableRow key={index}>
                                         <TableCell align='center'> {item.id}</TableCell>
                                         <TableCell align='center'> {item.name}</TableCell>
@@ -111,7 +112,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                                             </IconButton>
                                         </TableCell>
                                         <TableCell align='center'>
-                                            <IconButton aria-label="delete" color='error'>
+                                            <IconButton aria-label="delete" color='error' onClick={() => setOpenDelete(true)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -126,6 +127,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                         })}
                     </TableBody>
                 </Table>
+                <DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={() => console.log("Not implementeed yet")}/>
             </TableContainer>
             <TableContainer component={Paper}>
                 <Table>

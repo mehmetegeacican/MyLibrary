@@ -59,7 +59,7 @@ export const AuthorAccordionDatas:AccordionData[] = [
 export const AuthorAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
-    const [books, setBooks] = React.useState<any>([]);
+    const [authors, setAuthors] = React.useState<any>([]);
     const [trigger,setTrigger] = React.useState<boolean>(false);
     //Handlers
     const handleChange =

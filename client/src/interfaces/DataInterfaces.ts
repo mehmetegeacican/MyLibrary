@@ -10,3 +10,14 @@ export interface IBook {
     category:string[];
     status:string;
 }
+
+export type ApiResult = {
+    response?: {
+      status?: number;
+      data?: {
+        errors?: Array<{ msg: string }>;
+        error?: string;
+      };
+    };
+    message?: string;
+  };

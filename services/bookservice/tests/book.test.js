@@ -36,7 +36,7 @@ describe('executeGetAllBooks', () => {
         connectDb.mockResolvedValue(mockClient);
         const result = await executeGetAllBooks();
         //Expectations
-        expect(mockClient.query).toHaveBeenCalledWith('SELECT * FROM books');
+        expect(mockClient.query).toHaveBeenCalledWith('SELECT * FROM books ORDER BY ID ASC');
         expect(result).toEqual(mockBooksData);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
         //Verify

@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
-import { CreateBookForm } from "../../data/forms/CreateForms";
-import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { BookForm } from "../../data/forms/CreateAndUpdateForms";
+import { useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import React, { useEffect } from "react";
 import { IBook } from "../../interfaces/DataInterfaces";
 
@@ -19,10 +19,9 @@ export default function UpdateModal({ open, handleClose, dataFormat, setTrigger,
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
 
-    const { error, message, success } = useCreateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
+    const { error, message, success } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     useEffect(() => {
-        console.log("Data",data);
         handleClose();
     },[data]);
 
@@ -43,7 +42,7 @@ export default function UpdateModal({ open, handleClose, dataFormat, setTrigger,
             <DialogContent sx={{ mt: 1 }} dividers>
 
                 <Stack spacing={2} sx={{ mt: 1 }}>
-                    {dataFormat === "book" && (<CreateBookForm setTrigger={setTrigger} format={"update"} data={data} />)}
+                    {dataFormat === "book" && (<BookForm setTrigger={setTrigger} format={"update"} data={data} />)}
                 </Stack>
 
                 {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}

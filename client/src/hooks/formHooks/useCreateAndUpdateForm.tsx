@@ -2,7 +2,7 @@
 
 import { postNewBook, updateABook } from '../../apis/bookApi';
 import { useEffect } from 'react';
-import { ICategory } from '../../interfaces/DataInterfaces';
+import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
 import { defaultBookCategories } from '../../data/BookData';
 
 //get strings of the categories
@@ -20,7 +20,7 @@ export const getICategories = (categories:string[]) => {
   return ogCategories
 }
 
-export const useCreateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
+export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks
   useEffect(() => {
     if (success) {
@@ -29,6 +29,32 @@ export const useCreateForm = (error: boolean, setError: Function, message: strin
       }, 3000);
     }
   }, [success]);
+
+  const processResult = (result: ApiResult) => {
+    //Step 1 -- If there is a user based error
+    if (result.message && !result.response) {
+      setSuccess(true);
+      setMessage(result.message);
+    }
+    else if (result.response!.status === 400) {
+      if (result.response!.data!.errors) {
+        let errors: string = "";
+        result.response!.data!.errors.forEach((error: any) => {
+          errors = errors + '\n' + error.msg;
+        })
+        setMessage(errors);
+      }
+      else {
+        setMessage(result!.response!.data!.error);
+      }
+      setError(true);
+    }
+    else if (result!.response!.status === 500) {
+      setError(true);
+      setMessage(result!.response!.data!.error);
+    }
+  }
+
   /**
    * Functions that are used for Data Addition
    */
@@ -45,28 +71,7 @@ export const useCreateForm = (error: boolean, setError: Function, message: strin
       bookStatus: selectedStatus
     }
     const result = await postNewBook(requestBody);
-    //Step 1 -- If there is a user based error
-    if (result.message && !result.response) {
-      setSuccess(true);
-      setMessage(result.message);
-    }
-    else if (result.response.status === 400) {
-      if (result.response.data.errors) {
-        let errors: string = "";
-        result.response.data.errors.forEach((error: any) => {
-          errors = errors + '\n' + error.msg;
-        })
-        setMessage(errors);
-      }
-      else {
-        setMessage(result.response.data.error);
-      }
-      setError(true);
-    }
-    else if (result.response.status === 500) {
-      setError(true);
-      setMessage(result.response.data.error);
-    }
+    processResult(result);
   };
 
   const updateBook = async (id: string, bookName: string, author: string, selectedCategories: string[], selectedStatus: string) => {
@@ -83,27 +88,7 @@ export const useCreateForm = (error: boolean, setError: Function, message: strin
     }
     const result = await updateABook(id, requestBody);
     //Step 1 -- If there is a user based error
-    if (result.message && !result.response) {
-      setSuccess(true);
-      setMessage(result.message);
-    }
-    else if (result.response.status === 400) {
-      if (result.response.data.errors) {
-        let errors: string = "";
-        result.response.data.errors.forEach((error: any) => {
-          errors = errors + '\n' + error.msg;
-        })
-        setMessage(errors);
-      }
-      else {
-        setMessage(result.response.data.error);
-      }
-      setError(true);
-    }
-    else if (result.response.status === 500) {
-      setError(true);
-      setMessage(result.response.data.error);
-    }
+    processResult(result);
   };
 
   return { error, success, message, createBook, updateBook };

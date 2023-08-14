@@ -1,28 +1,16 @@
 import React, {createContext,useReducer,ReactNode } from "react";
 import { IBook } from "../interfaces/DataInterfaces";
+import { GetBooksAction, GetAuthorsAction, LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDataContextProviderProps } from "../interfaces/ReducerInterfaces";
 
-interface LibraryDataState {
-    books:IBook[] | null;
-    //Add possible others too
-    //authors: IAuthor[] | null;
-}
 
-interface GetBooksAction {
-    type: 'GET_BOOKS';
-    payload: IBook[];
-}
 
-type LibraryDataAction = GetBooksAction;
 
-// Define your context type
-interface LibraryDataContextType extends LibraryDataState {
-    dispatch: React.Dispatch<LibraryDataAction>;
-}
 
-//Context Provider Interface
-interface LibraryDataContextProviderProps {
-    children: ReactNode;
-}
+
+
+
+
+
 
 
 export const LibraryDataContext = createContext<LibraryDataContextType | undefined>(undefined);

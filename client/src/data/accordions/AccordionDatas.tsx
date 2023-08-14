@@ -10,8 +10,8 @@ import { CreateBookForm } from "../forms/CreateForms";
  * Accordion Datas for Book Page
  */
 export const BookAccordionDatas: AccordionData[] = [
-    { title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={[]} />) },
-    { title: "Add Book", info: "Add a new Book", data: (<CreateBookForm setTrigger = {() => console.log("Trigger")} />) }
+    { title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={[]} setTrigger = {() => console.log("trigger")}/>) },
+    { title: "Add Book", info: "Add a new Book", data: (<CreateBookForm format={"create"} setTrigger = {() => console.log("Trigger")} />) }
 ]
 
 /**
@@ -41,8 +41,8 @@ export default function BookAccordions() {
         fetchData();
     }, [fetchData]);
 
-    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
-    BookAccordionDatas[1].data = (<CreateBookForm setTrigger={() => setTrigger(!trigger)}/>)
+    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} setTrigger={() => setTrigger(!trigger)}/>);
+    BookAccordionDatas[1].data = (<CreateBookForm format={"create"} setTrigger={() => setTrigger(!trigger)}/>)
 
 
     //Render

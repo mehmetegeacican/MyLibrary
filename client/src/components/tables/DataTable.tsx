@@ -1,6 +1,6 @@
 import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 
-import React from 'react';
+import React, { Fragment, useEffect } from 'react';
 import StatusChip from '../chip/StatusChip';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,16 +8,27 @@ import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import EditIcon from '@mui/icons-material/Edit';
 import dayjs from 'dayjs';
+import DeleteModal from '../modals/DeleteModal';
+import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
+import SelectionModal from '../modals/SelectionModal';
+import UpdateModal from '../modals/UpdateModal';
 
 interface TableInterfaces {
     headers: string[];
     tableDatas: any; // A generic should be used 
+    setTrigger:Function;
 }
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces) {
+export default function DataTable({ headers, tableDatas ,setTrigger}: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    //Modal openings
+    const [openDelete,setOpenDelete] = React.useState<boolean>(false);
+    const [openSelection,setOpenSelection] = React.useState<boolean>(false);
+    const [openUpdate,setOpenUpdate] = React.useState<boolean>(false);
+
+    const {deleteBook} = useDeleteModal();
     //Handlers
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -43,8 +54,12 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
         return check1 && check2;
     }
 
+    useEffect(() => {
+        console.log(tableDatas);
+    },[tableDatas]);
+
     return (
-        <>
+        <Fragment>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -95,27 +110,30 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     <TableBody >
                         {tableDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
-                                return (
-
+                                return ( 
                                     <TableRow key={index}>
                                         <TableCell align='center'> {item.id}</TableCell>
                                         <TableCell align='center'> {item.name}</TableCell>
                                         <TableCell align='center'> {item.author}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                                        <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
+                                        <TableCell align='center'><StatusChip statusLabel={item.status}/> </TableCell>
                                         <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
                                         <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
                                         <TableCell align='center'>
-                                            <IconButton aria-label="edit" color='info'>
+                                            <IconButton aria-label="edit" color='info' onClick={() => setOpenUpdate(true)}>
                                                 <EditIcon />
                                             </IconButton>
                                         </TableCell>
                                         <TableCell align='center'>
-                                            <IconButton aria-label="delete" color='error'>
+                                            <IconButton aria-label="delete" color='error' onClick={() => setOpenDelete(true)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
+                                        <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
+                                        <SelectionModal options={[]} open={openSelection} handleClose={() => setOpenSelection(false)}/>
+                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} setTrigger={setTrigger} data = {item}/>
                                     </TableRow>
+                                    
                                 )
                             }
                             else {
@@ -126,6 +144,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                         })}
                     </TableBody>
                 </Table>
+                
             </TableContainer>
             <TableContainer component={Paper}>
                 <Table>
@@ -144,6 +163,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-        </>
+        </Fragment>
     )
 }

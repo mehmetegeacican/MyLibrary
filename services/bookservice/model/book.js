@@ -11,7 +11,7 @@ const executeGetAllBooks = async () => {
     let data;
     try {
         //Step 2 -- Get the Result
-        const result = await client.query('SELECT * FROM books');
+        const result = await client.query('SELECT * FROM books ORDER BY ID ASC');
         data = result.rows;
         return data;
     }

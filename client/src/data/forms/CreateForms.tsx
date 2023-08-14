@@ -1,10 +1,10 @@
-import { Box, Container, Stack, Divider, Chip, Button, Typography, Alert } from "@mui/material";
-import React from "react";
+import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/material";
+import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
-import { ICategory } from "../../interfaces/DataInterfaces";
+import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
-import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
+import { getICategories, getStringCategories, useCreateForm } from "../../hooks/formHooks/useCreateForm";
 
 /**
  * Create Form for Create Book
@@ -12,8 +12,10 @@ import { useCreateForm } from "../../hooks/formHooks/useCreateForm";
  */
 interface FormInterface {
     setTrigger: Function;
+    format:string;
+    data?:IBook;
 }
-export function CreateBookForm({setTrigger}:FormInterface) {
+export function CreateBookForm({setTrigger,format, data}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -23,24 +25,33 @@ export function CreateBookForm({setTrigger}:FormInterface) {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,success, message, createBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const { error,success, message, createBook,updateBook } = useCreateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
-    //get strings of the categories
-    const getStringCategories = (categories:ICategory[]) => {
-        let categoryNames = categories.map((item:ICategory) => {
-            return item.name;
-        });
-        return categoryNames;
-    };
+
 
     const submit = async () => {
-       await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+       if(format === "update" && data){
+         await updateBook(data.id.toString(),bookName,author,getStringCategories(selectedCategories),selectedStatus)
+       }
+       else{
+        await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+       }
        setTrigger();
+       
     }
+
+    useEffect(() => {
+        if(data){
+            console.log(data);
+            setBookName(data.name);
+            setAuthor(data.author);
+            setSelectedStatus(data.status);
+            setSelectedCategories(getICategories(data.category));
+        }
+    },[data])
 
     return (
         <Box
-            component="form"
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
@@ -60,10 +71,11 @@ export function CreateBookForm({setTrigger}:FormInterface) {
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
                         <Chip clickable onClick={() => setSelectedStatus("Red")} label="Red" color="error" variant={selectedStatus === "Red" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Reading")} label="Reading" color="warning" variant={selectedStatus === "Reading" ? "filled" : "outlined"} />
-                        <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Reading" ? "filled" : "outlined"} />
+                        <Chip clickable onClick={() => setSelectedStatus("Will Reading")} label="Will Read" color="success" variant={selectedStatus === "Will Read" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
-                    <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>
+                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

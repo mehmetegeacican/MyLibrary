@@ -5,7 +5,7 @@ import TabContent from '../components/tabbar/TabContent';
 import { BookTabContents, BookTabs } from '../data/tabs/TabDatas';
 
 
-export default function Statistics() {
+export default function BookPage() {
     //State
     const [tabValue, setTabValue] = React.useState<number>(0);
 

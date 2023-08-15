@@ -20,11 +20,6 @@ export default function UpdateModal({ open, handleClose, dataFormat, data }: Upd
 
     const { error, message, success } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
-    useEffect(() => {
-        handleClose();
-    },[data]);
-
-    
     return (
         <Dialog
             open={open}
@@ -41,7 +36,7 @@ export default function UpdateModal({ open, handleClose, dataFormat, data }: Upd
             <DialogContent sx={{ mt: 1 }} dividers>
 
                 <Stack spacing={2} sx={{ mt: 1 }}>
-                    {dataFormat === "book" && (<BookForm format={"update"} data={data} />)}
+                    {dataFormat === "book" && (<BookForm format={"update"} data={data} handleClose={handleClose}/>)}
                 </Stack>
 
                 {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}

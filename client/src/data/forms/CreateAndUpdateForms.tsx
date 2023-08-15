@@ -13,8 +13,9 @@ import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../
 interface FormInterface {
     format:string;
     data?:IBook;
+    handleClose?: () => void;
 }
-export function BookForm({format, data}:FormInterface) {
+export function BookForm({format, data, handleClose}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -30,7 +31,8 @@ export function BookForm({format, data}:FormInterface) {
 
     const submit = async () => {
        if(format === "update" && data){
-         await updateBook(data.id.toString(),bookName,author,getStringCategories(selectedCategories),selectedStatus)
+         await updateBook(data.id.toString(),bookName,author,getStringCategories(selectedCategories),selectedStatus);
+         handleClose!();
        }
        else{
         await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);

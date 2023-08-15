@@ -42,7 +42,6 @@ export function BookForm({setTrigger,format, data}:FormInterface) {
 
     useEffect(() => {
         if(data){
-            console.log(data);
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);

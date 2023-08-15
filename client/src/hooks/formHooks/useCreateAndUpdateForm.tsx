@@ -4,6 +4,8 @@ import { postNewBook, updateABook } from '../../apis/bookApi';
 import { useEffect } from 'react';
 import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
 import { defaultBookCategories } from '../../data/BookData';
+import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
+
 
 //get strings of the categories
 export const getStringCategories = (categories: ICategory[]) => {
@@ -21,7 +23,10 @@ export const getICategories = (categories:string[]) => {
 }
 
 export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
-  //Hooks
+  //Hooks & Contexts
+
+  const {bookTrigger,dispatch} = useLibraryDataContext();
+
   useEffect(() => {
     if (success) {
       setTimeout(() => {
@@ -35,6 +40,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     if (result.message && !result.response) {
       setSuccess(true);
       setMessage(result.message);
+      return true;
     }
     else if (result.response!.status === 400) {
       if (result.response!.data!.errors) {
@@ -48,10 +54,12 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
         setMessage(result!.response!.data!.error);
       }
       setError(true);
+      return false;
     }
     else if (result!.response!.status === 500) {
       setError(true);
       setMessage(result!.response!.data!.error);
+      return false;
     }
   }
 
@@ -71,7 +79,10 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookStatus: selectedStatus
     }
     const result = await postNewBook(requestBody);
-    processResult(result);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+    }
   };
 
   const updateBook = async (id: string, bookName: string, author: string, selectedCategories: string[], selectedStatus: string) => {
@@ -88,7 +99,10 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
     const result = await updateABook(id, requestBody);
     //Step 1 -- If there is a user based error
-    processResult(result);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+    }
   };
 
   return { error, success, message, createBook, updateBook };

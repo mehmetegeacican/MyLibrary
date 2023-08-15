@@ -25,6 +25,8 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
       case 'GET_BOOKS':
         return { ...state, books: action.payload };
       // Add other cases for other actions here
+      case 'TRIGGER_BOOKS':
+        return {...state, bookTrigger: action.payload}; 
       default:
         return state;
     }

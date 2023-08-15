@@ -53,11 +53,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
 
         return check1 && check2;
     }
-
-    useEffect(() => {
-        console.log(tableDatas);
-    },[tableDatas]);
-
+    
     return (
         <Fragment>
             <TableContainer component={Paper}>

@@ -4,7 +4,7 @@ import { IBook } from "./DataInterfaces";
  * State Interfaces regarding the LibraryDataContext
  */
 export interface LibraryDataState {
-    books:IBook[] | null;
+    books:IBook[];
     bookTrigger:boolean;
     //Add possible others too
     //authors: IAuthor[] | null;

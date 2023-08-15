@@ -7,6 +7,7 @@ export interface IBook {
     id:number;
     name:string;
     author:string;
+    entered?: string;
     category:string[];
     status:string;
 }

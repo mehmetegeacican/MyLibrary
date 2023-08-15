@@ -22,8 +22,7 @@ export const BookAccordionDatas: AccordionData[] = [
 export default function BookAccordions() {
     //Hooks & Contexts 
     const [expanded, setExpanded] = React.useState<string | false>(false);
-    const [books, setBooks] = React.useState<any>([]);
-    const { bookTrigger } = useLibraryDataContext();
+    const { bookTrigger, books,dispatch } = useLibraryDataContext();
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -33,7 +32,7 @@ export default function BookAccordions() {
     //UseCallBack 
     const fetchData = useCallback(async () => {
         const res = await fetchAllBooks();
-        setBooks(res);
+        dispatch({type:'GET_BOOKS',payload:res});
     }, [bookTrigger]);
 
     //UseEffect

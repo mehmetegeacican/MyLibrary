@@ -12,10 +12,11 @@ import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import SelectionModal from '../modals/SelectionModal';
 import UpdateModal from '../modals/UpdateModal';
+import { IBook } from '../../interfaces/DataInterfaces';
 
 interface TableInterfaces {
     headers: string[];
-    tableDatas: any; // A generic should be used 
+    tableDatas: IBook[]; // A generic should be used 
 }
 
 export default function DataTable({ headers, tableDatas }: TableInterfaces) {

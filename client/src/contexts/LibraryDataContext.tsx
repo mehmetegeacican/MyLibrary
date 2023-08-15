@@ -34,7 +34,7 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
 
 export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(libraryDataReducer, {
-      books: null,
+      books: [],
       bookTrigger:false
       // Initialize other state properties here
     });

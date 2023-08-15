@@ -22,6 +22,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
+    
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
@@ -114,8 +115,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     </TableHead>
                 </Table>
             </TableContainer>
-            <TableContainer component={Paper} sx={{ height: 200, overflowY: 'auto' }}>
-                <Table stickyHeader>
+            <TableContainer component={Paper} sx={{minHeight:100, maxHeight:450, overflowY: 'auto' }}>
+                <Table stickyHeader >
                     <TableHead>
                         <TableRow>
                             {headers.map((header: string) => {
@@ -129,7 +130,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                         {tableDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
-                                    <TableRow key={index}>
+                                    <TableRow key={index} hover >
                                         <TableCell align='center'> {item.id}</TableCell>
                                         <TableCell align='center'> {item.name}</TableCell>
                                         <TableCell align='center'> {item.author}</TableCell>
@@ -171,7 +172,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                         <TableRow>
                             <TablePagination
                                 align='center'
-                                rowsPerPageOptions={[1, 2, 3, 6]}
+                                rowsPerPageOptions={[1, 5, 10]}
                                 colSpan={1}
                                 count={tableDatas.length}
                                 rowsPerPage={rowsPerPage}

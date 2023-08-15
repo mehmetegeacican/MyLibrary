@@ -1,4 +1,4 @@
-import { Button, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
+import { Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 
 import React, { Fragment, useEffect } from 'react';
 import StatusChip from '../chip/StatusChip';
@@ -16,10 +16,9 @@ import UpdateModal from '../modals/UpdateModal';
 interface TableInterfaces {
     headers: string[];
     tableDatas: any; // A generic should be used 
-    setTrigger:Function;
 }
 
-export default function DataTable({ headers, tableDatas ,setTrigger}: TableInterfaces) {
+export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
@@ -53,7 +52,7 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
 
         return check1 && check2;
     }
-    
+
     return (
         <Fragment>
             <TableContainer component={Paper}>
@@ -125,9 +124,9 @@ export default function DataTable({ headers, tableDatas ,setTrigger}: TableInter
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
-                                        <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)} setTrigger= {setTrigger}/>
+                                        <DeleteModal key={index} open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(item.id)}/>
                                         <SelectionModal options={[]} open={openSelection} handleClose={() => setOpenSelection(false)}/>
-                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} setTrigger={setTrigger} data = {item}/>
+                                        <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} data = {item}/>
                                     </TableRow>
                                     
                                 )

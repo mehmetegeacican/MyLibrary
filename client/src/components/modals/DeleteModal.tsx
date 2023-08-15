@@ -5,13 +5,11 @@ interface DeleteModalImnterface {
     open:boolean;
     handleClose: () => void;
     deleteData: () => void;
-    setTrigger: Function;
 }
 
-export default function DeleteModal({open,handleClose,deleteData,setTrigger}:DeleteModalImnterface) {
+export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImnterface) {
     const handleDelete = async () => {
         await deleteData();
-        setTrigger();
         handleClose();
     }
     return (

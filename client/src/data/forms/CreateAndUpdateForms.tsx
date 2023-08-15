@@ -11,11 +11,10 @@ import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../
  * @returns rendered create book form component
  */
 interface FormInterface {
-    setTrigger: Function;
     format:string;
     data?:IBook;
 }
-export function BookForm({setTrigger,format, data}:FormInterface) {
+export function BookForm({format, data}:FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -36,8 +35,6 @@ export function BookForm({setTrigger,format, data}:FormInterface) {
        else{
         await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
        }
-       setTrigger();
-       
     }
 
     useEffect(() => {

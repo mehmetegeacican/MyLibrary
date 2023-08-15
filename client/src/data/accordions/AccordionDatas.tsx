@@ -11,8 +11,8 @@ import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataCo
  * Accordion Datas for Book Page
  */
 export const BookAccordionDatas: AccordionData[] = [
-    { title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={[]} setTrigger={() => console.log("trigger")} />) },
-    { title: "Add Book", info: "Add a new Book", data: (<BookForm format={"create"} setTrigger={() => console.log("Trigger")} />) }
+    { title: "View Books", info: "View the Books in Table Format", data: (<DataTable headers={BookTableHeader} tableDatas={[]} />) },
+    { title: "Add Book", info: "Add a new Book", data: (<BookForm format={"create"}  />) }
 ]
 
 /**
@@ -23,7 +23,6 @@ export default function BookAccordions() {
     //Hooks & Contexts 
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [books, setBooks] = React.useState<any>([]);
-    const [trigger, setTrigger] = React.useState<boolean>(false);
     const { bookTrigger } = useLibraryDataContext();
 
     const handleChange =
@@ -42,8 +41,8 @@ export default function BookAccordions() {
         fetchData();
     }, [fetchData]);
 
-    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} setTrigger={() => setTrigger(!trigger)} />);
-    BookAccordionDatas[1].data = (<BookForm format={"create"} setTrigger={() => setTrigger(!trigger)} />)
+    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
+    BookAccordionDatas[1].data = (<BookForm format={"create"} />)
 
 
     //Render
@@ -54,14 +53,13 @@ export default function BookAccordions() {
 
 
 export const AuthorAccordionDatas: AccordionData[] = [
-    { title: "View Authors", info: "View the Authors in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} setTrigger={() => console.log("trigger")} />) },
+    { title: "View Authors", info: "View the Authors in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
 ]
 
 export const AuthorAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [authors, setAuthors] = React.useState<any>([]);
-    const [trigger, setTrigger] = React.useState<boolean>(false);
     //Handlers
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

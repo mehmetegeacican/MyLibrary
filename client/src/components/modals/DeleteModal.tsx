@@ -1,4 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 
 
 interface DeleteModalImnterface {
@@ -8,8 +9,13 @@ interface DeleteModalImnterface {
 }
 
 export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImnterface) {
+
+    //Hooks & contexts 
+    const {bookTrigger,dispatch} = useLibraryDataContext();
+
     const handleDelete = async () => {
         await deleteData();
+        dispatch({type:'TRIGGER_BOOKS',payload:!bookTrigger}); // This should be conditional
         handleClose();
     }
     return (

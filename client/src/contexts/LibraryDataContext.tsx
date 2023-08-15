@@ -1,5 +1,6 @@
-import React, {createContext,useReducer,ReactNode } from "react";
+import React, {createContext,useReducer,ReactNode, useEffect, useCallback } from "react";
 import { LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDataContextProviderProps } from "../interfaces/ReducerInterfaces";
+import { fetchAllBooks } from "../apis/bookApi";
 
 
 
@@ -38,6 +39,15 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
       bookTrigger:false
       // Initialize other state properties here
     });
+
+    const fetchInit = useCallback(async () => {
+      const res = await fetchAllBooks();
+      dispatch({type:"GET_BOOKS",payload:res})
+    },[]);
+
+    useEffect(() => {
+      fetchInit();
+    },[]);
   
     return (
       <LibraryDataContext.Provider value={{ ...state, dispatch }}>

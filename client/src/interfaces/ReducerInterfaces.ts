@@ -16,12 +16,16 @@ export interface GetBooksAction {
     type: 'GET_BOOKS';
     payload: IBook[];
 }
+export interface TriggerBookInterface {
+    type:'TRIGGER_BOOKS';
+    payload:boolean;
+}
 export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
     payload: IBook[];
 }
 // Common Type for all the actions 
-export type LibraryDataAction = (GetBooksAction | GetAuthorsAction) ;
+export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction ) ;
 /**
  * Dispatch Interface required for dispatch function
  */

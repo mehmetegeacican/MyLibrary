@@ -5,6 +5,7 @@ import { IBook } from "./DataInterfaces";
  */
 export interface LibraryDataState {
     books:IBook[] | null;
+    bookTrigger:boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }

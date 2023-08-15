@@ -1,6 +1,5 @@
 import React, {createContext,useReducer,ReactNode } from "react";
-import { IBook } from "../interfaces/DataInterfaces";
-import { GetBooksAction, GetAuthorsAction, LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDataContextProviderProps } from "../interfaces/ReducerInterfaces";
+import { LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDataContextProviderProps } from "../interfaces/ReducerInterfaces";
 
 
 
@@ -34,6 +33,7 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
 export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(libraryDataReducer, {
       books: null,
+      bookTrigger:false
       // Initialize other state properties here
     });
   

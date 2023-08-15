@@ -46,10 +46,12 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     };
 
     const handleOpenUpdate = (item: any) => {
+        setOpenUpdate(true);
         setSelectedItem(item);
     };
 
     const handleOpenDelete = (id: number) => {
+        setOpenDelete(true);
         setSelectedId(id);
     }
 

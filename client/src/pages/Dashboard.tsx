@@ -1,6 +1,9 @@
-import { Container, Grid, Paper } from '@mui/material'
+import { Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
+import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
 
 export default function Dashboard() {
+    //Hooks & Context
+    const {books} = useLibraryDataContext();
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -27,6 +30,11 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
+                        <Stack spacing={2} divider={<Divider/>}  >
+                            <Typography variant='h6'  color={'primary'}> {books.length} Books </Typography>
+                            <Typography variant='h6' color={'secondary'}>  Authors </Typography>
+                            <Typography variant='h6'  color={'primary'}> Categories</Typography>
+                        </Stack>
                     </Paper>
                 </Grid>
                 {/* Recent Orders */}

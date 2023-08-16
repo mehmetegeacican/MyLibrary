@@ -33,7 +33,7 @@ export const defaultBookCategories = [
     { id: 21, name: "Anatolia" },
     { id: 22, name: "Poetry" },
     { id: 23, name: "Stoicism" },
-    
+    { id: 24, name: "Dystopia" },
 ];
 
 

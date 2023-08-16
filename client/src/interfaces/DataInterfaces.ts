@@ -21,4 +21,4 @@ export type ApiResult = {
       };
     };
     message?: string;
-  };
+};

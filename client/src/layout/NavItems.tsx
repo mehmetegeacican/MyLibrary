@@ -40,18 +40,24 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
 
+    <Link to="/categories">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Categories" />
+      </ListItemButton>
+    </Link>
+
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Statistics" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BookIcon />
-      </ListItemIcon>
-      <ListItemText primary="Categories" />
-    </ListItemButton>
+    
+    
+
   </React.Fragment>
 );
 

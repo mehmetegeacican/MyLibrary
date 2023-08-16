@@ -7,6 +7,7 @@ import Navbar from "./layout/Navbar";
 import SideNav from "./layout/SideNav";
 import Dashboard from "./pages/Dashboard";
 import AuthorsPage from "./pages/Authors";
+import CategoriesPage from "./pages/Categories";
 
 
 
@@ -40,6 +41,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/books" element={<BookPage/>} />
               <Route path="/authors" element={<AuthorsPage/>} />
+              <Route path="/categories" element={<CategoriesPage/>} />
             </Routes>
           </Box>
         </Box>

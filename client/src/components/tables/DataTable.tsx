@@ -10,10 +10,12 @@ import { IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIBook, renderBookRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+
 interface TableInterfaces<T> {
     headers: string[];
     tableDatas: T; // A generic should be used 
 }
+
 
 export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]|ICategory[]>) {
     //Hooks
@@ -70,6 +72,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id))}
                 </Fragment>
             );
+
         }
     }
 

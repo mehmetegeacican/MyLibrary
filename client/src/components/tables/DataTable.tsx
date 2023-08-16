@@ -12,17 +12,18 @@ import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import UpdateModal from '../modals/UpdateModal';
 import { IBook } from '../../interfaces/DataInterfaces';
+import { isIBook } from '../../functions/tableDataTypeChekers';
 
-interface TableInterfaces {
+interface TableInterfaces<T> {
     headers: string[];
-    tableDatas: IBook[]; // A generic should be used 
+    tableDatas: T; // A generic should be used 
 }
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces) {
+export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]>) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
-    
+
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
@@ -65,6 +66,35 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
         return check1 && check2;
     }
 
+    //Render Method to return different table rosw
+    function renderTableCell<T>(value: T) {
+        if (value && isIBook(value)) {
+            return (
+                <>
+                    <TableCell align='center'> {value.id}</TableCell>
+                    <TableCell align='center'> {value.name}</TableCell>
+                    <TableCell align='center'> {value.author}</TableCell>
+                    <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
+                    <TableCell align='center'><StatusChip statusLabel={value.status} /> </TableCell>
+                    <TableCell align='center'> {dayjs(value.entered).format('DD-MM-YYYY')}</TableCell>
+                    <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
+                    <TableCell align='center'>
+                        <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(value)}>
+                            <EditIcon />
+                        </IconButton>
+
+                    </TableCell>
+                    <TableCell align='center'>
+                        <IconButton aria-label="delete" color='error' onClick={() => handleOpenDelete(value.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+
+                    </TableCell>
+                </>
+            )
+        }
+    }
+
     useEffect(() => {
         if (selectedItem) {
             setOpenUpdate(true);
@@ -72,10 +102,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
     }, [selectedItem]);
 
     useEffect(() => {
-        if(selectedId && selectedId !== 0){
+        if (selectedId && selectedId !== 0) {
             setOpenDelete(true);
         }
-    },[selectedId])
+    }, [selectedId])
 
     return (
         <Fragment>
@@ -115,7 +145,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     </TableHead>
                 </Table>
             </TableContainer>
-            <TableContainer component={Paper} sx={{minHeight:100, maxHeight:450, overflowY: 'auto' }}>
+            <TableContainer component={Paper} sx={{ minHeight: 100, maxHeight: 450, overflowY: 'auto' }}>
                 <Table stickyHeader >
                     <TableHead>
                         <TableRow>
@@ -131,28 +161,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
                                     <TableRow key={index} hover >
-                                        <TableCell align='center'> {item.id}</TableCell>
-                                        <TableCell align='center'> {item.name}</TableCell>
-                                        <TableCell align='center'> {item.author}</TableCell>
-                                        <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                                        <TableCell align='center'><StatusChip statusLabel={item.status} /> </TableCell>
-                                        <TableCell align='center'> {dayjs(item.entered).format('DD-MM-YYYY')}</TableCell>
-                                        <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
-                                        <TableCell align='center'>
-                                            <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(item)}>
-                                                <EditIcon />
-                                            </IconButton>
-
-                                        </TableCell>
-                                        <TableCell align='center'>
-                                            <IconButton aria-label="delete" color='error' onClick={() => handleOpenDelete(item.id)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-
-                                        </TableCell>
-
+                                        {renderTableCell(item)}
                                     </TableRow>
-
                                 )
                             }
                             else {
@@ -183,9 +193,9 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} data = {selectedItem}/>}
-            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(selectedId)}/>}
-           
+            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} data={selectedItem} />}
+            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(selectedId)} />}
+
         </Fragment>
     )
 }

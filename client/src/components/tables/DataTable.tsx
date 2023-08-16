@@ -1,25 +1,23 @@
-import { Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
-
+import {  IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 import React, { Fragment, useEffect } from 'react';
-import StatusChip from '../chip/StatusChip';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
-import EditIcon from '@mui/icons-material/Edit';
-import dayjs from 'dayjs';
 import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import UpdateModal from '../modals/UpdateModal';
-import { IBook } from '../../interfaces/DataInterfaces';
-import { isIBook } from '../../functions/tableDataTypeChekers';
+import { IBook, ICategory } from '../../interfaces/DataInterfaces';
+import { isIBook, renderBookRow } from './DataRow';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 interface TableInterfaces<T> {
     headers: string[];
     tableDatas: T; // A generic should be used 
 }
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]>) {
+
+export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]|ICategory[]>) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
@@ -70,28 +68,11 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     function renderTableCell<T>(value: T) {
         if (value && isIBook(value)) {
             return (
-                <>
-                    <TableCell align='center'> {value.id}</TableCell>
-                    <TableCell align='center'> {value.name}</TableCell>
-                    <TableCell align='center'> {value.author}</TableCell>
-                    <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
-                    <TableCell align='center'><StatusChip statusLabel={value.status} /> </TableCell>
-                    <TableCell align='center'> {dayjs(value.entered).format('DD-MM-YYYY')}</TableCell>
-                    <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
-                    <TableCell align='center'>
-                        <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(value)}>
-                            <EditIcon />
-                        </IconButton>
+                <Fragment>
+                {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id))}
+                </Fragment>
+            );
 
-                    </TableCell>
-                    <TableCell align='center'>
-                        <IconButton aria-label="delete" color='error' onClick={() => handleOpenDelete(value.id)}>
-                            <DeleteIcon />
-                        </IconButton>
-
-                    </TableCell>
-                </>
-            )
         }
     }
 

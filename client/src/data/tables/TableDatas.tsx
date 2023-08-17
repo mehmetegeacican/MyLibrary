@@ -13,6 +13,15 @@ export const BookTableHeader: string[] = [
     "Delete"
 ];
 
+
+export const CategoryTableHeader : string[] = [
+    "Category ID",
+    "Category Name",
+    "Books in Category",
+    "Edit",
+    "Delete"
+]
+
 export const AuthorTableHeader: string[] = [
     "Author ID",
     "Name",
@@ -20,3 +29,4 @@ export const AuthorTableHeader: string[] = [
     "Edit",
     "Delete"
 ]
+

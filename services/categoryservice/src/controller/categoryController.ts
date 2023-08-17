@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNewCategory, getAll } from '../models/categoryModel';
+import { addNewCategory, checkCategoryAlreadyExists, getAll } from '../models/categoryModel';
 import { validationResult } from 'express-validator';
 
 /**
@@ -31,6 +31,11 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 2 --Check if a category like that already exists
+        const check = await checkCategoryAlreadyExists(name,info);
+        if(check){
+            return res.status(400).json({ error : "Category Already Exists!" });
         }
         //Step 2 -- If Checks are applied, create a new category
         const result = await addNewCategory(name,info);

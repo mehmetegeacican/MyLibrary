@@ -44,3 +44,21 @@ export const addNewCategory = async (name: string, info: string) => {
     }
 
 }
+
+export const checkCategoryAlreadyExists = async (name:string,info:string) => {
+    try {
+        const res = await prisma.category.findFirst({
+            where: {
+                name: name
+            },
+        });
+        return res;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}

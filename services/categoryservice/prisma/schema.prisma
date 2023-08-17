@@ -17,7 +17,7 @@ enum BookStatus {
   NotPlanningToRead
 }
 
-model Book {
+model books {
   id Int @id @default(autoincrement())
   name String
   author String

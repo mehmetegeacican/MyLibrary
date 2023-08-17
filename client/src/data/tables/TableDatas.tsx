@@ -17,7 +17,7 @@ export const BookTableHeader: string[] = [
 export const CategoryTableHeader : string[] = [
     "Category ID",
     "Category Name",
-    "Books in Category",
+    "Category Info",
     "Edit",
     "Delete"
 ]

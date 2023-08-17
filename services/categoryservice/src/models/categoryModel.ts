@@ -44,7 +44,12 @@ export const addNewCategory = async (name: string, info: string) => {
     }
 
 }
-
+/**
+ * Prisma Function to Check whether the category exists
+ * @param name 
+ * @param info 
+ * @returns 
+ */
 export const checkCategoryAlreadyExists = async (name:string,info:string) => {
     try {
         const res = await prisma.category.findFirst({

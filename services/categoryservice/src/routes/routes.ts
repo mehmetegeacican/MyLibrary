@@ -1,10 +1,11 @@
 import express from 'express';
+import {
+    getAllCategories
+} from '../controller/categoryController';
 
 const router:express.Router = express.Router();
 
-router.get('/',(req:express.Request,res:express.Response) => {
-    res.json({msg:"General Kenobi"});
-})
+router.get('/all',getAllCategories);
 
 
 export default router;

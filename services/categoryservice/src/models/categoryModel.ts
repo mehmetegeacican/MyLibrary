@@ -50,7 +50,7 @@ export const addNewCategory = async (name: string, info: string) => {
  * @param info 
  * @returns 
  */
-export const checkCategoryAlreadyExists = async (name:string,info:string) => {
+export const checkCategoryAlreadyExists = async (name:string) => {
     try {
         const res = await prisma.category.findFirst({
             where: {
@@ -67,3 +67,50 @@ export const checkCategoryAlreadyExists = async (name:string,info:string) => {
         await prisma.$disconnect();
     }
 }
+
+/**
+ * Prisma Function to Check whether the category exists
+ * @param name 
+ * @param info 
+ * @returns 
+ */
+export const checkCategoryAlreadyExistsByID = async (id:number) => {
+    try {
+        const res = await prisma.category.findFirst({
+            where: {
+                id: id
+            },
+        });
+        return res;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
+/**
+ * Prisma Function for deleting category 
+ * @param id the specific id
+ * @returns 
+ */
+export const deleteCategory = async (id: number) => {
+    try {
+        const res = await prisma.category.delete({
+            where: {
+                id: id
+            },
+        });
+        return res;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+};

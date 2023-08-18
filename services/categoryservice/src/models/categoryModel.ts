@@ -117,8 +117,8 @@ export const deleteCategory = async (id: number) => {
 
 /**
  * Prisma Function to Update category
- * @param id 
- * @param requestBody 
+ * @param id The ID parameter
+ * @param requestBody The Body Parameters
  */
 export const updateCategory =async (id:number,requestBody:{name:string,info:string}) => {
     try{

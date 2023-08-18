@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNewCategory, checkCategoryAlreadyExists, checkCategoryAlreadyExistsByID, deleteCategory, getAll } from '../models/categoryModel';
+import { addNewCategory, checkCategoryAlreadyExists, checkCategoryAlreadyExistsByID, deleteCategory, getAll, updateCategory } from '../models/categoryModel';
 import { validationResult } from 'express-validator';
 
 /**
@@ -74,4 +74,35 @@ export const deleteExistingCategory =async (req:express.Request,res:express.Resp
         const err = "Db Connection not established";
         res.status(500).json({error:err});
     }
-}
+};
+
+/**
+ * API Function to update an Existing category
+ * @param req The request
+ * @param res The response
+ * @returns 
+ */
+export const updateExistingCategory =async (req:express.Request,res:express.Response) => {
+    try{
+        //Step 0 --> The ID params
+        const { id } = req.params;
+        const {name,info} = req.body;
+        //Step 1 -- Validate
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 2 -- Check if an ID like that already exists!
+        const check = await checkCategoryAlreadyExistsByID(parseInt(id));
+        if(!check){
+            return res.status(400).json({ error : "The Following ID does not exist!" });
+        }
+        //Step 3 -- Checks are completed, update data
+        const result = await updateCategory(parseInt(id),{name:name,info:info});
+        return res.status(200).json({data:result,message:"Category updated successfully"});
+    }
+    catch(e){
+        const err = "Db Connection not established";
+        res.status(500).json({error:err});
+    }
+};

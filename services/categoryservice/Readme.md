@@ -1,8 +1,9 @@
-# Category Service 
+# Category Service 
+
 Contains API requests that are involved with the Categories 
 This Services main entry url is `http://localhost:PORT/api/v1/categories`,
 
-## Tools Used
+## Tools Used
 
 <ul>
     <li> Prisma : An ORM for Typescript </li>

@@ -26,7 +26,6 @@ export const getAllCategories = async (req:express.Request,res:express.Response)
 export const postNewCategory = async (req:express.Request,res:express.Response) => {
     try{
         const {name,info} = req.body;
-        console.log(name,info);
         //Step 1 -- Validate
         const errors = validationResult(req);
         if(!errors.isEmpty()){
@@ -39,7 +38,7 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
         }
         //Step 2 -- If Checks are applied, create a new category
         const result = await addNewCategory(name,info);
-        return res.status(201).json({data:result});
+        return res.status(201).json({data:result,message:"Data successfully inserted"});
     }
     catch(e){
         const err = "Db Connection not established";

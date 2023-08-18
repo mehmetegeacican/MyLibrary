@@ -114,3 +114,32 @@ export const deleteCategory = async (id: number) => {
         await prisma.$disconnect();
     }
 };
+
+/**
+ * Prisma Function to Update category
+ * @param id The ID parameter
+ * @param requestBody The Body Parameters
+ */
+export const updateCategory =async (id:number,requestBody:{name:string,info:string}) => {
+    try{
+        const {name,info} = requestBody;
+        const res = await prisma.category.update({
+            where : {
+                id:id
+            } ,
+            data : {
+                name: name,
+                info: info
+            }
+        })
+        return res;
+    }
+    catch(e){
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally{
+        await prisma.$disconnect();
+    }
+    
+}

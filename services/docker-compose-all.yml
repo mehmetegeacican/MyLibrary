@@ -1,5 +1,23 @@
 version: "3"
 services:
+  categoryservice:
+    image: categoryservice:1.2
+    ports:
+      - "4002:4000"
+    environment:
+      PORT: 4002
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    command: npm run dev
+
+    networks:
+      - library-network
   bookservice:
     image: bookservice:2.0
     ports:

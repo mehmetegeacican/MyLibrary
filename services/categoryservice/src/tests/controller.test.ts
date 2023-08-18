@@ -147,3 +147,25 @@ describe('POST --> /api/v1/categories', () => {
         expect(addNewCategory).toHaveBeenCalledTimes(0);
     });
 });
+
+describe('DELETE --> /api/v1/categories',() => {
+    beforeEach(async () => {
+        jest.clearAllMocks();
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
+    });
+    afterEach(() => {
+        jest.restoreAllMocks(); // Restore console.log after each test
+    });
+    it('Should successfully delete a category', async () => {
+        
+    });
+    it('Should give 400 if the id param is not correct',async () => {
+        
+    });
+    it('Should give 500 for an db connection error',async () => {
+        
+    });
+    it('Should give 400 for trying to delete a nonexistent id',async () => {
+        
+    });
+});

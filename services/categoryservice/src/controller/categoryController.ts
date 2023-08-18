@@ -32,7 +32,7 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
             return res.status(400).json({ errors: errors.array() });
         }
         //Step 2 --Check if a category like that already exists
-        const check = await checkCategoryAlreadyExists(name,info);
+        const check = await checkCategoryAlreadyExists(name);
         if(check){
             return res.status(400).json({ error : "Category Already Exists!" });
         }

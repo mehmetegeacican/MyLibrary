@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNewCategory, checkCategoryAlreadyExists, getAll } from '../models/categoryModel';
+import { addNewCategory, checkCategoryAlreadyExists, checkCategoryAlreadyExistsByID, deleteCategory, getAll } from '../models/categoryModel';
 import { validationResult } from 'express-validator';
 
 /**
@@ -39,6 +39,36 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
         //Step 2 -- If Checks are applied, create a new category
         const result = await addNewCategory(name,info);
         return res.status(201).json({data:result,message:"Data successfully inserted"});
+    }
+    catch(e){
+        const err = "Db Connection not established";
+        res.status(500).json({error:err});
+    }
+}
+
+/**
+ * The API Function to delete an Existing Category
+ * @param req The request
+ * @param res The response
+ * @returns the json content with message
+ */
+export const deleteExistingCategory =async (req:express.Request,res:express.Response) => {
+    try{
+        //Step 0 --> The ID params
+        const { id } = req.params;
+        //Step 1 -- Validate
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({ errors: errors.array() });
+        }
+        //Step 2 -- Check if an ID like that already exists!
+        const check = await checkCategoryAlreadyExistsByID(parseInt(id));
+        if(!check){
+            return res.status(400).json({ error : "The Following ID does not exist!" });
+        }
+        //Step 3 -- Checks are completed, delete data
+        const result = await deleteCategory(parseInt(id));
+        return res.status(200).json({data:result,message:"Category deleted successfully"});
     }
     catch(e){
         const err = "Db Connection not established";

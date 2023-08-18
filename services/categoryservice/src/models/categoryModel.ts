@@ -69,6 +69,30 @@ export const checkCategoryAlreadyExists = async (name:string) => {
 }
 
 /**
+ * Prisma Function to Check whether the category exists
+ * @param name 
+ * @param info 
+ * @returns 
+ */
+export const checkCategoryAlreadyExistsByID = async (id:number) => {
+    try {
+        const res = await prisma.category.findFirst({
+            where: {
+                id: id
+            },
+        });
+        return res;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await prisma.$disconnect();
+    }
+}
+
+/**
  * Prisma Function for deleting category 
  * @param id the specific id
  * @returns 

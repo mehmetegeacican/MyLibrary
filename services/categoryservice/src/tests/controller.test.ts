@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../app';
-import { getAll as getAllMock, checkCategoryAlreadyExists as checkCategoryAlreadyExistsMock, addNewCategory as addNewCategoryMock } from '../models/categoryModel';
+import { getAll as getAllMock, checkCategoryAlreadyExists as checkCategoryAlreadyExistsMock, addNewCategory as addNewCategoryMock , checkCategoryAlreadyExistsByID as checkCategoryAlreadyExistsByIDMock, deleteCategory as deleteCategoryMock} from '../models/categoryModel';
 
 //Step 1 -- Mock Variables
 const mockCategories = [
@@ -11,12 +11,18 @@ const mockCategories = [
 jest.mock('../models/categoryModel', () => ({
     getAll: jest.fn(),
     checkCategoryAlreadyExists: jest.fn(),
-    addNewCategory: jest.fn()
+    addNewCategory: jest.fn(),
+    checkCategoryAlreadyExistsByID: jest.fn(),
+    deleteCategory: jest.fn()
 }));
-
+/**
+ * Mock Versions of Functions
+ */
 const getAll = getAllMock as jest.Mock; // Cast to jest.Mock
 const checkCategoryAlreadyExists = checkCategoryAlreadyExistsMock as jest.Mock;
 const addNewCategory = addNewCategoryMock as jest.Mock;
+const checkCategoryAlreadyExistsByID = checkCategoryAlreadyExistsByIDMock as jest.Mock;
+const deleteCategory = deleteCategoryMock as jest.Mock;
 
 describe('GET --> /api/v1/categories/all', () => {
     beforeEach(async () => {
@@ -157,15 +163,53 @@ describe('DELETE --> /api/v1/categories',() => {
         jest.restoreAllMocks(); // Restore console.log after each test
     });
     it('Should successfully delete a category', async () => {
-        
+        //Given
+        checkCategoryAlreadyExistsByID.mockResolvedValue(mockCategories[0]);
+        deleteCategory.mockResolvedValue({data:mockCategories[0],message:"Category deleted successfully"})
+        //When
+        const response = await request(app).delete('/api/v1/categories/1');
+        //Then
+        expect(response.status).toBe(200);
+        expect(response.body.message).toEqual("Category deleted successfully");
+        expect(response.body.data.data).toEqual(mockCategories[0]);
+        //Verify
+        expect(checkCategoryAlreadyExistsByID).toHaveBeenCalledTimes(1);
+        expect(deleteCategory).toHaveBeenCalledTimes(1);
     });
     it('Should give 400 if the id param is not correct',async () => {
-        
+        //Given
+        //When
+        const response = await request(app).delete('/api/v1/categories/asd');
+        //Then
+        expect(response.status).toBe(400);
+        expect(response.body.errors[0].msg).toEqual("ID should be declared as integer");
+        //Verify
+        expect(checkCategoryAlreadyExistsByID).toHaveBeenCalledTimes(0);
+        expect(deleteCategory).toHaveBeenCalledTimes(0);
     });
     it('Should give 500 for an db connection error',async () => {
-        
+        //Given
+        const err = "Db Connection not established";
+        checkCategoryAlreadyExistsByID.mockRejectedValue(new Error(err));
+        //When
+        const response = await request(app).delete('/api/v1/categories/1');
+        //Then
+        expect(response.status).toBe(500);
+        expect(response.body.error).toEqual(err);
+        //Verify
+        expect(checkCategoryAlreadyExistsByID).toHaveBeenCalledTimes(1);
+        expect(deleteCategory).toHaveBeenCalledTimes(0);
     });
     it('Should give 400 for trying to delete a nonexistent id',async () => {
-        
+        //Given
+        checkCategoryAlreadyExistsByID.mockResolvedValue(null);
+        //When
+        const response = await request(app).delete('/api/v1/categories/1');
+        //Then
+        expect(response.status).toBe(400);
+        expect(response.body.error).toEqual("The Following ID does not exist!");
+        //Verify
+        expect(checkCategoryAlreadyExistsByID).toHaveBeenCalledTimes(1);
+        expect(deleteCategory).toHaveBeenCalledTimes(0);
     });
 });

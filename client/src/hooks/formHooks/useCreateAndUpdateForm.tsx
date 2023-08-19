@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
 import { defaultBookCategories } from '../../data/BookData';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
+import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
 
 
 //get strings of the categories
@@ -25,7 +26,7 @@ export const getICategories = (categories:string[],allCategories:ICategory[]) =>
 export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks & Contexts
 
-  const {bookTrigger,dispatch} = useLibraryDataContext();
+  const {bookTrigger,categoryTrigger,dispatch} = useLibraryDataContext();
 
   useEffect(() => {
     if (success) {
@@ -105,6 +106,38 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   };
 
-  return { error, success, message, createBook, updateBook };
+  const createCategory =async (name:string,info:string) => {
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    const requestBody = {
+      name: name,
+      info:info
+    }
+    const result = await postNewCategory(requestBody);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
+    }
+  }
+
+  const updateCategory = async (id:number,name:string,info:string) => {
+    //Step 0 -- Reset
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    //Step 1 -- The Request Body Checks
+    const requestBody = {
+      name:name,
+      info:info
+    }
+    const result = await updateExistingCategory(id,requestBody);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
+    }
+  }
+
+  return { error, success, message, createBook, updateBook, createCategory, updateCategory };
 }
 

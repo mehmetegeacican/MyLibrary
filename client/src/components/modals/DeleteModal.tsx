@@ -1,21 +1,32 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { IBook, ICategory } from "../../interfaces/DataInterfaces";
+import { isIBook, isICategory } from "../tables/DataRow";
+import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
+
 
 
 interface DeleteModalImnterface {
     open:boolean;
     handleClose: () => void;
-    deleteData: () => void;
+    data : IBook | ICategory;
 }
 
-export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImnterface) {
+export default function DeleteModal({open,handleClose,data}:DeleteModalImnterface) {
 
-    //Hooks & contexts 
-    const {bookTrigger,dispatch} = useLibraryDataContext();
-
+    //Hooks & contexts
+    const { deleteBook ,deleteCategory} = useDeleteModal();
     const handleDelete = async () => {
-        await deleteData();
-        dispatch({type:'TRIGGER_BOOKS',payload:!bookTrigger}); // This should be conditional
+        console.log("entered");
+        console.log(data);
+        if(isIBook(data)){
+            console.log("entered else if");
+            await deleteBook(data.id);
+        }
+        else if(isICategory(data)){
+            console.log("entered else if");
+            await deleteCategory(data.id);
+        }
         handleClose();
     }
     return (
@@ -35,7 +46,7 @@ export default function DeleteModal({open,handleClose,deleteData}:DeleteModalImn
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleDelete}>
+                <Button onClick={async () => await handleDelete()}>
                     Delete
                 </Button>
             </DialogActions>

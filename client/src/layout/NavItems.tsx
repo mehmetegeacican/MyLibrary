@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import CategoryIcon from '@mui/icons-material/Category';
 import BookIcon from '@mui/icons-material/Book';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { Link } from "react-router-dom";
@@ -43,21 +44,11 @@ export const mainListItems = (
     <Link to="/categories">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <PeopleIcon />
+         <CategoryIcon/>
         </ListItemIcon>
         <ListItemText primary="Categories" />
       </ListItemButton>
     </Link>
-
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Statistics" />
-    </ListItemButton>
-    
-    
-
   </React.Fragment>
 );
 

@@ -15,8 +15,8 @@ export const getStringCategories = (categories: ICategory[]) => {
   return categoryNames;
 };
 
-export const getICategories = (categories:string[]) => {
-  let ogCategories: ICategory[] = defaultBookCategories.filter((item) => {
+export const getICategories = (categories:string[],allCategories:ICategory[]) => {
+  let ogCategories: ICategory[] = allCategories.filter((item) => {
     return categories.includes(item.name);
   });
   return ogCategories

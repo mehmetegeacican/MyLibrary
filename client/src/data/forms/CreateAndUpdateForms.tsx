@@ -5,6 +5,7 @@ import StringValueField from "../../components/forms/StringValueField";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
+import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 
 /**
  * Create & Update Forms for Book
@@ -26,7 +27,7 @@ export function BookForm({format, data, handleClose}:FormInterface) {
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
     const { error,success, message, createBook,updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
-
+    const {categories} = useLibraryDataContext();
 
 
     const submit = async () => {
@@ -44,7 +45,7 @@ export function BookForm({format, data, handleClose}:FormInterface) {
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
-            setSelectedCategories(getICategories(data.category));
+            setSelectedCategories(getICategories(data.category,categories));
         }
     },[data])
 
@@ -61,7 +62,7 @@ export function BookForm({format, data, handleClose}:FormInterface) {
                     <MultipleSelectionAutocomplete
                         label="Select Categories"
                         placeholder='categories'
-                        categories={defaultBookCategories}
+                        categories={categories}
                         selected={selectedCategories}
                         setSelected={setSelectedCategories}
                     />

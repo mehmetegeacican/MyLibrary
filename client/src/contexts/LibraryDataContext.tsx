@@ -43,7 +43,7 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     const [state, dispatch] = useReducer(libraryDataReducer, {
       books: [],
       bookTrigger:false,
-      categories:defaultBookCategories,
+      categories:[],
       categoryTrigger:false
       // Initialize other state properties here
     });

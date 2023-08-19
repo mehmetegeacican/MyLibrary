@@ -10,6 +10,8 @@ COPY package*.json ./
 # generated prisma files
 COPY prisma ./prisma/
 
+ARG DATABASE_URL
+ENV DATABASE_URL ${DATABASE_URL}
 # COPY ENV variable
 COPY .env ./
 

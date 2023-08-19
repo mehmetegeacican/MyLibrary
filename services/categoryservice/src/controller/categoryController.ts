@@ -38,10 +38,10 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
         }
         //Step 2 -- If Checks are applied, create a new category
         const result = await addNewCategory(name,info);
-        return res.status(201).json({data:result,message:"Data successfully inserted"});
+        res.status(201).json({data:result,message:"Data successfully inserted"});
     }
     catch(e){
-        const err = "Db Connection not established";
+        const err = e || "Db Connection not established";
         res.status(500).json({error:err});
     }
 }

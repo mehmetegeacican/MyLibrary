@@ -6,7 +6,7 @@ import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
-import { isIBook } from "../../components/tables/DataRow";
+import { isIBook, isICategory } from "../../components/tables/DataRow";
 
 /**
  * Create & Update Forms for Book
@@ -91,6 +91,14 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
     //Hooks and Contexts
     const [formName,setFormName] = React.useState<string>("");
     const [formInfo,setFormInfo] = React.useState<string>("");
+
+
+    useEffect(() => {
+        if(data && isICategory(data)){
+            setFormInfo(data.info);
+            setFormName(data.name);
+        }
+    },[data]);
 
     const submit = async () => {
         if(format === "update" && data){

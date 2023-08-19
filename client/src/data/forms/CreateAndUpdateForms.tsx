@@ -27,7 +27,7 @@ export function BookForm({format, data, handleClose}:FormInterface) {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,success, message, createBook,updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const { error,success, message, createBook,updateBook} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
     const {categories} = useLibraryDataContext();
 
 
@@ -91,7 +91,10 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
     //Hooks and Contexts
     const [formName,setFormName] = React.useState<string>("");
     const [formInfo,setFormInfo] = React.useState<string>("");
-
+    const [formMessage, setFormMessage] = React.useState<string>("");
+    const [formError, setFormError] = React.useState<boolean>(false);
+    const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
+    const { createCategory, error,message, success} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
     useEffect(() => {
         if(data && isICategory(data)){
@@ -102,11 +105,11 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
 
     const submit = async () => {
         if(format === "update" && data){
-          console.log("Update")
+          console.log("Update");
           handleClose!();
         }
         else{
-            console.log("Create");
+            await createCategory(formName,formInfo);
         }
      }
 
@@ -126,8 +129,8 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
                     {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
-                    {/*error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>*/}
-                    {/*success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>*/}
+                    {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
+                    {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>
             </Container>
         </Box>

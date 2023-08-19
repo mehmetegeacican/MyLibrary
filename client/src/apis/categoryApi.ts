@@ -18,3 +18,20 @@ export const fetchAllCategories = async () => {
         return [];
     }
 };
+
+/**
+ * Adds A New Category
+ * @param reqBody 
+ * @returns 
+ */
+export const postNewCategory = async (reqBody:{name:string,info:string}) => {
+    try{
+        const res = await axios.post(CATEGORY_ADDRESS + '/api/v1/categories', reqBody);
+        if(res){
+            return res.data;
+        }
+    }
+    catch(e){
+        return e;
+    }
+}

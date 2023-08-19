@@ -9,6 +9,7 @@ import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataCo
 import { ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { Typography } from "@mui/material";
+import { fetchAllCategories } from "../../apis/categoryApi";
 
 /**
  * Accordion Datas for Book Page
@@ -91,6 +92,19 @@ export const CategoryAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const {categories} = useLibraryDataContext();
+    const { categoryTrigger, dispatch} = useLibraryDataContext();
+
+    //callbacx
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        const res = await fetchAllCategories();
+        dispatch({ type: 'GET_CATEGORIES', payload: res });
+    }, [categoryTrigger]);
+
+    useEffect(() => {
+        fetchData();
+    },[fetchData]);
+
     //Handlers
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

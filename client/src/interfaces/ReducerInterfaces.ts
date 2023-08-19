@@ -1,11 +1,13 @@
 import { ReactNode } from "react";
-import { IBook } from "./DataInterfaces";
+import { IBook, ICategory } from "./DataInterfaces";
 /**
  * State Interfaces regarding the LibraryDataContext
  */
 export interface LibraryDataState {
     books:IBook[];
     bookTrigger:boolean;
+    categories: ICategory[];
+    categoryTrigger:boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }
@@ -24,8 +26,16 @@ export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
     payload: IBook[];
 }
+export interface GetCategoriesAction {
+    type:'GET_CATEGORIES';
+    payload:ICategory[];
+}
+export interface TriggerCategoriesInterface {
+    type:'TRIGGER_CATEGORIES';
+    payload:boolean;
+}
 // Common Type for all the actions 
-export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction ) ;
+export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface) ;
 /**
  * Dispatch Interface required for dispatch function
  */

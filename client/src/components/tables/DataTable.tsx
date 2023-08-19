@@ -7,7 +7,7 @@ import DeleteModal from '../modals/DeleteModal';
 import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import UpdateModal from '../modals/UpdateModal';
 import { IBook, ICategory } from '../../interfaces/DataInterfaces';
-import { isIBook, renderBookRow } from './DataRow';
+import { isIBook, isICategory, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
@@ -72,7 +72,13 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id))}
                 </Fragment>
             );
-
+        }
+        else if(value && isICategory(value)){
+            return (
+                <Fragment>
+                {renderCategoryRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id))}
+                </Fragment>
+            );
         }
     }
 

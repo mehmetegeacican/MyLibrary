@@ -1,6 +1,6 @@
 import { TableCell, Button, IconButton } from "@mui/material";
 import dayjs from "dayjs";
-import { IBook } from "../../interfaces/DataInterfaces";
+import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,6 +14,15 @@ export function isIBook(value: any): value is IBook {
         "author" in value &&
         "category" in value &&
         "status" in value
+    );
+}
+
+export function isICategory(value:any): value is ICategory {
+    return(
+        typeof value === "object" &&
+        "id" in value &&
+        "name" in value &&
+        "info" in value
     );
 }
 
@@ -39,6 +48,25 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => voi
                     <DeleteIcon />
                 </IconButton>
 
+            </TableCell>
+        </>
+    )
+}
+export const renderCategoryRow = (category: ICategory, handleOpenUpdate: (category:ICategory) => void, handleOpenDelete: (id:number) => void) => {
+    return (
+        <>
+            <TableCell align='center'> {category.id}</TableCell>
+            <TableCell align='center'> {category.name}</TableCell>
+            <TableCell align='center'> {category.info}</TableCell>
+            <TableCell align='center'>
+                <IconButton aria-label="edit" color='info' onClick={() => console.log("Edit for Categories")}>
+                    <EditIcon />
+                </IconButton>
+            </TableCell>
+            <TableCell align='center'>
+                <IconButton aria-label="delete" color='error' onClick={() => handleOpenDelete(category.id)}>
+                    <DeleteIcon />
+                </IconButton>
             </TableCell>
         </>
     )

@@ -8,6 +8,7 @@ import { BookForm } from "../forms/CreateAndUpdateForms";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
+import { Typography } from "@mui/material";
 
 /**
  * Accordion Datas for Book Page
@@ -83,18 +84,19 @@ export const AuthorAccordions = () => {
  */
 export const CategoryAccordionDatas: AccordionData[] = [
     { title: "View Categories", info: "View the Categories in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
+    { title: "Add Category", info: "Add new Category to the System", data: (<Typography> Form </Typography>) },
 ];
 
 export const CategoryAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
-    const [categories, setCategories] = React.useState<ICategory[]>([]);
+    const {categories} = useLibraryDataContext();
     //Handlers
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
-        CategoryAccordionDatas[0].data = (<DataTable headers={CategoryTableHeader} tableDatas={[]} />);
+        CategoryAccordionDatas[0].data = (<DataTable headers={CategoryTableHeader} tableDatas={categories} />);
     return (
         <LibraryAccordion expanded={expanded} handleChange={handleChange} accordions={CategoryAccordionDatas} />
     )

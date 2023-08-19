@@ -6,6 +6,7 @@ import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { isIBook } from "../../components/tables/DataRow";
 
 /**
  * Create & Update Forms for Book
@@ -13,7 +14,7 @@ import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataCo
  */
 interface FormInterface {
     format:string;
-    data?:IBook;
+    data?:IBook | ICategory;
     handleClose?: () => void;
 }
 export function BookForm({format, data, handleClose}:FormInterface) {
@@ -41,13 +42,13 @@ export function BookForm({format, data, handleClose}:FormInterface) {
     }
 
     useEffect(() => {
-        if(data){
+        if(data && isIBook(data)){
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category,categories));
         }
-    },[data])
+    },[data]);
 
     return (
         <Box
@@ -81,5 +82,46 @@ export function BookForm({format, data, handleClose}:FormInterface) {
             </Container>
         </Box>
 
+    )
+};
+
+
+export function CategoryForm({format,data,handleClose}:FormInterface){
+
+    //Hooks and Contexts
+    const [formName,setFormName] = React.useState<string>("");
+    const [formInfo,setFormInfo] = React.useState<string>("");
+
+    const submit = async () => {
+        if(format === "update" && data){
+          console.log("Update")
+          handleClose!();
+        }
+        else{
+            console.log("Create");
+        }
+     }
+
+    return(
+        <Box
+        >
+            <Container>
+                <Stack spacing={2} alignContent={'center'}>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                        <StringValueField label='Please Enter the Category name' data={formName} setter={setFormName} />
+                        
+                    </Stack>
+                    <Divider />
+                    <Stack direction={'row'} spacing={2} alignContent={'center'}>
+                         <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
+                    </Stack>
+                    <Divider />
+                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {/*error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>*/}
+                    {/*success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>*/}
+                </Stack>
+            </Container>
+        </Box>
     )
 };

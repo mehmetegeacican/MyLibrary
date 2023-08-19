@@ -25,9 +25,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
+    const [openUpdateCategory,setOpenUpdateCategory] = React.useState<boolean>(false);
     // selected Id and item for deletion and update
     const [selectedId, setSelectedId] = React.useState<number>(0);
-    const [selectedItem, setSelectedItem] = React.useState<any>(null);
+    const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
 
     const { deleteBook } = useDeleteModal();
     //Handlers
@@ -49,6 +50,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setOpenUpdate(true);
         setSelectedItem(item);
     };
+    
 
     const handleOpenDelete = (id: number) => {
         setOpenDelete(true);
@@ -180,7 +182,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                     </TableFooter>
                 </Table>
             </TableContainer>
-            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} dataFormat={'book'} data={selectedItem} />}
+            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
+            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedItem!} />}
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await deleteBook(selectedId)} />}
 
         </Fragment>

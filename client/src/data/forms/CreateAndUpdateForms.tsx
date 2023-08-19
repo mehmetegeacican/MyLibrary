@@ -83,3 +83,43 @@ export function BookForm({format, data, handleClose}:FormInterface) {
 
     )
 };
+
+
+export function CategoryForm({format,data,handleClose}:FormInterface){
+
+    //Hooks and Contexts
+    const [formName,setFormName] = React.useState<string>("");
+    const [formInfo,setFormInfo] = React.useState<string>("");
+
+    const submit = async () => {
+        if(format === "update" && data){
+          console.log("Update")
+        }
+        else{
+            console.log("Create");
+        }
+     }
+
+    return(
+        <Box
+        >
+            <Container>
+                <Stack spacing={2} alignContent={'center'}>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                        <StringValueField label='Please Enter the Category name' data={formName} setter={setFormName} />
+                        
+                    </Stack>
+                    <Divider />
+                    <Stack direction={'row'} spacing={2} alignContent={'center'}>
+                         <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
+                    </Stack>
+                    <Divider />
+                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {/*error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>*/}
+                    {/*success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>*/}
+                </Stack>
+            </Container>
+        </Box>
+    )
+};

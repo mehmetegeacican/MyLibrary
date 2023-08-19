@@ -4,7 +4,7 @@ import { AccordionData } from "../../interfaces/AccordionInterfaces";
 import { AuthorTableHeader, BookTableHeader, CategoryTableHeader } from "../tables/TableDatas";
 import { fetchAllBooks } from "../../apis/bookApi";
 import LibraryAccordion from "../../components/accordions/LibraryAccordion";
-import { BookForm } from "../forms/CreateAndUpdateForms";
+import { BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
@@ -84,7 +84,7 @@ export const AuthorAccordions = () => {
  */
 export const CategoryAccordionDatas: AccordionData[] = [
     { title: "View Categories", info: "View the Categories in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
-    { title: "Add Category", info: "Add new Category to the System", data: (<Typography> Form </Typography>) },
+    { title: "Add Category", info: "Add new Category to the System", data: (<CategoryForm format={"create"}/>) },
 ];
 
 export const CategoryAccordions = () => {

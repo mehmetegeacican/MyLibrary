@@ -6,6 +6,7 @@ import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { isIBook } from "../../components/tables/DataRow";
 
 /**
  * Create & Update Forms for Book
@@ -13,7 +14,7 @@ import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataCo
  */
 interface FormInterface {
     format:string;
-    data?:IBook;
+    data?:IBook | ICategory;
     handleClose?: () => void;
 }
 export function BookForm({format, data, handleClose}:FormInterface) {
@@ -41,13 +42,13 @@ export function BookForm({format, data, handleClose}:FormInterface) {
     }
 
     useEffect(() => {
-        if(data){
+        if(data && isIBook(data)){
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category,categories));
         }
-    },[data])
+    },[data]);
 
     return (
         <Box
@@ -94,6 +95,7 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
     const submit = async () => {
         if(format === "update" && data){
           console.log("Update")
+          handleClose!();
         }
         else{
             console.log("Create");

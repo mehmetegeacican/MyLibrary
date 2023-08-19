@@ -59,7 +59,7 @@ export const renderCategoryRow = (category: ICategory, handleOpenUpdate: (catego
             <TableCell align='center'> {category.name}</TableCell>
             <TableCell align='center'> {category.info}</TableCell>
             <TableCell align='center'>
-                <IconButton aria-label="edit" color='info' onClick={() => console.log("Edit for Categories")}>
+                <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(category)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>

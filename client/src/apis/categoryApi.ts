@@ -36,7 +36,12 @@ export const postNewCategory = async (reqBody:{name:string,info:string}) => {
     }
 }
 
-
+/**
+ * Updates an Existing Category
+ * @param id the ID 
+ * @param reqBody the request body
+ * @returns 
+ */
 export const updateExistingCategory =async (id:number,reqBody:{name:string,info:string}) => {
     try{
         const res = await axios.put(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,reqBody);
@@ -46,3 +51,18 @@ export const updateExistingCategory =async (id:number,reqBody:{name:string,info:
         return e;
     }
 }
+
+/**
+ * Deletes An Existing Category
+ * @param id 
+ * @returns 
+ */
+export const deleteExistingCategory = async (id:(number |string)) => {
+    try{
+        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/books/${id}`);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+};

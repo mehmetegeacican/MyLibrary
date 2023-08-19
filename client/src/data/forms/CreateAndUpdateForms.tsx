@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { defaultBookCategories } from "../BookData";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { isIBook, isICategory } from "../../components/tables/DataRow";

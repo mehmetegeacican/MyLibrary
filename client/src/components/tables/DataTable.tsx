@@ -26,10 +26,9 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
     // selected Id and item for deletion and update
-    const [selectedId, setSelectedId] = React.useState<number>(0);
+    const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
 
-    const { deleteBook ,deleteCategory} = useDeleteModal();
     //Handlers
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -45,27 +44,15 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setPage(0);
     };
 
-    const handleDelete = async () => {
-        if(isIBook(selectedItem)){
-            console.log("in selected item book");
-            await deleteBook(selectedId);
-        }
-        else if(isICategory(selectedItem)){
-            console.log("in selected item category");
-            await deleteCategory(selectedId)
-        }
-    }
-
     const handleOpenUpdate = (item: any) => {
         setOpenUpdate(true);
         setSelectedItem(item);
     };
     
 
-    const handleOpenDelete = (id: number, item:any) => {
+    const handleOpenDelete = (item: any) => {
         setOpenDelete(true);
-        setSelectedId(id);
-       
+        setSelectedDeleteItem(item);
     }
 
     const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
@@ -82,14 +69,14 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id,value))}
+                {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
                 </Fragment>
             );
         }
         else if(value && isICategory(value)){
             return (
                 <Fragment>
-                {renderCategoryRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value.id,value))}
+                {renderCategoryRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
                 </Fragment>
             );
         }
@@ -102,10 +89,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     }, [selectedItem]);
 
     useEffect(() => {
-        if (selectedId && selectedId !== 0) {
+        if (selectedDeleteItem) {
             setOpenDelete(true);
         }
-    }, [selectedId])
+    }, [selectedDeleteItem])
 
     return (
         <Fragment>
@@ -195,7 +182,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedItem!} />}
-            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} deleteData={async () => await handleDelete()} />}
+            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data = {selectedDeleteItem!} />}
 
         </Fragment>
     )

@@ -59,7 +59,7 @@ export const updateExistingCategory =async (id:number,reqBody:{name:string,info:
  */
 export const deleteExistingCategory = async (id:(number |string)) => {
     try{
-        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/books/${id}`);
+        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/categories/${id}`);
         return res.data;
     }
     catch(e){

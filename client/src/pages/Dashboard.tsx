@@ -3,7 +3,7 @@ import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataConte
 
 export default function Dashboard() {
     //Hooks & Context
-    const {books} = useLibraryDataContext();
+    const {books,categories} = useLibraryDataContext();
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -33,7 +33,7 @@ export default function Dashboard() {
                         <Stack spacing={2} divider={<Divider/>}  >
                             <Typography variant='h6'  color={'primary'}> {books.length} Books </Typography>
                             <Typography variant='h6' color={'secondary'}>  Authors </Typography>
-                            <Typography variant='h6'  color={'primary'}> Categories</Typography>
+                            <Typography variant='h6'  color={'primary'}> {categories.length} Categories</Typography>
                         </Stack>
                     </Paper>
                 </Grid>

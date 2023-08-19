@@ -88,7 +88,7 @@ export const CategoryAccordionDatas: AccordionData[] = [
 export const CategoryAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
-    const [categories, setCategories] = React.useState<ICategory[]>(defaultBookCategories);
+    const [categories, setCategories] = React.useState<ICategory[]>([]);
     //Handlers
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

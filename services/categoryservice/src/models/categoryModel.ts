@@ -7,6 +7,8 @@ const prisma = new PrismaClient();
  * @returns The Data or an error
  */
 export const getAll = async () => {
+    await prisma.$connect();
+    console.log("DB Connection opened --> getAll");
     try {
         const res = await prisma.category.findMany();
         return res;
@@ -17,6 +19,7 @@ export const getAll = async () => {
     }
     finally {
         await prisma.$disconnect();
+        console.log("Db Connection closed");
     }
 }
 /**
@@ -26,6 +29,8 @@ export const getAll = async () => {
  * @returns 
  */
 export const addNewCategory = async (name: string, info: string) => {
+    await prisma.$connect();
+    console.log("DB Connection opened --> addNewCategory");
     try {
         const res = await prisma.category.create({
             data: {
@@ -40,6 +45,7 @@ export const addNewCategory = async (name: string, info: string) => {
         throw new Error("Db Connection Unsuccessful");
     }
     finally {
+        console.log("DB Connection closed --> addNewCategory");
         await prisma.$disconnect();
     }
 
@@ -51,6 +57,8 @@ export const addNewCategory = async (name: string, info: string) => {
  * @returns 
  */
 export const checkCategoryAlreadyExists = async (name:string) => {
+    await prisma.$connect();
+    console.log("DB Connection opened --> checkCategoryExists");
     try {
         const res = await prisma.category.findFirst({
             where: {
@@ -64,6 +72,7 @@ export const checkCategoryAlreadyExists = async (name:string) => {
         throw new Error("Db Connection Unsuccessful");
     }
     finally {
+        console.log("DB Connection closed --> checkCategoryExists");
         await prisma.$disconnect();
     }
 }
@@ -112,6 +121,7 @@ export const deleteCategory = async (id: number) => {
     }
     finally {
         await prisma.$disconnect();
+        
     }
 };
 

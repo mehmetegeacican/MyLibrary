@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
 import { defaultBookCategories } from '../../data/BookData';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
-import { postNewCategory } from '../../apis/categoryApi';
+import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
 
 
 //get strings of the categories
@@ -121,6 +121,23 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  return { error, success, message, createBook, updateBook, createCategory };
+  const updateCategory = async (id:number,name:string,info:string) => {
+    //Step 0 -- Reset
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    //Step 1 -- The Request Body Checks
+    const requestBody = {
+      name:name,
+      info:info
+    }
+    const result = await updateExistingCategory(id,requestBody);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
+    }
+  }
+
+  return { error, success, message, createBook, updateBook, createCategory, updateCategory };
 }
 

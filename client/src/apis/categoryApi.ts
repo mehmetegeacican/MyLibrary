@@ -35,3 +35,14 @@ export const postNewCategory = async (reqBody:{name:string,info:string}) => {
         return e;
     }
 }
+
+
+export const updateExistingCategory =async (id:number,reqBody:{name:string,info:string}) => {
+    try{
+        const res = await axios.put(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,reqBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}

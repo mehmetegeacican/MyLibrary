@@ -94,7 +94,7 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { createCategory, error,message, success} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const { createCategory, updateCategory, error,message, success} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
 
     useEffect(() => {
         if(data && isICategory(data)){
@@ -105,7 +105,7 @@ export function CategoryForm({format,data,handleClose}:FormInterface){
 
     const submit = async () => {
         if(format === "update" && data){
-          console.log("Update");
+          await updateCategory(data.id, formName,formInfo);
           handleClose!();
         }
         else{

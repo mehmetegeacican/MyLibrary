@@ -12,12 +12,10 @@ export const executeGetAuthorCounts = async () => {
         const result = await client!.query('select author ,count(b.author) as total  from books b group by b."author" order by total desc;');
         data = result.rows;
         return data;
-    }
-    catch(e){
+    } catch(e){
         console.log(e);
         throw new Error("Db Connection not established");
-    }
-    finally{
+    } finally{
         await closeDb(client);
     }
 }

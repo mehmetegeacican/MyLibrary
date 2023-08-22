@@ -1,9 +1,26 @@
 import { Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
+import BarChart from '../data/charts/BarChart';
+import { useCallback, useEffect, useMemo } from 'react';
+
+import { fetchAllBookCountsByAuthor } from '../apis/statApi';
+import React from 'react';
 
 export default function Dashboard() {
     //Hooks & Context
-    const {books,categories} = useLibraryDataContext();
+    const { books, categories } = useLibraryDataContext();
+    const [bookCountByAuthor,setBookCountByAuthor] = React.useState<any>();
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        const res = await fetchAllBookCountsByAuthor();
+        setBookCountByAuthor(res.slice(0,10));
+    }, [books]);
+
+    //UseEffect
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -17,7 +34,7 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
-
+                        {bookCountByAuthor && <BarChart chartData={bookCountByAuthor} />}
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}
@@ -30,10 +47,10 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
-                        <Stack spacing={2} divider={<Divider/>}  >
-                            <Typography variant='h6'  color={'primary'}> {books.length} Books </Typography>
+                        <Stack spacing={2} divider={<Divider />}  >
+                            <Typography variant='h6' color={'primary'}> {books.length} Books </Typography>
                             <Typography variant='h6' color={'secondary'}>  Authors </Typography>
-                            <Typography variant='h6'  color={'primary'}> {categories.length} Categories</Typography>
+                            <Typography variant='h6' color={'primary'}> {categories.length} Categories</Typography>
                         </Stack>
                     </Paper>
                 </Grid>

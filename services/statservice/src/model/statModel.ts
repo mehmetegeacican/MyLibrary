@@ -19,3 +19,27 @@ export const executeGetAuthorCounts = async () => {
         await closeDb(client);
     }
 }
+
+/**
+ * gets the number of categroy counts
+ * @returns the number of category count
+ */
+export const executeGetCategoryCounts = async () => {
+    let client = await connectDb();
+    let data;
+    try{
+        const result = await client!.query(`SELECT c.category_name, COUNT(*) AS category_count
+        FROM books b
+        CROSS JOIN LATERAL unnest(b.category) AS c(category_name)
+        GROUP BY c.category_name
+        ORDER BY category_count DESC;`);
+        data = result.rows;
+        return data;
+    }
+    catch(e){
+        console.log(e);
+        throw new Error("Db Connection not established");
+    } finally {
+        await closeDb(client);
+    }
+};

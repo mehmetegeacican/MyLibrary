@@ -3,17 +3,21 @@ import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataConte
 import BarChart from '../data/charts/BarChart';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { fetchAllBookCountsByAuthor } from '../apis/statApi';
+import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory } from '../apis/statApi';
 import React from 'react';
+import PieChart from '../data/charts/PieChart';
 
 export default function Dashboard() {
     //Hooks & Context
     const { books, categories } = useLibraryDataContext();
     const [bookCountByAuthor,setBookCountByAuthor] = React.useState<any>();
+    const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
     //UseCallBack 
     const fetchData = useCallback(async () => {
-        const res = await fetchAllBookCountsByAuthor();
-        setBookCountByAuthor(res.slice(0,10));
+        const resBook = await fetchAllBookCountsByAuthor();
+        const resCategory = await fetchAllBookCountsByCategory();
+        setBookCountByAuthor(resBook.slice(0,10));
+        setBookCountByCategory(resCategory.slice(0,10));
     }, [books]);
 
     //UseEffect
@@ -51,6 +55,33 @@ export default function Dashboard() {
                             <Typography variant='h6' color={'primary'}> {books.length} Books </Typography>
                             <Typography variant='h6' color={'secondary'}>  Authors </Typography>
                             <Typography variant='h6' color={'primary'}> {categories.length} Categories</Typography>
+                        </Stack>
+                    </Paper>
+                </Grid>
+                
+                <Grid item xs={12} md={8} lg={9}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 240,
+                        }}
+                    >
+                        {bookCountByAuthor && <PieChart chartData={bookCountByCategory} />}
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 240,
+                        }}
+                    >
+                        <Stack spacing={2} divider={<Divider />}  >
+                            <Typography variant='h6' color={'primary'}> Favorites </Typography>
                         </Stack>
                     </Paper>
                 </Grid>

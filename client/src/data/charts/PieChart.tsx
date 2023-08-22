@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Tooltip, Legend } from 'chart.js/auto';
 import { Container } from '@mui/system';
 
@@ -32,10 +32,10 @@ export default function PieChart({ chartData }: ChartInterface) {
 
     useEffect(() => {
         setData({
-            labels: chart.map((item: any) => item.author),
+            labels: chart.map((item: any) => item.category_name),
             datasets: [{
                 label: 'Number of Books by Author',
-                data: chart.map((item: any) => item.total),
+                data: chart.map((item: any) => item.category_count),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(255, 159, 64, 0.2)',

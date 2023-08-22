@@ -34,7 +34,7 @@ export default function PieChart({ chartData }: ChartInterface) {
         setData({
             labels: chart.map((item: any) => item.category_name),
             datasets: [{
-                label: 'Number of Books by Author',
+                label: 'Number of Books by Category',
                 data: chart.map((item: any) => item.category_count),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

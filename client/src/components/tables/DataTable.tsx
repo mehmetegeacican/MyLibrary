@@ -8,8 +8,9 @@ import UpdateModal from '../modals/UpdateModal';
 import { IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIBook, isICategory, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+
 import FilterModal from '../modals/FilterModal';
+import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
 
 
 interface TableInterfaces<T> {
@@ -30,6 +31,9 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
+    const [filterChips,setFilterChips] = React.useState<string[]>([]);
+
+    const {filteredBooks} = useFilterModal(filterChips);
 
     //Handlers
     const handleChangePage = (
@@ -95,18 +99,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             setOpenDelete(true);
         }
     }, [selectedDeleteItem]);
-
-    /*
-    const filtered = useMemo(() => {
-        if(tableDatas === books){
-            return books.filter((book:IBook) => {
-                return book.author === "Jack London"
-            });
-        }
-        else{
-            return tableDatas;
-        }
-    },[]);*/
 
     return (
         <Fragment>
@@ -196,7 +188,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data = {selectedDeleteItem!} />}
-            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} />}
+            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} setFilterChips={setFilterChips}/>}
 
         </Fragment>
     )

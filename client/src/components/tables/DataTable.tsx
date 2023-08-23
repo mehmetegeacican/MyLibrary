@@ -4,11 +4,12 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteModal from '../modals/DeleteModal';
-import { useDeleteModal } from '../../hooks/modalHooks/useDeleteModal';
 import UpdateModal from '../modals/UpdateModal';
 import { IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIBook, isICategory, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import FilterModal from '../modals/FilterModal';
 
 
 interface TableInterfaces<T> {
@@ -25,6 +26,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
+    const [openFilter,setOpenFilter] = React.useState<boolean>(false);
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
@@ -92,7 +94,19 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (selectedDeleteItem) {
             setOpenDelete(true);
         }
-    }, [selectedDeleteItem])
+    }, [selectedDeleteItem]);
+
+    /*
+    const filtered = useMemo(() => {
+        if(tableDatas === books){
+            return books.filter((book:IBook) => {
+                return book.author === "Jack London"
+            });
+        }
+        else{
+            return tableDatas;
+        }
+    },[]);*/
 
     return (
         <Fragment>
@@ -101,7 +115,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                     <TableHead>
                         <TableRow >
                             <TableCell align='center'>
-                                <Tooltip title="Filter Items" arrow placement="top-start">
+                                <Tooltip title="Filter Items" arrow placement="top-start" onClick={() => setOpenFilter(true)}>
                                     <IconButton aria-label="filter">
                                         <FilterListIcon />
                                     </IconButton>
@@ -144,7 +158,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {tableDatas.map((item: any, index: number) => {
+                        {tableDatas && tableDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
                                     <TableRow key={index} hover >
@@ -157,8 +171,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                                     <TableRow key={index}></TableRow>
                                 )
                             }
-
                         })}
+                        
                     </TableBody>
                 </Table>
 
@@ -182,6 +196,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data = {selectedDeleteItem!} />}
+            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} />}
 
         </Fragment>
     )

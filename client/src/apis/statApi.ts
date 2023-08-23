@@ -29,3 +29,17 @@ export const fetchAllBookCountsByCategory = async () => {
         return [];
     }
 }
+
+/**
+ * The API for Book Count by Stat
+ * @returns 
+ */
+export const fetchAllBookCountsByStat = async () => {
+    try{
+        const res = await axios.get(ADDRESS + '/api/v1/stats/all/statuses');
+        return res.data;
+    }
+    catch{
+        return [];
+    }
+}

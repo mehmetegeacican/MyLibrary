@@ -1,5 +1,5 @@
 import express from 'express';
-import { executeGetAuthorCounts, executeGetCategoryCounts } from '../model/statModel';
+import { executeGetAuthorCounts, executeGetCategoryCounts, executeGetStatusCounts } from '../model/statModel';
 
 
 /**
@@ -29,6 +29,21 @@ export const getTotalBasedByCategory = async (req: express.Request, res: express
         res.json(data);
     }
     catch (e) {
+        console.log(e);
+        const err = "Db Connection not established";
+        res.status(500).json({ error: err });
+    }
+}
+/**
+ * The Controller to get the stats based on the status
+ * @param req Request
+ * @param res Response
+ */
+export const getTotalBasedByStatuses =async (req:express.Request,res:express.Response) => {
+    try{
+        const data = await executeGetStatusCounts();
+        res.json(data);
+    }catch(e){
         console.log(e);
         const err = "Db Connection not established";
         res.status(500).json({ error: err });

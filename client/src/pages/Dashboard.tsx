@@ -3,21 +3,25 @@ import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataConte
 import BarChart from '../data/charts/BarChart';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory } from '../apis/statApi';
+import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import React from 'react';
 import PieChart from '../data/charts/PieChart';
+import DougnutChart from '../data/charts/DougnutChart';
 
 export default function Dashboard() {
     //Hooks & Context
     const { books, categories } = useLibraryDataContext();
     const [bookCountByAuthor,setBookCountByAuthor] = React.useState<any>();
     const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
+    const [bookCountByStat,setBookCountByStat] = React.useState<any>();
     //UseCallBack 
     const fetchData = useCallback(async () => {
         const resBook = await fetchAllBookCountsByAuthor();
         const resCategory = await fetchAllBookCountsByCategory();
+        const resStat = await fetchAllBookCountsByStat();
         setBookCountByAuthor(resBook.slice(0,10));
         setBookCountByCategory(resCategory.slice(0,10));
+        setBookCountByStat(resStat);
     }, [books]);
 
     //UseEffect
@@ -81,7 +85,10 @@ export default function Dashboard() {
                         }}
                     >
                         <Stack spacing={2} divider={<Divider />}  >
-                            <Typography variant='h6' color={'primary'}> Favorites </Typography>
+                            <div>
+                            <DougnutChart chartData={bookCountByStat}/> 
+                            </div>
+                           
                         </Stack>
                     </Paper>
                 </Grid>

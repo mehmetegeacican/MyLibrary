@@ -91,7 +91,7 @@ export default function FilterModal({ open, handleClose , exampleData}: FilterMo
                 </Grid>
             </DialogContent>
             <DialogActions sx={{justifyContent:'space-between', ml:2,mr:2}}>
-                <Button autoFocus color='error' onClick={handleClose}>
+                <Button autoFocus color='error' onClick={() => setChips([])}>
                     Reset
                 </Button>
                 <Button autoFocus onClick={handleClose}>

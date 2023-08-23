@@ -1,7 +1,7 @@
 version: "3"
 services:
   statservice:
-    image: statservice:1.0
+    image: statservice:1.2
     ports:
       - "4003:4000"
     environment:

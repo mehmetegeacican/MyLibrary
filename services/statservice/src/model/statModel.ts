@@ -43,3 +43,22 @@ export const executeGetCategoryCounts = async () => {
         await closeDb(client);
     }
 };
+
+/**
+ * The SQL Query Function to return the stats of the statuses
+ * @returns The Status counts
+ */
+export const executeGetStatusCounts = async () => {
+    let client = await connectDb();
+    let data;
+    try{
+        const result = await client!.query(`select b.status ,count(b.status) as total  from books b group by b."status" order by total  desc;`);
+        data = result.rows;
+        return data;
+    }catch(e){
+        console.log(e);
+        throw new Error("Db Connection not established");
+    }finally{
+        await closeDb(client);
+    }
+};

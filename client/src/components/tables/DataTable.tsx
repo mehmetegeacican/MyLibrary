@@ -181,7 +181,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 </Table>
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
-            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedItem!} />}
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data = {selectedDeleteItem!} />}
 
         </Fragment>

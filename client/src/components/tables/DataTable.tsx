@@ -1,5 +1,5 @@
 import {  IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useMemo } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
@@ -33,7 +33,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
     const [filterChips,setFilterChips] = React.useState<string[]>([]);
 
-    const {filteredBooks} = useFilterModal(filterChips);
+    const {filterDataByFilterInputs} = useFilterModal(filterChips,tableDatas);
 
     //Handlers
     const handleChangePage = (
@@ -100,6 +100,13 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         }
     }, [selectedDeleteItem]);
 
+    const filteredDatas = useMemo(() => {
+        setPage(0);
+        return filterDataByFilterInputs(tableDatas,filterChips);
+    }, [tableDatas, filterChips]);
+
+   
+
     return (
         <Fragment>
             <TableContainer component={Paper}>
@@ -150,7 +157,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                         </TableRow>
                     </TableHead>
                     <TableBody >
-                        {tableDatas && tableDatas.map((item: any, index: number) => {
+                        {tableDatas && filteredDatas.map((item: any, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
                                     <TableRow key={index} hover >
@@ -177,7 +184,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                                 align='center'
                                 rowsPerPageOptions={[1, 5, 10]}
                                 colSpan={1}
-                                count={tableDatas.length}
+                                count={filteredDatas.length}
                                 rowsPerPage={rowsPerPage}
                                 onPageChange={handleChangePage}
                                 onRowsPerPageChange={handleChangeRowsPerPage}

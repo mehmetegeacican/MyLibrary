@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AuthroDtoConverter {
+public class AuthorDtoConverter {
 
 
     /**
@@ -22,6 +22,7 @@ public class AuthroDtoConverter {
         return AuthorDto.builder()
                 .id(idParam)
                 .name(authorParam.getName())
+                .info(authorParam.getInfo())
                 .build();
     }
 

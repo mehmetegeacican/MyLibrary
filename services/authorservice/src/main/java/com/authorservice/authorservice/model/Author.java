@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Objects;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "\"Author\"")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,16 +18,28 @@ public class Author {
     //Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "info")
+    private String info;
 
     //Constructor (Additional)
     public Author(String name) {
         this.name = name;
     }
 
-    //Getters and Setters
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+//Getters and Setters
 
     public Long getId() {
         return id;

@@ -22,6 +22,7 @@ public class AuthorDtoConverter {
         return AuthorDto.builder()
                 .id(idParam)
                 .name(authorParam.getName())
+                .info(authorParam.getInfo())
                 .build();
     }
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { isIBook } from "../../components/tables/DataRow";
+import { isIBook, isICategory } from "../../components/tables/DataRow";
 
 
 export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]) => {
@@ -9,7 +9,7 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
     const {books,categories} = useLibraryDataContext();
 
     /**
-     * The Filter Function to set up the data
+     * The Filter Function to set up the books
      * @param item 
      * @param filters 
      * @returns 
@@ -31,10 +31,27 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
         return true;
     };
 
+    const filterCategoriesByFilterInputs = (item:ICategory, filters:string[]) => {
+        for (const filter of filters) {
+            let stat: string = filter.split("-")[0];
+            let data: string = filter.split("-")[1];
+            if (stat === "Name" && !item.name.includes(data)) {
+                return false;
+            } 
+        }
+        return true;
+    };
+
     const filterDataByFilterInputs = (datas: IBook[] | ICategory[] , filters: string[]) => {
         if(datas && isIBook(datas[0])){
             const fd = books.filter((book:IBook) => {
                 return filterBookByFilterInputs(book,filters);
+            })
+            return fd;
+        }
+        else if(datas && isICategory(datas[0])){
+            const fd = categories.filter((category:ICategory) => {
+                return filterCategoriesByFilterInputs(category,filters);
             })
             return fd;
         }

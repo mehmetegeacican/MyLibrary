@@ -39,7 +39,6 @@ export const BookFilterOptions = [
 ]
 
 export const CategoryFilterOptions = [
-    "Name",
-    "Info"
+    "Name"
 ]
 

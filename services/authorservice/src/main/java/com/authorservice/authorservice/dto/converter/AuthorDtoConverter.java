@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AuthroDtoConverter {
+public class AuthorDtoConverter {
 
 
     /**

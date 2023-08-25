@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,5 +65,21 @@ class AuthorControllerTest {
         //Verify
         Mockito.verify(authorService,Mockito.times(1)).getAuthorList();
         Mockito.verify(authorDtoConverter,Mockito.times(1)).convertToDto(aList);
+    }
+
+    @Test
+    void deleteAuthor() throws Exception {
+        //Given
+        Long authorId = 1L;
+        Mockito.doNothing().when(authorService).deleteAuthor(authorId);
+        //When
+        ResponseEntity<Map<String, String>> response = authorController.deleteAuthor(authorId);
+        //Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Map<String, String> responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertEquals("Author Deleted Successfully", responseBody.get("message"));
+        //Verify
+        Mockito.verify(authorService,Mockito.times(1)).deleteAuthor(authorId);
     }
 }

@@ -98,12 +98,12 @@ export default function FilterModal({ open, handleClose, exampleData , setFilter
 
 
             </DialogContent>
-            <DialogActions sx={{ justifyContent: 'space-between', ml: 2, mr: 2 }}>
+            <DialogActions sx={{ justifyContent: 'space-evenly', ml: 2, mr: 2 }}>
+                <Button autoFocus color='success' onClick={handleClose}>
+                    Filter
+                </Button>
                 <Button autoFocus color='error' onClick={() => setChips([])}>
                     Reset
-                </Button>
-                <Button autoFocus onClick={handleClose}>
-                    Filter
                 </Button>
             </DialogActions>
         </Dialog>

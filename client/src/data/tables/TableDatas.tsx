@@ -30,3 +30,15 @@ export const AuthorTableHeader: string[] = [
     "Delete"
 ]
 
+
+export const BookFilterOptions = [
+    "Name",
+    "Author",
+    "Categories",
+    "Status"
+]
+
+export const CategoryFilterOptions = [
+    "Name"
+]
+

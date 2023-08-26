@@ -2,7 +2,7 @@ import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/materi
 import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
-import { IBook, ICategory } from "../../interfaces/DataInterfaces";
+import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { isIBook, isICategory } from "../../components/tables/DataRow";
@@ -13,7 +13,7 @@ import { isIBook, isICategory } from "../../components/tables/DataRow";
  */
 interface FormInterface {
     format:string;
-    data?:IBook | ICategory;
+    data?:IBook | ICategory | IAuthor;
     handleClose?: () => void;
 }
 export function BookForm({format, data, handleClose}:FormInterface) {

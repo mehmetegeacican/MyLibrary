@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { IBook, ICategory } from "./DataInterfaces";
+import { IAuthor, IBook, ICategory } from "./DataInterfaces";
 /**
  * State Interfaces regarding the LibraryDataContext
  */
@@ -24,7 +24,7 @@ export interface TriggerBookInterface {
 }
 export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
-    payload: IBook[];
+    payload: IAuthor[];
 }
 export interface GetCategoriesAction {
     type:'GET_CATEGORIES';

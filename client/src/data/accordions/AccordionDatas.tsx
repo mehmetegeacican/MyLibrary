@@ -4,11 +4,8 @@ import { AccordionData } from "../../interfaces/AccordionInterfaces";
 import { AuthorTableHeader, BookTableHeader, CategoryTableHeader } from "../tables/TableDatas";
 import { fetchAllBooks } from "../../apis/bookApi";
 import LibraryAccordion from "../../components/accordions/LibraryAccordion";
-import { BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
+import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
-import { ICategory } from "../../interfaces/DataInterfaces";
-import { defaultBookCategories } from "../BookData";
-import { Typography } from "@mui/material";
 import { fetchAllCategories } from "../../apis/categoryApi";
 
 /**
@@ -60,6 +57,7 @@ export default function BookAccordions() {
  */
 export const AuthorAccordionDatas: AccordionData[] = [
     { title: "View Authors", info: "View the Authors in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
+    { title: "Add New Author", info: "Add new Author to the DB", data: (<AuthorForm format={"create"}  />) },
 ]
 
 /**

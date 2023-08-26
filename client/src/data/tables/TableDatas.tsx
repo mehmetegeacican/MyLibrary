@@ -25,6 +25,7 @@ export const CategoryTableHeader : string[] = [
 export const AuthorTableHeader: string[] = [
     "Author ID",
     "Name",
+    "Info",
     "Books",
     "Edit",
     "Delete"
@@ -39,6 +40,10 @@ export const BookFilterOptions = [
 ]
 
 export const CategoryFilterOptions = [
+    "Name"
+]
+
+export const AuthorFilterOptions = [
     "Name"
 ]
 

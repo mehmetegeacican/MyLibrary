@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/authors")
@@ -37,6 +38,20 @@ public class AuthorController {
         return new ResponseEntity<List<AuthorDto>>(
                 authorDtoConverter.convertToDto(authorService.getAuthorList()), HttpStatus.OK
         );
+    }
+
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> getSpecificAuthor(@PathVariable("id") Long id) throws Exception{
+        Optional<Author> authorOptional = authorService.getAuthorById(id);
+        if (authorOptional.isPresent()) {
+            Author author = authorOptional.get();
+            return ResponseEntity.ok(author);
+        } else {
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "Author not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
     }
 
     @DeleteMapping(path = "/{id}")

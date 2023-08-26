@@ -36,4 +36,17 @@ public class AuthorService {
             throw new IllegalStateException("The ID does not exist");
         }
     }
+
+    /**
+     * Save Function for Creating a New Author
+     * @param author
+     * @return
+     */
+    public Author createAuthor(Author author){
+        boolean nameExists = authorRepository.existsByNameIgnoreCase(author.getName());
+        if(nameExists){
+            throw new IllegalStateException("The Author with the given name already exist");
+        }
+        return this.authorRepository.save(author);
+    }
 }

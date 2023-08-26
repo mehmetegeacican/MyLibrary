@@ -3,6 +3,7 @@ package com.authorservice.authorservice.controller;
 import com.authorservice.authorservice.dto.AuthorDto;
 import com.authorservice.authorservice.dto.converter.AuthorDtoConverter;
 import com.authorservice.authorservice.model.Author;
+import com.authorservice.authorservice.request.converter.AuthorRequestConverter;
 import com.authorservice.authorservice.service.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,13 +39,18 @@ class AuthorControllerTest {
     @MockBean
     private AuthorDtoConverter authorDtoConverter;
 
+    @MockBean
+    private AuthorRequestConverter authorRequestConverter;
+
     private AuthorController authorController;
+
+
 
 
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        authorController = new AuthorController(authorService,authorDtoConverter);
+        authorController = new AuthorController(authorService,authorDtoConverter, authorRequestConverter);
     }
     @Test
     void getAllAuthors() throws Exception{

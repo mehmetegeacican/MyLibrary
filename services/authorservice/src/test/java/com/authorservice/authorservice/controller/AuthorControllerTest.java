@@ -19,10 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,7 +109,6 @@ class AuthorControllerTest {
         Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
     }
 
-
     @Test
     void postAuthorEmptyName() throws Exception{
         //Given
@@ -179,4 +175,39 @@ class AuthorControllerTest {
         Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
 
     }
+
+    @Test
+    void getSpecificAuthor() throws Exception{
+        //Given
+        Author a1 = new Author(1L,"A1","I1");
+        AuthorDto aDto = new AuthorDto(1L,"a1","i1");
+        //When
+        Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.of(a1));
+        Mockito.when(authorDtoConverter.convertToDto(a1)).thenReturn(aDto);
+        //Then
+        ResponseEntity<?> response = authorController.getSpecificAuthor(1L);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(aDto, response.getBody());
+        //Verify
+        Mockito.verify(authorService,Mockito.times(1)).getAuthorById(1L);
+        Mockito.verify(authorDtoConverter,Mockito.times(1)).convertToDto(a1);
+    }
+
+    @Test
+    void getSpecificAuthorNotFound() throws  Exception {
+        //Given
+        Map<String, String> responseBody = new HashMap<>();
+        Author a1 = new Author(1L,"A1","I1");
+        responseBody.put("message", "Author not found");
+        //When
+        Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.empty());
+        //Then
+        ResponseEntity<?> response = authorController.getSpecificAuthor(1L);
+        assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
+        assertEquals(responseBody, response.getBody());
+        //Verify
+        Mockito.verify(authorService,Mockito.times(1)).getAuthorById(1L);
+        Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(a1);
+    }
+
 }

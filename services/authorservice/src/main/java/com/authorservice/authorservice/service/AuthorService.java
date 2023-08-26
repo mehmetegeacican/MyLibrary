@@ -3,11 +3,11 @@ package com.authorservice.authorservice.service;
 
 import com.authorservice.authorservice.model.Author;
 import com.authorservice.authorservice.repository.AuthorRepository;
-import com.authorservice.authorservice.request.AuthorRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AuthorService {
@@ -23,6 +23,16 @@ public class AuthorService {
      */
     public List<Author> getAuthorList(){
         return this.authorRepository.findAll();
+    }
+
+
+    /**
+     * Retrieves an Author from the ID
+     * @param id
+     * @return
+     */
+    public Optional<Author> getAuthorById(Long id) {
+        return this.authorRepository.findById(id);
     }
 
     /**
@@ -52,6 +62,11 @@ public class AuthorService {
         return this.authorRepository.save(author);
     }
 
+    /**
+     * Updates the Function
+     * @param id
+     * @param editedAuthor
+     */
 
     public void updateAuthor(Long id, Author editedAuthor) {
         boolean authorExists = authorRepository.existsById(id);

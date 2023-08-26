@@ -3,9 +3,11 @@ package com.authorservice.authorservice.service;
 
 import com.authorservice.authorservice.model.Author;
 import com.authorservice.authorservice.repository.AuthorRepository;
+import com.authorservice.authorservice.request.AuthorRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AuthorService {
@@ -48,5 +50,22 @@ public class AuthorService {
             throw new IllegalStateException("The Author with the given name already exist");
         }
         return this.authorRepository.save(author);
+    }
+
+
+    public void updateAuthor(Long id, Author editedAuthor) {
+        boolean authorExists = authorRepository.existsById(id);
+        if (authorExists) {
+            Author author = authorRepository.getReferenceById(id);
+            if (author.getName() != null && !Objects.equals(author.getName(), editedAuthor.getName())) {
+                author.setName(editedAuthor.getName());
+            }
+            if (author.getInfo() != null && !Objects.equals(author.getInfo(), editedAuthor.getInfo())) {
+                author.setInfo(editedAuthor.getInfo());
+            }
+        }
+        else{
+            throw new IllegalStateException("Author does not exist!");
+        }
     }
 }

@@ -102,7 +102,7 @@ class AuthorControllerTest {
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
         ResponseEntity<Map<String,String>> response = authorController.postAuthor(request);
         //Then
-        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(HttpStatus.CREATED,response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
         assertNotNull(responseBody);
         assertEquals("Author Inserted Successfully", responseBody.get("message"));
@@ -110,5 +110,73 @@ class AuthorControllerTest {
         Mockito.verify(authorRequestConverter,Mockito.times(1)).convertToEntity(request);
         Mockito.verify(authorService,Mockito.times(1)).createAuthor(createdAuthor);
         Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
+    }
+
+
+    @Test
+    void postAuthorEmptyName() throws Exception{
+        //Given
+        AuthorRequest request = AuthorRequest.builder().name("").info("i1").build();
+        Author createdAuthor = new Author(1L,"","i1");
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        //When
+        Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
+        Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
+        Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
+        ResponseEntity<Map<String,String>> response = authorController.postAuthor(request);
+        //Then
+        assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
+        Map<String, String> responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertEquals("Author Name can not be empty", responseBody.get("message"));
+        //Verify
+        Mockito.verify(authorRequestConverter,Mockito.times(1)).convertToEntity(request);
+        Mockito.verify(authorService,Mockito.times(0)).createAuthor(createdAuthor);
+        Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
+
+    }
+    @Test
+    void putAuthor() {
+        //Given
+        AuthorRequest request = AuthorRequest.builder().name("a1").info("i1").build();
+        Author createdAuthor = new Author(1L,"a1","i1");
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        //When
+        Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
+        Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
+        Mockito.doNothing().when(authorService).updateAuthor(1L,createdAuthor);
+        ResponseEntity<Map<String,String>> response = authorController.putAuthor(1L,request);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        Map<String, String> responseBody = response.getBody();
+        //Then
+        assertNotNull(responseBody);
+        assertEquals("Author Updated Successfully", responseBody.get("message"));
+        //Verify
+        Mockito.verify(authorRequestConverter,Mockito.times(1)).convertToEntity(request);
+        Mockito.verify(authorService,Mockito.times(1)).updateAuthor(1L,createdAuthor);
+        Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
+    }
+
+    @Test
+    void putAuthorEmptyName(){
+        //Given
+        AuthorRequest request = AuthorRequest.builder().name("").info("i1").build();
+        Author createdAuthor = new Author(1L,"","i1");
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"","i1");
+        //When
+        Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
+        Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
+        Mockito.doNothing().when(authorService).updateAuthor(1L,createdAuthor);
+        ResponseEntity<Map<String,String>> response = authorController.putAuthor(1L,request);
+        assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
+        Map<String, String> responseBody = response.getBody();
+        //Then
+        assertNotNull(responseBody);
+        assertEquals("Name can not be empty", responseBody.get("message"));
+        //Verify
+        Mockito.verify(authorRequestConverter,Mockito.times(1)).convertToEntity(request);
+        Mockito.verify(authorService,Mockito.times(0)).updateAuthor(1L,createdAuthor);
+        Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
+
     }
 }

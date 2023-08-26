@@ -46,11 +46,11 @@ public class AuthorController {
         Optional<Author> authorOptional = authorService.getAuthorById(id);
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
-            return ResponseEntity.ok(author);
+            return ResponseEntity.status(HttpStatus.OK).body(authorDtoConverter.convertToDto(author));
         } else {
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", "Author not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
 

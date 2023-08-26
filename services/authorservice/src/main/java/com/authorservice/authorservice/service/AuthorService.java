@@ -57,7 +57,7 @@ public class AuthorService {
     public Author createAuthor(Author author){
         boolean nameExists = authorRepository.existsByNameIgnoreCase(author.getName());
         if(nameExists){
-            throw new IllegalStateException("The Author with the given name already exist");
+            return null;
         }
         return this.authorRepository.save(author);
     }

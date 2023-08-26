@@ -7,6 +7,7 @@ import com.authorservice.authorservice.model.Author;
 import com.authorservice.authorservice.request.AuthorRequest;
 import com.authorservice.authorservice.request.converter.AuthorRequestConverter;
 import com.authorservice.authorservice.service.AuthorService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +52,31 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<Map<String,String>> postAuthor(@Valid @RequestBody AuthorRequest authorRequest){
         Author authorEntity = authorRequestConverter.convertToEntity(authorRequest);
-        Author createdAuthor = authorService.createAuthor(authorEntity);
         Map<String, String> responseBody = new HashMap<>();
+        if(authorEntity.getName().isEmpty()){
+            responseBody.put("message", "Author Name can not be empty");
+            return ResponseEntity.status(400).body(responseBody);
+        }
+        Author createdAuthor = authorService.createAuthor(authorEntity);
         responseBody.put("message", "Author Inserted Successfully");
+        return ResponseEntity.status(201).body(responseBody);
+    }
+
+
+    @Transactional
+    @PutMapping(path = "/{authorId}")
+    public ResponseEntity<Map<String,String>> putAuthor(
+            @PathVariable("authorId") Long id,
+            @RequestBody AuthorRequest editedAuthor
+    ){
+        Author entity = authorRequestConverter.convertToEntity(editedAuthor);
+        Map<String, String> responseBody = new HashMap<>();
+        if(editedAuthor.getName().isEmpty()){
+            responseBody.put("message", "Name can not be empty");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+        authorService.updateAuthor(id,entity);
+        responseBody.put("message", "Author Updated Successfully");
         return ResponseEntity.ok().body(responseBody);
     }
 }

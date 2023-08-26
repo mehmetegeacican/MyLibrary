@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "\"Author\"")
 @Builder
@@ -45,7 +43,7 @@ public class Author {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId() {
         this.id = id;
     }
 

@@ -3,6 +3,8 @@ package com.authorservice.authorservice.controller;
 import com.authorservice.authorservice.dto.AuthorDto;
 import com.authorservice.authorservice.dto.converter.AuthorDtoConverter;
 import com.authorservice.authorservice.model.Author;
+import com.authorservice.authorservice.request.AuthorRequest;
+import com.authorservice.authorservice.request.converter.AuthorRequestConverter;
 import com.authorservice.authorservice.service.AuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,13 +40,18 @@ class AuthorControllerTest {
     @MockBean
     private AuthorDtoConverter authorDtoConverter;
 
+    @MockBean
+    private AuthorRequestConverter authorRequestConverter;
+
     private AuthorController authorController;
+
+
 
 
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        authorController = new AuthorController(authorService,authorDtoConverter);
+        authorController = new AuthorController(authorService,authorDtoConverter, authorRequestConverter);
     }
     @Test
     void getAllAuthors() throws Exception{
@@ -81,5 +88,27 @@ class AuthorControllerTest {
         assertEquals("Author Deleted Successfully", responseBody.get("message"));
         //Verify
         Mockito.verify(authorService,Mockito.times(1)).deleteAuthor(authorId);
+    }
+
+    @Test
+    void postAuthor() throws Exception{
+        // Given
+        AuthorRequest request = AuthorRequest.builder().name("a1").info("i1").build();
+        Author createdAuthor = new Author(1L,"a1","i1");
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        //When
+        Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
+        Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
+        Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
+        ResponseEntity<Map<String,String>> response = authorController.postAuthor(request);
+        //Then
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        Map<String, String> responseBody = response.getBody();
+        assertNotNull(responseBody);
+        assertEquals("Author Inserted Successfully", responseBody.get("message"));
+        //Verify
+        Mockito.verify(authorRequestConverter,Mockito.times(1)).convertToEntity(request);
+        Mockito.verify(authorService,Mockito.times(1)).createAuthor(createdAuthor);
+        Mockito.verify(authorDtoConverter,Mockito.times(0)).convertToDto(createdAuthor);
     }
 }

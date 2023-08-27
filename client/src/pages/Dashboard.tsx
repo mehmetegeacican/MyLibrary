@@ -10,7 +10,7 @@ import DougnutChart from '../data/charts/DougnutChart';
 
 export default function Dashboard() {
     //Hooks & Context
-    const { books, categories } = useLibraryDataContext();
+    const { books, categories, authors } = useLibraryDataContext();
     const [bookCountByAuthor,setBookCountByAuthor] = React.useState<any>();
     const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
     const [bookCountByStat,setBookCountByStat] = React.useState<any>();
@@ -57,7 +57,7 @@ export default function Dashboard() {
                     >
                         <Stack spacing={2} divider={<Divider />}  >
                             <Typography variant='h6' color={'primary'}> {books.length} Books </Typography>
-                            <Typography variant='h6' color={'secondary'}>  Authors </Typography>
+                            <Typography variant='h6' color={'secondary'}> {authors.length} Authors </Typography>
                             <Typography variant='h6' color={'primary'}> {categories.length} Categories</Typography>
                         </Stack>
                     </Paper>

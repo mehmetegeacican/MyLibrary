@@ -3,6 +3,7 @@ import { LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDat
 import { fetchAllBooks } from "../apis/bookApi";
 import { defaultBookCategories } from "../data/BookData";
 import { fetchAllCategories } from "../apis/categoryApi";
+import { fetchAllAuthors } from "../apis/authorApi";
 
 
 
@@ -32,8 +33,13 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
         return {...state, bookTrigger: action.payload};
       case 'GET_CATEGORIES':
         return { ...state, categories: action.payload };
-        case 'TRIGGER_CATEGORIES':
-          return {...state, categoryTrigger: action.payload};
+      case 'TRIGGER_CATEGORIES':
+        return {...state, categoryTrigger: action.payload};
+      case 'GET_AUTHORS':
+        return {...state,authors: action.payload};
+      case 'TRIGGER_AUTHORS':
+        return {...state,authorTrigger: action.payload};
+
       default:
         return state;
     }
@@ -44,15 +50,19 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
       books: [],
       bookTrigger:false,
       categories:[],
-      categoryTrigger:false
+      categoryTrigger:false,
+      authors: [],
+      authorTrigger:false
       // Initialize other state properties here
     });
 
     const fetchInit = useCallback(async () => {
       const resBooks = await fetchAllBooks();
       const resCategories = await fetchAllCategories();
+      const resAuthors = await fetchAllAuthors();
       dispatch({type:"GET_BOOKS",payload:resBooks});
       dispatch({type:'GET_CATEGORIES',payload:resCategories});
+      dispatch({type:'GET_AUTHORS',payload:resAuthors});
     },[]);
 
     useEffect(() => {

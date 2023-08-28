@@ -5,18 +5,19 @@ import StringValueField from "../../components/forms/StringValueField";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
-import { isIBook, isICategory } from "../../components/tables/DataRow";
+import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
+
 
 /**
  * Create & Update Forms for Book
  * @returns rendered create book form component
  */
 interface FormInterface {
-    format:string;
-    data?:IBook | ICategory | IAuthor;
+    format: string;
+    data?: IBook | ICategory | IAuthor;
     handleClose?: () => void;
 }
-export function BookForm({format, data, handleClose}:FormInterface) {
+export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [author, setAuthor] = React.useState<string>('Jack London');
@@ -25,29 +26,29 @@ export function BookForm({format, data, handleClose}:FormInterface) {
     //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
-    const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,success, message, createBook,updateBook} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
-    const {categories} = useLibraryDataContext();
+    const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
+    const { error, success, message, createBook, updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
+    const { categories } = useLibraryDataContext();
 
 
     const submit = async () => {
-       if(format === "update" && data){
-         await updateBook(data.id.toString(),bookName,author,getStringCategories(selectedCategories),selectedStatus);
-         handleClose!();
-       }
-       else{
-        await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
-       }
+        if (format === "update" && data) {
+            await updateBook(data.id.toString(), bookName, author, getStringCategories(selectedCategories), selectedStatus);
+            handleClose!();
+        }
+        else {
+            await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+        }
     }
 
     useEffect(() => {
-        if(data && isIBook(data)){
+        if (data && isIBook(data)) {
             setBookName(data.name);
             setAuthor(data.author);
             setSelectedStatus(data.status);
-            setSelectedCategories(getICategories(data.category,categories));
+            setSelectedCategories(getICategories(data.category, categories));
         }
-    },[data]);
+    }, [data]);
 
     return (
         <Box
@@ -85,21 +86,35 @@ export function BookForm({format, data, handleClose}:FormInterface) {
 };
 
 
-export function AuthorForm({format, data, handleClose}:FormInterface){
+export function AuthorForm({ format, data, handleClose }: FormInterface) {
     //Hooks & Contexts
-    const [formName,setFormName] = React.useState<string>("");
-    const [formInfo,setFormInfo] = React.useState<string>("");
+    const [formName, setFormName] = React.useState<string>("");
+    const [formInfo, setFormInfo] = React.useState<string>("");
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
-    const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { error,message, success} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
+    const { error, message, success, createAuthor, updateAuthor } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     //submit
-    const submit = () => {
-
+    const submit = async () => {
+        if (format === "update" && data) {
+            await updateAuthor(data.id, formName,formInfo);
+            handleClose!();
+        }
+        else {
+            await createAuthor(formName, formInfo);
+        }
     }
 
-    return(
+
+    useEffect(() => {
+        if (data && isIAuthor(data)) {
+            setFormName(data.authorName);
+            setFormInfo(data.authorDetails);
+        }
+    }, [data]);
+
+    return (
         <Box
         >
             <Container>
@@ -110,7 +125,7 @@ export function AuthorForm({format, data, handleClose}:FormInterface){
                     </Stack>
                     <Divider />
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
-                        
+
                     </Stack>
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
@@ -124,45 +139,45 @@ export function AuthorForm({format, data, handleClose}:FormInterface){
 }
 
 
-export function CategoryForm({format,data,handleClose}:FormInterface){
+export function CategoryForm({ format, data, handleClose }: FormInterface) {
 
     //Hooks and Contexts
-    const [formName,setFormName] = React.useState<string>("");
-    const [formInfo,setFormInfo] = React.useState<string>("");
+    const [formName, setFormName] = React.useState<string>("");
+    const [formInfo, setFormInfo] = React.useState<string>("");
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
-    const [formSuccess,setFormSuccess] = React.useState<boolean>(false);
-    const { createCategory, updateCategory, error,message, success} = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage,formSuccess,setFormSuccess);
+    const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
+    const { createCategory, updateCategory, error, message, success } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     useEffect(() => {
-        if(data && isICategory(data)){
+        if (data && isICategory(data)) {
             setFormInfo(data.info);
             setFormName(data.name);
         }
-    },[data]);
+    }, [data]);
 
     const submit = async () => {
-        if(format === "update" && data){
-          await updateCategory(data.id, formName,formInfo);
-          handleClose!();
+        if (format === "update" && data) {
+            await updateCategory(data.id, formName, formInfo);
+            handleClose!();
         }
-        else{
-            await createCategory(formName,formInfo);
+        else {
+            await createCategory(formName, formInfo);
         }
-     }
+    }
 
-    return(
+    return (
         <Box
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
                     <Stack direction={'row'} spacing={2} alignItems={'center'}>
                         <StringValueField label='Please Enter the Category name' data={formName} setter={setFormName} />
-                        
+
                     </Stack>
                     <Divider />
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
-                         <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
+                        <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
                     </Stack>
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}

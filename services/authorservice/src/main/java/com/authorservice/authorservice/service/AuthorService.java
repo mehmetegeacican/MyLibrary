@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -22,7 +23,9 @@ public class AuthorService {
      * @return
      */
     public List<Author> getAuthorList(){
-        return this.authorRepository.findAll();
+        return authorRepository.findAll().stream()
+                .sorted((a1, a2) -> a1.getId().compareTo(a2.getId()))
+                .collect(Collectors.toList());
     }
 
 

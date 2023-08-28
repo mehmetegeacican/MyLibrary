@@ -3,13 +3,14 @@ import { deleteABook } from "../../apis/bookApi";
 import { deleteExistingCategory } from "../../apis/categoryApi";
 import { ApiResult } from "../../interfaces/DataInterfaces";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
+import { deleteAnAuthor } from "../../apis/authorApi";
 
 export const useDeleteModal = () => {
     //Hooks
     const [error,setError] = React.useState<boolean>(false);
     const [success,setSuccess] = React.useState<boolean>(false);
     const [message,setMessage] = React.useState<string>("");
-    const {dispatch,bookTrigger,categoryTrigger} = useLibraryDataContext();
+    const {dispatch,bookTrigger,categoryTrigger, authorTrigger} = useLibraryDataContext();
     //Functions
     const processResult = (res: ApiResult) => {
         if(res.message && !res.response){
@@ -54,6 +55,19 @@ export const useDeleteModal = () => {
             dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
         }
     }
+    const deleteAuthor = async (id:number) => {
+        let stringId = id.toString();
+        //Step 0 -- Reset
+        setError(false);
+        setMessage("");
+        setSuccess(false);
+        //Step 1 -- Send the Result
+        const res = await deleteAnAuthor(stringId);
+        const check = processResult(res);
+        if(check){
+            dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
+        }
+    }
     //Return Values
-    return {deleteBook,deleteCategory,error,message,success};
+    return {deleteBook,deleteCategory, deleteAuthor,error,message,success};
 }

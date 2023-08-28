@@ -2,15 +2,15 @@ import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert, DialogActions
 import StringValueField from "../forms/StringValueField";
 import React, { Fragment, useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { BookFilterOptions, CategoryFilterOptions } from "../../data/tables/TableDatas";
-import { IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { isIBook, isICategory } from "../tables/DataRow";
+import { AuthorFilterOptions, BookFilterOptions, CategoryFilterOptions } from "../../data/tables/TableDatas";
+import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
+import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 
 
 interface FilterModalInterface {
     open: boolean;
     handleClose: () => void;
-    exampleData: IBook | ICategory;
+    exampleData: IBook | ICategory | IAuthor;
     setFilterChips: Function;
 }
 
@@ -73,6 +73,11 @@ export default function FilterModal({ open, handleClose, exampleData , setFilter
                                 )
                             })}
                             {isICategory(exampleData) && CategoryFilterOptions.map((header: string, index: number) => {
+                                return (
+                                    <MenuItem key={index} value={header}>{header}</MenuItem>
+                                )
+                            })}
+                            {isIAuthor(exampleData) && AuthorFilterOptions.map((header: string, index: number) => {
                                 return (
                                     <MenuItem key={index} value={header}>{header}</MenuItem>
                                 )

@@ -29,3 +29,51 @@ export const fetchAllAuthors = async () => {
         return [];
     }
 };
+
+
+/**
+ * Posts a New Author
+ * @param requestBody 
+ * @returns 
+ */
+export const postNewAuthor = async (requestBody:object) => {
+    try{
+        const res = await axios.post(AUTHOR_ADDRESS + '/api/v1/authors',requestBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}
+
+/**
+ * The API Function to delete authors 
+ * @param id the id
+ * @returns 
+ */
+export const deleteAnAuthor = async (id:string) => {
+    try{
+        const res = await axios.delete(AUTHOR_ADDRESS + `/api/v1/authors/${id}`);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}
+
+
+/**
+ * The API Function to update books
+ * @param id The Id parameter
+ * @param requestBody the request body
+ * @returns the message or the errorv message
+ */
+export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string}) => {
+    try{
+        const res = await axios.put(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,reqBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}

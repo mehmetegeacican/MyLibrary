@@ -5,7 +5,7 @@ import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteModal from '../modals/DeleteModal';
 import UpdateModal from '../modals/UpdateModal';
-import { IBook, ICategory } from '../../interfaces/DataInterfaces';
+import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -19,7 +19,7 @@ interface TableInterfaces<T> {
 }
 
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]|ICategory[]>) {
+export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]|ICategory[] | IAuthor[]>) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);

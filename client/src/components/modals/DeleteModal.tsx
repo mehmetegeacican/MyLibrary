@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
-import { IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { isIBook, isICategory } from "../tables/DataRow";
+import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
+import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
 
 
@@ -9,23 +9,22 @@ import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
 interface DeleteModalImnterface {
     open:boolean;
     handleClose: () => void;
-    data : IBook | ICategory;
+    data : IBook | ICategory | IAuthor;
 }
 
 export default function DeleteModal({open,handleClose,data}:DeleteModalImnterface) {
 
     //Hooks & contexts
-    const { deleteBook ,deleteCategory} = useDeleteModal();
+    const { deleteBook ,deleteCategory, deleteAuthor} = useDeleteModal();
     const handleDelete = async () => {
-        console.log("entered");
-        console.log(data);
         if(isIBook(data)){
-            console.log("entered else if");
             await deleteBook(data.id);
         }
         else if(isICategory(data)){
-            console.log("entered else if");
             await deleteCategory(data.id);
+        }
+        else if(isIAuthor(data)){
+            await deleteAuthor(data.id);
         }
         handleClose();
     }

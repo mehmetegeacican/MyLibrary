@@ -4,7 +4,7 @@ import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
 
 
-export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]) => {
+export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[] | IAuthor[]) => {
     //Hooks
     const {books,categories,authors} = useLibraryDataContext();
 
@@ -35,7 +35,7 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
         for (const filter of filters) {
             let stat: string = filter.split("-")[0];
             let data: string = filter.split("-")[1];
-            if (stat === "authorName" && !item.authorName.includes(data)) {
+            if (stat === "Name" && !item.authorName.includes(data)) {
                 return false;
             } 
         }
@@ -53,7 +53,7 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
         return true;
     };
 
-    const filterDataByFilterInputs = (datas: IBook[] | ICategory[] , filters: string[]) => {
+    const filterDataByFilterInputs = (datas: IBook[] | ICategory[] | IAuthor[] , filters: string[]) => {
         if(datas && isIBook(datas[0])){
             const fd = books.filter((book:IBook) => {
                 return filterBookByFilterInputs(book,filters);

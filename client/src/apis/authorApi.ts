@@ -60,3 +60,20 @@ export const deleteAnAuthor = async (id:string) => {
         return e;
     }
 }
+
+
+/**
+ * The API Function to update books
+ * @param id The Id parameter
+ * @param requestBody the request body
+ * @returns the message or the errorv message
+ */
+export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string}) => {
+    try{
+        const res = await axios.put(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,reqBody);
+        return res.data;
+    }
+    catch(e){
+        return e;
+    }
+}

@@ -1,9 +1,9 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
-import { BookForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
+import { AuthorForm, BookForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
 import { useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import React, { useEffect } from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { isIBook, isICategory } from "../tables/DataRow";
+import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 
 interface UpdateModalInterface {
     open: boolean;
@@ -38,6 +38,7 @@ export default function UpdateModal({ open, handleClose,  data }: UpdateModalInt
                 <Stack spacing={2} sx={{ mt: 1 }}>
                     {isIBook(data) &&  (<BookForm format={"update"} data={data} handleClose={handleClose}/>)}
                     {isICategory(data) && (<CategoryForm format="update" data={data} handleClose={handleClose}/> )}
+                    {isIAuthor(data) && (<AuthorForm format="update" data={data} handleClose={handleClose}/> )}
                 </Stack>
 
                 {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}

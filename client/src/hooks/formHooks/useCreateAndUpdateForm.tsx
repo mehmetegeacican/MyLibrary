@@ -3,10 +3,9 @@
 import { postNewBook, updateABook } from '../../apis/bookApi';
 import { useEffect } from 'react';
 import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
-import { defaultBookCategories } from '../../data/BookData';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
 import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
-import { postNewAuthor } from '../../apis/authorApi';
+import { postNewAuthor, updateAnAuthor } from '../../apis/authorApi';
 
 
 //get strings of the categories
@@ -154,10 +153,28 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     const result = await postNewAuthor(requestBody);
     const check = processResult(result);
     if(check){
+      console.log("Create Dispatcher");
       dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
     }
   }
 
-  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor };
+  const updateAuthor = async (id:number,name:string,info:string) => {
+    //Step 0 -- Reset
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    //Step 1 -- The Request Body Checks
+    const requestBody = {
+      name:name,
+      info:info
+    }
+    const result = await updateAnAuthor(id,requestBody);
+    const check = processResult(result);
+    if(check){
+      dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
+    }
+  }
+
+  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor, updateAuthor };
 }
 

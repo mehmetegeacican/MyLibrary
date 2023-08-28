@@ -5,7 +5,8 @@ import StringValueField from "../../components/forms/StringValueField";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
-import { isIBook, isICategory } from "../../components/tables/DataRow";
+import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
+
 
 /**
  * Create & Update Forms for Book
@@ -92,17 +93,26 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
-    const { error, message, success, createAuthor } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
+    const { error, message, success, createAuthor, updateAuthor } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     //submit
     const submit = async () => {
         if (format === "update" && data) {
+            await updateAuthor(data.id, formName,formInfo);
             handleClose!();
         }
         else {
             await createAuthor(formName, formInfo);
         }
     }
+
+
+    useEffect(() => {
+        if (data && isIAuthor(data)) {
+            setFormName(data.authorName);
+            setFormInfo(data.authorDetails);
+        }
+    }, [data]);
 
     return (
         <Box

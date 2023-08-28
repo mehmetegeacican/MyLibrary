@@ -6,7 +6,7 @@ import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteModal from '../modals/DeleteModal';
 import UpdateModal from '../modals/UpdateModal';
 import { IBook, ICategory } from '../../interfaces/DataInterfaces';
-import { isIBook, isICategory, renderBookRow, renderCategoryRow } from './DataRow';
+import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import FilterModal from '../modals/FilterModal';
@@ -86,6 +86,13 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 </Fragment>
             );
         }
+        else if(value && isIAuthor(value)){
+            return (
+                <Fragment>
+                {renderAuthorRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
+                </Fragment>
+            );
+        }
     }
 
     useEffect(() => {
@@ -104,8 +111,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setPage(0);
         return filterDataByFilterInputs(tableDatas,filterChips);
     }, [tableDatas, filterChips]);
-
-   
 
     return (
         <Fragment>

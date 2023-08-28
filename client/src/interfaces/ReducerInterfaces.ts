@@ -26,7 +26,7 @@ export interface TriggerBookInterface {
 }
 export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
-    payload: IAuthor[];
+    payload: IAuthor[] | [];
 }
 export interface TriggerAuthorsAction {
     type: 'TRIGGER_AUTHORS';

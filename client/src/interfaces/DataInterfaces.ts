@@ -6,9 +6,9 @@ export interface ICategory {
 
 export interface IAuthor {
   id:number;
-  name:string;
-  info:string;
-  books?: IBook[];
+  authorName:string;
+  authorDetails:string;
+  books: IBook[];
 }
 
 export interface IBook {

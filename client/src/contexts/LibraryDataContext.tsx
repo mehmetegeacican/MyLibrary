@@ -62,7 +62,7 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
       const resAuthors = await fetchAllAuthors();
       dispatch({type:"GET_BOOKS",payload:resBooks});
       dispatch({type:'GET_CATEGORIES',payload:resCategories});
-      dispatch({type:'GET_AUTHORS',payload:resAuthors});
+      dispatch({type:'GET_AUTHORS',payload:resAuthors!});
     },[]);
 
     useEffect(() => {

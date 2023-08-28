@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Divider, Chip, Button, Alert } from "@mui/material";
+import { Box, Container, Stack, Divider, Chip, Button, Alert, Autocomplete, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
@@ -28,7 +28,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
     const { error, success, message, createBook, updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
-    const { categories } = useLibraryDataContext();
+    const { categories, authors } = useLibraryDataContext();
 
 
     const submit = async () => {
@@ -57,7 +57,20 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                 <Stack spacing={2} alignContent={'center'}>
                     <Stack direction={'row'} spacing={2} alignItems={'center'}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
-                        <StringValueField label='Please Enter the Author name' data={author} setter={setAuthor} />
+                        <Autocomplete
+                            fullWidth
+                            options={authors}
+                            getOptionLabel={(option:IAuthor) => option.authorName}
+                            onChange={(event: any, newValue: IAuthor | null) => {
+                                if (newValue) {
+                                    setAuthor(newValue.authorName)
+                                }
+                            }}
+                            id="controllable-states-demo"
+                            renderInput={(params) => (
+                                <TextField {...params} label={"name"} placeholder={"name"} />
+                            )}
+                        />
                     </Stack>
 
                     <MultipleSelectionAutocomplete
@@ -98,7 +111,7 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
     //submit
     const submit = async () => {
         if (format === "update" && data) {
-            await updateAuthor(data.id, formName,formInfo);
+            await updateAuthor(data.id, formName, formInfo);
             handleClose!();
         }
         else {

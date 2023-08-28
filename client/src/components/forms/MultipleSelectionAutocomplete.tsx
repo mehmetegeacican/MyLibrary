@@ -6,7 +6,7 @@ import { ICategory } from '../../interfaces/DataInterfaces';
 interface AutocompleteInterface {
     label: string;
     placeholder: string;
-    categories: ICategory[];
+    categories: ICategory[] ;
     selected: ICategory[];
     setSelected: Function;
 }

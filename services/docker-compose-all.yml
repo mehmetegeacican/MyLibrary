@@ -1,5 +1,21 @@
 version: "3"
 services:
+  client:
+    ports:
+      - "3000:5173"
+    build: ./client
+    environment:
+      VITE_BOOKSERVICE_PORT: 4001
+      VITE_CATEGORYSERVICE_PORT: 4002
+      VITE_STATSERVICE_PORT: 4003
+      VITE_AUTHORSERVICE_PORT: 4004
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    command: npm run dev
+
+    networks:
+      - library-network
   authorservice:
     image: authorservice:1.9  # Update with the correct image and version
     ports:

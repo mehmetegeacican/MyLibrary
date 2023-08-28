@@ -8,6 +8,8 @@ export interface LibraryDataState {
     bookTrigger:boolean;
     categories: ICategory[];
     categoryTrigger:boolean;
+    authors: IAuthor[];
+    authorTrigger: boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }
@@ -24,7 +26,11 @@ export interface TriggerBookInterface {
 }
 export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
-    payload: IAuthor[];
+    payload: IAuthor[] | [];
+}
+export interface TriggerAuthorsAction {
+    type: 'TRIGGER_AUTHORS';
+    payload: boolean;
 }
 export interface GetCategoriesAction {
     type:'GET_CATEGORIES';
@@ -35,7 +41,7 @@ export interface TriggerCategoriesInterface {
     payload:boolean;
 }
 // Common Type for all the actions 
-export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface) ;
+export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction | TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface) ;
 /**
  * Dispatch Interface required for dispatch function
  */

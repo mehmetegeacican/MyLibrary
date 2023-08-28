@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/authors")
 public class AuthorController {
@@ -33,12 +34,14 @@ public class AuthorController {
         this.authorRequestConverter = authorRequestConverter;
     }
 
+
     @GetMapping("/all")
     public ResponseEntity<List<AuthorDto>> getAllAuthors() {
         return new ResponseEntity<List<AuthorDto>>(
                 authorDtoConverter.convertToDto(authorService.getAuthorList()), HttpStatus.OK
         );
     }
+
 
 
     @GetMapping(path = "/{id}")
@@ -54,6 +57,7 @@ public class AuthorController {
         }
     }
 
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Map<String, String>> deleteAuthor(@PathVariable("id") Long id){
         authorService.deleteAuthor(id);
@@ -61,6 +65,7 @@ public class AuthorController {
         responseBody.put("message", "Author Deleted Successfully");
         return ResponseEntity.ok().body(responseBody);
     }
+
 
 
 
@@ -80,6 +85,7 @@ public class AuthorController {
         responseBody.put("message", "Author Inserted Successfully");
         return ResponseEntity.status(201).body(responseBody);
     }
+
 
 
     @Transactional

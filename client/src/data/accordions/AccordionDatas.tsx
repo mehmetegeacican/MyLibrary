@@ -7,6 +7,7 @@ import LibraryAccordion from "../../components/accordions/LibraryAccordion";
 import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { fetchAllCategories } from "../../apis/categoryApi";
+import { fetchAllAuthors } from "../../apis/authorApi";
 
 /**
  * Accordion Datas for Book Page
@@ -67,7 +68,19 @@ export const AuthorAccordionDatas: AccordionData[] = [
 export const AuthorAccordions = () => {
     //Hooks
     const [expanded, setExpanded] = React.useState<string | false>(false);
-    const [authors, setAuthors] = React.useState<any>([]);
+    const {authors,authorTrigger,dispatch} =useLibraryDataContext();
+    //Use Callback
+    const fetchData = useCallback(async() => {
+        const res = await fetchAllAuthors();
+        dispatch({type:'GET_AUTHORS',payload:res});
+    },[authorTrigger]);
+    //Effect
+    useEffect(() => {
+        fetchData();
+    },[fetchData]);
+
+
+    AuthorAccordionDatas[0].data = (<DataTable headers={AuthorTableHeader} tableDatas={authors} />)
     //Handlers
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

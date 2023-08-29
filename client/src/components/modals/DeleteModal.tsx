@@ -7,12 +7,13 @@ import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
 
 
 interface DeleteModalImnterface {
+    multiple: boolean;
     open:boolean;
     handleClose: () => void;
     data : IBook | ICategory | IAuthor;
 }
 
-export default function DeleteModal({open,handleClose,data}:DeleteModalImnterface) {
+export default function DeleteModal({multiple,open,handleClose,data}:DeleteModalImnterface) {
 
     //Hooks & contexts
     const { deleteBook ,deleteCategory, deleteAuthor} = useDeleteModal();

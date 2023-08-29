@@ -30,6 +30,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openFilter,setOpenFilter] = React.useState<boolean>(false);
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
+    const [selectedIds,setSelectedIds] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
     const [filterChips,setFilterChips] = React.useState<string[]>([]);
 
@@ -199,7 +200,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 </Table>
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
-            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data = {selectedDeleteItem!} />}
+            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} multiple={false} data = {selectedDeleteItem!} />}
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} setFilterChips={setFilterChips}/>}
 
         </Fragment>

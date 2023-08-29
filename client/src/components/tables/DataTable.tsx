@@ -228,7 +228,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedItem!} />}
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedDeleteItem!} />}
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
-            {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={selectedDeleteItem!} selectedIds={selectedIds} />}
+            {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
 
         </Fragment>
     )

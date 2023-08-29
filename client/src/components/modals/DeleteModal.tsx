@@ -18,7 +18,27 @@ export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteMo
     const { deleteBook ,deleteCategory, deleteAuthor} = useDeleteModal();
     const handleDelete = async () => {
         if(selectedIds){
-            console.log(selectedIds);
+            if(isIBook(data)){
+                let promises: Promise<void>[] = [];
+                selectedIds.forEach((id:number) => {
+                    promises.push(deleteBook(id));
+                });
+                await Promise.all(promises);
+            }
+            else if(isICategory(data)){
+                let promises: Promise<void>[] = [];
+                selectedIds.forEach((id:number) => {
+                    promises.push(deleteCategory(id));
+                });
+                await Promise.all(promises);
+            }
+            else if(isIAuthor(data)){
+                let promises: Promise<void>[] = [];
+                selectedIds.forEach((id:number) => {
+                    promises.push(deleteAuthor(id));
+                });
+                await Promise.all(promises);
+            }
         }
         else{
             if(isIBook(data)){

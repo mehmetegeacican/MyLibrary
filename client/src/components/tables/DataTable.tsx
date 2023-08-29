@@ -26,8 +26,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
 
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
+    const [openDeleteMultiple,setOpenDeleteMultiple] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
     const [openFilter,setOpenFilter] = React.useState<boolean>(false);
+
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
     const [selectedIds,setSelectedIds] = React.useState<number[]>([]);
@@ -142,7 +144,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                             </TableCell>
                             <TableCell align='center'>
                                 <Tooltip title="Delete Multiple" arrow placement="top-start">
-                                    <IconButton aria-label="delete" color='error'>
+                                    <IconButton aria-label="delete" color='error' onClick={() => setOpenDeleteMultiple(true)}> 
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
@@ -200,8 +202,9 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                 </Table>
             </TableContainer>
             {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
-            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} multiple={false} data = {selectedDeleteItem!} />}
+            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)}  data = {selectedDeleteItem!} />}
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} setFilterChips={setFilterChips}/>}
+            {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data = {selectedDeleteItem!} selectedIds={selectedIds} />}
 
         </Fragment>
     )

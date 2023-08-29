@@ -2,6 +2,7 @@
  * Table Headers for Books
  */
 export const BookTableHeader: string[] = [
+    "Select",
     "Book ID",
     "Name",
     "Author",
@@ -15,6 +16,7 @@ export const BookTableHeader: string[] = [
 
 
 export const CategoryTableHeader : string[] = [
+    "Select",
     "Category ID",
     "Category Name",
     "Category Info",
@@ -23,6 +25,7 @@ export const CategoryTableHeader : string[] = [
 ]
 
 export const AuthorTableHeader: string[] = [
+    "Select",
     "Author ID",
     "Name",
     "Info",

@@ -1,4 +1,4 @@
-import {  IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
+import { Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 import React, { Fragment, useEffect, useMemo } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
@@ -19,24 +19,24 @@ interface TableInterfaces<T> {
 }
 
 
-export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[]|ICategory[] | IAuthor[]>) {
+export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook[] | ICategory[] | IAuthor[]>) {
     //Hooks
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(1);
 
     //Modal openings
     const [openDelete, setOpenDelete] = React.useState<boolean>(false);
-    const [openDeleteMultiple,setOpenDeleteMultiple] = React.useState<boolean>(false);
+    const [openDeleteMultiple, setOpenDeleteMultiple] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
-    const [openFilter,setOpenFilter] = React.useState<boolean>(false);
+    const [openFilter, setOpenFilter] = React.useState<boolean>(false);
 
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
-    const [selectedIds,setSelectedIds] = React.useState<number[]>([]);
+    const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
-    const [filterChips,setFilterChips] = React.useState<string[]>([]);
+    const [filterChips, setFilterChips] = React.useState<string[]>([]);
 
-    const {filterDataByFilterInputs} = useFilterModal(filterChips,tableDatas);
+    const { filterDataByFilterInputs } = useFilterModal(filterChips, tableDatas);
 
     //Handlers
     const handleChangePage = (
@@ -57,12 +57,26 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setOpenUpdate(true);
         setSelectedItem(item);
     };
-    
+
 
     const handleOpenDelete = (item: any) => {
         setOpenDelete(true);
         setSelectedDeleteItem(item);
     }
+
+    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>,id:number) => {
+        if (event.target.checked) {
+            if(!selectedIds.includes(id)){
+                setSelectedIds((prev) => [...prev,id]);
+            }
+        }
+        else{
+            if(selectedIds.includes(id)){
+                let index = selectedIds.indexOf(id);
+                setSelectedIds((prev) => [...prev.slice(0,index),...prev.slice(index + 1)]);
+            }
+        }
+      };
 
     const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
         let multiplied: number = page * rowsPerPage;
@@ -78,21 +92,21 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                {renderBookRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value))}
                 </Fragment>
             );
         }
-        else if(value && isICategory(value)){
+        else if (value && isICategory(value)) {
             return (
                 <Fragment>
-                {renderCategoryRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
+                    {renderCategoryRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value))}
                 </Fragment>
             );
         }
-        else if(value && isIAuthor(value)){
+        else if (value && isIAuthor(value)) {
             return (
                 <Fragment>
-                {renderAuthorRow(value,() => handleOpenUpdate(value),() => handleOpenDelete(value))}
+                    {renderAuthorRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value))}
                 </Fragment>
             );
         }
@@ -112,7 +126,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
 
     const filteredDatas = useMemo(() => {
         setPage(0);
-        return filterDataByFilterInputs(tableDatas,filterChips);
+        return filterDataByFilterInputs(tableDatas, filterChips);
     }, [tableDatas, filterChips]);
 
     return (
@@ -144,7 +158,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                             </TableCell>
                             <TableCell align='center'>
                                 <Tooltip title="Delete Multiple" arrow placement="top-start">
-                                    <IconButton aria-label="delete" color='error' onClick={() => setOpenDeleteMultiple(true)}> 
+                                    <IconButton aria-label="delete" color='error' onClick={() => setOpenDeleteMultiple(true)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
@@ -169,6 +183,16 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
                                     <TableRow key={index} hover >
+                                        <TableCell padding="checkbox" align='center'>
+                                            <Checkbox
+                                                color="primary"
+                                                checked={selectedIds.includes(item.id)}
+                                                onChange={(e) => handleSelectAllClick(e,item.id)}
+                                                inputProps={{
+                                                    'aria-label': 'select all desserts',
+                                                }}
+                                            />
+                                        </TableCell>
                                         {renderTableCell(item)}
                                     </TableRow>
                                 )
@@ -179,7 +203,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                                 )
                             }
                         })}
-                        
+
                     </TableBody>
                 </Table>
 
@@ -201,10 +225,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                     </TableFooter>
                 </Table>
             </TableContainer>
-            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)}  data={selectedItem!} />}
-            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)}  data = {selectedDeleteItem!} />}
-            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData = {tableDatas[0]!} setFilterChips={setFilterChips}/>}
-            {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data = {selectedDeleteItem!} selectedIds={selectedIds} />}
+            {<UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedItem!} />}
+            {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedDeleteItem!} />}
+            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
+            {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={selectedDeleteItem!} selectedIds={selectedIds} />}
 
         </Fragment>
     )

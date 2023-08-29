@@ -1,4 +1,4 @@
-import { TableCell, Button, IconButton } from "@mui/material";
+import { TableCell, Button, IconButton, Checkbox } from "@mui/material";
 import dayjs from "dayjs";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";

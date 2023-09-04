@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const { addNewUser, checkIfUserExists } = require('../model/authModel');
+const { addNewUser, checkIfUserExists, getIdOfUser } = require('../model/authModel');
 dotenv.config();
 
 /**
@@ -26,13 +26,15 @@ const signUp = async (req, res) => {
         }
         else{
             const result = await addNewUser(email,password);
-            const newId = await checkIfUserExists(email,password);
+            const newId = await getIdOfUser(email);
             const token = createToken(newId[0].id);
             res.status(201).json({result,email,token});
         }
        
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        console.log(e);
+        const message = "Db Connection unsuccessful"
+        res.status(500).json({ error: message });
     }
 }
 

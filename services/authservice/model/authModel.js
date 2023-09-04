@@ -32,11 +32,29 @@ const checkIfUserExists = async (username, password) => {
         const values = [username,password];
         const result = await client.query(checkQuery, values);
         if(result.rowCount > 0){
-            return result.rows;
+            return true
         }
         else{
-            return null;
+            return false;
         }
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
+
+const getIdOfUser = async (username) => {
+    let client = await connectDb();
+    try {
+        const checkQuery = `SELECT ID FROM "User"
+        WHERE username = $1`;
+        const values = [username];
+        const result = await client.query(checkQuery, values);
+        return result.rows;
     }
     catch (e) {
         console.log(e);
@@ -65,6 +83,7 @@ const deleteUser = async (id) => {
 
 module.exports = {
     addNewUser,
-    checkIfUserExists
+    checkIfUserExists,
+    getIdOfUser
 }
 

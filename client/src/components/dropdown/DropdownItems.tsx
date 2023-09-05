@@ -1,4 +1,5 @@
 import { MenuItem } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 export const SignedInItems = [
@@ -8,6 +9,6 @@ export const SignedInItems = [
 ]
 
 export const NotSignedInItems = [
-    (<MenuItem key={0} onClick={() => console.log("Login")}>Login</MenuItem>),
-    (<MenuItem key={1} onClick={() => console.log("My account")}>Sign Up</MenuItem>),
+    (<Link to={'/login'}><MenuItem key={0} onClick={() => console.log("Login")}>Login</MenuItem></Link>),
+    (<Link to={'signup'}><MenuItem key={1} onClick={() => console.log("My account")}>Sign Up</MenuItem></Link>),
 ]

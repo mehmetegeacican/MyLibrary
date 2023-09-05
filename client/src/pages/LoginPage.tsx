@@ -3,6 +3,7 @@ import { Button, Container, Grid, Paper, Stack, Typography, } from '@mui/materia
 import React from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 
 interface IAuthForm {
     name:string;
@@ -13,11 +14,11 @@ interface IAuthForm {
 
 export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
-
+    const {user} = useAuthContext();
 
     //Submit
     const submit = () => {
-
+        console.log(user);
     }
     
     //Render

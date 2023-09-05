@@ -8,6 +8,8 @@ import SideNav from "./layout/SideNav";
 import Dashboard from "./pages/Dashboard";
 import AuthorsPage from "./pages/Authors";
 import CategoriesPage from "./pages/Categories";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 
 
@@ -42,6 +44,8 @@ function App() {
               <Route path="/books" element={<BookPage/>} />
               <Route path="/authors" element={<AuthorsPage/>} />
               <Route path="/categories" element={<CategoriesPage/>} />
+              <Route path="/login" element={<LoginPage/>} />
+              <Route path="/signup" element={<SignUpPage/>} />
             </Routes>
           </Box>
         </Box>

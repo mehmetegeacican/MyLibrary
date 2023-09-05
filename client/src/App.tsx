@@ -1,7 +1,7 @@
 import { Box, CssBaseline, ThemeProvider, Toolbar, createTheme } from "@mui/material";
 
-import React from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BookPage from "./pages/Books";
 import Navbar from "./layout/Navbar";
 import SideNav from "./layout/SideNav";
@@ -10,6 +10,7 @@ import AuthorsPage from "./pages/Authors";
 import CategoriesPage from "./pages/Categories";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
 
 
 
@@ -20,6 +21,7 @@ function App() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const {user} = useAuthContext();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -40,12 +42,12 @@ function App() {
           >
             <Toolbar />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/books" element={<BookPage/>} />
-              <Route path="/authors" element={<AuthorsPage/>} />
-              <Route path="/categories" element={<CategoriesPage/>} />
-              <Route path="/login" element={<LoginPage/>} />
-              <Route path="/signup" element={<SignUpPage/>} />
+              <Route path="/" element={ user ? <Dashboard /> : <Navigate to={'/login'}/>} />
+              <Route path="/books" element={user ? <BookPage/> : <Navigate to={'/login'}/>} />
+              <Route path="/authors" element={user ? <AuthorsPage/> : <Navigate to={'/login'}/>} />
+              <Route path="/categories" element={user ? <CategoriesPage/>: <Navigate to={'/login'}/>} />
+              <Route path="/login" element={!user ? <LoginPage/> : <Navigate to={'/'} />} />
+              <Route path="/signup" element={!user ? <SignUpPage/> : <Navigate to={'/'}/>} />
             </Routes>
           </Box>
         </Box>

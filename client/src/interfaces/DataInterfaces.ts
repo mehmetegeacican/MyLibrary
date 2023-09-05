@@ -32,6 +32,12 @@ export type ApiResult = {
 };
 
 
+export interface IUser {
+  email:string;
+  token:string;
+}
+
+
 export interface IBookByAuthorStat {
   author: string;
   total: number;

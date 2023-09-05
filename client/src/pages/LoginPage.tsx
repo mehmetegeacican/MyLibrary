@@ -3,21 +3,26 @@ import { Button, Container, Grid, Paper, Stack, Typography, } from '@mui/materia
 import React from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import { login } from '../apis/authApis';
+import { useAuthForms } from '../hooks/formHooks/useAuthForms';
 
 interface IAuthForm {
     name:string;
     setName:Function;
     password:string;
-    setPassword: Function
+    setPassword: Function;
 }
 
 export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
-
+    const {loginUser} = useAuthForms();
 
     //Submit
-    const submit = () => {
-
+    const submit = async () => {
+        if(name && password){
+            await loginUser(name,password);
+        }
     }
     
     //Render
@@ -29,7 +34,7 @@ export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
                     <StringValueField label={'Enter Password'} data={password} setter={setPassword} />
                 </Stack>
-                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Login </Button>
+                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Login </Button>
             </Stack>
         </Fragment>
 

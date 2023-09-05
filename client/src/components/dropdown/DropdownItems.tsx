@@ -1,10 +1,12 @@
 import { MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+
+
 
 
 export const SignedInItems = [
     (<MenuItem key={0} onClick={() => console.log("Profile")}>Profile</MenuItem>),
-    (<MenuItem key={1} onClick={() => console.log("My account")}>My account</MenuItem>),
     (<MenuItem key={2} onClick={() => console.log("Logout")}>Logout</MenuItem>)
 ]
 

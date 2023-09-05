@@ -1,6 +1,7 @@
-import { ClickAwayListener, Grow, MenuList, Paper, Popper } from '@mui/material'
+import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@mui/material'
 import { NotSignedInItems, SignedInItems } from './DropdownItems';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useEffect } from 'react';
 
 
 interface DropdownMenuInterface {
@@ -11,7 +12,14 @@ interface DropdownMenuInterface {
 
 export default function DropdownMenu({ open, anchor, handleClose }: DropdownMenuInterface) {
     //Hooks & Contexts
-    const {user} = useAuthContext();
+    const {user,dispatch} = useAuthContext();
+
+    useEffect(() => {
+        if(user){
+            SignedInItems[1] = (<MenuItem key={2} onClick={() => dispatch({type:'LOG_OUT',payload:null})}>Logout</MenuItem>)
+        }
+    },[user]);
+    
     return (
         <Popper
             open={open}

@@ -4,21 +4,29 @@ import React from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import { login } from '../apis/authApis';
 
 interface IAuthForm {
     name:string;
     setName:Function;
     password:string;
-    setPassword: Function
+    setPassword: Function;
 }
 
 export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
-    const {user} = useAuthContext();
+    const {dispatch} = useAuthContext();
 
     //Submit
-    const submit = () => {
-        console.log(user);
+    const submit = async () => {
+        if(name && password){
+            const data = await login(name,password);
+            let userData = {
+                email:data.email,
+                token:data.token
+            };
+            dispatch({type:'LOGIN',payload:userData});
+        }
     }
     
     //Render
@@ -30,7 +38,7 @@ export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
                     <StringValueField label={'Enter Password'} data={password} setter={setPassword} />
                 </Stack>
-                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Login </Button>
+                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Login </Button>
             </Stack>
         </Fragment>
 

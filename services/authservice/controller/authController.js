@@ -44,7 +44,22 @@ const signUp = async (req, res) => {
  * @param {*} res 
  */
 const login = async (req, res) => {
+    const {email,password} = req.body;
+    try{
+        const ifExists = await checkIfUserExists(email,password);
+        if(ifExists){
+            const val = await getIdOfUser(email);
+            const token = createToken(val[0].id);
+            res.status(200).json({email,token});
 
+        }
+        else{
+            res.status(400).json({message:"The user does not exist"});
+        }
+    }catch(e){
+        console.log(e);
+        res.status(500).json({error:"Internal Server Error"})
+    }
 }
 /**
  * Delete Request

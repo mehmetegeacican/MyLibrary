@@ -24,6 +24,7 @@ describe('POST -> /api/v1/auth/signup', () => {
         // Reset the call count of the mock function before each test
         addNewUser.mockClear();
         checkIfUserExists.mockClear();
+        getIdOfUser.mockClear();
         jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
     });
     afterEach(() => {
@@ -69,3 +70,55 @@ describe('POST -> /api/v1/auth/signup', () => {
         expect(checkIfUserExists).toHaveBeenCalledTimes(1);
     });
 });
+
+
+describe('POST --> /api/v1/auth/login', () => {
+    beforeEach(() => {
+        // Reset the call count of the mock function before each test
+        checkIfUserExists.mockClear();
+        getIdOfUser.mockClear();
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
+    });
+    afterEach(() => {
+        jest.restoreAllMocks(); // Restore console.log after each test
+    });
+    it('Should successfully login', async () => {
+        //Given
+        checkIfUserExists.mockResolvedValue(true);
+        getIdOfUser.mockResolvedValue([{id:1}]);
+        //When
+        const response = await request(app).post('/api/v1/auth/login').send({ email: 'test@example.com', password: 'password123' });
+        //Then
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('email', 'test@example.com');
+        expect(response.body).toHaveProperty('token');
+        //Verify
+        expect(checkIfUserExists).toHaveBeenCalledTimes(1);
+        expect(getIdOfUser).toHaveBeenCalledTimes(1);
+    });
+    it('Should not login to an unexisting user', async () => {
+        //Given
+        checkIfUserExists.mockResolvedValue(false);
+        //When
+        const response = await request(app).post('/api/v1/auth/login').send({ email: 'test@example.com', password: 'password123' });
+        //Then
+        expect(response.status).toBe(400);
+        expect(response.body).toEqual({message:"The user does not exist"});
+        //Verify
+        expect(checkIfUserExists).toHaveBeenCalledTimes(1);
+        expect(getIdOfUser).toHaveBeenCalledTimes(0);
+    });
+    it('Should give 500 error for the case of an internal server error', async () => {
+        //Given
+        const mockError = 'Internal Server Error';
+        checkIfUserExists.mockRejectedValue(mockError);
+        //When
+        const response = await request(app).post('/api/v1/auth/login').send({ email: 'test@example.com', password: 'password123' });
+        //Then
+        expect(response.status).toBe(500);
+        expect(response.body.error).toBe("Internal Server Error");
+        //Verify
+        expect(checkIfUserExists).toHaveBeenCalledTimes(1);
+    });
+});
+

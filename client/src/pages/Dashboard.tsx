@@ -72,7 +72,7 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
-                        {bookCountByAuthor && <PieChart chartData={bookCountByCategory} />}
+                        {bookCountByAuthor && <BarChart chartData={bookCountByCategory} />}
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={4} lg={3}>

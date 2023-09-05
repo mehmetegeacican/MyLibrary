@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { login } from '../apis/authApis';
+import { useAuthForms } from '../hooks/formHooks/useAuthForms';
 
 interface IAuthForm {
     name:string;
@@ -15,17 +16,12 @@ interface IAuthForm {
 
 export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
-    const {dispatch} = useAuthContext();
+    const {loginUser} = useAuthForms();
 
     //Submit
     const submit = async () => {
         if(name && password){
-            const data = await login(name,password);
-            let userData = {
-                email:data.email,
-                token:data.token
-            };
-            dispatch({type:'LOGIN',payload:userData});
+            await loginUser(name,password);
         }
     }
     

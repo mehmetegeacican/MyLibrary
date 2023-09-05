@@ -1,5 +1,23 @@
 version: "3"
 services:
+  authservice:
+    image: authservice:1.0
+    ports:
+      - "4005:4000"
+    environment:
+      PORT: 4005
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - ./authservice:/app
+      - /app/node_modules
+    command: npm run dev
+
+    networks:
+      - library-network
   client:
     ports:
       - "3000:5173"

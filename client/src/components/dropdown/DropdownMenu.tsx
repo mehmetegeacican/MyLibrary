@@ -14,9 +14,14 @@ export default function DropdownMenu({ open, anchor, handleClose }: DropdownMenu
     //Hooks & Contexts
     const {user,dispatch} = useAuthContext();
 
+    const logOut = () => {
+        dispatch({type:'LOG_OUT',payload:null});
+        localStorage.removeItem('user');
+    }
+    
     useEffect(() => {
         if(user){
-            SignedInItems[1] = (<MenuItem key={2} onClick={() => dispatch({type:'LOG_OUT',payload:null})}>Logout</MenuItem>)
+            SignedInItems[1] = (<MenuItem key={2} onClick={() => logOut()}>Logout</MenuItem>)
         }
     },[user]);
     

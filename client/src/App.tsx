@@ -46,8 +46,8 @@ function App() {
               <Route path="/books" element={user ? <BookPage/> : <Navigate to={'/login'}/>} />
               <Route path="/authors" element={user ? <AuthorsPage/> : <Navigate to={'/login'}/>} />
               <Route path="/categories" element={user ? <CategoriesPage/>: <Navigate to={'/login'}/>} />
-              <Route path="/login" element={<LoginPage/>} />
-              <Route path="/signup" element={<SignUpPage/>} />
+              <Route path="/login" element={!user ? <LoginPage/> : <Navigate to={'/'} />} />
+              <Route path="/signup" element={!user ? <SignUpPage/> : <Navigate to={'/'}/>} />
             </Routes>
           </Box>
         </Box>

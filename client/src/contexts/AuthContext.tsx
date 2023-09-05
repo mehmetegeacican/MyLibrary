@@ -32,10 +32,14 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({childre
     });
     useEffect(() => {
       //Parse the Local Storages json String
-      const user = JSON.parse(localStorage.getItem('user') ?? "");
+      let userData;
+      const user = localStorage.getItem('user');
+      if(user){
+        userData = JSON.parse(user);
+      }
       //If this is present, then we have a user present, initial dispatch 
       if (user) {
-          dispatch({ type: 'LOGIN', payload: user });
+          dispatch({ type: 'LOGIN', payload: userData });
       }
   }, []);
     return (

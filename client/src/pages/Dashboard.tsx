@@ -1,11 +1,10 @@
 import { Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
 import BarChart from '../data/charts/BarChart';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import React from 'react';
-import PieChart from '../data/charts/PieChart';
 import DougnutChart from '../data/charts/DougnutChart';
 
 export default function Dashboard() {

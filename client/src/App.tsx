@@ -1,6 +1,6 @@
 import { Box, CssBaseline, ThemeProvider, Toolbar, createTheme } from "@mui/material";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import BookPage from "./pages/Books";
 import Navbar from "./layout/Navbar";
@@ -10,6 +10,7 @@ import AuthorsPage from "./pages/Authors";
 import CategoriesPage from "./pages/Categories";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
 
 
 
@@ -20,6 +21,12 @@ function App() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const {user} = useAuthContext();
+
+
+  useEffect(() => {
+    console.log(user);
+  },[user])
 
   return (
     <ThemeProvider theme={defaultTheme}>

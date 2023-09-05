@@ -9,6 +9,6 @@ export const SignedInItems = [
 ]
 
 export const NotSignedInItems = [
-    (<Link to={'/login'}><MenuItem key={0} onClick={() => console.log("Login")}>Login</MenuItem></Link>),
-    (<Link to={'signup'}><MenuItem key={1} onClick={() => console.log("My account")}>Sign Up</MenuItem></Link>),
+    (<Link to={'/login'} key={0}><MenuItem key={0} color='secondary'>Login</MenuItem></Link>),
+    (<Link to={'signup'} key={1}><MenuItem key={1} color='secondary'>Sign Up</MenuItem></Link>),
 ]

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { AuthAction, AuthContextProviderProps, AuthContextType, AuthState } from "../interfaces/ReducerInterfaces";
 
 export const AuthDataContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,6 +30,14 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({childre
     const [state, dispatch] = useReducer(authReducer, {
         user: null
     });
+    useEffect(() => {
+      //Parse the Local Storages json String
+      const user = JSON.parse(localStorage.getItem('user') ?? "");
+      //If this is present, then we have a user present, initial dispatch 
+      if (user) {
+          dispatch({ type: 'LOGIN', payload: user });
+      }
+  }, []);
     return (
         <AuthDataContext.Provider value={{ ...state, dispatch }}>
             {children}

@@ -14,6 +14,8 @@ export const login = async (username:string,password:string) => {
             email:username,
             password:password
         });
+        //Local Storage can be moved to the useAuthForm Hook later
+        localStorage.setItem('user',JSON.stringify(res.data));
         return res.data ?? null;
     } catch(e){
         console.log(e)

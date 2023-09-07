@@ -2,7 +2,8 @@ import { Divider, IconButton, List, Toolbar, styled } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import { drawerWidth } from '../constants/sizes';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems, secondaryListItems } from './NavItems';
+import { mainListItems, mainListItemsSignedOut } from './NavItems';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -37,6 +38,7 @@ interface DrawerProps {
 }
 
 export default function SideNav({ open, toggleDrawer }: DrawerProps) {
+    const {user} = useAuthContext();
     return (
         <Drawer variant="permanent" open={open} sx={{ height: '100vh' }}>
             <Toolbar
@@ -53,7 +55,8 @@ export default function SideNav({ open, toggleDrawer }: DrawerProps) {
             </Toolbar>
             <Divider />
             <List component="nav">
-                {mainListItems}
+                {user  &&  mainListItems}
+                {!user && mainListItemsSignedOut}
                 <Divider sx={{ my: 1 }} />
                 {/*secondaryListItems*/}
             </List>

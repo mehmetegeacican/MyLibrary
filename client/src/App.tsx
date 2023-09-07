@@ -21,7 +21,7 @@ function App() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -29,7 +29,7 @@ function App() {
         <Box sx={{ display: 'flex', maxWidth: "100vw" }}>
           <CssBaseline />
           <Navbar open={open} toggleDrawer={toggleDrawer} />
-          <SideNav open={open} toggleDrawer={toggleDrawer} />
+          {<SideNav open={open} toggleDrawer={toggleDrawer} />}
           <Box
             alignContent={"center"}
             sx={{
@@ -42,12 +42,12 @@ function App() {
           >
             <Toolbar />
             <Routes>
-              <Route path="/" element={ user ? <Dashboard /> : <Navigate to={'/login'}/>} />
-              <Route path="/books" element={user ? <BookPage/> : <Navigate to={'/login'}/>} />
-              <Route path="/authors" element={user ? <AuthorsPage/> : <Navigate to={'/login'}/>} />
-              <Route path="/categories" element={user ? <CategoriesPage/>: <Navigate to={'/login'}/>} />
-              <Route path="/login" element={!user ? <LoginPage/> : <Navigate to={'/'} />} />
-              <Route path="/signup" element={!user ? <SignUpPage/> : <Navigate to={'/'}/>} />
+              <Route path="/" element={user ? <Dashboard /> : <Navigate to={'/login'} />} />
+              <Route path="/books" element={user ? <BookPage /> : <Navigate to={'/login'} />} />
+              <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
+              <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
+              <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
+              <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
             </Routes>
           </Box>
         </Box>

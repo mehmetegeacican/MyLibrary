@@ -44,11 +44,39 @@ export const mainListItems = (
     <Link to="/categories">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-         <CategoryIcon/>
+          <CategoryIcon />
         </ListItemIcon>
         <ListItemText primary="Categories" />
       </ListItemButton>
     </Link>
+  </React.Fragment>
+);
+
+export const mainListItemsSignedOut = (
+  <React.Fragment>
+    <ListItemButton sx={{ color: "black" }}>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Introduction" color='secondary' />
+    </ListItemButton>
+    <Link to="/signup">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sign Up" color='secondary' />
+      </ListItemButton>
+    </Link>
+    <Link to="/login">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Login" color='secondary' />
+      </ListItemButton>
+    </Link>
+
   </React.Fragment>
 );
 

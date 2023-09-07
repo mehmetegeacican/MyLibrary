@@ -11,6 +11,8 @@ export const useAuthForms = () => {
 
     //Functions
     const loginUser = async (email:string,password:string) => {
+        setError(false);
+        setMessage("");
         if(!email || !password){
             setError(true);
             setMessage("Email or Password can not be empty");
@@ -21,6 +23,8 @@ export const useAuthForms = () => {
     };
 
     const signUpUser = async (email:string,password:string) => {
+        setError(false);
+        setMessage("");
         if(!email || !password){
             setError(true);
             setMessage("Email or Password can not be empty");

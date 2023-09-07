@@ -1,5 +1,5 @@
  
-import { Button, Container, Grid, Paper, Stack, Typography, } from '@mui/material';
+import { Alert, Button, Container, Grid, Paper, Stack, Typography, } from '@mui/material';
 import React from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
@@ -15,13 +15,13 @@ interface IAuthForm {
 
 export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
-    const {signUpUser} = useAuthForms();
+    const {signUpUser,error,message} = useAuthForms();
 
     //Submit
     const submit = async  () => {
-        if(name && password){
-            await signUpUser(name,password);
-        }
+
+        await signUpUser(name,password);
+        
     }
     
     //Render
@@ -34,6 +34,7 @@ export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
                     <StringValueField label={'Enter Password'} data={password} setter={setPassword} />
                 </Stack>
                 <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Sign Up </Button>
+                {error && <Alert sx={{ mb:2 }} severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
 

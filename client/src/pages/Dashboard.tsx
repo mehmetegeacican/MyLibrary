@@ -1,16 +1,17 @@
 import { Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
 import BarChart from '../data/charts/BarChart';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import React from 'react';
 import DougnutChart from '../data/charts/DougnutChart';
+import { IBookByAuthorStat } from '../interfaces/DataInterfaces';
 
 export default function Dashboard() {
     //Hooks & Context
     const { books, categories, authors } = useLibraryDataContext();
-    const [bookCountByAuthor,setBookCountByAuthor] = React.useState<any>();
+    const [bookCountByAuthor,setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
     const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
     const [bookCountByStat,setBookCountByStat] = React.useState<any>();
     //UseCallBack 
@@ -28,6 +29,16 @@ export default function Dashboard() {
         fetchData();
     }, [fetchData]);
 
+    //Filter Method for not including multiple in the stats
+    const filteredBookStats = useMemo(() => {
+        if(bookCountByAuthor){
+            return bookCountByAuthor.filter((item:IBookByAuthorStat) => {
+                return item.author !== "Multiple"
+            })
+        }
+        return [];
+    },[bookCountByAuthor]);
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -41,7 +52,7 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
-                        {bookCountByAuthor && <BarChart chartData={bookCountByAuthor} />}
+                        {bookCountByAuthor && <BarChart chartData={filteredBookStats} />}
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}

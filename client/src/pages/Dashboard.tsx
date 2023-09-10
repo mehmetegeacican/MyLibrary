@@ -19,7 +19,7 @@ export default function Dashboard() {
         const resBook = await fetchAllBookCountsByAuthor();
         const resCategory = await fetchAllBookCountsByCategory();
         const resStat = await fetchAllBookCountsByStat();
-        setBookCountByAuthor(resBook.slice(0,10));
+        setBookCountByAuthor(resBook.slice(0,12));
         setBookCountByCategory(resCategory.slice(0,10));
         setBookCountByStat(resStat);
     }, [books]);
@@ -33,7 +33,7 @@ export default function Dashboard() {
     const filteredBookStats = useMemo(() => {
         if(bookCountByAuthor){
             return bookCountByAuthor.filter((item:IBookByAuthorStat) => {
-                return item.author !== "Multiple"
+                return item.author !== "Multiple" && item.author !== "Me";
             })
         }
         return [];

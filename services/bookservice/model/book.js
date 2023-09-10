@@ -78,34 +78,35 @@ const executeFindABookByNameAndAuthor = async (bookName, author) => {
  * Helper Function to Format the books based on the categories
  * @param {*string[]} bookCategories 
  */
-const formatCategories = (bookCategories) => {
-    let category = "{";
-    bookCategories.forEach((element, index) => {
+const formatDatas = (bookDatas) => {
+    let data = "{";
+    bookDatas.forEach((element, index) => {
         let value = "";
-        if (index === bookCategories.length - 1) {
+        if (index === bookDatas.length - 1) {
             value = element;
         }
         else {
             value = element + ",";
         }
-        category += value;
+        data += value;
     });
-    category += "}";
-    return category;
+    data += "}";
+    return data;
 };
 
 /**
  * Query Function To Insert a New Book
  */
-const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
+const executeInsertNewBook = async (bookName, desc, bookCategories, bookStatus, bookAuthors) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = dayjs().format('YYYY-MM-DD');
-    const category = formatCategories(bookCategories);    
+    const category = formatDatas(bookCategories);    
+    const authors = formatDatas(bookAuthors);
     try {
         //Step 2 -- Insert to the Table
-        const insertQuery = `INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`;
-        const values = [bookName, author, date, category, bookStatus];
+        const insertQuery = `INSERT INTO books (name, desc, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`;
+        const values = [bookName, desc, date, category, bookStatus,authors];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }
@@ -156,7 +157,7 @@ const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) =
     let client = await connectDb();
     try{
         const updateQuery = `UPDATE books SET "name"=$1, author=$2, category=$3, status=$4 WHERE id=$5`;
-        const values = [bookName,author,formatCategories(bookCategories),bookStatus,id];
+        const values = [bookName,author,formatDatas(bookCategories),bookStatus,id];
         await client.query(updateQuery,values);
         return "Data Successfully updated";
     }

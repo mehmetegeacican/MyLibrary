@@ -190,21 +190,23 @@ describe('executeInsertNewBook', () => {
     it('should execute a new book insertion sql', async () => {
         //Given
         const bookName = 'New Book';
-        const author = 'Author 1';
+        const desc = 'Desc 1';
         const bookCategories = ['Category 1', 'Category 2'];
+        const bookAuthors = ['Author 1', 'Author 2'];
         const bookStatus = 'Will Read';
         const mockClient = { query: jest.fn().mockResolvedValue() };
         connectDb.mockResolvedValue(mockClient);
         //When
-        const result = await executeInsertNewBook(bookName,author,bookCategories,bookStatus);
+        const result = await executeInsertNewBook(bookName,desc,bookCategories,bookStatus,bookAuthors);
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, desc, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`,
             [
               bookName,
-              author,
+              desc,
               expect.any(String),
               expect.any(String),
               bookStatus,
+              expect.any(String)
             ]
         );
         expect(result).toBe('Data Successfully inserted');
@@ -218,22 +220,24 @@ describe('executeInsertNewBook', () => {
     it('should throw an error if the db connection is not successfull', async () => {
         //Given
         const bookName = 'New Book';
-        const author = 'Author 1';
+        const desc = 'Desc 1';
         const bookCategories = ['Category 1', 'Category 2'];
         const bookStatus = 'Will Read';
+        const bookAuthors = ['Author 1', 'Author 2'];
         const mockError = new Error('DB Connection Unsuccessful');
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeInsertNewBook(bookName, author, bookCategories, bookStatus)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, desc, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`,
             [
               bookName,
-              author,
+              desc,
               expect.any(String),
               expect.any(String),
               bookStatus,
+              expect.any(String)
             ]
         );
         //Verify

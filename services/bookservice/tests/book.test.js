@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor , executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook} = require('../model/book');
+const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndDesc , executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook} = require('../model/book');
 const { connectDb, closeDb } = require('../dbconnection');
 
 //Mock the ConnectDb & CloseDb
@@ -119,7 +119,7 @@ describe('executeGetSpecificBook', () => {
     });
 });
 
-describe('executeFindABookByNameAndAuthor', () => {
+describe('executeFindABookByNameAndDesc', () => {
     beforeEach(() => {
         // Reset the call count of the mock function before each test
         connectDb.mockClear();
@@ -132,16 +132,16 @@ describe('executeFindABookByNameAndAuthor', () => {
     it('should retrieve a book via its name and its author', async () => {
         // Given
         const bookName = 'Book 1';
-        const author = 'Author 1';
+        const desc = 'Desc 1';
         const mockQueryResult = { rows: mockBookDataFiltered };
         const mockClient = { query: jest.fn().mockResolvedValue(mockQueryResult) };
         connectDb.mockResolvedValue(mockClient);
         //When 
-        const result = await executeFindABookByNameAndAuthor(bookName, author);
+        const result = await executeFindABookByNameAndDesc(bookName, desc);
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(author) = UPPER($2)',
-            [bookName, author]
+            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(desc) = UPPER($2)',
+            [bookName, desc]
         );
         expect(result).toEqual(mockBookDataFiltered);
         //Verify
@@ -154,16 +154,16 @@ describe('executeFindABookByNameAndAuthor', () => {
     it('should handle the db', async () => {
         //Given
         const bookName = 'Book 1';
-        const author = 'Author 1';
+        const desc = 'Desc 1';
         const mockError = new Error('DB Connection Unsuccessful');
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeFindABookByNameAndAuthor(bookName, author)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeFindABookByNameAndDesc(bookName, desc)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(author) = UPPER($2)',
-            [bookName, author]
+            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(desc) = UPPER($2)',
+            [bookName, desc]
         );
         //Verify
         expect(mockClient.query).toHaveBeenCalledTimes(1);

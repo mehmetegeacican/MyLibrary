@@ -53,14 +53,14 @@ const executeGetSpecificBook = async (id) => {
  * @param {*string} author the author
  * @returns 
  */
-const executeFindABookByNameAndAuthor = async (bookName, author) => {
+const executeFindABookByNameAndDesc = async (bookName, desc) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
     try {
         //Step 2 -- Get the Result
-        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(author) = UPPER($2)`;
-        const values = [bookName, author];
+        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(desc) = UPPER($2)`;
+        const values = [bookName, desc];
         const result = await client.query(checkQuery, values);
         data = result.rows;
         return data;
@@ -175,7 +175,7 @@ module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
     executeInsertNewBook,
-    executeFindABookByNameAndAuthor,
+    executeFindABookByNameAndDesc,
     executeDeleteABookViaId,
     executeUpdateBook
 }

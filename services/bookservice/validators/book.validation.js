@@ -27,8 +27,8 @@ const isArrayofStrings = (value) => {
 const bookBodyValidate = () => [
     check('bookName').notEmpty().withMessage('Book Name is Required'),
     check('bookName').isString().withMessage('Book Name must be a string'),
-    check('author').notEmpty().withMessage('Author name is required'),
-    check('author').isString().withMessage('Author Name must be a string'),
+    check('desc').notEmpty().withMessage('Description is required'),
+    check('desc').isString().withMessage('Description  must be a string'),
     check('bookStatus').notEmpty().withMessage('Status must not be empty'),
     check('bookStatus').isString().withMessage('Status must be a string'),
     check('bookStatus').isIn(['Red', 'Reading', 'Will Read']).withMessage('Status can only be one of the three: Red, Reading, Will Read'),

@@ -1,5 +1,5 @@
 
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByNameAndAuthor, executeDeleteABookViaId , executeUpdateBook} = require("../model/book");
+const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByName, executeDeleteABookViaId , executeUpdateBook} = require("../model/book");
 
 const { validationResult } = require('express-validator');
 
@@ -52,19 +52,19 @@ const getAllBooks = async (req, res) => {
 const addNewBook = async (req, res) => {
     try {
         //Step 1 -- Get the Variables 
-        const { bookName, author, bookCategories, bookStatus } = req.body;
+        const { bookName, desc, bookCategories, bookStatus, bookAuthors } = req.body;
         //Step 2 -- Validation Result -- Check for Inputs         
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
         //Step 3 -- Check if the Book Exists
-        const ifAlreadyexists = await executeFindABookByNameAndAuthor(bookName, author);
+        const ifAlreadyexists = await executeFindABookByName(bookName);
         if (ifAlreadyexists.length > 0) {
             return res.status(400).json({ error: "The Book Already Exists in the db!" })
         }
         //Step 3 -- Insertion
-        const result = await executeInsertNewBook(bookName, author, bookCategories, bookStatus);
+        const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors);
         res.status(201).json({ message: result });
     }
     catch (e) {
@@ -126,7 +126,7 @@ const updateABook = async (req,res) => {
             return res.status(400).json({error:"The ID does not exist!"});
         }
         //Step 4 -- Check if there is already a book with the same name and author in the system
-        const bookByNameAndAuth = await executeFindABookByNameAndAuthor(bookName,author);
+        const bookByNameAndAuth = await executeFindABookByName(bookName);
         let filtered = bookByNameAndAuth.filter((item) => {
             return item.id !== parseInt(id);
         });

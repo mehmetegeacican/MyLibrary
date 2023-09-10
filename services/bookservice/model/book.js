@@ -53,14 +53,14 @@ const executeGetSpecificBook = async (id) => {
  * @param {*string} author the author
  * @returns 
  */
-const executeFindABookByNameAndDesc = async (bookName, desc) => {
+const executeFindABookByName = async (bookName) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
     try {
         //Step 2 -- Get the Result
-        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(desc) = UPPER($2)`;
-        const values = [bookName, desc];
+        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1)`;
+        const values = [bookName];
         const result = await client.query(checkQuery, values);
         data = result.rows;
         return data;
@@ -97,16 +97,17 @@ const formatDatas = (bookDatas) => {
 /**
  * Query Function To Insert a New Book
  */
-const executeInsertNewBook = async (bookName, desc, bookCategories, bookStatus, bookAuthors) => {
+const executeInsertNewBook = async (bookName, description, bookCategories, bookStatus, bookAuthors) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = dayjs().format('YYYY-MM-DD');
     const category = formatDatas(bookCategories);    
     const authors = formatDatas(bookAuthors);
+    console.log("Here at xecute Insert new book")
     try {
         //Step 2 -- Insert to the Table
-        const insertQuery = `INSERT INTO books (name, desc, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`;
-        const values = [bookName, desc, date, category, bookStatus,authors];
+        const insertQuery = `INSERT INTO books (name, description, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`;
+        const values = [bookName, description, date, category, bookStatus,authors];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }
@@ -175,7 +176,7 @@ module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
     executeInsertNewBook,
-    executeFindABookByNameAndDesc,
+    executeFindABookByName,
     executeDeleteABookViaId,
     executeUpdateBook
 }

@@ -1,12 +1,12 @@
 const request = require('supertest');
 const app = require('../app');
-const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByNameAndAuthor, executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook} = require('../model/book');
+const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByName, executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook} = require('../model/book');
 
 //Step 1 -- Mock the executeGetAllBooks Function
 jest.mock('../model/book', () => ({
   executeGetAllBooks: jest.fn(),
   executeGetSpecificBook: jest.fn(),
-  executeFindABookByNameAndAuthor: jest.fn(),
+  executeFindABookByName: jest.fn(),
   executeInsertNewBook: jest.fn(),
   executeDeleteABookViaId: jest.fn(),
   executeUpdateBook: jest.fn()
@@ -127,7 +127,7 @@ describe('GET /api/v1/books/:id', function () {
 describe('POST /api/v1/books', function () {
   beforeEach(() => {
     // Reset the call count of the mock functions before each test
-    executeFindABookByNameAndAuthor.mockClear();
+    executeFindABookByName.mockClear();
     executeInsertNewBook.mockClear();
     jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
   });
@@ -138,12 +138,12 @@ describe('POST /api/v1/books', function () {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
     const mockInsertionResult = 'Data Successfully inserted';
-    executeFindABookByNameAndAuthor.mockResolvedValue([]);
+    executeFindABookByName.mockResolvedValue([]);
     executeInsertNewBook.mockResolvedValue(mockInsertionResult);
     //When
     const response = await request(app).post('/api/v1/books').send(mockReqBody);
@@ -151,54 +151,54 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(201);
     expect(response.body).toEqual({ message: mockInsertionResult });
 
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledWith('New Book', 'Author 1');
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
     expect(executeInsertNewBook).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red');
   });
   it('should not insert a duplicate book to the db', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
     const mockInsertionResult = 'The Book Already Exists in the db!';
-    executeFindABookByNameAndAuthor.mockResolvedValue([mockBookData[0]]);
+    executeFindABookByName.mockResolvedValue([mockBookData[0]]);
     //When
     const response = await request(app).post('/api/v1/books').send(mockReqBody);
     //Then
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ error: mockInsertionResult });
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledWith('New Book', 'Author 1');
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(1);
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
+    expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should give an internal server error in the case of db connection loss', async () => {
     //Given
     const mockReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Author 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
     const mockError = new Error('DB Connection Unsuccessful');
-    executeFindABookByNameAndAuthor.mockRejectedValue(mockError);
+    executeFindABookByName.mockRejectedValue(mockError);
     //When
     const response = await request(app).post('/api/v1/books').send(mockReqBody);
     //Then
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: mockError.message });
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledWith('New Book', 'Author 1');
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(1);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should not accept empty bookName', async () => {
     //Given
     const mockReqBody = {
       bookName: null,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -208,14 +208,14 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body.errors[0].msg).toEqual("Book Name is Required");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept string book names', async () => {
     //Given
     const mockReqBody = {
       bookName: 1,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -225,14 +225,14 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body.errors[0].msg).toEqual("Book Name must be a string");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
-  it('should not accept empty author name', async () => {
+  it('should not accept empty description', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: null,
+      desc: null,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -240,16 +240,16 @@ describe('POST /api/v1/books', function () {
     const response = await request(app).post('/api/v1/books').send(mockReqBody);
     //Then
     expect(response.status).toBe(400);
-    expect(response.body.errors[0].msg).toEqual("Author name is required");
+    expect(response.body.errors[0].msg).toEqual("Description is required");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept a string author name', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: 1,
+      desc: 1,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -257,16 +257,16 @@ describe('POST /api/v1/books', function () {
     const response = await request(app).post('/api/v1/books').send(mockReqBody);
     //Then
     expect(response.status).toBe(400);
-    expect(response.body.errors[0].msg).toEqual("Author Name must be a string");
+    expect(response.body.errors[0].msg).toEqual("Description  must be a string");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept status values that are either Red,Reading or Will Read', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Available',
     }
@@ -276,14 +276,14 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body.errors[0].msg).toEqual("Status can only be one of the three: Red, Reading, Will Read");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept string values as a parameter for Status', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 1,
     }
@@ -293,14 +293,14 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body.errors[0].msg).toEqual("Status must be a string");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should not accept empty status', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: null,
     }
@@ -310,13 +310,13 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body.errors[0].msg).toEqual("Status must not be empty");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept book categories as array', async () => {
     const invalidReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Author 1',
       bookCategories: 'Category 1, Category 2',
       bookStatus: 'Reading',
     };
@@ -327,13 +327,13 @@ describe('POST /api/v1/books', function () {
     expect(response.body.errors.length).toEqual(1);
     expect(response.body.errors[0].msg).toEqual("The Categories must be an array of strings");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
   it('should only accept book categories that are an array of string', async () => {
     const invalidReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Author 1',
       bookCategories: ['Category 1', 42],
       bookStatus: 'Reading',
     };
@@ -344,7 +344,7 @@ describe('POST /api/v1/books', function () {
     expect(response.body.errors.length).toEqual(1);
     expect(response.body.errors[0].msg).toEqual("The Categories must be an array of strings");
     //Verify
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
 });
@@ -425,7 +425,7 @@ describe('DELETE /api/v1/books/:id', function (){
 describe('PUT /api/v1/books/:id', function () {
   beforeEach(() => {
     // Reset the call count of the mock function before each test
-    executeFindABookByNameAndAuthor.mockClear();
+    executeFindABookByName.mockClear();
     executeGetSpecificBook.mockClear();
     executeUpdateBook.mockClear();
     jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
@@ -437,7 +437,7 @@ describe('PUT /api/v1/books/:id', function () {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -449,7 +449,7 @@ describe('PUT /api/v1/books/:id', function () {
     ]
     const mockId = 1;
     const mockUpdateResult = 'Data Successfully updated';
-    executeFindABookByNameAndAuthor.mockResolvedValue(mockResult);
+    executeFindABookByName.mockResolvedValue(mockResult);
     executeUpdateBook.mockResolvedValue(mockUpdateResult);
     executeGetSpecificBook.mockResolvedValue([mockBookData[0]]);
     //When
@@ -458,11 +458,11 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ message: mockUpdateResult });
 
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor );
+    expect(executeFindABookByName).toHaveBeenCalledWith(mockNewBookName);
     expect(executeUpdateBook).toHaveBeenCalledWith(mockId.toString(),mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red');
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(1);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeUpdateBook).toHaveBeenCalledTimes(1);
   });
   it('should give an internal server error for not accessing to the db',async () => {
@@ -470,7 +470,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Author 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -484,7 +484,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(executeGetSpecificBook).toHaveBeenCalledWith(mockId.toString());
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give 400 error if the book with the given id is not found', async () => {
@@ -492,7 +492,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Author 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -505,14 +505,14 @@ describe('PUT /api/v1/books/:id', function () {
     expect(executeGetSpecificBook).toHaveBeenCalledWith(mockId.toString());
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the user is trying to update the book name with a name and author combo that already exists with a different Id', async () => {
     //Given
     const mockReqBody = {
       bookName: mockNewBookName,
-      author: mockNewBookAuthor,
+      desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
     }
@@ -524,7 +524,7 @@ describe('PUT /api/v1/books/:id', function () {
       }
     ]
     const mockId = 1;
-    executeFindABookByNameAndAuthor.mockResolvedValue(mockResult);
+    executeFindABookByName.mockResolvedValue(mockResult);
     executeGetSpecificBook.mockResolvedValue([mockBookData[0]]);
     //When
     const response = await request(app).put(`/api/v1/books/${mockId}`).send(mockReqBody);
@@ -534,7 +534,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(executeGetSpecificBook).toHaveBeenCalledWith(mockId.toString());
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(1);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the book Id is entered as string', async () => {
@@ -542,7 +542,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = "asd";
     const mockReqBody = {
       bookName: 'New Book',
-      author: 'Author 1',
+      desc: 'Desc 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -553,7 +553,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("ID should be declared as an integer");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the book name is empty', async () => {
@@ -561,7 +561,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: null,
-      author: 'Author 1',
+      desc: 'Desc 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -572,7 +572,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("Book Name is Required");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the book name is not a string', async () => {
@@ -580,7 +580,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: 1,
-      author: 'Author 1',
+      desc: 'Description 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -591,15 +591,15 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("Book Name must be a string");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
-  it('should give a 400 error if the author is empty', async () => {
+  it('should give a 400 error if the desc is empty', async () => {
     //Given
     const mockId = 1;
     const mockReqBody = {
       bookName: "Updated Book",
-      author: null,
+      desc: null,
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -607,10 +607,10 @@ describe('PUT /api/v1/books/:id', function () {
     const response = await request(app).put(`/api/v1/books/${mockId}`).send(mockReqBody);
     //Then
     expect(response.status).toBe(400);
-    expect(response.body.errors[0].msg).toEqual("Author name is required");
+    expect(response.body.errors[0].msg).toEqual("Description is required");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the author is not a string', async () => {
@@ -618,7 +618,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: "Updated Book",
-      author: 1,
+      desc: 1,
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
     };
@@ -626,10 +626,10 @@ describe('PUT /api/v1/books/:id', function () {
     const response = await request(app).put(`/api/v1/books/${mockId}`).send(mockReqBody);
     //Then
     expect(response.status).toBe(400);
-    expect(response.body.errors[0].msg).toEqual("Author Name must be a string");
+    expect(response.body.errors[0].msg).toEqual("Description  must be a string");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if book status is empty', async () => {
@@ -637,7 +637,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: "Updated Book",
-      author: "Author 1",
+      desc: "Description 1",
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: null,
     };
@@ -648,7 +648,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("Status must not be empty");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if book status is not a string', async () => {
@@ -656,7 +656,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: "Updated Book",
-      author: "Author 1",
+      desc: "Description 1",
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 1,
     };
@@ -667,7 +667,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("Status must be a string");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if book status is not one of the following (Red,Reading,Will Read)', async () => {
@@ -675,7 +675,7 @@ describe('PUT /api/v1/books/:id', function () {
     const mockId = 1;
     const mockReqBody = {
       bookName: "Updated Book",
-      author: "Author 1",
+      desc: "Description 1",
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: "Available",
     };
@@ -686,7 +686,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body.errors[0].msg).toEqual("Status can only be one of the three: Red, Reading, Will Read");
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-    expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+    expect(executeFindABookByName).toHaveBeenCalledTimes(0);
     expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
   it('should give a 400 error if the book categories are not a string array', async () => {
@@ -694,7 +694,7 @@ describe('PUT /api/v1/books/:id', function () {
      const mockId = 1;
      const mockReqBody = {
        bookName: "Updated Book",
-       author: "Author 1",
+       desc: "Description 1",
        bookCategories: ['Category 1',2],
        bookStatus: "Red",
      };
@@ -705,7 +705,7 @@ describe('PUT /api/v1/books/:id', function () {
      expect(response.body.errors[0].msg).toEqual('The Categories must be an array of strings');
      //Verify
      expect(executeGetSpecificBook).toHaveBeenCalledTimes(0);
-     expect(executeFindABookByNameAndAuthor).toHaveBeenCalledTimes(0);
+     expect(executeFindABookByName).toHaveBeenCalledTimes(0);
      expect(executeUpdateBook).toHaveBeenCalledTimes(0);
   });
 });

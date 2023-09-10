@@ -15,7 +15,7 @@ export interface IBook {
   id: number;
   name: string;
   authors: string[];
-  desc:string;
+  description:string;
   entered?: string;
   category: string[];
   status: string;

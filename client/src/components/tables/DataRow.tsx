@@ -1,4 +1,4 @@
-import { TableCell, Button, IconButton, Checkbox } from "@mui/material";
+import { TableCell, Button, IconButton } from "@mui/material";
 import dayjs from "dayjs";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";
@@ -13,7 +13,7 @@ export function isIBook(value: any): value is IBook {
         "id" in value &&
         "name" in value &&
         "authors" in value &&
-        "desc" in value &&
+        "description" in value &&
         "category" in value &&
         "status" in value
     );

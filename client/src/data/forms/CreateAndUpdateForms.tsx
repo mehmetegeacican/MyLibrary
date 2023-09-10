@@ -20,8 +20,9 @@ interface FormInterface {
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
     const [bookName, setBookName] = React.useState<string>('White Fang');
-    const [author, setAuthor] = React.useState<string>('Jack London');
+    const [desc, setDesc] = React.useState<string>('A wolves story by Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
+    const [selectedAuthors, setSelectedAuthors] = React.useState<IAuthor[]>([]);
     const [selectedStatus, setSelectedStatus] = React.useState<string>("Reading");
     //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
@@ -33,18 +34,18 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, author, getStringCategories(selectedCategories), selectedStatus);
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus);
             handleClose!();
         }
         else {
-            await createBook(bookName, author, getStringCategories(selectedCategories), selectedStatus);
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus);
         }
     }
 
     useEffect(() => {
         if (data && isIBook(data)) {
             setBookName(data.name);
-            setAuthor(data.author);
+            setDesc(data.author);
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
         }
@@ -57,26 +58,19 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                 <Stack spacing={2} alignContent={'center'}>
                     <Stack direction={'row'} spacing={2} alignItems={'center'}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
-                        <Autocomplete
-                            fullWidth
-                            options={authors}
-                            getOptionLabel={(option:IAuthor) => option.authorName}
-                            onChange={(event: any, newValue: IAuthor | null) => {
-                                if (newValue) {
-                                    setAuthor(newValue.authorName)
-                                }
-                            }}
-                            id="controllable-states-demo"
-                            renderInput={(params) => (
-                                <TextField {...params} label={"name"} placeholder={"name"} />
-                            )}
-                        />
+                        <StringValueField label='Please Enter the Book Description' data={desc} setter={setDesc} />
                     </Stack>
-
+                    <MultipleSelectionAutocomplete
+                            label="Select Author(s)"
+                            placeholder='Author(s)'
+                            dataset={authors}
+                            selected={selectedAuthors}
+                            setSelected={setSelectedAuthors}
+                        />
                     <MultipleSelectionAutocomplete
                         label="Select Categories"
                         placeholder='categories'
-                        categories={categories}
+                        dataset={categories}
                         selected={selectedCategories}
                         setSelected={setSelectedCategories}
                     />

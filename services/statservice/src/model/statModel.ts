@@ -9,7 +9,11 @@ export const executeGetAuthorCounts = async () => {
     let data;
     try{
         //Step 2 -- Get the Result
-        const result = await client!.query('select author ,count(b.author) as total  from books b group by b."author" order by total desc;');
+        const result = await client!.query(`SELECT c.author_name, COUNT(*) AS author_count
+        FROM books b
+        CROSS JOIN LATERAL unnest(b.authors) AS c(author_name)
+        GROUP BY c.author_name
+        ORDER BY author_count DESC;`);
         data = result.rows;
         return data;
     } catch(e){

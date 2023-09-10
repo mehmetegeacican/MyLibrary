@@ -3,8 +3,8 @@ import { IBookByAuthorStat, IBookByCategoryStat, IBookByStatusStat } from "../..
 export function isBookByAuthorStat(value: any): value is IBookByAuthorStat {
     return (
         typeof value === "object" &&
-        "author" in value &&
-        "total" in value
+        "author_name" in value &&
+        "author_count" in value
     );
 }
 export function isBookByCategoryrStat(value: any): value is IBookByCategoryStat {

@@ -12,8 +12,8 @@ services:
       DB_PASSWORD: 123456
       DB_NAME: librarydb
     volumes:
-      - ./authservice:/app
-      - /app/node_modules
+      - authservice-code:/app
+      - authservice-node-modules:/app/node_modules
     command: npm run dev
 
     networks:
@@ -27,9 +27,9 @@ services:
       VITE_CATEGORYSERVICE_PORT: 4002
       VITE_STATSERVICE_PORT: 4003
       VITE_AUTHORSERVICE_PORT: 4004
-    volumes:
-      - .:/app/
-      - /app/node_modules
+    volumes: 
+      - client-code:/app/
+      - client-node-modules:/app/node_modules
     command: npm run dev
 
     networks:
@@ -51,7 +51,7 @@ services:
     networks:
       - library-network
   statservice:
-    image: statservice:1.2
+    image: statservice:1.4
     ports:
       - "4003:4000"
     environment:
@@ -62,8 +62,8 @@ services:
       DB_PASSWORD: 123456
       DB_NAME: librarydb
     volumes:
-      - .:/app/
-      - /app/node_modules
+      - statservice-code:/app/
+      - statservice-node-modules:/app/node_modules
     command: npm run dev
 
     networks:
@@ -80,7 +80,7 @@ services:
     networks:
       - library-network
   bookservice:
-    image: bookservice:2.2
+    image: bookservice:2.3
     ports:
       - "4001:4000"
     environment:
@@ -107,11 +107,24 @@ services:
       POSTGRES_DB: librarydb
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      
     networks:
       - library-network
 
 volumes:
   postgres-data:
+  authservice-code:
+  authservice-node-modules:
+  client-code:
+  client-node-modules:
+  authorservice-code:
+  authorservice-node-modules:
+  statservice-code:
+  statservice-node-modules:
+  categoryservice-code:
+  categoryservice-node-modules:
+  bookservice-code:
+  bookservice-node_modules:
 
 
 networks:

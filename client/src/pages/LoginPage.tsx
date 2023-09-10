@@ -1,26 +1,28 @@
 
-import { Alert, Button, Container, Grid, Paper, Stack, Typography, } from '@mui/material';
-import React from 'react';
+import { Alert, Button, Container, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
+import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthForms } from '../hooks/formHooks/useAuthForms';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 interface IAuthForm {
-    name:string;
-    setName:Function;
-    password:string;
+    name: string;
+    setName: Function;
+    password: string;
     setPassword: Function;
 }
 
-export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
+export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) => {
     //Hooks & Contexts
-    const {loginUser,error,message} = useAuthForms();
+    const { loginUser, error, message } = useAuthForms();
+    const [passwVisible, setPasswVisible] = useState(true);
 
     //Submit
     const submit = async () => {
-        await loginUser(name,password);
+        await loginUser(name, password);
     }
-    
+
     //Render
     return (
         <Fragment>
@@ -28,10 +30,17 @@ export const LoginForm = ({name,setName,password,setPassword}:IAuthForm) => {
                 <Typography variant='h5' color={'primary'}> Login </Typography>
                 <Stack spacing={2} direction={'row'}>
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
-                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} />
+                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible} />
+                    <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setPasswVisible(!passwVisible)}
+                        edge="end"
+                    >
+                        {passwVisible ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
                 </Stack>
                 <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Login </Button>
-                {error && <Alert sx={{ mb:2 }} severity="error"> {message}</Alert>}
+                {error && <Alert sx={{ mb: 2 }} severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
 

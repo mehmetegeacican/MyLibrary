@@ -1,10 +1,11 @@
  
-import { Alert, Button, Container, Grid, Paper, Stack, Typography, } from '@mui/material';
-import React from 'react';
+import { Alert, Button, Container, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
+import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { useAuthForms } from '../hooks/formHooks/useAuthForms';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 interface IAuthForm {
     name:string;
@@ -16,6 +17,7 @@ interface IAuthForm {
 export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
     //Hooks & Contexts
     const {signUpUser,error,message} = useAuthForms();
+    const [passwVisible, setPasswVisible] = useState(true);
 
     //Submit
     const submit = async  () => {
@@ -31,7 +33,14 @@ export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
                 <Typography variant='h5' color={'primary'}> Sign Up </Typography>
                 <Stack spacing={2} direction={'row'}>
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
-                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} />
+                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible}/>
+                    <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setPasswVisible(!passwVisible)}
+                        edge="end"
+                    >
+                        {passwVisible ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
                 </Stack>
                 <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Sign Up </Button>
                 {error && <Alert sx={{ mb:2 }} severity="error"> {message}</Alert>}

@@ -31,10 +31,10 @@ export default function BarChart({ chartData }: ChartInterface) {
         // Conditional Check Based on Data
         if(chart && isBookByAuthorStat(chart[0])){
             setData({
-                labels: chart.map((item: any) => item.author),
+                labels: chart.map((item: any) => item.author_name),
                 datasets: [{
                     label: 'Number of Books by Author',
-                    data: chart.map((item: any) => item.total),
+                    data: chart.map((item: any) => item.author_count),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 159, 64, 0.2)',

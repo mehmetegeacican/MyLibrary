@@ -20,7 +20,7 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
             let data: string = filter.split("-")[1];
             if (stat === "Name" && !item.name.includes(data)) {
                 return false;
-            } else if (stat === "Author" && !item.author.includes(data)) {
+            } else if (stat === "Author" && !item.authors.includes(data)) {
                 return false;
             } else if (stat === "Status" && item.status !== data) {
                 return false;

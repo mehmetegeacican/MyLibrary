@@ -2,7 +2,7 @@
 
 import { postNewBook, updateABook } from '../../apis/bookApi';
 import { useEffect } from 'react';
-import { ApiResult, ICategory } from '../../interfaces/DataInterfaces';
+import { ApiResult, IAuthor, ICategory } from '../../interfaces/DataInterfaces';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
 import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
 import { postNewAuthor, updateAnAuthor } from '../../apis/authorApi';
@@ -21,7 +21,21 @@ export const getICategories = (categories:string[],allCategories:ICategory[]) =>
     return categories.includes(item.name);
   });
   return ogCategories
-}
+};
+
+export const getStringAuthors = (authors:IAuthor[]) => {
+  let authorNames = authors.map((item: IAuthor) => {
+    return item.authorName;
+  });
+  return authorNames;
+};
+
+export const getIAuthors = (authors:string[],allAuthors:IAuthor[]) => {
+  let ogAuthors: IAuthor[] = allAuthors.filter((item) => {
+    return authors.includes(item.authorName);
+  });
+  return ogAuthors
+};
 
 export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks & Contexts
@@ -70,7 +84,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
   /**
    * Functions that are used for Data Addition
    */
-  const createBook = async (bookName: string, author: string, selectedCategories: string[], selectedStatus: string) => {
+  const createBook = async (bookName: string, desc: string, selectedCategories: string[], selectedStatus: string,selectedAuthors:string[]) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -78,18 +92,22 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     //Step 1 -- The Request Body Checks
     const requestBody = {
       bookName: bookName,
-      author: author,
+      desc: desc,
+      bookAuthors:selectedAuthors,
       bookCategories: selectedCategories,
-      bookStatus: selectedStatus
+      bookStatus: selectedStatus,
     }
+    console.log(requestBody);
+    
     const result = await postNewBook(requestBody);
     const check = processResult(result);
     if(check){
       dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
     }
+    
   };
 
-  const updateBook = async (id: string, bookName: string, author: string, selectedCategories: string[], selectedStatus: string) => {
+  const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string,selectedAuthors:string[]) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -97,16 +115,19 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     //Step 1 -- The Request Body Checks
     const requestBody = {
       bookName: bookName,
-      author: author,
+      desc: desc,
+      bookAuthors:selectedAuthors,
       bookCategories: selectedCategories,
       bookStatus: selectedStatus
     }
+    
     const result = await updateABook(id, requestBody);
     //Step 1 -- If there is a user based error
     const check = processResult(result);
     if(check){
       dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
     }
+    
   };
 
   const createCategory =async (name:string,info:string) => {

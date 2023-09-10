@@ -53,14 +53,14 @@ const executeGetSpecificBook = async (id) => {
  * @param {*string} author the author
  * @returns 
  */
-const executeFindABookByNameAndAuthor = async (bookName, author) => {
+const executeFindABookByName = async (bookName) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
     try {
         //Step 2 -- Get the Result
-        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND UPPER(author) = UPPER($2)`;
-        const values = [bookName, author];
+        const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1)`;
+        const values = [bookName];
         const result = await client.query(checkQuery, values);
         data = result.rows;
         return data;
@@ -78,34 +78,36 @@ const executeFindABookByNameAndAuthor = async (bookName, author) => {
  * Helper Function to Format the books based on the categories
  * @param {*string[]} bookCategories 
  */
-const formatCategories = (bookCategories) => {
-    let category = "{";
-    bookCategories.forEach((element, index) => {
+const formatDatas = (bookDatas) => {
+    let data = "{";
+    bookDatas.forEach((element, index) => {
         let value = "";
-        if (index === bookCategories.length - 1) {
+        if (index === bookDatas.length - 1) {
             value = element;
         }
         else {
             value = element + ",";
         }
-        category += value;
+        data += value;
     });
-    category += "}";
-    return category;
+    data += "}";
+    return data;
 };
 
 /**
  * Query Function To Insert a New Book
  */
-const executeInsertNewBook = async (bookName, author, bookCategories, bookStatus) => {
+const executeInsertNewBook = async (bookName, description, bookCategories, bookStatus, bookAuthors) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = dayjs().format('YYYY-MM-DD');
-    const category = formatCategories(bookCategories);    
+    const category = formatDatas(bookCategories);    
+    const authors = formatDatas(bookAuthors);
+    console.log("Here at xecute Insert new book")
     try {
         //Step 2 -- Insert to the Table
-        const insertQuery = `INSERT INTO books (name, author, entered, category, status) VALUES($1, $2, $3, $4, $5)`;
-        const values = [bookName, author, date, category, bookStatus];
+        const insertQuery = `INSERT INTO books (name, description, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`;
+        const values = [bookName, description, date, category, bookStatus,authors];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }
@@ -151,12 +153,12 @@ const executeDeleteABookViaId = async (id) => {
  * @param {*} bookStatus 
  * @returns 
  */
-const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) => {
+const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus,bookAuthors) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     try{
-        const updateQuery = `UPDATE books SET "name"=$1, author=$2, category=$3, status=$4 WHERE id=$5`;
-        const values = [bookName,author,formatCategories(bookCategories),bookStatus,id];
+        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`;
+        const values = [bookName,author,formatDatas(bookCategories),bookStatus,formatDatas(bookAuthors),id];
         await client.query(updateQuery,values);
         return "Data Successfully updated";
     }
@@ -174,7 +176,7 @@ module.exports = {
     executeGetAllBooks,
     executeGetSpecificBook,
     executeInsertNewBook,
-    executeFindABookByNameAndAuthor,
+    executeFindABookByName,
     executeDeleteABookViaId,
     executeUpdateBook
 }

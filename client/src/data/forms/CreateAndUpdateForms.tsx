@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { getICategories, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
+import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
 
@@ -34,20 +34,33 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus);
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
             handleClose!();
         }
-        else {
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus);
+        else { 
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
         }
     }
 
     useEffect(() => {
         if (data && isIBook(data)) {
             setBookName(data.name);
-            setDesc(data.desc);
+            if(data.desc){
+                setDesc(data.desc);
+            }
+            else{
+                setDesc("");
+            }
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
+            
+            if(data.authors){
+                setSelectedAuthors(getIAuthors(data.authors,authors));
+            }
+            else{
+                setSelectedAuthors(getIAuthors([],authors));
+            }
+            
         }
     }, [data]);
 

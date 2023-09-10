@@ -45,7 +45,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
     useEffect(() => {
         if (data && isIBook(data)) {
             setBookName(data.name);
-            setDesc(data.author);
+            setDesc(data.desc);
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
         }

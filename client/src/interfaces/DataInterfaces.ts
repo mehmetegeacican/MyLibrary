@@ -14,7 +14,8 @@ export interface IAuthor {
 export interface IBook {
   id: number;
   name: string;
-  author: string;
+  authors: string[];
+  desc:string;
   entered?: string;
   category: string[];
   status: string;

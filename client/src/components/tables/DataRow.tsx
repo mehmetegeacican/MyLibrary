@@ -13,6 +13,7 @@ export function isIBook(value: any): value is IBook {
         "id" in value &&
         "name" in value &&
         "authors" in value &&
+        "desc" in value &&
         "category" in value &&
         "status" in value
     );

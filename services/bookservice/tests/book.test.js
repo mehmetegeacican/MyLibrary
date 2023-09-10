@@ -311,15 +311,16 @@ describe('executeUpdateBook', () => {
         const bookName = 'Updated Book';
         const author = 'Author 1';
         const bookCategories = ['Category 1', 'Category 2'];
+        const bookAuthors = ["Author 1"];
         const bookStatus = 'Will Read';
         const mockClient = { query: jest.fn().mockResolvedValue() };
         connectDb.mockResolvedValue(mockClient);
         //When
-        const result = await executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus)
+        const result = await executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus,bookAuthors);
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`,
-            [bookName, author, expect.any(String), bookStatus, bookId]
+            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`,
+            [bookName, author, expect.any(String), bookStatus,expect.any(String), bookId]
         );
         expect(result).toBe('Data Successfully updated');
         //Verify
@@ -335,15 +336,16 @@ describe('executeUpdateBook', () => {
         const author = 'Author 1';
         const bookCategories = ['Category 1', 'Category 2'];
         const bookStatus = 'Will Read';
+        const bookAuthors = ["author 1"];
         const mockError = new Error('DB Connection Unsuccessful');
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus)).rejects.toThrow('Db Connection Unsuccessful');;
+        await expect(executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus,bookAuthors)).rejects.toThrow('Db Connection Unsuccessful');;
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`,
-            [bookName, author, expect.any(String), bookStatus, bookId]
+            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`,
+            [bookName, author, expect.any(String), bookStatus, expect.any(String), bookId]
         );
         //Verify
         expect(connectDb).toHaveBeenCalledTimes(1);

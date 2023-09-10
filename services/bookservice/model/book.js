@@ -153,12 +153,12 @@ const executeDeleteABookViaId = async (id) => {
  * @param {*} bookStatus 
  * @returns 
  */
-const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) => {
+const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus,bookAuthors) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     try{
-        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`;
-        const values = [bookName,author,formatDatas(bookCategories),bookStatus,id];
+        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`;
+        const values = [bookName,author,formatDatas(bookCategories),bookStatus,formatDatas(bookAuthors),id];
         await client.query(updateQuery,values);
         return "Data Successfully updated";
     }

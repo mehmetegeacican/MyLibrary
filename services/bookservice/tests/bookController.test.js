@@ -442,6 +442,7 @@ describe('PUT /api/v1/books/:id', function () {
       desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
+      bookAuthors : mockBookAuthors
     }
     const mockResult = [ {
       id : 1,
@@ -461,7 +462,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.body).toEqual({ message: mockUpdateResult });
 
     expect(executeFindABookByName).toHaveBeenCalledWith(mockNewBookName);
-    expect(executeUpdateBook).toHaveBeenCalledWith(mockId.toString(),mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red');
+    expect(executeUpdateBook).toHaveBeenCalledWith(mockId.toString(),mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red',mockBookAuthors);
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
     expect(executeFindABookByName).toHaveBeenCalledTimes(1);

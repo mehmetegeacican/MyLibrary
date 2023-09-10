@@ -12,7 +12,7 @@ export function isIBook(value: any): value is IBook {
         typeof value === "object" &&
         "id" in value &&
         "name" in value &&
-        "author" in value &&
+        "authors" in value &&
         "category" in value &&
         "status" in value
     );
@@ -42,7 +42,7 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => voi
         <>
             <TableCell align='center'> {book.id}</TableCell>
             <TableCell align='center'> {book.name}</TableCell>
-            <TableCell align='center'> {book.author}</TableCell>
+            <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
             <TableCell align='center'> <Button color='primary'> View </Button> </TableCell>
             <TableCell align='center'><StatusChip statusLabel={book.status} /> </TableCell>
             <TableCell align='center'> {dayjs(book.entered).format('DD-MM-YYYY')}</TableCell>

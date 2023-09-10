@@ -157,7 +157,7 @@ const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus) =
     //Step 1 -- Open the Db
     let client = await connectDb();
     try{
-        const updateQuery = `UPDATE books SET "name"=$1, author=$2, category=$3, status=$4 WHERE id=$5`;
+        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`;
         const values = [bookName,author,formatDatas(bookCategories),bookStatus,id];
         await client.query(updateQuery,values);
         return "Data Successfully updated";

@@ -318,7 +318,7 @@ describe('executeUpdateBook', () => {
         const result = await executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus)
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, author=$2, category=$3, status=$4 WHERE id=$5`,
+            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`,
             [bookName, author, expect.any(String), bookStatus, bookId]
         );
         expect(result).toBe('Data Successfully updated');
@@ -342,7 +342,7 @@ describe('executeUpdateBook', () => {
         await expect(executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus)).rejects.toThrow('Db Connection Unsuccessful');;
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, author=$2, category=$3, status=$4 WHERE id=$5`,
+            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4 WHERE id=$5`,
             [bookName, author, expect.any(String), bookStatus, bookId]
         );
         //Verify

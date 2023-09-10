@@ -22,6 +22,7 @@ const mockNewBookName = "New Book";
 const mockNewBookAuthor = "Author 1";
 const mockBookCategories = ['Category 1', 'Category 2'];
 const mockBookStatus = 'Will Read';
+const mockBookAuthors = ["author 1"]
 
 /**
  * Test 1 -- api/v1/books scenarios
@@ -141,6 +142,7 @@ describe('POST /api/v1/books', function () {
       desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
+      bookAuthors: mockBookAuthors
     }
     const mockInsertionResult = 'Data Successfully inserted';
     executeFindABookByName.mockResolvedValue([]);
@@ -152,7 +154,7 @@ describe('POST /api/v1/books', function () {
     expect(response.body).toEqual({ message: mockInsertionResult });
 
     expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
-    expect(executeInsertNewBook).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red');
+    expect(executeInsertNewBook).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red',mockBookAuthors);
   });
   it('should not insert a duplicate book to the db', async () => {
     //Given

@@ -114,7 +114,7 @@ const updateABook = async (req,res) => {
     try{
         //Step 1 -- Get the Variables
         const {id} = req.params;
-        const { bookName, author, bookCategories, bookStatus } = req.body;
+        const { bookName, desc, bookCategories, bookStatus } = req.body;
         //Step 2 -- Validate the Variables
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -134,7 +134,7 @@ const updateABook = async (req,res) => {
             return res.status(400).json({error:"There already is a book with the updated name and author"});
         }
         //Step 5 -- Edit the Id
-        const result = await executeUpdateBook(id,bookName,author,bookCategories,bookStatus);
+        const result = await executeUpdateBook(id,bookName,desc,bookCategories,bookStatus);
         res.status(200).json({message: result});
     }
     catch(e){

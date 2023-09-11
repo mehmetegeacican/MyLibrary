@@ -8,6 +8,7 @@ import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForm
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { fetchAllCategories } from "../../apis/categoryApi";
 import { fetchAllAuthors } from "../../apis/authorApi";
+import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 
 /**
  * Accordion Datas for Book Page
@@ -25,6 +26,7 @@ export default function BookAccordions() {
     //Hooks & Contexts 
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const { bookTrigger, books, dispatch } = useLibraryDataContext();
+    const {user} = useAuthContext();
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -33,8 +35,10 @@ export default function BookAccordions() {
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
-        const res = await fetchAllBooks();
-        dispatch({ type: 'GET_BOOKS', payload: res });
+        if(user){
+            const res = await fetchAllBooks(user.id);
+            dispatch({ type: 'GET_BOOKS', payload: res });
+        } 
     }, [bookTrigger]);
 
     //UseEffect

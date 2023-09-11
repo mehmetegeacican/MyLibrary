@@ -46,6 +46,7 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
 };
 
 export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProps> = ({ children }) => {
+    const {user} = useAuthContext();
     const [state, dispatch] = useReducer(libraryDataReducer, {
       books: [],
       bookTrigger:false,
@@ -57,10 +58,8 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     });
 
     const fetchInit = useCallback(async () => {
-      const resBooks = await fetchAllBooks();
       const resCategories = await fetchAllCategories();
       const resAuthors = await fetchAllAuthors();
-      dispatch({type:"GET_BOOKS",payload:resBooks});
       dispatch({type:'GET_CATEGORIES',payload:resCategories});
       dispatch({type:'GET_AUTHORS',payload:resAuthors!});
     },[]);

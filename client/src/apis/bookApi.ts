@@ -9,9 +9,9 @@ const ADDRESS = `http://localhost:${PORT}`;
 /**
  * Fetches the Books from the Db
  */
-export const fetchAllBooks = async () => {
+export const fetchAllBooks = async (userId:number) => {
     try {
-        const res = await axios.get(ADDRESS + '/api/v1/books/all');
+        const res = await axios.get(ADDRESS + `/api/v1/books/all/${userId}`);
         return res.data;
     }
     catch {

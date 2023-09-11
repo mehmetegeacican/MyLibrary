@@ -3,6 +3,7 @@ import { LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDat
 import { fetchAllBooks } from "../apis/bookApi";
 import { fetchAllCategories } from "../apis/categoryApi";
 import { fetchAllAuthors } from "../apis/authorApi";
+import { useAuthContext } from "../hooks/contextHooks/useAuthContext";
 
 
 
@@ -67,7 +68,7 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     useEffect(() => {
       fetchInit();
     },[]);
-  
+
     return (
       <LibraryDataContext.Provider value={{ ...state, dispatch }}>
         {children}

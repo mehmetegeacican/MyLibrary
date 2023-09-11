@@ -1,5 +1,4 @@
 import.meta.env.VITE_AUTHSERVICE_PORT;
-import { IUser } from "../interfaces/DataInterfaces";
 import axios from "axios";
 
 const PORT = import.meta.env.VITE_AUTHSERVICE_PORT;

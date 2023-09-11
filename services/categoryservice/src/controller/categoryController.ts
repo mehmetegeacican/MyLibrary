@@ -8,7 +8,6 @@ import { validationResult } from 'express-validator';
  * @param res the Response
  */
 export const getAllCategories = async (req:express.Request,res:express.Response) => {
-    console.log("Entered here");
     try{
         const {id} = req.params;
         const data = await getAll(parseInt(id));

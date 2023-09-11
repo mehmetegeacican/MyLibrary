@@ -1,9 +1,8 @@
 import React, {createContext,useReducer, useEffect, useCallback } from "react";
 import { LibraryDataState, LibraryDataContextType, LibraryDataAction, LibraryDataContextProviderProps } from "../interfaces/ReducerInterfaces";
-import { fetchAllBooks } from "../apis/bookApi";
 import { fetchAllCategories } from "../apis/categoryApi";
 import { fetchAllAuthors } from "../apis/authorApi";
-import { useAuthContext } from "../hooks/contextHooks/useAuthContext";
+
 
 
 
@@ -57,9 +56,7 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     });
 
     const fetchInit = useCallback(async () => {
-      const resCategories = await fetchAllCategories();
       const resAuthors = await fetchAllAuthors();
-      dispatch({type:'GET_CATEGORIES',payload:resCategories});
       dispatch({type:'GET_AUTHORS',payload:resAuthors!});
     },[]);
 

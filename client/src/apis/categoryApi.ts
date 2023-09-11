@@ -7,9 +7,9 @@ const CATEGORY_ADDRESS = `http://localhost:${PORT}`;
  * Fetches All of the Categories 
  * @returns The Category List
  */
-export const fetchAllCategories = async () => {
+export const fetchAllCategories = async (id:number) => {
     try {
-        const res = await axios.get(CATEGORY_ADDRESS + '/api/v1/categories/all');
+        const res = await axios.get(CATEGORY_ADDRESS + `/api/v1/categories/all/${id}`);
         if(res){
             return res.data;
         }   
@@ -24,7 +24,7 @@ export const fetchAllCategories = async () => {
  * @param reqBody 
  * @returns 
  */
-export const postNewCategory = async (reqBody:{name:string,info:string}) => {
+export const postNewCategory = async (reqBody:{name:string,info:string, userId:number}) => {
     try{
         const res = await axios.post(CATEGORY_ADDRESS + '/api/v1/categories', reqBody);
         if(res){

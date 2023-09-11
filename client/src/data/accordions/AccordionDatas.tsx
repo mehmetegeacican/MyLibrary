@@ -105,6 +105,7 @@ export const CategoryAccordionDatas: AccordionData[] = [
 
 export const CategoryAccordions = () => {
     //Hooks
+    const {user} = useAuthContext();
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const {categories} = useLibraryDataContext();
     const { categoryTrigger, dispatch} = useLibraryDataContext();
@@ -112,8 +113,10 @@ export const CategoryAccordions = () => {
     //callbacx
     //UseCallBack 
     const fetchData = useCallback(async () => {
-        const res = await fetchAllCategories();
-        dispatch({ type: 'GET_CATEGORIES', payload: res });
+        if(user){
+            const res = await fetchAllCategories(user.id);
+            dispatch({ type: 'GET_CATEGORIES', payload: res });
+        }
     }, [categoryTrigger]);
 
     useEffect(() => {

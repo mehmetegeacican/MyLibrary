@@ -9,6 +9,7 @@ import DougnutChart from '../data/charts/DougnutChart';
 import { IBookByAuthorStat } from '../interfaces/DataInterfaces';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../apis/bookApi';
+import { fetchAllCategories } from '../apis/categoryApi';
 
 export default function Dashboard() {
     //Hooks & Context
@@ -30,7 +31,9 @@ export default function Dashboard() {
     const fetchDatas = useCallback(async () => {
         if(user){
             const bookDatas = await fetchAllBooks(user.id);
+            const categoryDatas = await fetchAllCategories(user.id);
             dispatch({type:'GET_BOOKS',payload:bookDatas});
+            dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
         }
     },[user])
 

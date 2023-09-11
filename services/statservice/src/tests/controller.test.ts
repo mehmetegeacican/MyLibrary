@@ -54,7 +54,7 @@ describe('GET --> /api/v1/stats/all/authors', () => {
         //Given
         executeGetAuthorCounts.mockResolvedValue(mockStatByAuthor);
         //When
-        const response = await request(app).get('/api/V1/stats/all/authors');
+        const response = await request(app).get('/api/V1/stats/all/authors/1');
         //Then
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockStatByAuthor);
@@ -66,7 +66,7 @@ describe('GET --> /api/v1/stats/all/authors', () => {
         const err = "Db Connection not established";
         executeGetAuthorCounts.mockRejectedValue(err);
         //When
-        const response = await request(app).get('/api/V1/stats/all/authors');
+        const response = await request(app).get('/api/V1/stats/all/authors/1');
         //Then
         expect(response.status).toBe(500);
         expect(response.body).toEqual({error:err});
@@ -87,7 +87,7 @@ describe('GET --> /api/v1/stats/all/categories', () => {
         //Given
         executeGetCategoryCounts.mockResolvedValue(mockStatByCategory);
         //When
-        const response = await request(app).get('/api/V1/stats/all/categories');
+        const response = await request(app).get('/api/V1/stats/all/categories/1');
         //Then
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockStatByCategory);
@@ -99,7 +99,7 @@ describe('GET --> /api/v1/stats/all/categories', () => {
         const err = "Db Connection not established";
         executeGetCategoryCounts.mockRejectedValue(err);
         //When
-        const response = await request(app).get('/api/V1/stats/all/categories');
+        const response = await request(app).get('/api/V1/stats/all/categories/1');
         //Then
         expect(response.status).toBe(500);
         expect(response.body).toEqual({error:err});
@@ -120,7 +120,7 @@ describe('GET --> /api/v1/stats/all/statuses', () => {
         //Given
         executeGetStatusCounts.mockResolvedValue(mockStatByStatus);
         //When
-        const response = await request(app).get('/api/V1/stats/all/statuses');
+        const response = await request(app).get('/api/V1/stats/all/statuses/1');
         //Then
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockStatByStatus);
@@ -132,7 +132,7 @@ describe('GET --> /api/v1/stats/all/statuses', () => {
         const err = "Db Connection not established";
         executeGetStatusCounts.mockRejectedValue(err);
         //When
-        const response = await request(app).get('/api/V1/stats/all/statuses');
+        const response = await request(app).get('/api/V1/stats/all/statuses/1');
         //Then
         expect(response.status).toBe(500);
         expect(response.body).toEqual({error:err});

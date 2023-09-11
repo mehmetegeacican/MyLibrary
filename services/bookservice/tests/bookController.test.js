@@ -54,7 +54,7 @@ describe('GET /api/v1/books/all', function () {
       // Mock the response from executeGetAllBooks
       executeGetAllBooks.mockResolvedValue(mockBookData);
 
-      const response = await request(app).get('/api/v1/books/all');
+      const response = await request(app).get('/api/v1/books/all/1');
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockBookData);
@@ -64,7 +64,7 @@ describe('GET /api/v1/books/all', function () {
     it('Should Return a 500 Error if the db is not usable', async function () {
       const mockError = 'Db Connection Unsuccessful';
       executeGetAllBooks.mockRejectedValue(mockError);
-      const response = await request(app).get('/api/v1/books/all');
+      const response = await request(app).get('/api/v1/books/all/1');
       //Expect and Verify
       expect(response.status).toBe(500);
       expect(response.body.error).toBe(mockError);
@@ -142,7 +142,8 @@ describe('POST /api/v1/books', function () {
       desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
-      bookAuthors: mockBookAuthors
+      bookAuthors: mockBookAuthors,
+      userId:1
     }
     const mockInsertionResult = 'Data Successfully inserted';
     executeFindABookByName.mockResolvedValue([]);
@@ -153,8 +154,8 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(201);
     expect(response.body).toEqual({ message: mockInsertionResult });
 
-    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
-    expect(executeInsertNewBook).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red',mockBookAuthors);
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book',1);
+    expect(executeInsertNewBook).toHaveBeenCalledWith(mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red',mockBookAuthors,1);
   });
   it('should not insert a duplicate book to the db', async () => {
     //Given
@@ -163,6 +164,7 @@ describe('POST /api/v1/books', function () {
       desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
+      userId:1
     }
     const mockInsertionResult = 'The Book Already Exists in the db!';
     executeFindABookByName.mockResolvedValue([mockBookData[0]]);
@@ -172,7 +174,7 @@ describe('POST /api/v1/books', function () {
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ error: mockInsertionResult });
     //Verify
-    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book',1);
     expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
   });
@@ -183,6 +185,7 @@ describe('POST /api/v1/books', function () {
       desc: 'Author 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
+      userId:1
     };
     const mockError = new Error('DB Connection Unsuccessful');
     executeFindABookByName.mockRejectedValue(mockError);
@@ -191,7 +194,7 @@ describe('POST /api/v1/books', function () {
     //Then
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: mockError.message });
-    expect(executeFindABookByName).toHaveBeenCalledWith('New Book');
+    expect(executeFindABookByName).toHaveBeenCalledWith('New Book',1);
     //Verify
     expect(executeFindABookByName).toHaveBeenCalledTimes(1);
     expect(executeInsertNewBook).toHaveBeenCalledTimes(0);
@@ -442,7 +445,8 @@ describe('PUT /api/v1/books/:id', function () {
       desc: mockNewBookAuthor,
       bookCategories: mockBookCategories,
       bookStatus: 'Red',
-      bookAuthors : mockBookAuthors
+      bookAuthors : mockBookAuthors,
+      userId:1
     }
     const mockResult = [ {
       id : 1,
@@ -461,7 +465,7 @@ describe('PUT /api/v1/books/:id', function () {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ message: mockUpdateResult });
 
-    expect(executeFindABookByName).toHaveBeenCalledWith(mockNewBookName);
+    expect(executeFindABookByName).toHaveBeenCalledWith(mockNewBookName,1);
     expect(executeUpdateBook).toHaveBeenCalledWith(mockId.toString(),mockNewBookName, mockNewBookAuthor, mockBookCategories, 'Red',mockBookAuthors);
     //Verify
     expect(executeGetSpecificBook).toHaveBeenCalledTimes(1);
@@ -476,6 +480,7 @@ describe('PUT /api/v1/books/:id', function () {
       desc: 'Author 1',
       bookCategories: ['Category 1', 'Category 2'],
       bookStatus: 'Red',
+      userId:1
     };
     const mockError = new Error('DB Connection Unsuccessful');
     executeGetSpecificBook.mockRejectedValue(mockError);

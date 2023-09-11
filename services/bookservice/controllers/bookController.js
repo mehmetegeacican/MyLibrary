@@ -115,7 +115,7 @@ const updateABook = async (req,res) => {
     try{
         //Step 1 -- Get the Variables
         const {id} = req.params;
-        const { bookName, desc, bookCategories, bookStatus, bookAuthors } = req.body;
+        const { bookName, desc, bookCategories, bookStatus, bookAuthors, userId } = req.body;
         //Step 2 -- Validate the Variables
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -127,7 +127,7 @@ const updateABook = async (req,res) => {
             return res.status(400).json({error:"The ID does not exist!"});
         }
         //Step 4 -- Check if there is already a book with the same name and author in the system
-        const bookByNameAndAuth = await executeFindABookByName(bookName);
+        const bookByNameAndAuth = await executeFindABookByName(bookName,userId);
         let filtered = bookByNameAndAuth.filter((item) => {
             return item.id !== parseInt(id);
         });

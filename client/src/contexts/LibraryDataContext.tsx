@@ -46,7 +46,6 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
 };
 
 export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProps> = ({ children }) => {
-    const {user} = useAuthContext();
     const [state, dispatch] = useReducer(libraryDataReducer, {
       books: [],
       bookTrigger:false,

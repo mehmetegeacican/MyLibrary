@@ -6,6 +6,7 @@ import { ApiResult, IAuthor, ICategory } from '../../interfaces/DataInterfaces';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
 import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
 import { postNewAuthor, updateAnAuthor } from '../../apis/authorApi';
+import { useAuthContext } from '../contextHooks/useAuthContext';
 
 
 //get strings of the categories
@@ -39,7 +40,7 @@ export const getIAuthors = (authors:string[],allAuthors:IAuthor[]) => {
 
 export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks & Contexts
-
+  const {user} = useAuthContext();
   const {bookTrigger,categoryTrigger,authorTrigger,dispatch} = useLibraryDataContext();
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookAuthors:selectedAuthors,
       bookCategories: selectedCategories,
       bookStatus: selectedStatus,
+      userId:user!.id
     }
     console.log(requestBody);
     
@@ -118,7 +120,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       desc: desc,
       bookAuthors:selectedAuthors,
       bookCategories: selectedCategories,
-      bookStatus: selectedStatus
+      bookStatus: selectedStatus,
+      userId:user!.id 
     }
     
     const result = await updateABook(id, requestBody);

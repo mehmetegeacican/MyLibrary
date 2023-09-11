@@ -1,4 +1,3 @@
-import { log10 } from "chart.js/helpers";
 import React from "react";
 import { login, signup } from "../../apis/authApis";
 import { useAuthContext } from "../contextHooks/useAuthContext";

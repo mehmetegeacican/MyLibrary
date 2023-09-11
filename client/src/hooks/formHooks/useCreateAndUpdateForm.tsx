@@ -1,7 +1,7 @@
 
 
 import { postNewBook, updateABook } from '../../apis/bookApi';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ApiResult, IAuthor, ICategory } from '../../interfaces/DataInterfaces';
 import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
 import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
@@ -43,6 +43,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
   const {user} = useAuthContext();
   const {bookTrigger,categoryTrigger,authorTrigger,dispatch} = useLibraryDataContext();
 
+
   useEffect(() => {
     if (success) {
       setTimeout(() => {
@@ -50,6 +51,15 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       }, 3000);
     }
   }, [success]);
+
+  const authId = useMemo(() => {
+    if(user){
+      return user.id
+    }
+    else{
+      return 0;
+    }
+  },[user])
 
   const processResult = (result: ApiResult) => {
     //Step 1 -- If there is a user based error
@@ -97,7 +107,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookAuthors:selectedAuthors,
       bookCategories: selectedCategories,
       bookStatus: selectedStatus,
-      userId:user!.id
+      userId:authId
     }
     console.log(requestBody);
     

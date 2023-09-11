@@ -4,7 +4,7 @@ import {connectDb,closeDb} from "../dbconnection";
  * gets the Author Counts
  * @returns All total number of books based on the author
  */
-export const executeGetAuthorCounts = async () => {
+export const executeGetAuthorCounts = async (userId:number) => {
     let client = await connectDb();
     let data;
     try{
@@ -12,6 +12,7 @@ export const executeGetAuthorCounts = async () => {
         const result = await client!.query(`SELECT c.author_name, COUNT(*) AS author_count
         FROM books b
         CROSS JOIN LATERAL unnest(b.authors) AS c(author_name)
+        WHERE b.user_id = ${userId}
         GROUP BY c.author_name
         ORDER BY author_count DESC;`);
         data = result.rows;
@@ -28,13 +29,14 @@ export const executeGetAuthorCounts = async () => {
  * gets the number of categroy counts
  * @returns the number of category count
  */
-export const executeGetCategoryCounts = async () => {
+export const executeGetCategoryCounts = async (userId:number) => {
     let client = await connectDb();
     let data;
     try{
         const result = await client!.query(`SELECT c.category_name, COUNT(*) AS category_count
         FROM books b
         CROSS JOIN LATERAL unnest(b.category) AS c(category_name)
+        WHERE b.user_id = ${userId}
         GROUP BY c.category_name
         ORDER BY category_count DESC;`);
         data = result.rows;
@@ -52,11 +54,11 @@ export const executeGetCategoryCounts = async () => {
  * The SQL Query Function to return the stats of the statuses
  * @returns The Status counts
  */
-export const executeGetStatusCounts = async () => {
+export const executeGetStatusCounts = async (userId:number) => {
     let client = await connectDb();
     let data;
     try{
-        const result = await client!.query(`select b.status ,count(b.status) as total  from books b group by b."status" order by total  desc;`);
+        const result = await client!.query(`select b.status ,count(b.status) as total  from books b where user_id = ${userId} group by b."status" order by total  desc;`);
         data = result.rows;
         return data;
     }catch(e){

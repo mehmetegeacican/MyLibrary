@@ -7,27 +7,46 @@ import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookC
 import React from 'react';
 import DougnutChart from '../data/charts/DougnutChart';
 import { IBookByAuthorStat } from '../interfaces/DataInterfaces';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import { fetchAllBooks } from '../apis/bookApi';
+import { fetchAllCategories } from '../apis/categoryApi';
 
 export default function Dashboard() {
     //Hooks & Context
-    const { books, categories, authors } = useLibraryDataContext();
+    const {user} = useAuthContext();
+    const { books, categories, authors,dispatch } = useLibraryDataContext();
     const [bookCountByAuthor,setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
     const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
     const [bookCountByStat,setBookCountByStat] = React.useState<any>();
     //UseCallBack 
-    const fetchData = useCallback(async () => {
-        const resBook = await fetchAllBookCountsByAuthor();
-        const resCategory = await fetchAllBookCountsByCategory();
-        const resStat = await fetchAllBookCountsByStat();
-        setBookCountByAuthor(resBook.slice(0,12));
-        setBookCountByCategory(resCategory.slice(0,10));
-        setBookCountByStat(resStat);
+    const fetchStats = useCallback(async () => {
+        if(user){
+            const resBook = await fetchAllBookCountsByAuthor(user.id);
+            const resCategory = await fetchAllBookCountsByCategory(user.id);
+            const resStat = await fetchAllBookCountsByStat(user.id);
+            setBookCountByAuthor(resBook.slice(0,12));
+            setBookCountByCategory(resCategory.slice(0,10));
+            setBookCountByStat(resStat);
+        }
     }, [books]);
+
+    const fetchDatas = useCallback(async () => {
+        if(user){
+            const bookDatas = await fetchAllBooks(user.id);
+            const categoryDatas = await fetchAllCategories(user.id);
+            dispatch({type:'GET_BOOKS',payload:bookDatas});
+            dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
+        }
+    },[user])
 
     //UseEffect
     useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+        fetchStats();
+    }, [fetchStats]);
+
+    useEffect(() => {
+        fetchDatas();
+    }, [fetchDatas]);
 
     //Filter Method for not including multiple in the stats
     const filteredBookStats = useMemo(() => {
@@ -38,6 +57,7 @@ export default function Dashboard() {
         }
         return [];
     },[bookCountByAuthor]);
+
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

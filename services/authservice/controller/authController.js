@@ -28,7 +28,7 @@ const signUp = async (req, res) => {
             const result = await addNewUser(email,password);
             const newId = await getIdOfUser(email);
             const token = createToken(newId[0].id);
-            res.status(201).json({result,email,token});
+            res.status(201).json({newId,result,email,token});
         }
        
     } catch (e) {
@@ -49,8 +49,9 @@ const login = async (req, res) => {
         const ifExists = await checkIfUserExists(email,password);
         if(ifExists){
             const val = await getIdOfUser(email);
+            const id = val[0].id;
             const token = createToken(val[0].id);
-            res.status(200).json({email,token});
+            res.status(200).json({id,email,token});
 
         }
         else{

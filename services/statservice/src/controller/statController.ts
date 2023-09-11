@@ -9,7 +9,8 @@ import { executeGetAuthorCounts, executeGetCategoryCounts, executeGetStatusCount
  */
 export const getTotalBasedByAuthor = async (req: express.Request, res: express.Response) => {
     try {
-        const data = await executeGetAuthorCounts();
+        const {id} = req.params;
+        const data = await executeGetAuthorCounts(parseInt(id));
         res.json(data);
     }
     catch (e) {
@@ -25,7 +26,8 @@ export const getTotalBasedByAuthor = async (req: express.Request, res: express.R
  */
 export const getTotalBasedByCategory = async (req: express.Request, res: express.Response) => {
     try {
-        const data = await executeGetCategoryCounts();
+        const {id} = req.params;
+        const data = await executeGetCategoryCounts(parseInt(id));
         res.json(data);
     }
     catch (e) {
@@ -40,8 +42,9 @@ export const getTotalBasedByCategory = async (req: express.Request, res: express
  * @param res Response
  */
 export const getTotalBasedByStatuses =async (req:express.Request,res:express.Response) => {
+    const {id} = req.params;
     try{
-        const data = await executeGetStatusCounts();
+        const data = await executeGetStatusCounts(parseInt(id));
         res.json(data);
     }catch(e){
         console.log(e);

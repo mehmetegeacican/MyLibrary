@@ -34,9 +34,9 @@ describe('executeGetAllBooks', () => {
         const mockClient = { query: jest.fn().mockResolvedValue(mockQueryResult) };
         // Mock the database connection function to return the client
         connectDb.mockResolvedValue(mockClient);
-        const result = await executeGetAllBooks();
+        const result = await executeGetAllBooks(1);
         //Expectations
-        expect(mockClient.query).toHaveBeenCalledWith('SELECT * FROM books ORDER BY ID ASC');
+        expect(mockClient.query).toHaveBeenCalledWith(`SELECT * FROM books WHERE user_id = ${1} ORDER BY ID ASC`);
         expect(result).toEqual(mockBooksData);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
         //Verify
@@ -137,11 +137,11 @@ describe('executeFindABookByName', () => {
         const mockClient = { query: jest.fn().mockResolvedValue(mockQueryResult) };
         connectDb.mockResolvedValue(mockClient);
         //When 
-        const result = await executeFindABookByName(bookName);
+        const result = await executeFindABookByName(bookName,1);
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            'SELECT * FROM books WHERE UPPER(name) = UPPER($1)',
-            [bookName]
+            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND user_id = $2',
+            [bookName,1]
         );
         expect(result).toEqual(mockBookDataFiltered);
         //Verify
@@ -158,11 +158,11 @@ describe('executeFindABookByName', () => {
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeFindABookByName(bookName)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeFindABookByName(bookName,1)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            'SELECT * FROM books WHERE UPPER(name) = UPPER($1)',
-            [bookName]
+            'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND user_id = $2',
+            [bookName,1]
         );
         //Verify
         expect(mockClient.query).toHaveBeenCalledTimes(1);
@@ -196,16 +196,17 @@ describe('executeInsertNewBook', () => {
         const mockClient = { query: jest.fn().mockResolvedValue() };
         connectDb.mockResolvedValue(mockClient);
         //When
-        const result = await executeInsertNewBook(bookName,desc,bookCategories,bookStatus,bookAuthors);
+        const result = await executeInsertNewBook(bookName,desc,bookCategories,bookStatus,bookAuthors,1);
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,user_id) VALUES($1, $2, $3, $4, $5,$6,$7)`,
             [
               bookName,
               desc,
               expect.any(String),
               expect.any(String),
               bookStatus,
-              expect.any(String)
+              expect.any(String),
+              1
             ]
         );
         expect(result).toBe('Data Successfully inserted');
@@ -227,16 +228,17 @@ describe('executeInsertNewBook', () => {
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,1)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors) VALUES($1, $2, $3, $4, $5,$6)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,user_id) VALUES($1, $2, $3, $4, $5,$6,$7)`,
             [
               bookName,
               desc,
               expect.any(String),
               expect.any(String),
               bookStatus,
-              expect.any(String)
+              expect.any(String),
+              1
             ]
         );
         //Verify

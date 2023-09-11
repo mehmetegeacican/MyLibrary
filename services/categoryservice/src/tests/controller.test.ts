@@ -4,7 +4,7 @@ import { getAll as getAllMock, checkCategoryAlreadyExists as checkCategoryAlread
 
 //Step 1 -- Mock Variables
 const mockCategories = [
-    { id: 1, name: "Category 1", info: "Category info" }
+    { id: 1, name: "Category 1", info: "Category info", userId:1 }
 ];
 
 // Step 2 -- Mock Functions 
@@ -38,7 +38,7 @@ describe('GET --> /api/v1/categories/all', () => {
         //Given
         getAll.mockResolvedValue(mockCategories);
         //When
-        const response = await request(app).get('/api/v1/categories/all');
+        const response = await request(app).get('/api/v1/categories/all/1');
         //Then
         expect(response.status).toBe(200);
         expect(response.body).toEqual(mockCategories);
@@ -50,7 +50,7 @@ describe('GET --> /api/v1/categories/all', () => {
         const err = "Db Connection not established";
         getAll.mockRejectedValue(new Error(err));
         //When
-        const response = await request(app).get('/api/v1/categories/all');
+        const response = await request(app).get('/api/v1/categories/all/1');
         //Then
         expect(response.status).toBe(500);
         expect(response.body.error).toEqual(err);

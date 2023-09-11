@@ -6,11 +6,15 @@ const prisma = new PrismaClient();
  * Gets All Categories
  * @returns The Data or an error
  */
-export const getAll = async () => {
+export const getAll = async (id: number) => {
     await prisma.$connect();
     console.log("DB Connection opened --> getAll");
     try {
-        const res = await prisma.category.findMany();
+        const res = await prisma.category.findMany({
+            where:{
+                user_id:id
+            }
+        });
         return res;
     }
     catch (e) {
@@ -28,14 +32,15 @@ export const getAll = async () => {
  * @param info the info
  * @returns 
  */
-export const addNewCategory = async (name: string, info: string) => {
+export const addNewCategory = async (name: string, info: string,userId:number) => {
     await prisma.$connect();
     console.log("DB Connection opened --> addNewCategory");
     try {
         const res = await prisma.category.create({
             data: {
                 name: name,
-                info:info
+                info: info,
+                user_id: userId
             },
         });
         return res;
@@ -56,13 +61,14 @@ export const addNewCategory = async (name: string, info: string) => {
  * @param info 
  * @returns 
  */
-export const checkCategoryAlreadyExists = async (name:string) => {
+export const checkCategoryAlreadyExists = async (name: string,userId:number) => {
     await prisma.$connect();
     console.log("DB Connection opened --> checkCategoryExists");
     try {
         const res = await prisma.category.findFirst({
             where: {
-                name: name
+                name: name,
+                user_id:userId
             },
         });
         return res;
@@ -83,7 +89,7 @@ export const checkCategoryAlreadyExists = async (name:string) => {
  * @param info 
  * @returns 
  */
-export const checkCategoryAlreadyExistsByID = async (id:number) => {
+export const checkCategoryAlreadyExistsByID = async (id: number) => {
     try {
         const res = await prisma.category.findFirst({
             where: {
@@ -121,7 +127,7 @@ export const deleteCategory = async (id: number) => {
     }
     finally {
         await prisma.$disconnect();
-        
+
     }
 };
 
@@ -130,26 +136,26 @@ export const deleteCategory = async (id: number) => {
  * @param id The ID parameter
  * @param requestBody The Body Parameters
  */
-export const updateCategory =async (id:number,requestBody:{name:string,info:string}) => {
-    try{
-        const {name,info} = requestBody;
+export const updateCategory = async (id: number, requestBody: { name: string, info: string }) => {
+    try {
+        const { name, info } = requestBody;
         const res = await prisma.category.update({
-            where : {
-                id:id
-            } ,
-            data : {
+            where: {
+                id: id
+            },
+            data: {
                 name: name,
                 info: info
             }
         })
         return res;
     }
-    catch(e){
+    catch (e) {
         console.log(e);
         throw new Error("Db Connection Unsuccessful");
     }
-    finally{
+    finally {
         await prisma.$disconnect();
     }
-    
+
 }

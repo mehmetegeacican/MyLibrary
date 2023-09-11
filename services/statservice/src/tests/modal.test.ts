@@ -45,9 +45,9 @@ describe('executeGetAuthorCounts', () => {
         connectDb.mockResolvedValue(mockClient);
        
         //When
-        const result = await executeGetAuthorCounts();
+        const result = await executeGetAuthorCounts(1);
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith('select author ,count(b.author) as total  from books b group by b."author" order by total desc;');
+        expect(mockClient.query).toHaveBeenCalledWith('SELECT c.author_name, COUNT(*) AS author_count FROM books b CROSS JOIN LATERAL unnest(b.authors) AS c(author_name) WHERE b.user_id = 1 GROUP BY c.author_name ORDER BY author_count DESC;');
         expect(result).toEqual(mockStatByAuthor);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
         //Verify
@@ -64,7 +64,7 @@ describe('executeGetAuthorCounts', () => {
         mockClient.query.mockRejectedValue('DB Error');
 
         // When & Then
-        await expect(executeGetAuthorCounts()).rejects.toThrow('Db Connection not established');
+        await expect(executeGetAuthorCounts(1)).rejects.toThrow('Db Connection not established');
 
         // Verify
         expect(connectDb).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe('executeGetCategoryCounts', () => {
         connectDb.mockResolvedValue(mockClient);
        
         //When
-        const result = await executeGetCategoryCounts();
+        const result = await executeGetCategoryCounts(1);
         //Then
         //expect(mockClient.query).toHaveBeenCalledWith('select author ,count(b.author) as total  from books b group by b."author" order by total desc;');
         expect(result).toEqual(mockStatByCategory);
@@ -109,7 +109,7 @@ describe('executeGetCategoryCounts', () => {
         mockClient.query.mockRejectedValue('DB Error');
 
         // When & Then
-        await expect(executeGetCategoryCounts()).rejects.toThrow('Db Connection not established');
+        await expect(executeGetCategoryCounts(1)).rejects.toThrow('Db Connection not established');
 
         // Verify
         expect(connectDb).toHaveBeenCalledTimes(1);
@@ -135,9 +135,9 @@ describe('executeGetStatusCounts', () => {
         connectDb.mockResolvedValue(mockClient);
        
         //When
-        const result = await executeGetStatusCounts();
+        const result = await executeGetStatusCounts(1);
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith('select b.status ,count(b.status) as total  from books b group by b."status" order by total  desc;');
+        expect(mockClient.query).toHaveBeenCalledWith('select b.status ,count(b.status) as total  from books b where user_id = 1 group by b.\"status\" order by total  desc;');
         expect(result).toEqual(mockStatByStatus);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
         //Verify
@@ -154,7 +154,7 @@ describe('executeGetStatusCounts', () => {
         mockClient.query.mockRejectedValue('DB Error');
 
         // When & Then
-        await expect(executeGetStatusCounts()).rejects.toThrow('Db Connection not established');
+        await expect(executeGetStatusCounts(1)).rejects.toThrow('Db Connection not established');
 
         // Verify
         expect(connectDb).toHaveBeenCalledTimes(1);

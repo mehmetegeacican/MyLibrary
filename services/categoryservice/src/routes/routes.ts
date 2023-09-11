@@ -12,7 +12,7 @@ import {
 
 const router:express.Router = express.Router();
 
-router.get('/all',getAllCategories);
+router.get('/all/:id',getAllCategories);
 router.post('/',CategoryDataRequestBodyValidate(),postNewCategory);
 router.delete('/:id',CategoryDataIDValidate(),deleteExistingCategory);
 router.put('/:id',CategoryDataIDValidate(),CategoryDataRequestBodyValidate(),updateExistingCategory);

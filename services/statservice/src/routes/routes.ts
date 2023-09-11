@@ -5,8 +5,8 @@ import { getTotalBasedByAuthor, getTotalBasedByCategory, getTotalBasedByStatuses
 
 const router:express.Router = express.Router();
 
-router.get('/all/authors',getTotalBasedByAuthor);
-router.get('/all/categories',getTotalBasedByCategory);
-router.get('/all/statuses',getTotalBasedByStatuses);
+router.get('/all/authors/:id',getTotalBasedByAuthor);
+router.get('/all/categories/:id',getTotalBasedByCategory);
+router.get('/all/statuses/:id',getTotalBasedByStatuses);
 
 export default router;

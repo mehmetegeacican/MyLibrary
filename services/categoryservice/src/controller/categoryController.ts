@@ -43,7 +43,10 @@ export const postNewCategory = async (req:express.Request,res:express.Response) 
         res.status(201).json({data:result,message:"Data successfully inserted"});
     }
     catch(e){
-        const err = e || "Db Connection not established";
+        if(e){
+            console.log(e);
+        }
+        const err = "Db Connection not established";
         res.status(500).json({error:err});
     }
 }

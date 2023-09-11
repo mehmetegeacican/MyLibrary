@@ -34,7 +34,8 @@ const getABookById = async (req, res) => {
  */
 const getAllBooks = async (req, res) => {
     try {
-        const allBooks = await executeGetAllBooks();
+        const {id} = req.params;
+        const allBooks = await executeGetAllBooks(id);
         res.send(allBooks);
     }
     catch (e) {

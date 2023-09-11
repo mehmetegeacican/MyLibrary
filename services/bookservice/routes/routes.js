@@ -17,7 +17,7 @@ const router = express.Router();
 
 
 //Routes
-router.get("/all", getAllBooks);
+router.get("/all/:id", getAllBooks);
 router.get("/:id", bookDataIDValidate(), getABookById);
 router.post("/", bookBodyValidate(), addNewBook);
 router.delete("/:id", bookDataIDValidate(), deleteABook);

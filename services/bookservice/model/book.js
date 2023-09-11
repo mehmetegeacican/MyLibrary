@@ -5,13 +5,13 @@ const dayjs = require('dayjs');
  * @param {*Pool} client 
  * @returns rows 
  */
-const executeGetAllBooks = async () => {
+const executeGetAllBooks = async (id) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let data;
     try {
         //Step 2 -- Get the Result
-        const result = await client.query('SELECT * FROM books ORDER BY ID ASC');
+        const result = await client.query(`SELECT * FROM books WHERE user_id = ${id} ORDER BY ID ASC`);
         data = result.rows;
         return data;
     }
@@ -60,7 +60,7 @@ const executeFindABookByName = async (bookName) => {
     try {
         //Step 2 -- Get the Result
         const checkQuery = `SELECT * FROM books WHERE UPPER(name) = UPPER($1)`;
-        const values = [bookName];
+        const values = [bookName,userId];
         const result = await client.query(checkQuery, values);
         data = result.rows;
         return data;

@@ -20,12 +20,14 @@ export default function Dashboard() {
     const [bookCountByStat,setBookCountByStat] = React.useState<any>();
     //UseCallBack 
     const fetchStats = useCallback(async () => {
-        const resBook = await fetchAllBookCountsByAuthor();
-        const resCategory = await fetchAllBookCountsByCategory();
-        const resStat = await fetchAllBookCountsByStat();
-        setBookCountByAuthor(resBook.slice(0,12));
-        setBookCountByCategory(resCategory.slice(0,10));
-        setBookCountByStat(resStat);
+        if(user){
+            const resBook = await fetchAllBookCountsByAuthor(user.id);
+            const resCategory = await fetchAllBookCountsByCategory(user.id);
+            const resStat = await fetchAllBookCountsByStat(user.id);
+            setBookCountByAuthor(resBook.slice(0,12));
+            setBookCountByCategory(resCategory.slice(0,10));
+            setBookCountByStat(resStat);
+        }
     }, [books]);
 
     const fetchDatas = useCallback(async () => {

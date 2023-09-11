@@ -7,9 +7,9 @@ const ADDRESS = `http://localhost:${PORT}`;
  * the API FOR BookCount by Author
  * @returns The Book Count by author
  */
-export const fetchAllBookCountsByAuthor = async () => {
+export const fetchAllBookCountsByAuthor = async (userId:number) => {
     try {
-        const res = await axios.get(ADDRESS + '/api/v1/stats/all/authors');
+        const res = await axios.get(ADDRESS + `/api/v1/stats/all/authors/${userId}`);
         return res.data;
     }
     catch {
@@ -20,9 +20,9 @@ export const fetchAllBookCountsByAuthor = async () => {
  * The API for Book Count by Category
  * @returns 
  */
-export const fetchAllBookCountsByCategory = async () => {
+export const fetchAllBookCountsByCategory = async (userId:number) => {
     try{
-        const res = await axios.get(ADDRESS + '/api/v1/stats/all/categories');
+        const res = await axios.get(ADDRESS + `/api/v1/stats/all/categories/${userId}`);
         return res.data;
     }
     catch{
@@ -34,9 +34,9 @@ export const fetchAllBookCountsByCategory = async () => {
  * The API for Book Count by Stat
  * @returns 
  */
-export const fetchAllBookCountsByStat = async () => {
+export const fetchAllBookCountsByStat = async (userId:number) => {
     try{
-        const res = await axios.get(ADDRESS + '/api/v1/stats/all/statuses');
+        const res = await axios.get(ADDRESS + `/api/v1/stats/all/statuses/${userId}`);
         return res.data;
     }
     catch{

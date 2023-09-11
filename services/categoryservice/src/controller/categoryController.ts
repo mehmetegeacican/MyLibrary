@@ -8,11 +8,14 @@ import { validationResult } from 'express-validator';
  * @param res the Response
  */
 export const getAllCategories = async (req:express.Request,res:express.Response) => {
+    console.log("Entered here");
     try{
-        const data = await getAll();
+        const {id} = req.params;
+        const data = await getAll(parseInt(id));
         res.json(data);
     }
-    catch{
+    catch(e){
+        console.log(e);
         const err = "Db Connection not established";
         res.status(500).json({ error: err });
     }
@@ -25,19 +28,19 @@ export const getAllCategories = async (req:express.Request,res:express.Response)
  */
 export const postNewCategory = async (req:express.Request,res:express.Response) => {
     try{
-        const {name,info} = req.body;
+        const {name,info, userId} = req.body;
         //Step 1 -- Validate
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(400).json({ errors: errors.array() });
         }
         //Step 2 --Check if a category like that already exists
-        const check = await checkCategoryAlreadyExists(name);
+        const check = await checkCategoryAlreadyExists(name,userId);
         if(check){
             return res.status(400).json({ error : "Category Already Exists!" });
         }
         //Step 2 -- If Checks are applied, create a new category
-        const result = await addNewCategory(name,info);
+        const result = await addNewCategory(name,info,userId);
         res.status(201).json({data:result,message:"Data successfully inserted"});
     }
     catch(e){

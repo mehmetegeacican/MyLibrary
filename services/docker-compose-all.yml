@@ -69,9 +69,11 @@ services:
     networks:
       - library-network
   categoryservice:
-    image: categoryservice:1.9
+    build: categoryservice:2.0
     ports:
       - "4002:4000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:123456@postgres:5432/librarydb"
     volumes:
       - .:/app/
       - /app/node_modules

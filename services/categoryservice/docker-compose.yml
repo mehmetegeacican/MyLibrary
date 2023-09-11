@@ -5,12 +5,7 @@ services:
     ports:
       - "4002:4000"
     environment:
-      PORT: 4002
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
+      - DATABASE_URL: "postgresql://postgres:123456@postgres:5432/librarydb"
     volumes:
       - .:/app/
       - /app/node_modules

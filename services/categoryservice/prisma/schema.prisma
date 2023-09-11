@@ -24,12 +24,14 @@ model books {
   category String[]
   entered DateTime
   status BookStatus 
+  user_id Int
 }
 
 model Category {
   id Int @id @default(autoincrement())
   name String
   info String
+  user_id Int
 }
 
 model Author {

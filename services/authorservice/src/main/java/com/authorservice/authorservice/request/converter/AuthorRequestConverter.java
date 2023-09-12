@@ -11,6 +11,7 @@ public class AuthorRequestConverter {
         return Author.builder()
                 .name(authorRequest.getName())
                 .info(authorRequest.getInfo())
+                .userId(authorRequest.getUserId())
                 .build();
     }
 }

@@ -35,10 +35,10 @@ public class AuthorController {
     }
 
 
-    @GetMapping("/all")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<AuthorDto>> getAllAuthors(@PathVariable("id") Long userId) {
         return new ResponseEntity<List<AuthorDto>>(
-                authorDtoConverter.convertToDto(authorService.getAuthorList()), HttpStatus.OK
+                authorDtoConverter.convertToDto(authorService.getAuthorList(userId)), HttpStatus.OK
         );
     }
 

@@ -55,15 +55,6 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
       // Initialize other state properties here
     });
 
-    const fetchInit = useCallback(async () => {
-      const resAuthors = await fetchAllAuthors();
-      dispatch({type:'GET_AUTHORS',payload:resAuthors!});
-    },[]);
-
-    useEffect(() => {
-      fetchInit();
-    },[]);
-
     return (
       <LibraryDataContext.Provider value={{ ...state, dispatch }}>
         {children}

@@ -71,12 +71,15 @@ export const AuthorAccordionDatas: AccordionData[] = [
  */
 export const AuthorAccordions = () => {
     //Hooks
+    const {user} = useAuthContext();
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const {authors,authorTrigger,dispatch} =useLibraryDataContext();
     //Use Callback
     const fetchData = useCallback(async() => {
-        const res = await fetchAllAuthors();
-        dispatch({type:'GET_AUTHORS',payload:res!});
+        if(user){
+            const res = await fetchAllAuthors(user.id);
+            dispatch({type:'GET_AUTHORS',payload:res!});
+        }
     },[authorTrigger]);
     //Effect
     useEffect(() => {

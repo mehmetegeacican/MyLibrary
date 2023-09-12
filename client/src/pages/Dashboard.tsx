@@ -10,6 +10,7 @@ import { IBookByAuthorStat } from '../interfaces/DataInterfaces';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../apis/bookApi';
 import { fetchAllCategories } from '../apis/categoryApi';
+import { fetchAllAuthors } from '../apis/authorApi';
 
 export default function Dashboard() {
     //Hooks & Context
@@ -34,6 +35,8 @@ export default function Dashboard() {
         if(user){
             const bookDatas = await fetchAllBooks(user.id);
             const categoryDatas = await fetchAllCategories(user.id);
+            const resAuthors = await fetchAllAuthors(user.id);
+            dispatch({type:'GET_AUTHORS',payload:resAuthors!});
             dispatch({type:'GET_BOOKS',payload:bookDatas});
             dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
         }

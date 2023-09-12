@@ -58,7 +58,7 @@ public class AuthorService {
      * @return
      */
     public Author createAuthor(Author author){
-        boolean nameExists = authorRepository.existsByNameIgnoreCase(author.getName());
+        boolean nameExists = authorRepository.existsByNameIgnoreCaseAndUserId(author.getName(), author.getUserId());
         if(nameExists){
             return null;
         }

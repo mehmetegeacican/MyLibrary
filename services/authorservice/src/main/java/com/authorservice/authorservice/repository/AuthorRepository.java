@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author,Long> {
 
-    boolean existsByNameIgnoreCase(String name);
+    boolean existsByNameIgnoreCaseAndUserId(String name, Long userId);
 
     List<Author> findAllByUserId(Long userId);
 }

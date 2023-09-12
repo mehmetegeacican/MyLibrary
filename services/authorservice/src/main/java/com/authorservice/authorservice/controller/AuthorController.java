@@ -77,11 +77,16 @@ public class AuthorController {
             responseBody.put("message", "Author Name can not be empty");
             return ResponseEntity.status(400).body(responseBody);
         }
+        if(authorEntity.getUserId() == null){
+            responseBody.put("message", "User ID can not be empty");
+            return ResponseEntity.status(400).body(responseBody);
+        }
         Author createdAuthor = authorService.createAuthor(authorEntity);
         if(createdAuthor == null){
             responseBody.put("message", "You can not add an already existing author");
             return ResponseEntity.status(400).body(responseBody);
         }
+
         responseBody.put("message", "Author Inserted Successfully");
         return ResponseEntity.status(201).body(responseBody);
     }

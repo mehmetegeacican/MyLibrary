@@ -25,6 +25,9 @@ public class Author {
     @Column(name = "info")
     private String info;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     //Constructor (Additional)
     public Author(String name) {
         this.name = name;
@@ -53,6 +56,14 @@ public class Author {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override

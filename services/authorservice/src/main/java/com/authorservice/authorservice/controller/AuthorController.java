@@ -35,10 +35,10 @@ public class AuthorController {
     }
 
 
-    @GetMapping("/all")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<AuthorDto>> getAllAuthors(@PathVariable("id") Long userId) {
         return new ResponseEntity<List<AuthorDto>>(
-                authorDtoConverter.convertToDto(authorService.getAuthorList()), HttpStatus.OK
+                authorDtoConverter.convertToDto(authorService.getAuthorList(userId)), HttpStatus.OK
         );
     }
 
@@ -77,11 +77,16 @@ public class AuthorController {
             responseBody.put("message", "Author Name can not be empty");
             return ResponseEntity.status(400).body(responseBody);
         }
+        if(authorEntity.getUserId() == null){
+            responseBody.put("message", "User ID can not be empty");
+            return ResponseEntity.status(400).body(responseBody);
+        }
         Author createdAuthor = authorService.createAuthor(authorEntity);
         if(createdAuthor == null){
             responseBody.put("message", "You can not add an already existing author");
             return ResponseEntity.status(400).body(responseBody);
         }
+
         responseBody.put("message", "Author Inserted Successfully");
         return ResponseEntity.status(201).body(responseBody);
     }

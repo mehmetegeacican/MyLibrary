@@ -53,21 +53,21 @@ class AuthorControllerTest {
     @Test
     void getAllAuthors() throws Exception{
         //Given
-        Author a1 = new Author(1L,"A1","info 1");
-        Author a2 = new Author(2L,"A2","info 2");
+        Author a1 = new Author(1L,"A1","info 1",1L);
+        Author a2 = new Author(2L,"A2","info 2",1L);
         List<Author> aList = new ArrayList<>(Arrays.asList(a1,a2));
         List<AuthorDto> authorDtoList = new ArrayList<>();
         authorDtoList.add(authorDtoConverter.convertToDto(a1));
         authorDtoList.add(authorDtoConverter.convertToDto(a2));
         //When
-        Mockito.when(authorService.getAuthorList()).thenReturn(aList);
+        Mockito.when(authorService.getAuthorList(1L)).thenReturn(aList);
         Mockito.when(authorDtoConverter.convertToDto(aList)).thenReturn(authorDtoList);
-        ResponseEntity<List<AuthorDto>> response = authorController.getAllAuthors();
+        ResponseEntity<List<AuthorDto>> response = authorController.getAllAuthors(1L);
         //Then
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(authorDtoList,response.getBody());
         //Verify
-        Mockito.verify(authorService,Mockito.times(1)).getAuthorList();
+        Mockito.verify(authorService,Mockito.times(1)).getAuthorList(1L);
         Mockito.verify(authorDtoConverter,Mockito.times(1)).convertToDto(aList);
     }
 
@@ -91,8 +91,8 @@ class AuthorControllerTest {
     void postAuthor() throws Exception{
         // Given
         AuthorRequest request = AuthorRequest.builder().name("a1").info("i1").build();
-        Author createdAuthor = new Author(1L,"a1","i1");
-        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        Author createdAuthor = new Author(1L,"a1","i1",1l);
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1",1l);
         //When
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
@@ -113,8 +113,8 @@ class AuthorControllerTest {
     void postAuthorEmptyName() throws Exception{
         //Given
         AuthorRequest request = AuthorRequest.builder().name("").info("i1").build();
-        Author createdAuthor = new Author(1L,"","i1");
-        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        Author createdAuthor = new Author(1L,"","i1",1l);
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1",1l);
         //When
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
@@ -135,8 +135,8 @@ class AuthorControllerTest {
     void putAuthor() {
         //Given
         AuthorRequest request = AuthorRequest.builder().name("a1").info("i1").build();
-        Author createdAuthor = new Author(1L,"a1","i1");
-        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1");
+        Author createdAuthor = new Author(1L,"a1","i1",1l);
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"a1","i1",1l);
         //When
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
@@ -157,8 +157,8 @@ class AuthorControllerTest {
     void putAuthorEmptyName(){
         //Given
         AuthorRequest request = AuthorRequest.builder().name("").info("i1").build();
-        Author createdAuthor = new Author(1L,"","i1");
-        AuthorDto createdAuthorDto = new AuthorDto(1L,"","i1");
+        Author createdAuthor = new Author(1L,"","i1",1l);
+        AuthorDto createdAuthorDto = new AuthorDto(1L,"","i1",1l);
         //When
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
@@ -179,8 +179,8 @@ class AuthorControllerTest {
     @Test
     void getSpecificAuthor() throws Exception{
         //Given
-        Author a1 = new Author(1L,"A1","I1");
-        AuthorDto aDto = new AuthorDto(1L,"a1","i1");
+        Author a1 = new Author(1L,"A1","I1",1l);
+        AuthorDto aDto = new AuthorDto(1L,"a1","i1",1l);
         //When
         Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.of(a1));
         Mockito.when(authorDtoConverter.convertToDto(a1)).thenReturn(aDto);
@@ -197,7 +197,7 @@ class AuthorControllerTest {
     void getSpecificAuthorNotFound() throws  Exception {
         //Given
         Map<String, String> responseBody = new HashMap<>();
-        Author a1 = new Author(1L,"A1","I1");
+        Author a1 = new Author(1L,"A1","I1",1l);
         responseBody.put("message", "Author not found");
         //When
         Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.empty());

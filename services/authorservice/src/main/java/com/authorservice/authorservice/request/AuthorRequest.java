@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class AuthorRequest {
     private String name;
     private String info;
+    private Long userId;
 }

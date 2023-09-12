@@ -23,6 +23,7 @@ public class AuthorDtoConverter {
                 .id(idParam)
                 .name(authorParam.getName())
                 .info(authorParam.getInfo())
+                .userId(authorParam.getUserId())
                 .build();
     }
 

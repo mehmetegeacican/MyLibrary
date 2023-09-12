@@ -183,7 +183,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     setSuccess(false);
     const requestBody = {
       name: name,
-      info:info
+      info:info,
+      userId:user!.id // This might be problematic -- Add a check here
     }
     const result = await postNewAuthor(requestBody);
     const check = processResult(result);

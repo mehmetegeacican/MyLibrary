@@ -22,8 +22,8 @@ public class AuthorService {
      * Gets All Authors
      * @return
      */
-    public List<Author> getAuthorList(){
-        return authorRepository.findAll().stream()
+    public List<Author> getAuthorList(Long userId){
+        return authorRepository.findAllByUserId(userId).stream()
                 .sorted((a1, a2) -> a1.getId().compareTo(a2.getId()))
                 .collect(Collectors.toList());
     }
@@ -58,7 +58,7 @@ public class AuthorService {
      * @return
      */
     public Author createAuthor(Author author){
-        boolean nameExists = authorRepository.existsByNameIgnoreCase(author.getName());
+        boolean nameExists = authorRepository.existsByNameIgnoreCaseAndUserId(author.getName(), author.getUserId());
         if(nameExists){
             return null;
         }

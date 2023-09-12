@@ -32,20 +32,20 @@ class AuthorServiceTest {
     @Test
     void getAuthorList() {
         //Given
-        Author a = new Author(1L,"A","A");
-        Author b = new Author(2L,"B","B");
+        Author a = new Author(1L,"A","A",1L);
+        Author b = new Author(2L,"B","B",1L);
         List<Author> test = Arrays.asList(a,b);
         //When
-        Mockito.when(authorRepository.findAll()).thenReturn(test);
+        Mockito.when(authorRepository.findAllByUserId(1L)).thenReturn(test);
         //Then
-        assertEquals(authorService.getAuthorList(),test);
-        Mockito.verify(authorRepository,Mockito.times(1)).findAll();
+        assertEquals(authorService.getAuthorList(1L),test);
+        Mockito.verify(authorRepository,Mockito.times(1)).findAllByUserId(1L);
     }
 
     @Test
     void getAuthorById() {
         //Given
-        Author a = new Author(1L,"A","A");
+        Author a = new Author(1L,"A","A",1l);
         //When
         Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(a));
         //Then
@@ -57,7 +57,7 @@ class AuthorServiceTest {
     @Test
     void deleteAuthor() {
         //Given
-        Author a = new Author(1L,"A","A");
+        Author a = new Author(1L,"A","A",1l);
         //When
         Mockito.when(authorRepository.existsById(1L)).thenReturn(true);
         Mockito.doNothing().when(authorRepository).deleteById(1L);
@@ -81,14 +81,14 @@ class AuthorServiceTest {
     @Test
     void createAuthor() {
         //Given
-        Author createdAuthor = new Author(1L,"A","A");
+        Author createdAuthor = new Author(1L,"A","A",1l);
         //When
-        Mockito.when(authorRepository.existsByNameIgnoreCase("A")).thenReturn(false);
+        Mockito.when(authorRepository.existsByNameIgnoreCaseAndUserId("A",1L)).thenReturn(false);
         Mockito.when(authorRepository.save(createdAuthor)).thenReturn(createdAuthor);
         //Then
         authorService.createAuthor(createdAuthor);
         //Verify
-        Mockito.verify(authorRepository,Mockito.times(1)).existsByNameIgnoreCase("A");
+        Mockito.verify(authorRepository,Mockito.times(1)).existsByNameIgnoreCaseAndUserId("A",1L);
         Mockito.verify(authorRepository,Mockito.times(1)).save(createdAuthor);
     }
 
@@ -96,21 +96,21 @@ class AuthorServiceTest {
     @Test
     void createAuthorWithExistingName(){
         //Given
-        Author createdAuthor = new Author(1L,"A","A");
+        Author createdAuthor = new Author(1L,"A","A",1l);
         //When
-        Mockito.when(authorRepository.existsByNameIgnoreCase("A")).thenReturn(true);
+        Mockito.when(authorRepository.existsByNameIgnoreCaseAndUserId("A",1L)).thenReturn(true);
         //Then
         authorService.createAuthor(createdAuthor);
         //Verify
-        Mockito.verify(authorRepository,Mockito.times(1)).existsByNameIgnoreCase("A");
+        Mockito.verify(authorRepository,Mockito.times(1)).existsByNameIgnoreCaseAndUserId("A",1L);
         Mockito.verify(authorRepository,Mockito.times(0)).save(createdAuthor);
 
     }
     @Test
     void updateAuthor() {
         //Given
-        Author existingauthor = new Author(1L,"A","A");
-        Author updatedAuthor = new Author(1L,"B","B");
+        Author existingauthor = new Author(1L,"A","A",1l);
+        Author updatedAuthor = new Author(1L,"B","B",1l);
         //When
         Mockito.when(authorRepository.existsById(1L)).thenReturn(true);
         Mockito.when(authorRepository.getReferenceById(1L)).thenReturn(existingauthor);
@@ -126,7 +126,7 @@ class AuthorServiceTest {
     @Test
     void UpdateAuthorException() {
         //Given
-        Author updatedAuthor = new Author(1L,"B","B");
+        Author updatedAuthor = new Author(1L,"B","B",1l);
         //When
         Mockito.when(authorRepository.existsById(1L)).thenReturn(false);
         //Then

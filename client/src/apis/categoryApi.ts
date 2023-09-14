@@ -10,6 +10,9 @@ const CATEGORY_ADDRESS = `http://localhost:${PORT}`;
 export const fetchAllCategories = async (id:number) => {
     try {
         const res = await axios.get(CATEGORY_ADDRESS + `/api/v1/categories/all/${id}`);
+        if(res.status === 500){
+            return [500];
+        }
         return res.data;
 
     }

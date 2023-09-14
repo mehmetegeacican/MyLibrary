@@ -154,7 +154,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
     const result = await postNewCategory(requestBody);
     const check = processResult(result);
-    if(check){
+    if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
     }
   }
@@ -171,7 +171,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
     const result = await updateExistingCategory(id,requestBody);
     const check = processResult(result);
-    if(check){
+    if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
     }
   }
@@ -189,7 +189,6 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     const result = await postNewAuthor(requestBody);
     const check = processResult(result);
     if(check){
-      console.log("Create Dispatcher");
       dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
     }
   }

@@ -118,7 +118,7 @@ export const CategoryAccordions = () => {
     const fetchData = useCallback(async () => {
         if(user){
             const res = await fetchAllCategories(user.id);
-            dispatch({ type: 'GET_CATEGORIES', payload: res });
+            dispatch({ type: 'GET_CATEGORIES', payload: res });   
         }
     }, [categoryTrigger]);
 

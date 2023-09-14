@@ -1,10 +1,11 @@
 
-import { Alert, Button, Container, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
+import { Alert, Avatar, Box, Button, Container, Divider, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
 import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthForms } from '../hooks/formHooks/useAuthForms';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 interface IAuthForm {
     name: string;
@@ -27,7 +28,13 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
     return (
         <Fragment>
             <Stack spacing={2} alignContent={"center"}>
-                <Typography variant='h5' color={'primary'}> Login </Typography>
+                <Box sx={{ display: 'flex', alignItems:'center' , mr: 2}}>
+                    <Typography variant='h5' color={'primary'}> Login </Typography>
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                </Box>
+                <Divider/>
                 <Stack spacing={2} direction={'row'}>
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
                     <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible} />

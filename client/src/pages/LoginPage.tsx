@@ -46,8 +46,9 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
                         {passwVisible ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                 </Stack>
-                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Login </Button>
-                {error && <Alert sx={{ mb: 2 }} severity="error"> {message}</Alert>}
+                <Divider/>
+                <Button sx={{  alignSelf:"center", width: 200 }} variant='outlined' onClick={async () => submit()}> Login </Button>
+                {error && <Alert  severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
 

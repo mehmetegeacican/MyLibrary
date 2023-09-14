@@ -28,7 +28,7 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
     return (
         <Fragment>
             <Stack spacing={2} alignContent={"center"}>
-                <Box sx={{ display: 'flex', alignItems:'center' , mr: 2}}>
+                <Box sx={{ display: 'flex', alignItems:'center' , mr: 2, alignSelf:"center"}}>
                     <Typography variant='h5' color={'primary'}> Login </Typography>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />

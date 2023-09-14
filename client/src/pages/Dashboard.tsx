@@ -38,7 +38,9 @@ export default function Dashboard() {
             const resAuthors = await fetchAllAuthors(user.id);
             dispatch({type:'GET_AUTHORS',payload:resAuthors!});
             dispatch({type:'GET_BOOKS',payload:bookDatas});
-            dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
+            if(categoryDatas.length > 0){
+                dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
+            }
         }
     },[user])
 

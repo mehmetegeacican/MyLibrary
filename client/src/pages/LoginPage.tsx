@@ -1,10 +1,11 @@
 
-import { Alert, Button, Container, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
+import { Alert, Avatar, Box, Button, Container, Divider, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
 import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthForms } from '../hooks/formHooks/useAuthForms';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 interface IAuthForm {
     name: string;
@@ -27,7 +28,13 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
     return (
         <Fragment>
             <Stack spacing={2} alignContent={"center"}>
-                <Typography variant='h5' color={'primary'}> Login </Typography>
+                <Box sx={{ display: 'flex', alignItems:'center' , mr: 2, alignSelf:"center"}}>
+                    <Typography variant='h5' color={'primary'}> Login </Typography>
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                </Box>
+                <Divider/>
                 <Stack spacing={2} direction={'row'}>
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
                     <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible} />
@@ -39,8 +46,9 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
                         {passwVisible ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                 </Stack>
-                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Login </Button>
-                {error && <Alert sx={{ mb: 2 }} severity="error"> {message}</Alert>}
+                <Divider/>
+                <Button sx={{  alignSelf:"center", width: 200 }} variant='outlined' onClick={async () => submit()}> Login </Button>
+                {error && <Alert  severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
 

@@ -8,9 +8,10 @@ import UpdateModal from '../modals/UpdateModal';
 import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { CSVLink } from "react-csv";
 import FilterModal from '../modals/FilterModal';
 import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
+import ExportModal from '../modals/ExportModal';
 
 
 interface TableInterfaces<T> {
@@ -29,6 +30,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openDeleteMultiple, setOpenDeleteMultiple] = React.useState<boolean>(false);
     const [openUpdate, setOpenUpdate] = React.useState<boolean>(false);
     const [openFilter, setOpenFilter] = React.useState<boolean>(false);
+    const [openExport,setOpenExport] = React.useState<boolean>(false);
 
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
@@ -64,19 +66,19 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setSelectedDeleteItem(item);
     }
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>,id:number) => {
+    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
         if (event.target.checked) {
-            if(!selectedIds.includes(id)){
-                setSelectedIds((prev) => [...prev,id]);
+            if (!selectedIds.includes(id)) {
+                setSelectedIds((prev) => [...prev, id]);
             }
         }
-        else{
-            if(selectedIds.includes(id)){
+        else {
+            if (selectedIds.includes(id)) {
                 let index = selectedIds.indexOf(id);
-                setSelectedIds((prev) => [...prev.slice(0,index),...prev.slice(index + 1)]);
+                setSelectedIds((prev) => [...prev.slice(0, index), ...prev.slice(index + 1)]);
             }
         }
-      };
+    };
 
     const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
         let multiplied: number = page * rowsPerPage;
@@ -144,8 +146,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                             </TableCell>
                             <TableCell align='center'>
                                 <Tooltip title="Export Items to Excel" arrow placement="top-start">
-                                    <IconButton aria-label="export" color='success'>
-                                        <ExportIcon />
+                                    <IconButton aria-label="export" color='success' onClick={() => setOpenExport(true)}>
+                                            <ExportIcon />
                                     </IconButton>
                                 </Tooltip>
                             </TableCell>
@@ -187,7 +189,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                                             <Checkbox
                                                 color="primary"
                                                 checked={selectedIds.includes(item.id)}
-                                                onChange={(e) => handleSelectAllClick(e,item.id)}
+                                                onChange={(e) => handleSelectAllClick(e, item.id)}
                                                 inputProps={{
                                                     'aria-label': 'select all desserts',
                                                 }}
@@ -229,7 +231,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedDeleteItem!} />}
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
             {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
-
+            {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
         </Fragment>
     )
 }

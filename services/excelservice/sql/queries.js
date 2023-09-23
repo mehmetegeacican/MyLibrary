@@ -51,6 +51,32 @@ const queryFindAuthorByName = async (authorName,userId) => {
         await closeDb(client);
     }
 }
+/**
+ * Query to Find if there are duplicates
+ * @param {*} categoryName 
+ * @param {*} userId 
+ * @returns 
+ */
+const queryFindCategoryByName = async (categoryName,userId) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    let data;
+    try {
+        //Step 2 -- Get the Result
+        const checkQuery = `SELECT * FROM "Category" WHERE UPPER(name) = UPPER($1) AND user_id = $2`;
+        const values = [categoryName,userId];
+        const result = await client.query(checkQuery, values);
+        data = result.rows;
+        return data;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
 
 /**
  * Query Function To Insert a New Book
@@ -111,6 +137,37 @@ const queryInsertNewAuthor = async (authorName,authorInfo,userId) => {
         }
     }
 };
+/**
+ * Insertion Query
+ * @param {*} categoryName 
+ * @param {*} categoryInfo 
+ * @param {*} userId 
+ * @returns 
+ */
+const queryInsertCategories = async (categoryName,categoryInfo,userId) => {
+    //Step 1 -- Open the Db
+    let client = await connectDb();
+    /*
+    const category = formatDatas(bookCategories);    
+    const authors = formatDatas(bookAuthors);
+    */
+    try {
+        //Step 2 -- Insert to the Table
+        const insertQuery = `INSERT INTO "Category" ("name", user_id, info) VALUES($1, $2, $3);`;
+        const values = [categoryName, userId, categoryInfo];
+        await client.query(insertQuery, values);
+        return "Data Successfully inserted";
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        if(client){
+            await closeDb(client);
+        }
+    }
+}
 
 
 
@@ -120,5 +177,7 @@ module.exports = {
     queryFindABookByName,
     queryInsertNewBook,
     queryFindAuthorByName,
-    queryInsertNewAuthor
+    queryInsertNewAuthor,
+    queryFindCategoryByName,
+    queryInsertCategories
 }

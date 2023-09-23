@@ -1,4 +1,4 @@
-const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName, queryInsertNewAuthor } = require('../sql/queries');
+const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName, queryInsertNewAuthor, queryFindCategoryByName, queryInsertCategories} = require('../sql/queries');
 /**
  * Checks if the data is an author or not
  * @param {*object} jsonData 
@@ -82,7 +82,11 @@ const insertDatasBooks = async (jsonDatas) => {
     }
     return statuses;
 }
-
+/**
+ * Insertion of the Authors
+ * @param {*object[]} jsonDatas 
+ * @returns 
+ */
 const insertDatasAuthors = async (jsonDatas) => {
     let statuses = {
         "inserted": 0,
@@ -112,11 +116,48 @@ const insertDatasAuthors = async (jsonDatas) => {
 
     }
     return statuses;
-}
+};
+
+/**
+ * Insertion of the Categories
+ * @param {*object[]} jsonDatas 
+ */
+const insertDatasCategories = async (jsonDatas) => {
+    let statuses = {
+        "inserted": 0,
+        "failed": 0,
+        "duplicate": 0
+    }
+    //Insert to Book Table
+    //Step 1 -- Check if the book exists by name and userId
+    for (const record of jsonDatas) {
+        try {
+            //Step 1 -- Check the Duplicates
+            let isDuplicate = await queryFindCategoryByName(record.name, record.user_id);
+            if (isDuplicate.length > 0) {
+                statuses.duplicate++;
+            }
+            else {
+                const data = await queryInsertCategories(record.name, record.info, record.user_id);
+                if (data === "Data Successfully inserted") {
+                    statuses.inserted++;
+                }
+            }
+        }
+        catch (e) {
+            console.log("Could not insert", e);
+            statuses.failed++;
+        }
+
+    }
+    return statuses;
+};
 
 module.exports = {
     insertDatasBooks,
     insertDatasAuthors,
     isBook,
-    isAuthor
+    isAuthor,
+    isCategory,
+    insertDatasCategories
 }

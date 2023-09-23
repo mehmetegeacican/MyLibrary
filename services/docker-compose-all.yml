@@ -100,7 +100,7 @@ services:
     networks:
       - library-network
   excelservice:
-    image: excelservice:1.0
+    build: ./services/excelservice
     ports:
       - "4006:4000"
     environment:

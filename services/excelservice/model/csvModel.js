@@ -64,3 +64,30 @@ const checkType = (exampleData) => {
         return "undefined";
     }
 };
+
+/**
+ * Insertion mechanism here
+ * @param {object[]} jsonDatas the JSON Array 
+ */
+const insertDatas = (jsonDatas) => {
+    let statuses = {
+        "inserted":0,
+        "failed":0,
+        "duplicate":0
+    }
+    if(checkType(jsonDatas[0]) === "book"){
+        //Insert to Book Table
+    }
+    else if (checkType(jsonDatas[0] === "author")){
+        //Insert to Authors
+    }
+    else if(checkType(jsonDatas[0] === "category")){
+        //Insert to Category
+    }
+    return statuses;
+}
+
+module.exports = {
+    checkType,
+    insertDatas
+}

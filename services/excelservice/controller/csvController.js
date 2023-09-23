@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const csvtojson = require('csvtojson');
+const {checkType, insertDatas} = require('../model/csvModel');
 
 
 
@@ -13,7 +14,7 @@ const csvtojson = require('csvtojson');
  * @param {*} res 
  */
 const importCsv = async  (req, res) => {
-
+    let statuses;
     const filePath = req.file.path;
     if (!filePath) {
         return res.status(400).json({ error: 'CSV data not provided.' });
@@ -26,17 +27,11 @@ const importCsv = async  (req, res) => {
         if(checkType(jsonData[0]) === "undefined"){
             return res.status(400).json({ error: 'CSV data type not in the correct format.' });
         }
-        else if(checkType(jsonData[0]) === "book"){
-            //Insert to Book Table
-        }
-        else if (checkType(jsonData[0] === "author")){
-            //Insert to Authors
-        }
-        else if(checkType(jsonData[0] === "category")){
-            //Insert to Category
-        }
+        else{
+            statuses = insertDatas(jsonData);
+        } 
         // Step 3 -- send success status
-        res.status(200).json({message:jsonData})
+        res.status(200).json({message:statuses})
 
     }
     catch (e) {

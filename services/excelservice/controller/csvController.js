@@ -28,7 +28,7 @@ const importCsv = async  (req, res) => {
             return res.status(400).json({ error: 'CSV data type not in the correct format.' });
         }
         else{
-            statuses = insertDatas(jsonData);
+            statuses = await insertDatas(jsonData);
         } 
         // Step 3 -- send success status
         res.status(200).json({message:statuses})

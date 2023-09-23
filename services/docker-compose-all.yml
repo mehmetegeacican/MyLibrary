@@ -99,6 +99,21 @@ services:
 
     networks:
       - library-network
+  excelservice:
+    image: excelservice:1.0
+    ports:
+      - "4006:4000"
+    environment:
+      PORT: 4006
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    command: npm run dev
+
+    networks:
+      - library-network
   postgres:
     image: postgres:latest
     ports:

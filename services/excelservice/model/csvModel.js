@@ -1,10 +1,11 @@
+const {queryFindABookByName,queryInsertNewBook} = require('../sql/queries');
 /**
  * Checks if the data is an author or not
  * @param {*object} jsonData 
  * @returns 
  */
 const isAuthor = (jsonData) => {
-    if ('id' in jsonData && 'authorName' in jsonData && 'authorDetails' in jsonData && 'books' in jsonData) {
+    if ('authorName' in jsonData && 'authorDetails' in jsonData && 'books' in jsonData) {
         return true;
     }
     else {
@@ -17,7 +18,7 @@ const isAuthor = (jsonData) => {
  * @returns 
  */
 const isBook = (jsonData) => {
-    if ('id' in jsonData && 'name' in jsonData
+    if ('name' in jsonData
         && 'description' in jsonData && 'authors' in jsonData &&
         'user_id' in jsonData &&
         'entered' in jsonData &&
@@ -35,7 +36,7 @@ const isBook = (jsonData) => {
  * @returns 
  */
 const isCategory = (jsonData) => {
-    if("id" in jsonData && 
+    if(
     "name" in jsonData && 
     "info" in jsonData && 
     "user_id" in jsonData){
@@ -69,7 +70,7 @@ const checkType = (exampleData) => {
  * Insertion mechanism here
  * @param {object[]} jsonDatas the JSON Array 
  */
-const insertDatas = (jsonDatas) => {
+const insertDatas = async  (jsonDatas) => {
     let statuses = {
         "inserted":0,
         "failed":0,
@@ -77,6 +78,30 @@ const insertDatas = (jsonDatas) => {
     }
     if(checkType(jsonDatas[0]) === "book"){
         //Insert to Book Table
+        //Step 1 -- Check if the book exists by name and userId
+        for ( const record of jsonDatas) {
+            try{
+                //Step 1 -- Check the Duplicates
+                console.log(record);
+                let isDuplicate = await queryFindABookByName(record.name,record.user_id);
+                console.log(isDuplicate);
+                if(isDuplicate.length > 0){
+                    statuses.duplicate++;
+                }
+                else{
+                    const data = await queryInsertNewBook(record.name,record.description,record.category,record.status,record.authors,record.user_id);
+                    if(data === "Data Successfully inserted"){
+                        statuses.inserted++;
+                    }
+                }
+            }
+            catch(e){
+                console.log("Could not insert", e);
+                statuses.failed++;
+            }
+
+        }
+        return statuses;
     }
     else if (checkType(jsonDatas[0] === "author")){
         //Insert to Authors

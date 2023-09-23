@@ -20,6 +20,7 @@ const importCsv = async  (req, res) => {
     }
     try {
         const jsonData = await csvtojson().fromFile(filePath);
+        fs.unlinkSync(filePath);
         res.status(200).json({message:jsonData})
 
     }

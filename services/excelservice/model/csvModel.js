@@ -1,4 +1,4 @@
-const {queryFindABookByName,queryInsertNewBook} = require('../sql/queries');
+const {queryFindABookByName,queryInsertNewBook,queryFindAuthorByName} = require('../sql/queries');
 /**
  * Checks if the data is an author or not
  * @param {*object} jsonData 
@@ -82,9 +82,7 @@ const insertDatas = async  (jsonDatas) => {
         for ( const record of jsonDatas) {
             try{
                 //Step 1 -- Check the Duplicates
-                console.log(record);
                 let isDuplicate = await queryFindABookByName(record.name,record.user_id);
-                console.log(isDuplicate);
                 if(isDuplicate.length > 0){
                     statuses.duplicate++;
                 }
@@ -105,9 +103,39 @@ const insertDatas = async  (jsonDatas) => {
     }
     else if (checkType(jsonDatas[0] === "author")){
         //Insert to Authors
+        for(const record of jsonDatas){
+            try{
+                //Step 1 -- Check
+                const isDuplicate = await queryFindAuthorByName(record.authorName,record.user_id);
+                //Step 2 -- Insert
+                if(isDuplicate.length > 0){
+                    statuses.duplicate++;
+                }
+                else{
+                    const data = await queryInsertNewAuthor(record.authorName,record.authorInfo,record.user_id);
+                    if(data === "Data Successfully inserted"){
+                        statuses.inserted++;
+                    }
+                }
+            }
+            catch(e){
+                console.log("Could not insert", e);
+                statuses.failed++;
+            }
+        }
     }
     else if(checkType(jsonDatas[0] === "category")){
         //Insert to Category
+        for(const record of jsonDatas){
+            try{
+                //Step 1 -- Check
+                //Step 2 -- Insert
+            }
+            catch(e){
+                console.log("Could not insert", e);
+                statuses.failed++;
+            }
+        }
     }
     return statuses;
 }

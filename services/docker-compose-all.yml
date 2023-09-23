@@ -1,7 +1,7 @@
 version: "3"
 services:
   authservice:
-    image: authservice:1.1
+    image: authservice:1.2
     ports:
       - "4005:4000"
     environment:

@@ -19,8 +19,23 @@ const importCsv = async  (req, res) => {
         return res.status(400).json({ error: 'CSV data not provided.' });
     }
     try {
+        //Step 1 -- Retrieving the Data as json 
         const jsonData = await csvtojson().fromFile(filePath);
         fs.unlinkSync(filePath); // Unlink, The Storage such as an S3 would be great for here
+        // Step 2 -- Check which place to insert
+        if(checkType(jsonData[0]) === "undefined"){
+            return res.status(400).json({ error: 'CSV data type not in the correct format.' });
+        }
+        else if(checkType(jsonData[0]) === "book"){
+            //Insert to Book Table
+        }
+        else if (checkType(jsonData[0] === "author")){
+            //Insert to Authors
+        }
+        else if(checkType(jsonData[0] === "category")){
+            //Insert to Category
+        }
+        // Step 3 -- send success status
         res.status(200).json({message:jsonData})
 
     }

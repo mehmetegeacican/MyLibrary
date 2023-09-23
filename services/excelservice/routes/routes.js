@@ -1,5 +1,5 @@
 const express = require('express');
-const { importCsv } = require('../controller/csvController');
+const { importCsvBooks } = require('../controller/csvController');
 
 
 
@@ -7,7 +7,7 @@ const { importCsv } = require('../controller/csvController');
 const router = express.Router();
 
 //API Routes
-router.post('/import',importCsv);
+router.post('/import/books',importCsvBooks);
 
 
 module.exports = router;

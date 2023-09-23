@@ -1,7 +1,6 @@
 const fs = require("fs");
-const { parse } = require("csv-parse");
 const csvtojson = require('csvtojson');
-const {checkType, insertDatas} = require('../model/csvModel');
+const {isBook, insertDatasBooks} = require('../model/csvModel');
 
 
 
@@ -9,11 +8,11 @@ const {checkType, insertDatas} = require('../model/csvModel');
 
 
 /**
- * This is the API for importing csv files to the db
+ * This is the API for importing csv Books to the db
  * @param {*} req 
  * @param {*} res 
  */
-const importCsv = async  (req, res) => {
+const importCsvBooks = async  (req, res) => {
     let statuses;
     const filePath = req.file.path;
     if (!filePath) {
@@ -24,11 +23,11 @@ const importCsv = async  (req, res) => {
         const jsonData = await csvtojson().fromFile(filePath);
         fs.unlinkSync(filePath); // Unlink, The Storage such as an S3 would be great for here
         // Step 2 -- Check which place to insert
-        if(checkType(jsonData[0]) === "undefined"){
+        if(!isBook(jsonData[0])){
             return res.status(400).json({ error: 'CSV data type not in the correct format.' });
         }
         else{
-            statuses = await insertDatas(jsonData);
+            statuses = await insertDatasBooks(jsonData);
         } 
         // Step 3 -- send success status
         res.status(200).json({message:statuses})
@@ -42,5 +41,5 @@ const importCsv = async  (req, res) => {
 };
 
 module.exports = {
-    importCsv
+    importCsvBooks
 }

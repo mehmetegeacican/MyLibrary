@@ -37,7 +37,7 @@ const queryFindAuthorByName = async (authorName,userId) => {
     let data;
     try {
         //Step 2 -- Get the Result
-        const checkQuery = `SELECT * FROM Author WHERE UPPER(name) = UPPER($1) AND user_id = $2`;
+        const checkQuery = `SELECT * FROM "Author" WHERE UPPER(name) = UPPER($1) AND user_id = $2`;
         const values = [authorName,userId];
         const result = await client.query(checkQuery, values);
         data = result.rows;
@@ -90,7 +90,6 @@ const queryInsertNewBook = async (bookName, description, bookCategories, bookSta
 const queryInsertNewAuthor = async (authorName,authorInfo,userId) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
-    let date = dayjs().format('YYYY-MM-DD');
     /*
     const category = formatDatas(bookCategories);    
     const authors = formatDatas(bookAuthors);
@@ -98,7 +97,7 @@ const queryInsertNewAuthor = async (authorName,authorInfo,userId) => {
     try {
         //Step 2 -- Insert to the Table
         const insertQuery = `INSERT INTO "Author" ("name", user_id, info) VALUES($1, $2, $3);`;
-        const values = [authorName, authorInfo, userId];
+        const values = [authorName, userId, authorInfo];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }
@@ -120,5 +119,6 @@ const queryInsertNewAuthor = async (authorName,authorInfo,userId) => {
 module.exports = {
     queryFindABookByName,
     queryInsertNewBook,
-    queryFindAuthorByName
+    queryFindAuthorByName,
+    queryInsertNewAuthor
 }

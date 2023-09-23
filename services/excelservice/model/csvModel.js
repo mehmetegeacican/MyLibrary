@@ -1,11 +1,11 @@
-const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName } = require('../sql/queries');
+const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName, queryInsertNewAuthor } = require('../sql/queries');
 /**
  * Checks if the data is an author or not
  * @param {*object} jsonData 
  * @returns 
  */
 const isAuthor = (jsonData) => {
-    if ('authorName' in jsonData && 'authorDetails' in jsonData && 'books' in jsonData) {
+    if ('authorName' in jsonData && 'authorDetails' in jsonData && 'user_id' in jsonData) {
         return true;
     }
     else {
@@ -46,25 +46,7 @@ const isCategory = (jsonData) => {
         return false;
     }
 }
-/**
- * Checks the type
- * @param {*object} exampleData 
- * @returns 
- */
-const checkType = (exampleData) => {
-    if (isBook(exampleData)) {
-        return "book";
-    }
-    else if (isCategory(exampleData)) {
-        return "category";
-    }
-    else if (isAuthor(exampleData)) {
-        return "author";
-    }
-    else {
-        return "undefined";
-    }
-};
+
 
 /**
  * Insertion mechanism here
@@ -101,8 +83,40 @@ const insertDatasBooks = async (jsonDatas) => {
     return statuses;
 }
 
+const insertDatasAuthors = async (jsonDatas) => {
+    let statuses = {
+        "inserted": 0,
+        "failed": 0,
+        "duplicate": 0
+    }
+    //Insert to Book Table
+    //Step 1 -- Check if the book exists by name and userId
+    for (const record of jsonDatas) {
+        try {
+            //Step 1 -- Check the Duplicates
+            let isDuplicate = await queryFindAuthorByName(record.authorName, record.user_id);
+            if (isDuplicate.length > 0) {
+                statuses.duplicate++;
+            }
+            else {
+                const data = await queryInsertNewAuthor(record.authorName, record.authorDetails, record.user_id);
+                if (data === "Data Successfully inserted") {
+                    statuses.inserted++;
+                }
+            }
+        }
+        catch (e) {
+            console.log("Could not insert", e);
+            statuses.failed++;
+        }
+
+    }
+    return statuses;
+}
+
 module.exports = {
-    checkType,
     insertDatasBooks,
-    isBook
+    insertDatasAuthors,
+    isBook,
+    isAuthor
 }

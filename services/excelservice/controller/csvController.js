@@ -20,7 +20,7 @@ const importCsv = async  (req, res) => {
     }
     try {
         const jsonData = await csvtojson().fromFile(filePath);
-        fs.unlinkSync(filePath);
+        fs.unlinkSync(filePath); // Unlink, The Storage such as an S3 would be great for here
         res.status(200).json({message:jsonData})
 
     }

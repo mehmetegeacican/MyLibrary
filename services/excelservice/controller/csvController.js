@@ -36,7 +36,7 @@ const importCsvBooks = async  (req, res) => {
     catch (e) {
         console.log(e);
         const errorMessage = e.message || 'Db Access Unsuccessful';
-        res.status(500).send({ error: 'Db Access Unsuccessful' });
+        return res.status(500).json({ error: 'Db Access Unsuccessful' });
     }
 };
 

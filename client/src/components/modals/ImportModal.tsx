@@ -2,6 +2,8 @@ import { IBook, ICategory, IAuthor } from '../../interfaces/DataInterfaces';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, styled, Typography, Stack, Box } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React from 'react';
+import { isIBook } from '../tables/DataRow';
+import { useImportModal } from '../../hooks/modalHooks/useImportModal';
 
 
 interface ImportModalInterface {
@@ -22,16 +24,26 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-export default function ImportModal({ open, handleClose }: ImportModalInterface) {
+export default function ImportModal({ open, handleClose, data }: ImportModalInterface) {
     //Hooks
     const [path, setPath] = React.useState<string>("");
+    const {importBooks} = useImportModal();
+    const [file,setFile] = React.useState<File>();
     //Handler
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
+        console.log(file);
         if (file) {
             setPath(file.name);  // Update the state with the file name
+            setFile(file);
         }
     };
+
+    const submit = async () => {
+        if(isIBook(data) && file){
+            await importBooks(file)
+        }
+    }
     return (
         <Dialog
             open={open}
@@ -59,7 +71,7 @@ export default function ImportModal({ open, handleClose }: ImportModalInterface)
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => console.log("Import")}>
+                <Button onClick={async () => submit()}>
                     Import
                 </Button>
 

@@ -4,16 +4,23 @@ import axios from "axios";
 const PORT = import.meta.env.VITE_EXCELSERVICE_PORT;
 const EXCEL_ADDRESS = `http://localhost:${PORT}`;
 
+
+
 /**
  * API to call the import books
  * @param file 
  * @returns 
  */
 export const importBooksCSV = async (file:File) => {
+    const formData = new FormData();
+    formData.append('csvFile', file, file.name);
+
     try{
-        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/books',{
-            csvFile:file
-        });
+        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/books',formData,{
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
         return res.data ?? null;
     } catch(e){
         console.log(e)

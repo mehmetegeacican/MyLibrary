@@ -234,7 +234,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
             {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
-           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={selectedItem!}/>} 
+           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>} 
 
         </Fragment>
     )

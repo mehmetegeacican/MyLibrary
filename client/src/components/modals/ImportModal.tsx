@@ -38,11 +38,7 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
         }
     };
 
-    useEffect(() => {
-        console.log("The data is", data, "it is", isIBook(data))
-    },[data])
     const submit = async () => {
-        console.log(isIAuthor(data),"the data format");
         if (file && isIBook(data)) {
             await importBooks(file)
         }

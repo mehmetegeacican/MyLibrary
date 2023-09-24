@@ -41,6 +41,7 @@ export const useImportModal = () => {
 
     //Functions
     const processResult = (res: ApiResult) => {
+        console.log(res);
         if(res.message && !res.response){
             setSuccess(true);
             setMessage(res.message);

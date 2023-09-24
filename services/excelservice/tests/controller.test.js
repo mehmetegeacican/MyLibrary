@@ -119,10 +119,28 @@ describe('POST /api/v1/excel/import/authors', () => {
         //Verify
     });
     it('Should return 400 for wrong csv file format', async () => {
-        // Given
-        // When
-        // Then
-        // Verify
+        const req = {
+            file: {
+                path: 'filepath.csv',
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+
+        // Modify the mock to return incorrect data (not a book)
+        jest.mock('csvtojson', () => ({
+            fromFile: jest.fn().mockResolvedValue([
+                { id: '1', name: 'Incorrect Data' },
+            ]),
+        }));
+
+        await importCsvAuthors(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'CSV data type not in the correct format.' });
+
     });
 });
 
@@ -157,9 +175,27 @@ describe('POST /api/v1/excel/import/categories', () => {
         //Verify
     });
     it('Should return 400 for wrong csv file format', async () => {
-        // Given
-        // When
-        // Then
-        // Verify
+        const req = {
+            file: {
+                path: 'filepath.csv',
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+
+        // Modify the mock to return incorrect data (not a book)
+        jest.mock('csvtojson', () => ({
+            fromFile: jest.fn().mockResolvedValue([
+                { id: '1', name: 'Incorrect Data' },
+            ]),
+        }));
+
+        await importCsvCategories(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'CSV data type not in the correct format.' });
+
     });
 });

@@ -16,10 +16,14 @@ jest.mock('../model/csvModel', () => ({
     isCategory: jest.fn()
 }));
 
-jest.mock('csvtojson', () => ({
-    fromFile:jest.fn()
-}));
-  
+jest.mock('csvtojson', () => {
+    const mCsv = {
+        on: jest.fn(),
+        fromFile: jest.fn().mockReturnThis()
+    };
+    return jest.fn(() => mCsv);
+});
+
 
 jest.mock('fs', () => ({
     unlinkSync: jest.fn(),
@@ -38,7 +42,7 @@ describe('POST /api/v1/excel/import/books', () => {
         jest.restoreAllMocks(); // Restore console.log after each test
     });
     it('Should successfully import books', async () => {
-        
+
     });
     it('Should return 400 for empty csv file format', async () => {
         //Given
@@ -59,11 +63,29 @@ describe('POST /api/v1/excel/import/books', () => {
         //Verify
     });
     it('Should return 400 for wrong csv file format', async () => {
-        // Given
-        // When
-        // Then
-        // Verify
-      });
+        const req = {
+            file: {
+                path: 'filepath.csv',
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+
+        // Modify the mock to return incorrect data (not a book)
+        jest.mock('csvtojson', () => ({
+            fromFile: jest.fn().mockResolvedValue([
+                { id: '1', name: 'Incorrect Data' },
+            ]),
+        }));
+
+        await importCsvBooks(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: 'CSV data type not in the correct format.' });
+
+    });
 });
 
 describe('POST /api/v1/excel/import/authors', () => {
@@ -76,7 +98,7 @@ describe('POST /api/v1/excel/import/authors', () => {
         jest.restoreAllMocks(); // Restore console.log after each test
     });
     it('Should successfully import authors', async () => {
-        
+
     });
     it('Should return 400 for empty csv file format', async () => {
         //Given
@@ -114,7 +136,7 @@ describe('POST /api/v1/excel/import/categories', () => {
         jest.restoreAllMocks(); // Restore console.log after each test
     });
     it('Should successfully import categories', async () => {
-        
+
     });
     it('Should return 400 for empty csv file format', async () => {
         //Given

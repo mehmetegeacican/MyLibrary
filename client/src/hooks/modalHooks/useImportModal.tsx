@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { ApiResult } from "../../interfaces/DataInterfaces";
-import { importBooksCSV, importCategoriesCSV } from "../../apis/excelApis";
+import { importBooksCSV, importCategoriesCSV , importAuthorsCSV} from "../../apis/excelApis";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 
 interface IStatImport {
@@ -72,7 +72,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importBooksCSV(file);
+        const res = await importAuthorsCSV(file);
         const check = processResult(res);
         if(check){
             setSuccess(true);

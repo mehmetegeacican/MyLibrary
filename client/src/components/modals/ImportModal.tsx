@@ -1,7 +1,7 @@
 import { IBook, ICategory, IAuthor } from '../../interfaces/DataInterfaces';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, styled, Typography, Box, Alert, Snackbar } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { isIAuthor, isIBook, isICategory } from '../tables/DataRow';
 import { useImportModal } from '../../hooks/modalHooks/useImportModal';
 
@@ -38,15 +38,18 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
         }
     };
 
+    useEffect(() => {
+        console.log("The data is", data, "it is", isIBook(data))
+    },[data])
     const submit = async () => {
-        console.log(data);
-        if (isIBook(data) && file) {
+        console.log(isIAuthor(data),"the data format");
+        if (file && isIBook(data)) {
             await importBooks(file)
         }
-        else if(isICategory(data) && file){
+        else if(file && isICategory(data)){
             await importCategories(file);
         }
-        else if(isIAuthor(data) && file){
+        else if(file && isIAuthor(data)){
             await importAuthors(file);
         }
     }

@@ -42,7 +42,7 @@ export default function UpdateModal({ open, handleClose,  data }: UpdateModalInt
                 </Stack>
 
                 {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
-                {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
+                
             </DialogContent>
         </Dialog>
     )

@@ -1,5 +1,5 @@
 import { IBook, ICategory, IAuthor } from '../../interfaces/DataInterfaces';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, styled, Typography, Stack, Box, Alert, Snackbar } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, styled, Typography, Box, Alert, Snackbar } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React from 'react';
 import { isIAuthor, isIBook, isICategory } from '../tables/DataRow';

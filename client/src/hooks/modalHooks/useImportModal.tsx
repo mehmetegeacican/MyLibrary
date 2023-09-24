@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { ApiResult } from "../../interfaces/DataInterfaces";
-import { importBooksCSV } from "../../apis/excelApis";
+import { importBooksCSV, importCategoriesCSV } from "../../apis/excelApis";
+import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 
 interface IStatImport {
     inserted:number;
@@ -18,6 +19,26 @@ export const useImportModal = () => {
         duplicate:0
     });
     const [message,setMessage] = React.useState<string>("");
+    const {dispatch,bookTrigger,authorTrigger,categoryTrigger} = useLibraryDataContext();
+    const init = () => {
+        setError(false);
+        setSuccess(false);
+        setMessage("");
+        setStatus({
+            inserted:0,
+            failed:0,
+            duplicate:0
+        })
+    }
+    //UseMemo
+    useEffect(() => {
+        if(success){
+            setTimeout(() => {
+                setSuccess(false);
+            },4000);
+        }
+    },[success]);
+
     //Functions
     const processResult = (res: ApiResult) => {
         if(res.message && !res.response){
@@ -37,21 +58,40 @@ export const useImportModal = () => {
     }
     const importBooks = async (file:File) => {
         //Step 1 -- Initialize
-        setError(false);
-        setSuccess(false);
-        setMessage("");
-        setStatus({
-            inserted:0,
-            failed:0,
-            duplicate:0
-        })
+        init();
         //Step 2 -- Import
         const res = await importBooksCSV(file);
         const check = processResult(res);
         if(check){
-            setStatus(res.data.message);
+            setSuccess(true);
+            setStatus(res.message);
+            dispatch({type:'TRIGGER_BOOKS',payload:!bookTrigger})
         }
     };
+    const importAuthors = async (file:File) => {
+        //Step 1 -- Initialize
+        init();
+        //Step 2 -- Import
+        const res = await importBooksCSV(file);
+        const check = processResult(res);
+        if(check){
+            setSuccess(true);
+            setStatus(res.message);
+            dispatch({type:'TRIGGER_AUTHORS',payload:!authorTrigger})
+        }
+    }
+    const importCategories = async (file:File) => {
+        //Step 1 -- Initialize
+        init();
+        //Step 2 -- Import
+        const res = await importCategoriesCSV(file);
+        const check = processResult(res);
+        if(check){
+            setSuccess(true);
+            setStatus(res.message);
+            dispatch({type:'TRIGGER_CATEGORIES',payload:!categoryTrigger})
+        }
+    }
     //Return Values
-    return {error,success,status,message,importBooks}
+    return {error,success,status,message,importBooks,importAuthors,importCategories}
 }

@@ -1,8 +1,8 @@
 import { IBook, ICategory, IAuthor } from '../../interfaces/DataInterfaces';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, styled, Typography, Stack, Box } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, styled, Typography, Stack, Box, Alert, Snackbar } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React from 'react';
-import { isIBook } from '../tables/DataRow';
+import { isIAuthor, isIBook, isICategory } from '../tables/DataRow';
 import { useImportModal } from '../../hooks/modalHooks/useImportModal';
 
 
@@ -27,12 +27,11 @@ const VisuallyHiddenInput = styled('input')({
 export default function ImportModal({ open, handleClose, data }: ImportModalInterface) {
     //Hooks
     const [path, setPath] = React.useState<string>("");
-    const {importBooks} = useImportModal();
-    const [file,setFile] = React.useState<File>();
+    const { importBooks, error, message, status, success ,importAuthors,importCategories } = useImportModal();
+    const [file, setFile] = React.useState<File>();
     //Handler
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
-        console.log(file);
         if (file) {
             setPath(file.name);  // Update the state with the file name
             setFile(file);
@@ -40,8 +39,15 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
     };
 
     const submit = async () => {
-        if(isIBook(data) && file){
+        console.log(data);
+        if (isIBook(data) && file) {
             await importBooks(file)
+        }
+        else if(isICategory(data) && file){
+            await importCategories(file);
+        }
+        else if(isIAuthor(data) && file){
+            await importAuthors(file);
         }
     }
     return (
@@ -59,7 +65,7 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
                     The following file with the its contents will be imported, do you want to proceed?
                 </DialogContentText>
                 <Box display={'flex'} justifyContent={'center'}>
-                    <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{height:40, alignSelf:'center'}}>
+                    <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ height: 40, alignSelf: 'center' }}>
                         Upload file
                         <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
@@ -76,6 +82,11 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
                 </Button>
 
             </DialogActions>
+            {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
+            <Snackbar
+                open={success}
+                message={"Inserted: " + status.inserted + ", Failed: " + status.failed + ", Duplicate: " + status.duplicate}
+            />
         </Dialog>
     )
 }

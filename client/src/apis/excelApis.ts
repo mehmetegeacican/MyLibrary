@@ -26,4 +26,48 @@ export const importBooksCSV = async (file:File) => {
         console.log(e)
         return null;
     }
+}
+
+/**
+ * API to call the import books
+ * @param file 
+ * @returns 
+ */
+export const importAuthorsCSV = async (file:File) => {
+    const formData = new FormData();
+    formData.append('csvFile', file, file.name);
+
+    try{
+        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/authors',formData,{
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+        return res.data ?? null;
+    } catch(e){
+        console.log(e)
+        return null;
+    }
+}
+
+/**
+ * API to call the import books
+ * @param file 
+ * @returns 
+ */
+export const importCategoriesCSV = async (file:File) => {
+    const formData = new FormData();
+    formData.append('csvFile', file, file.name);
+
+    try{
+        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/categories',formData,{
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+        return res.data ?? null;
+    } catch(e){
+        console.log(e)
+        return null;
+    }
 } 

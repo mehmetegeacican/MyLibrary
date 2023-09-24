@@ -41,21 +41,14 @@ export const useImportModal = () => {
 
     //Functions
     const processResult = (res: ApiResult) => {
-        console.log(res);
-        if(res.message && !res.response){
+        if(res && res.message && !res.response){
             setSuccess(true);
             setMessage(res.message);
             return true
         }
-        else if(res.response!.status === 400){
-            setError(true);
-            return false
-        }
-        else if(res.response!.status === 500){
-            setError(true);
-            setMessage(res.response!.data!.error!);
+        else{
             return false;
-        }    
+        }
     }
     const importBooks = async (file:File) => {
         //Step 1 -- Initialize
@@ -67,6 +60,10 @@ export const useImportModal = () => {
             setSuccess(true);
             setStatus(res.message);
             dispatch({type:'TRIGGER_BOOKS',payload:!bookTrigger})
+        }
+        else{
+            setError(true);
+            setMessage("Could not import the file, please check the file format or your connection")
         }
     };
     const importAuthors = async (file:File) => {
@@ -80,6 +77,10 @@ export const useImportModal = () => {
             setStatus(res.message);
             dispatch({type:'TRIGGER_AUTHORS',payload:!authorTrigger})
         }
+        else{
+            setError(true);
+            setMessage("Could not import the file, please check the file format or your connection")
+        }
     }
     const importCategories = async (file:File) => {
         //Step 1 -- Initialize
@@ -91,6 +92,10 @@ export const useImportModal = () => {
             setSuccess(true);
             setStatus(res.message);
             dispatch({type:'TRIGGER_CATEGORIES',payload:!categoryTrigger})
+        }
+        else{
+            setError(true);
+            setMessage("Could not import the file, please check the file format or your connection")
         }
     }
     //Return Values

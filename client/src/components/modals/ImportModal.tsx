@@ -72,7 +72,7 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
                 </Box>
 
 
-
+                {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
@@ -81,7 +81,7 @@ export default function ImportModal({ open, handleClose, data }: ImportModalInte
                 </Button>
 
             </DialogActions>
-            {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
+            
             <Snackbar
                 open={success}
                 message={"Inserted: " + status.inserted + ", Failed: " + status.failed + ", Duplicate: " + status.duplicate}

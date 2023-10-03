@@ -110,10 +110,10 @@ export default function Dashboard() {
                         {bookCountByAuthor && <BarChart chartData={bookCountByCategory} />}
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={4} lg={3}>
+                <Grid item xs={12}  md={4} lg={3}>
                     <Paper
                         sx={{
-                            p: 1,
+                            p: 1.1,
                             display: 'flex',
                             flexDirection: 'column',
                             height: 240,

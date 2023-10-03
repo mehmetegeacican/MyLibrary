@@ -69,6 +69,6 @@ export default function DougnutChart({ chartData }: ChartInterface) {
         }]
     });
     return (
-        <Container sx={{ height: { md: 200 } }}>{<Doughnut data={data} options={options} />}</Container>
+        <Container sx={{ height: { md: 220 } }}>{<Doughnut data={data} options={options} />}</Container>
     )
 }

@@ -31,7 +31,7 @@ const bookBodyValidate = () => [
     check('desc').isString().withMessage('Description  must be a string'),
     check('bookStatus').notEmpty().withMessage('Status must not be empty'),
     check('bookStatus').isString().withMessage('Status must be a string'),
-    check('bookStatus').isIn(['Read', 'Reading', 'Will Read','Not Planned']).withMessage('Status can only be one of the three: Red, Reading, Will Read'),
+    check('bookStatus').isIn(['Read', 'Reading', 'Will Read','Not Planned','Will Continue']).withMessage('Status can only be one of the three: Read, Reading, Will Read, Not Planned or Will Continue'),
     check('bookCategories').custom(isArrayofStrings).withMessage('The Categories must be an array of strings'),
 ]
 

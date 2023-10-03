@@ -92,6 +92,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         <Chip clickable onClick={() => setSelectedStatus("Read")} label="Read" color="error" variant={selectedStatus === "Read" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Reading")} label="Reading" color="warning" variant={selectedStatus === "Reading" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Will Read")} label="Will Read" color="success" variant={selectedStatus === "Will Read" ? "filled" : "outlined"} />
+                        <Chip clickable onClick={() => setSelectedStatus("Will Continue")} label="Will Continue" color="secondary" variant={selectedStatus === "Will Continue" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Not Planned")} label="Not Planned" color="default" variant={selectedStatus === "Not Planned" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />

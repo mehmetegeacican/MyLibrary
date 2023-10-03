@@ -23,6 +23,11 @@ export default function StatusChip({ statusLabel}: StatusChipInterface) {
             <Chip color='success'  label={statusLabel} />
         )
     }
+    else if (statusLabel === 'Will Continue') {
+        return (
+            <Chip color='secondary'  label={statusLabel} />
+        )
+    }
     else {
         return (
             <Chip color='default' label={statusLabel} />

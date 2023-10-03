@@ -113,15 +113,15 @@ export default function Dashboard() {
                 <Grid item xs={12} md={4} lg={3}>
                     <Paper
                         sx={{
-                            p: 2,
+                            p: 1,
                             display: 'flex',
                             flexDirection: 'column',
                             height: 240,
                         }}
                     >
-                        <Stack spacing={2} divider={<Divider />}  >
+                        <Stack spacing={1} >
                             <div>
-                            <DougnutChart chartData={bookCountByStat}/> 
+                                <DougnutChart chartData={bookCountByStat}/> 
                             </div>
                            
                         </Stack>

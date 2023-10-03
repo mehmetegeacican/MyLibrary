@@ -8,7 +8,7 @@ interface StatusChipInterface {
 
 
 export default function StatusChip({ statusLabel}: StatusChipInterface) {
-    if (statusLabel === 'Red') {
+    if (statusLabel === 'Read') {
         return (
             <Chip color='error'  label={statusLabel}/>
         )

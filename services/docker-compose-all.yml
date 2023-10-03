@@ -82,7 +82,7 @@ services:
     networks:
       - library-network
   bookservice:
-    image: bookservice:2.5
+    image: bookservice:2.7
     ports:
       - "4001:4000"
     environment:

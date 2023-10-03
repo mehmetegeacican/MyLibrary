@@ -8,7 +8,7 @@ interface StatusChipInterface {
 
 
 export default function StatusChip({ statusLabel}: StatusChipInterface) {
-    if (statusLabel === 'Red') {
+    if (statusLabel === 'Read') {
         return (
             <Chip color='error'  label={statusLabel}/>
         )
@@ -21,6 +21,11 @@ export default function StatusChip({ statusLabel}: StatusChipInterface) {
     else if (statusLabel === 'Will Read') {
         return (
             <Chip color='success'  label={statusLabel} />
+        )
+    }
+    else if (statusLabel === 'Will Continue') {
+        return (
+            <Chip color='secondary'  label={statusLabel} />
         )
     }
     else {

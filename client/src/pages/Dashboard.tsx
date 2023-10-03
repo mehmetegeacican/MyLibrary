@@ -113,7 +113,7 @@ export default function Dashboard() {
                 <Grid item xs={12}  md={4} lg={3}>
                     <Paper
                         sx={{
-                            p: 1.1,
+                            p: 0.3,
                             display: 'flex',
                             flexDirection: 'column',
                             height: 240,

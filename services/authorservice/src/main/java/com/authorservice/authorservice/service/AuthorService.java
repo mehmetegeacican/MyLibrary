@@ -74,8 +74,7 @@ public class AuthorService {
      */
     public boolean areAuthorsWithSameNameExist(Long id, Author editedAuthor) {
         // Query the repository for authors with the same name as the edited author
-        Optional<Author> preupdateAuthorOptional = authorRepository.findById(id);
-        List<Author> authorsWithSameName = authorRepository.findByNameAndUserId(editedAuthor.getName(), editedAuthor.getUserId());
+        List<Author> authorsWithSameName = authorRepository.findByNameIgnoreCaseAndUserId(editedAuthor.getName(), editedAuthor.getUserId());
 
         // Remove the author being edited from the list
         authorsWithSameName.removeIf(author -> author.getId().equals(id));

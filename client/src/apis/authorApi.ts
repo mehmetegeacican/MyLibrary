@@ -68,7 +68,7 @@ export const deleteAnAuthor = async (id:string) => {
  * @param requestBody the request body
  * @returns the message or the errorv message
  */
-export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string}) => {
+export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string,userId:number}) => {
     try{
         const res = await axios.put(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,reqBody);
         return res.data;

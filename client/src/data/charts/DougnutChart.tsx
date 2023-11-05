@@ -61,11 +61,10 @@ export default function DougnutChart({ chartData }: ChartInterface) {
     const [data, setData] = React.useState<any>({
         labels: chart.map((item: any) => item.status),
         datasets: [{
-            label: 'Stats',
             data: chart.map((item: any) => item.total),
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 1
+            borderWidth: 1,
         }]
     });
     return (

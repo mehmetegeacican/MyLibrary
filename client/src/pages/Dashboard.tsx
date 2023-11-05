@@ -112,7 +112,7 @@ export default function Dashboard() {
                 </Grid>
                 <Grid item xs={12}  md={4} lg={3}>
                     <Paper
-                        sx={{
+                        sx={{  
                             p: 0.3,
                             display: 'flex',
                             flexDirection: 'column',

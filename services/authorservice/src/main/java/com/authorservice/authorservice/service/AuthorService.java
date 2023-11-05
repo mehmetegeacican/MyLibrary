@@ -5,6 +5,7 @@ import com.authorservice.authorservice.model.Author;
 import com.authorservice.authorservice.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -66,15 +67,35 @@ public class AuthorService {
     }
 
     /**
+     * Helper Function to find if there is going to be duplicates
+     * @param id
+     * @param editedAuthor
+     * @return
+     */
+    public boolean areAuthorsWithSameNameExist(Long id, Author editedAuthor) {
+        // Query the repository for authors with the same name as the edited author
+        List<Author> authorsWithSameName = authorRepository.findByNameIgnoreCaseAndUserId(editedAuthor.getName(), editedAuthor.getUserId());
+
+        // Remove the author being edited from the list
+        authorsWithSameName.removeIf(author -> author.getId().equals(id));
+
+        // If there are any authors left in the list, there are authors with the same name
+        return !authorsWithSameName.isEmpty();
+    }
+
+
+    /**
      * Updates the Function
      * @param id
      * @param editedAuthor
      */
-
     public void updateAuthor(Long id, Author editedAuthor) {
         boolean authorExists = authorRepository.existsById(id);
         if (authorExists) {
             Author author = authorRepository.getReferenceById(id);
+            if(areAuthorsWithSameNameExist(id,editedAuthor)){
+                throw new IllegalStateException("There is already another user with the entered name!");
+            }
             if (author.getName() != null && !Objects.equals(author.getName(), editedAuthor.getName())) {
                 author.setName(editedAuthor.getName());
             }

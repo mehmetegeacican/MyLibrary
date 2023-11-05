@@ -201,7 +201,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     //Step 1 -- The Request Body Checks
     const requestBody = {
       name:name,
-      info:info
+      info:info,
+      userId:user!.id // This might be problematic -- Add a check here
     }
     const result = await updateAnAuthor(id,requestBody);
     const check = processResult(result);

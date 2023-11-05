@@ -21,8 +21,9 @@ The basic request body for POST and PUT requests
 
 ```
 {
-    "name": "Doğan Cüceloğlu",
-    "info": "Psychologist"
+    "name": "Namık Kemal",
+    "info": "Turkish Play writer whose plays have defined the soul of the young Turkish Republic",
+    "userId":1
 }
 ```
 

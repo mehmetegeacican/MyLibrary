@@ -47,7 +47,7 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
                     </IconButton>
                 </Stack>
                 <Divider/>
-                <Button sx={{  alignSelf:"center", width: 200 }} variant='outlined' onClick={async () => submit()}> Login </Button>
+                <Button sx={{  alignSelf:"center", width: 200 }} variant='outlined' color='secondary' onClick={async () => submit()}> Login </Button>
                 {error && <Alert  severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
@@ -62,7 +62,6 @@ export default function LoginPage() {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-                {/* Chart */}
                 <Grid item xs={12} md={12} lg={12}>
                     <Paper
                         sx={{

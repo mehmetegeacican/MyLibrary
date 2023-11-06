@@ -1,36 +1,44 @@
- 
-import { Alert, Button, Container, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
+
+import { Alert, Avatar, Box, Button, Container, Divider, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
 import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../components/forms/StringValueField';
 import { useAuthForms } from '../hooks/formHooks/useAuthForms';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
 
 interface IAuthForm {
-    name:string;
-    setName:Function;
-    password:string;
+    name: string;
+    setName: Function;
+    password: string;
     setPassword: Function
 }
 
-export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
+export const SignUpForm = ({ name, setName, password, setPassword }: IAuthForm) => {
     //Hooks & Contexts
-    const {signUpUser,error,message} = useAuthForms();
+    const { signUpUser, error, message } = useAuthForms();
     const [passwVisible, setPasswVisible] = useState(true);
 
     //Submit
-    const submit = async  () => {
-        await signUpUser(name,password);
+    const submit = async () => {
+        await signUpUser(name, password);
     }
-    
+
     //Render
     return (
         <Fragment>
             <Stack spacing={2} alignContent={"center"}>
-                <Typography variant='h5' color={'primary'}> Sign Up </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', mr: 2, alignSelf: "center" }}>
+                    <Typography variant='h5' color={'primary'}> Sign Up </Typography>
+                    <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                </Box>
+                <Divider />
                 <Stack spacing={2} direction={'row'}>
                     <StringValueField label={'Enter Email'} data={name} setter={setName} />
-                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible}/>
+                    <StringValueField label={'Enter Password'} data={password} setter={setPassword} password={passwVisible} />
                     <IconButton
                         aria-label="toggle password visibility"
                         onClick={() => setPasswVisible(!passwVisible)}
@@ -39,8 +47,9 @@ export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
                         {passwVisible ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                 </Stack>
-                <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={async () => submit()}> Sign Up </Button>
-                {error && <Alert sx={{ mb:2 }} severity="error"> {message}</Alert>}
+                <Divider/>
+                <Button sx={{ alignSelf: "center", width: 200 }} variant='outlined' onClick={async () => submit()}> Sign Up </Button>
+                {error && <Alert sx={{ mb: 2 }} severity="error"> {message}</Alert>}
             </Stack>
         </Fragment>
 
@@ -54,7 +63,6 @@ export default function SignUpPage() {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-                {/* Chart */}
                 <Grid item xs={12} md={12} lg={12}>
                     <Paper
                         sx={{

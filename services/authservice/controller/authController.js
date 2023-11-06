@@ -26,9 +26,9 @@ const signUp = async (req, res) => {
         }
         else{
             const result = await addNewUser(email,password);
-            const newId = await getIdOfUser(email);
+            const id = await getIdOfUser(email);
             const token = createToken(newId[0].id);
-            res.status(201).json({newId,result,email,token});
+            res.status(201).json({id,result,email,token});
         }
        
     } catch (e) {

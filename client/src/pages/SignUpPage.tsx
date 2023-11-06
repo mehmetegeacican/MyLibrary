@@ -20,9 +20,7 @@ export const SignUpForm = ({name,setName,password,setPassword}:IAuthForm) => {
 
     //Submit
     const submit = async  () => {
-
         await signUpUser(name,password);
-        
     }
     
     //Render

@@ -14,35 +14,35 @@ import { fetchAllAuthors } from '../apis/authorApi';
 
 export default function Dashboard() {
     //Hooks & Context
-    const {user} = useAuthContext();
-    const { books, categories, authors,dispatch } = useLibraryDataContext();
-    const [bookCountByAuthor,setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
-    const [bookCountByCategory,setBookCountByCategory] = React.useState<any>();
-    const [bookCountByStat,setBookCountByStat] = React.useState<any>();
+    const { user } = useAuthContext();
+    const { books, categories, authors, dispatch } = useLibraryDataContext();
+    const [bookCountByAuthor, setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
+    const [bookCountByCategory, setBookCountByCategory] = React.useState<any>();
+    const [bookCountByStat, setBookCountByStat] = React.useState<any>();
     //UseCallBack 
     const fetchStats = useCallback(async () => {
-        if(user){
+        if (user) {
             const resBook = await fetchAllBookCountsByAuthor(user.id);
             const resCategory = await fetchAllBookCountsByCategory(user.id);
             const resStat = await fetchAllBookCountsByStat(user.id);
-            setBookCountByAuthor(resBook.slice(0,12));
-            setBookCountByCategory(resCategory.slice(0,10));
+            setBookCountByAuthor(resBook.slice(0, 12));
+            setBookCountByCategory(resCategory.slice(0, 10));
             setBookCountByStat(resStat);
         }
     }, [books]);
 
     const fetchDatas = useCallback(async () => {
-        if(user){
+        if (user) {
             const bookDatas = await fetchAllBooks(user.id);
             const categoryDatas = await fetchAllCategories(user.id);
             const resAuthors = await fetchAllAuthors(user.id);
-            dispatch({type:'GET_AUTHORS',payload:resAuthors!});
-            dispatch({type:'GET_BOOKS',payload:bookDatas});
-            if(categoryDatas.length >= 0){
-                dispatch({type:'GET_CATEGORIES',payload:categoryDatas});
+            dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });
+            dispatch({ type: 'GET_BOOKS', payload: bookDatas });
+            if (categoryDatas.length > 0) {
+                dispatch({ type: 'GET_CATEGORIES', payload: categoryDatas });
             }
         }
-    },[user])
+    }, [user])
 
     //UseEffect
     useEffect(() => {
@@ -55,18 +55,13 @@ export default function Dashboard() {
 
     //Filter Method for not including multiple in the stats
     const filteredBookStats = useMemo(() => {
-        if(bookCountByAuthor){
-            return bookCountByAuthor.filter((item:IBookByAuthorStat) => {
+        if (bookCountByAuthor) {
+            return bookCountByAuthor.filter((item: IBookByAuthorStat) => {
                 return item.author !== "Multiple" && item.author !== "Me";
             })
         }
         return [];
-    },[bookCountByAuthor]);
-
-
-    useEffect(() => {
-        console.log(user,"The User is here");
-    },[user]);
+    }, [bookCountByAuthor]);
 
 
     return (
@@ -102,7 +97,7 @@ export default function Dashboard() {
                         </Stack>
                     </Paper>
                 </Grid>
-                
+
                 <Grid item xs={12} md={8} lg={9}>
                     <Paper
                         sx={{
@@ -115,9 +110,9 @@ export default function Dashboard() {
                         {bookCountByAuthor && <BarChart chartData={bookCountByCategory} />}
                     </Paper>
                 </Grid>
-                <Grid item xs={12}  md={4} lg={3}>
+                <Grid item xs={12} md={4} lg={3}>
                     <Paper
-                        sx={{  
+                        sx={{
                             p: 0.3,
                             display: 'flex',
                             flexDirection: 'column',
@@ -126,9 +121,9 @@ export default function Dashboard() {
                     >
                         <Stack spacing={1} >
                             <div>
-                                <DougnutChart chartData={bookCountByStat}/> 
+                                <DougnutChart chartData={bookCountByStat} />
                             </div>
-                           
+
                         </Stack>
                     </Paper>
                 </Grid>

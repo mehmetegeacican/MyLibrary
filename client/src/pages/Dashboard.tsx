@@ -39,7 +39,6 @@ export default function Dashboard() {
             dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });
             dispatch({ type: 'GET_BOOKS', payload: bookDatas });
             dispatch({ type: 'GET_CATEGORIES', payload: categoryDatas });
-            
         }
     }, [user])
 
@@ -61,6 +60,11 @@ export default function Dashboard() {
         }
         return [];
     }, [bookCountByAuthor]);
+
+
+    useEffect(() => {
+        console.log(user,"The User is here");
+    },[user]);
 
 
     return (

@@ -8,11 +8,11 @@ import UpdateModal from '../modals/UpdateModal';
 import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CSVLink } from "react-csv";
 import FilterModal from '../modals/FilterModal';
 import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
 import ExportModal from '../modals/ExportModal';
 import ImportModal from '../modals/ImportModal';
+import BookDataModal from '../modals/BookDataModal';
 
 
 interface TableInterfaces<T> {
@@ -33,12 +33,17 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openFilter, setOpenFilter] = React.useState<boolean>(false);
     const [openExport,setOpenExport] = React.useState<boolean>(false);
     const [openImport,setOpenImport] = React.useState<boolean>(false);
+    const [openView,setOpenView] = React.useState<boolean>(false);
 
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
     const [selectedIds, setSelectedIds] = React.useState<number[]>([]);
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
     const [filterChips, setFilterChips] = React.useState<string[]>([]);
+
+    // Specific Book Data Types
+    const [bookData,setBookData] = React.useState<IBook>();
+    const [bookDataType,setBookDataType] = React.useState<string>("Category");
 
     const { filterDataByFilterInputs } = useFilterModal(filterChips, tableDatas);
 
@@ -66,6 +71,13 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const handleOpenDelete = (item: any) => {
         setOpenDelete(true);
         setSelectedDeleteItem(item);
+    }
+
+
+    const handleOpenBookView = (item:IBook,type:string) => {
+        setOpenView(true)
+        setBookData(item);
+        setBookDataType(type);
     }
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
@@ -96,7 +108,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),(type:string) => handleOpenBookView(value,type))}
                 </Fragment>
             );
         }
@@ -127,6 +139,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             setOpenDelete(true);
         }
     }, [selectedDeleteItem]);
+
+    useEffect(() => {
+
+    },[]);
 
     const filteredDatas = useMemo(() => {
         setPage(0);
@@ -234,7 +250,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
             {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
-           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>} 
+           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>}
+           {<BookDataModal open={openView} handleClose={() => setOpenView(false)} data={bookData!} type={bookDataType}/>}
 
         </Fragment>
     )

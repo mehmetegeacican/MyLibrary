@@ -61,12 +61,6 @@ export default function Dashboard() {
         return [];
     }, [bookCountByAuthor]);
 
-
-    useEffect(() => {
-        console.log(user,"The User is here");
-    },[user]);
-
-
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>

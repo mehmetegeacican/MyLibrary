@@ -13,6 +13,7 @@ import FilterModal from '../modals/FilterModal';
 import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
 import ExportModal from '../modals/ExportModal';
 import ImportModal from '../modals/ImportModal';
+import BookDataModal from '../modals/BookDataModal';
 
 
 interface TableInterfaces<T> {
@@ -33,6 +34,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openFilter, setOpenFilter] = React.useState<boolean>(false);
     const [openExport,setOpenExport] = React.useState<boolean>(false);
     const [openImport,setOpenImport] = React.useState<boolean>(false);
+    const [openView,setOpenView] = React.useState<boolean>(false);
 
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
@@ -96,7 +98,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),() => setOpenView(true))}
                 </Fragment>
             );
         }
@@ -234,7 +236,8 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={tableDatas[0]!} setFilterChips={setFilterChips} />}
             {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
-           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>} 
+           {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>}
+           {<BookDataModal open={openView} handleClose={() => setOpenView(false)}/>}
 
         </Fragment>
     )

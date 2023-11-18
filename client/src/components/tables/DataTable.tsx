@@ -108,7 +108,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),() => handleOpenBookView(value,bookDataType))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),(type:string) => handleOpenBookView(value,type))}
                 </Fragment>
             );
         }

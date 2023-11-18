@@ -1,20 +1,17 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Chip } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Chip, Container, Stack, Divider } from '@mui/material'
 import { IAuthor, IBook } from '../../interfaces/DataInterfaces';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
 
 interface BookDataInterface {
-    open:boolean;
+    open: boolean;
     handleClose: () => void;
-    data : IBook;
+    data: IBook;
     type: string;
 }
 
-export default function BookDataModal({open,handleClose,type,data}:BookDataInterface) {
+export default function BookDataModal({ open, handleClose, type, data }: BookDataInterface) {
 
-    useEffect(() => {
-        console.log("Data", data);
-    },[open])
     return (
         <Dialog
             open={open}
@@ -26,18 +23,20 @@ export default function BookDataModal({open,handleClose,type,data}:BookDataInter
                 Info
             </DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    {type === "Author" && data && (
-                        data.authors.map((author:string) => (
-                            <Chip label={author} color='info'/>
-                        ))
-                    )}
-                    {type === "Category" && data && (
-                        data.category.map((cat:string,index:number) => (
-                            <Chip key={index} label={cat} color='info'/>
-                        ))
-                    )}
-                </DialogContentText>
+                
+                    <Fragment>
+                        {type === "Author" && data && (
+                            data.authors.map((author: string, index) => (
+                                <Stack key={index} spacing={1} divider= {<Divider/>}>  <Chip key={index} label={author} color='info' /> </Stack>
+
+                            ))
+                        )}
+                        {type === "Category" && data && (
+                            data.category.map((cat: string, index: number) => (
+                                <Stack key={index} spacing={1} divider= {<Divider/>}> <Chip label={cat} color='info' /> </Stack>
+                            ))
+                        )}
+                    </Fragment>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>

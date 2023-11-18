@@ -8,7 +8,6 @@ import UpdateModal from '../modals/UpdateModal';
 import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CSVLink } from "react-csv";
 import FilterModal from '../modals/FilterModal';
 import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
 import ExportModal from '../modals/ExportModal';
@@ -42,6 +41,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [selectedItem, setSelectedItem] = React.useState<IBook | ICategory>();
     const [filterChips, setFilterChips] = React.useState<string[]>([]);
 
+    // Specific Book Data Types
+    const [bookData,setBookData] = React.useState<IBook>();
+    const [bookDataType,setBookDataType] = React.useState<string>("Category");
+
     const { filterDataByFilterInputs } = useFilterModal(filterChips, tableDatas);
 
     //Handlers
@@ -68,6 +71,13 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const handleOpenDelete = (item: any) => {
         setOpenDelete(true);
         setSelectedDeleteItem(item);
+    }
+
+
+    const handleOpenBookView = (item:IBook,type:string) => {
+        setOpenView(true)
+        setBookData(item);
+        setBookDataType(type);
     }
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
@@ -98,7 +108,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),() => setOpenView(true))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),() => handleOpenBookView(value,bookDataType))}
                 </Fragment>
             );
         }
@@ -129,6 +139,10 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             setOpenDelete(true);
         }
     }, [selectedDeleteItem]);
+
+    useEffect(() => {
+
+    },[]);
 
     const filteredDatas = useMemo(() => {
         setPage(0);
@@ -237,7 +251,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<DeleteModal open={openDeleteMultiple} handleClose={() => setOpenDeleteMultiple(false)} data={tableDatas[0]} selectedIds={selectedIds} />}
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
            {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>}
-           {<BookDataModal open={openView} handleClose={() => setOpenView(false)}/>}
+           {<BookDataModal open={openView} handleClose={() => setOpenView(false)} data={bookData!} type={bookDataType}/>}
 
         </Fragment>
     )

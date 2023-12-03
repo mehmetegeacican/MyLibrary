@@ -36,6 +36,7 @@ export default function Dashboard() {
             const bookDatas = await fetchAllBooks(user.id);
             const categoryDatas = await fetchAllCategories(user.id);
             const resAuthors = await fetchAllAuthors(user.id);
+            dispatch({ type: 'GET_CATEGORIES', payload: [] });
             dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });
             dispatch({ type: 'GET_BOOKS', payload: bookDatas });
             // Added due to Prisma Initialization error

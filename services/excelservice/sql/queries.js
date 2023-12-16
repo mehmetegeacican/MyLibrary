@@ -1,5 +1,7 @@
 const {connectDb,closeDb} = require('../dbConnection');
+const {formatDatas} = require('../helpers/formatHelper');
 const dayjs = require('dayjs'); 
+
 /**
  * Query Function the check if a book exist
  * @param {*string} bookName the book name
@@ -85,14 +87,14 @@ const queryInsertNewBook = async (bookName, description, bookCategories, bookSta
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = dayjs().format('YYYY-MM-DD');
-    /*
+    
     const category = formatDatas(bookCategories);    
     const authors = formatDatas(bookAuthors);
-    */
+    
     try {
         //Step 2 -- Insert to the Table
         const insertQuery = `INSERT INTO books (name, description, entered, category, status,authors,user_id) VALUES($1, $2, $3, $4, $5,$6,$7)`;
-        const values = [bookName, description, date, bookCategories, bookStatus,bookAuthors,userId];
+        const values = [bookName, description, date, category, bookStatus,authors,userId];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }

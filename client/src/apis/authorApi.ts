@@ -19,7 +19,8 @@ export const fetchAllAuthors = async (userId:number) => {
                     id: item.id,
                     authorName: item.name,
                     authorDetails: item.info,
-                    books : item.books ?? [] 
+                    books : item.books ?? [],
+                    user_id: userId
                 }
             })
             return differentited ?? [];

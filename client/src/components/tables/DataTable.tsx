@@ -140,9 +140,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         }
     }, [selectedDeleteItem]);
 
-    useEffect(() => {
 
-    },[]);
 
     const filteredDatas = useMemo(() => {
         setPage(0);

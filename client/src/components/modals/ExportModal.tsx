@@ -13,9 +13,6 @@ interface ExportModalInterface {
 
 export default function ExportModal({open, handleClose, data}: ExportModalInterface) {
     //Hooks
-   
-
-
     const fileName = useMemo(() => {
         if(data && isIBook(data[0])){
             return "exported-books.csv";

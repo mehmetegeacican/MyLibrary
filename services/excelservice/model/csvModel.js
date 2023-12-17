@@ -20,7 +20,7 @@ const isAuthor = (jsonData) => {
 const isBook = (jsonData) => {
     if ('name' in jsonData
         && 'description' in jsonData && 'authors' in jsonData &&
-        'user_id' in jsonData &&
+       !('user_id' in jsonData) &&
         'entered' in jsonData &&
         'category' in jsonData &&
         'status' in jsonData) {

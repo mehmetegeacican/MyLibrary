@@ -5,7 +5,7 @@ const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName, queryIn
  * @returns 
  */
 const isAuthor = (jsonData) => {
-    if ('authorName' in jsonData && 'authorDetails' in jsonData && 'user_id' in jsonData) {
+    if ('authorName' in jsonData && 'authorDetails' in jsonData && !('user_id' in jsonData)) {
         return true;
     }
     else {

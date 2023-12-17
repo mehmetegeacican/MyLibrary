@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { ApiResult } from "../../interfaces/DataInterfaces";
 import { importBooksCSV, importCategoriesCSV , importAuthorsCSV} from "../../apis/excelApis";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
+import { useAuthContext } from "../contextHooks/useAuthContext";
 
 interface IStatImport {
     inserted:number;
@@ -20,6 +21,8 @@ export const useImportModal = () => {
     });
     const [message,setMessage] = React.useState<string>("");
     const {dispatch,bookTrigger,authorTrigger,categoryTrigger} = useLibraryDataContext();
+    const {user} = useAuthContext();
+
     const init = () => {
         setError(false);
         setSuccess(false);
@@ -70,7 +73,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importAuthorsCSV(file);
+        const res = await importAuthorsCSV(file,user!.id);
         const check = processResult(res);
         if(check){
             setSuccess(true);

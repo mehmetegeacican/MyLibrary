@@ -5,7 +5,7 @@ const { queryFindABookByName, queryInsertNewBook, queryFindAuthorByName, queryIn
  * @returns 
  */
 const isAuthor = (jsonData) => {
-    if ('authorName' in jsonData && 'authorDetails' in jsonData && 'user_id' in jsonData) {
+    if ('authorName' in jsonData && 'authorDetails' in jsonData && !('user_id' in jsonData)) {
         return true;
     }
     else {
@@ -20,7 +20,7 @@ const isAuthor = (jsonData) => {
 const isBook = (jsonData) => {
     if ('name' in jsonData
         && 'description' in jsonData && 'authors' in jsonData &&
-        'user_id' in jsonData &&
+       !('user_id' in jsonData) &&
         'entered' in jsonData &&
         'category' in jsonData &&
         'status' in jsonData) {
@@ -39,7 +39,7 @@ const isCategory = (jsonData) => {
     if (
         "name" in jsonData &&
         "info" in jsonData &&
-        "user_id" in jsonData) {
+        !("user_id" in jsonData)) {
         return true;
     }
     else {

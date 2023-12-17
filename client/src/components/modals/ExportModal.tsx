@@ -26,6 +26,32 @@ export default function ExportModal({open, handleClose, data}: ExportModalInterf
         return "my-file.csv";
     },[data]);
 
+    // For Excluding The User ID
+    const excludedFileData = useMemo(() => {
+        if(data && isIBook(data[0])){
+            let newData = data.map((item:any) => {
+                const {user_id,...newObj} = item;
+                return newObj;
+            })
+            return newData;
+        }
+        else if(data && isICategory(data[0])){
+            let newData = data.map((item:any) => {
+                const {user_id,...newObj} = item;
+                return newObj;
+            })
+            return newData;
+        }
+        else if(data && isIAuthor(data[0])){
+            let newData = data.map((item:any) => {
+                const {user_id,...newObj} = item;
+                return newObj;
+            })
+            return newData;
+        }
+        return data;
+    },[data]);
+
     return (
         <Dialog
             open={open}
@@ -44,7 +70,7 @@ export default function ExportModal({open, handleClose, data}: ExportModalInterf
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button>
-                <CSVLink className="downloadbtn" filename={fileName} data={data}>
+                <CSVLink className="downloadbtn" filename={fileName} data={excludedFileData}>
                     Export
                 </CSVLink>
                 </Button>

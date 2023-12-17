@@ -55,10 +55,10 @@ export const importAuthorsCSV = async (file:File,userId:number) => {
  * @param file 
  * @returns 
  */
-export const importCategoriesCSV = async (file:File) => {
+export const importCategoriesCSV = async (file:File,userId:number) => {
     const formData = new FormData();
     formData.append('csvFile', file, file.name);
-
+    formData.append('user_id',userId.toString());
     try{
         const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/categories',formData,{
             headers: {

@@ -89,7 +89,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importCategoriesCSV(file);
+        const res = await importCategoriesCSV(file,user!.id);
         const check = processResult(res);
         if(check){
             setSuccess(true);

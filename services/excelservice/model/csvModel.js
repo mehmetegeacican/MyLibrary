@@ -39,7 +39,7 @@ const isCategory = (jsonData) => {
     if (
         "name" in jsonData &&
         "info" in jsonData &&
-        "user_id" in jsonData) {
+        !("user_id" in jsonData)) {
         return true;
     }
     else {

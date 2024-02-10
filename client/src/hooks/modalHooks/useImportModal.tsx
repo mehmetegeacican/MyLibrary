@@ -57,7 +57,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importBooksCSV(file,user!.id);
+        const res = await importBooksCSV(file,user!.id,user!.token);
         const check = processResult(res);
         if(check){
             setSuccess(true);
@@ -73,7 +73,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importAuthorsCSV(file,user!.id);
+        const res = await importAuthorsCSV(file,user!.id,user!.token);
         const check = processResult(res);
         if(check){
             setSuccess(true);
@@ -89,7 +89,7 @@ export const useImportModal = () => {
         //Step 1 -- Initialize
         init();
         //Step 2 -- Import
-        const res = await importCategoriesCSV(file,user!.id);
+        const res = await importCategoriesCSV(file,user!.id,user!.token);
         const check = processResult(res);
         if(check){
             setSuccess(true);

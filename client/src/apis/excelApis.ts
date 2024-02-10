@@ -11,21 +11,22 @@ const EXCEL_ADDRESS = `http://localhost:${PORT}`;
  * @param file 
  * @returns 
  */
-export const importBooksCSV = async (file:File,userId:number) => {
-    const formData = new FormData();
-    formData.append('csvFile', file, file.name);
-    formData.append('user_id',userId.toString());
-    try{
-        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/books',formData,{
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-        return res.data ?? null;
-    } catch(e){
-        console.log(e)
-        return null;
-    }
+export const importBooksCSV = async (file: File, userId: number, userToken: string) => {
+  const formData = new FormData();
+  formData.append('csvFile', file, file.name);
+  formData.append('user_id', userId.toString());
+  try {
+    const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/books', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + userToken
+      }
+    });
+    return res.data ?? null;
+  } catch (e) {
+    console.log(e)
+    return null;
+  }
 }
 
 /**
@@ -33,21 +34,22 @@ export const importBooksCSV = async (file:File,userId:number) => {
  * @param file 
  * @returns 
  */
-export const importAuthorsCSV = async (file:File,userId:number) => {
-    const formData = new FormData();
-    formData.append('csvFile', file, file.name);
-    formData.append('user_id',userId.toString());
-    try{
-        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/authors',formData,{
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-        return res.data ?? null;
-    } catch(e){
-        console.log(e)
-        return null;
-    }
+export const importAuthorsCSV = async (file: File, userId: number,userToken:string) => {
+  const formData = new FormData();
+  formData.append('csvFile', file, file.name);
+  formData.append('user_id', userId.toString());
+  try {
+    const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/authors', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + userToken
+      }
+    });
+    return res.data ?? null;
+  } catch (e) {
+    console.log(e)
+    return null;
+  }
 }
 
 /**
@@ -55,19 +57,20 @@ export const importAuthorsCSV = async (file:File,userId:number) => {
  * @param file 
  * @returns 
  */
-export const importCategoriesCSV = async (file:File,userId:number) => {
-    const formData = new FormData();
-    formData.append('csvFile', file, file.name);
-    formData.append('user_id',userId.toString());
-    try{
-        const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/categories',formData,{
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-        return res.data ?? null;
-    } catch(e){
-        console.log(e)
-        return null;
-    }
+export const importCategoriesCSV = async (file: File, userId: number,userToken:string) => {
+  const formData = new FormData();
+  formData.append('csvFile', file, file.name);
+  formData.append('user_id', userId.toString());
+  try {
+    const res = await axios.post(EXCEL_ADDRESS + '/api/v1/csv/import/categories', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + userToken
+      }
+    });
+    return res.data ?? null;
+  } catch (e) {
+    console.log(e)
+    return null;
+  }
 } 

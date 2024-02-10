@@ -41,7 +41,6 @@ const reqAuth = async (req,res,next) => {
     // Step 3 Verify Token
     try{
         const { _id } = jwt.verify(token, process.env.SECRET);
-        console.log(_id,"The Token Id");
         let idExists = await checkIfUserIdExists(_id);
         if(idExists){
             next();

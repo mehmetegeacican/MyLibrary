@@ -33,7 +33,7 @@ export default function Dashboard() {
 
     const fetchDatas = useCallback(async () => {
         if (user) {
-            const bookDatas = await fetchAllBooks(user.id);
+            const bookDatas = await fetchAllBooks(user.id,user.token);
             const categoryDatas = await fetchAllCategories(user.id);
             const resAuthors = await fetchAllAuthors(user.id);
             dispatch({ type: 'GET_CATEGORIES', payload: [] });

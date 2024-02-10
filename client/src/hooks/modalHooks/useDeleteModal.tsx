@@ -4,9 +4,11 @@ import { deleteExistingCategory } from "../../apis/categoryApi";
 import { ApiResult } from "../../interfaces/DataInterfaces";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 import { deleteAnAuthor } from "../../apis/authorApi";
+import { useAuthContext } from "../contextHooks/useAuthContext";
 
 export const useDeleteModal = () => {
     //Hooks
+    const {user} = useAuthContext();
     const [error,setError] = React.useState<boolean>(false);
     const [success,setSuccess] = React.useState<boolean>(false);
     const [message,setMessage] = React.useState<string>("");
@@ -35,10 +37,12 @@ export const useDeleteModal = () => {
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteABook(stringId);
-        const check = processResult(res);
-        if(check){
-            dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+        if(user){
+            const res = await deleteABook(stringId,user.token);
+            const check = processResult(res);
+            if(check){
+                dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+            }
         }
     }
     const deleteCategory = async ( id: number) => {

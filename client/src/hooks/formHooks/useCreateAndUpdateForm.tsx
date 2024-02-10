@@ -109,14 +109,13 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookStatus: selectedStatus,
       userId:authId
     }
-    console.log(requestBody);
-    
-    const result = await postNewBook(requestBody);
-    const check = processResult(result);
-    if(check){
-      dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+    if(user){
+      const result = await postNewBook(requestBody,user.token);
+      const check = processResult(result);
+      if(check){
+        dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+      }
     }
-    
   };
 
   const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string,selectedAuthors:string[]) => {
@@ -134,7 +133,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       userId:user!.id 
     }
     
-    const result = await updateABook(id, requestBody);
+    const result = await updateABook(id, requestBody,user!.token);
     //Step 1 -- If there is a user based error
     const check = processResult(result);
     if(check){

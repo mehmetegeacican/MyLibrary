@@ -51,7 +51,7 @@ services:
     networks:
       - library-network
   statservice:
-    image: statservice:1.6
+    image: statservice:1.7
     ports:
       - "4003:4000"
     environment:

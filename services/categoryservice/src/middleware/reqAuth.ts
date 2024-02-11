@@ -21,7 +21,7 @@ const reqAuth = async (req: Request, res: Response, next: NextFunction): Promise
         const prisma = new PrismaClient();
         // Step 3 Verify Token
         try {
-            const { _id } = jwt.verify(token, process.env.SECRET!) as { _id: string };
+            const { _id } = jwt.verify(token, process.env.SECRET!) as { _id: number };
             const idExists = await prisma.user.findUnique({
                 where: {
                     id: _id,

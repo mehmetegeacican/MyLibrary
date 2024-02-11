@@ -42,7 +42,7 @@ model Author {
 }
 
 model User {
-  id      String   @id @map("id") // Assuming the type of id field in the existing table is String
+  id      Int   @id @map("id") // Assuming the type of id field in the existing table is String
   username String   @map("username")
   password    String   @map("password")
 }

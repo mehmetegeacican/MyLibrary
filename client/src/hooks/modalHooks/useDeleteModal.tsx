@@ -52,7 +52,7 @@ export const useDeleteModal = () => {
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteExistingCategory(stringId);
+        const res = await deleteExistingCategory(stringId,user!.token);
         console.log(res);
         const check = processResult(res);
         if(check){

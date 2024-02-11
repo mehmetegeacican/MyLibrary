@@ -151,7 +151,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       info:info,
       userId:user!.id
     }
-    const result = await postNewCategory(requestBody);
+    const result = await postNewCategory(requestBody,user!.token);
     const check = processResult(result);
     if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
@@ -168,7 +168,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       name:name,
       info:info
     }
-    const result = await updateExistingCategory(id,requestBody);
+    const result = await updateExistingCategory(id,requestBody,user!.token);
     const check = processResult(result);
     if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });

@@ -77,7 +77,7 @@ export const AuthorAccordions = () => {
     //Use Callback
     const fetchData = useCallback(async() => {
         if(user){
-            const res = await fetchAllAuthors(user.id);
+            const res = await fetchAllAuthors(user.id,user.token);
             dispatch({type:'GET_AUTHORS',payload:res!});
         }
     },[authorTrigger]);

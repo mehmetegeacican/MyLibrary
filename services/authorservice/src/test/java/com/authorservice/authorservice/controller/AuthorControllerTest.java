@@ -62,7 +62,7 @@ class AuthorControllerTest {
         //When
         Mockito.when(authorService.getAuthorList(1L)).thenReturn(aList);
         Mockito.when(authorDtoConverter.convertToDto(aList)).thenReturn(authorDtoList);
-        ResponseEntity<List<AuthorDto>> response = authorController.getAllAuthors(1L);
+        ResponseEntity<List<AuthorDto>> response = authorController.getAllAuthors("aaa",1L);
         //Then
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(authorDtoList,response.getBody());
@@ -77,7 +77,7 @@ class AuthorControllerTest {
         Long authorId = 1L;
         Mockito.doNothing().when(authorService).deleteAuthor(authorId);
         //When
-        ResponseEntity<Map<String, String>> response = authorController.deleteAuthor(authorId);
+        ResponseEntity<Map<String, String>> response = authorController.deleteAuthor("aaa",authorId);
         //Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
@@ -97,7 +97,7 @@ class AuthorControllerTest {
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
-        ResponseEntity<Map<String,String>> response = authorController.postAuthor(request);
+        ResponseEntity<Map<String,String>> response = authorController.postAuthor("aaa",request);
         //Then
         assertEquals(HttpStatus.CREATED,response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
@@ -119,7 +119,7 @@ class AuthorControllerTest {
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorService.createAuthor(createdAuthor)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
-        ResponseEntity<Map<String,String>> response = authorController.postAuthor(request);
+        ResponseEntity<Map<String,String>> response = authorController.postAuthor("aaa",request);
         //Then
         assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
@@ -141,7 +141,7 @@ class AuthorControllerTest {
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
         Mockito.doNothing().when(authorService).updateAuthor(1L,createdAuthor);
-        ResponseEntity<Map<String,String>> response = authorController.putAuthor(1L,request);
+        ResponseEntity<Map<String,String>> response = authorController.putAuthor("aaa",1L,request);
         assertEquals(HttpStatus.OK,response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
         //Then
@@ -163,7 +163,7 @@ class AuthorControllerTest {
         Mockito.when(authorRequestConverter.convertToEntity(request)).thenReturn(createdAuthor);
         Mockito.when(authorDtoConverter.convertToDto(createdAuthor)).thenReturn(createdAuthorDto);
         Mockito.doNothing().when(authorService).updateAuthor(1L,createdAuthor);
-        ResponseEntity<Map<String,String>> response = authorController.putAuthor(1L,request);
+        ResponseEntity<Map<String,String>> response = authorController.putAuthor("aaa",1L,request);
         assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
         Map<String, String> responseBody = response.getBody();
         //Then
@@ -185,7 +185,7 @@ class AuthorControllerTest {
         Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.of(a1));
         Mockito.when(authorDtoConverter.convertToDto(a1)).thenReturn(aDto);
         //Then
-        ResponseEntity<?> response = authorController.getSpecificAuthor(1L);
+        ResponseEntity<?> response = authorController.getSpecificAuthor("aaa",1L);
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals(aDto, response.getBody());
         //Verify
@@ -202,7 +202,7 @@ class AuthorControllerTest {
         //When
         Mockito.when(authorService.getAuthorById(1L)).thenReturn(Optional.empty());
         //Then
-        ResponseEntity<?> response = authorController.getSpecificAuthor(1L);
+        ResponseEntity<?> response = authorController.getSpecificAuthor("aaa",1L);
         assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
         assertEquals(responseBody, response.getBody());
         //Verify

@@ -10,9 +10,12 @@ const AUTHOR_ADDRESS = `http://localhost:${PORT}`;
  * Fetches All of the Authors 
  * @returns The Category List
  */
-export const fetchAllAuthors = async (userId:number) => {
+export const fetchAllAuthors = async (userId:number,token:string) => {
     try {
-        const res = await axios.get(AUTHOR_ADDRESS + `/api/v1/authors/all/${userId}`);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.get(AUTHOR_ADDRESS + `/api/v1/authors/all/${userId}`,config);
         if(res){
             const differentited: IAuthor[] = res.data.map((item:any) => {
                 return {

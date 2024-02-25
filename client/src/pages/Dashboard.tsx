@@ -35,7 +35,7 @@ export default function Dashboard() {
         if (user) {
             const bookDatas = await fetchAllBooks(user.id,user.token);
             const categoryDatas = await fetchAllCategories(user.id,user.token);
-            const resAuthors = await fetchAllAuthors(user.id);
+            const resAuthors = await fetchAllAuthors(user.id,user.token);
             dispatch({ type: 'GET_CATEGORIES', payload: [] });
             dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });
             dispatch({ type: 'GET_BOOKS', payload: bookDatas });

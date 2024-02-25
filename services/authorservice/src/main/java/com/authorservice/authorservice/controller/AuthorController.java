@@ -36,7 +36,10 @@ public class AuthorController {
 
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors(@PathVariable("id") Long userId) {
+    public ResponseEntity<List<AuthorDto>> getAllAuthors(@RequestHeader("Authorization") String token,@PathVariable("id") Long userId) {
+        if (token == null) {
+            return ResponseEntity.status(401).build();
+        }
         return new ResponseEntity<List<AuthorDto>>(
                 authorDtoConverter.convertToDto(authorService.getAuthorList(userId)), HttpStatus.OK
         );
@@ -45,7 +48,10 @@ public class AuthorController {
 
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getSpecificAuthor(@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity<?> getSpecificAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id) throws Exception{
+        if (token == null) {
+            return ResponseEntity.status(401).build();
+        }
         Optional<Author> authorOptional = authorService.getAuthorById(id);
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
@@ -59,7 +65,10 @@ public class AuthorController {
 
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Map<String, String>> deleteAuthor(@PathVariable("id") Long id){
+    public ResponseEntity<Map<String, String>> deleteAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id){
+        if (token == null) {
+            return ResponseEntity.status(401).build();
+        }
         authorService.deleteAuthor(id);
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("message", "Author Deleted Successfully");
@@ -70,7 +79,10 @@ public class AuthorController {
 
 
     @PostMapping
-    public ResponseEntity<Map<String,String>> postAuthor(@Valid @RequestBody AuthorRequest authorRequest){
+    public ResponseEntity<Map<String,String>> postAuthor(@RequestHeader("Authorization") String token,@Valid @RequestBody AuthorRequest authorRequest){
+        if (token == null) {
+            return ResponseEntity.status(401).build();
+        }
         Author authorEntity = authorRequestConverter.convertToEntity(authorRequest);
         Map<String, String> responseBody = new HashMap<>();
         if(authorEntity.getName().isEmpty()){
@@ -96,9 +108,13 @@ public class AuthorController {
     @Transactional
     @PutMapping(path = "/{authorId}")
     public ResponseEntity<Map<String,String>> putAuthor(
+            @RequestHeader("Authorization") String token,
             @PathVariable("authorId") Long id,
             @RequestBody AuthorRequest editedAuthor
     ){
+        if (token == null) {
+            return ResponseEntity.status(401).build();
+        }
         Author entity = authorRequestConverter.convertToEntity(editedAuthor);
         Map<String, String> responseBody = new HashMap<>();
         if(editedAuthor.getName().isEmpty()){

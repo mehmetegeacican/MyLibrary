@@ -38,7 +38,7 @@ public class AuthorController {
     @GetMapping("/all/{id}")
     public ResponseEntity<List<AuthorDto>> getAllAuthors(@RequestHeader("Authorization") String token,@PathVariable("id") Long userId) {
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return new ResponseEntity<List<AuthorDto>>(
                 authorDtoConverter.convertToDto(authorService.getAuthorList(userId)), HttpStatus.OK
@@ -50,7 +50,7 @@ public class AuthorController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getSpecificAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id) throws Exception{
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Optional<Author> authorOptional = authorService.getAuthorById(id);
         if (authorOptional.isPresent()) {
@@ -67,7 +67,7 @@ public class AuthorController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Map<String, String>> deleteAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id){
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         authorService.deleteAuthor(id);
         Map<String, String> responseBody = new HashMap<>();
@@ -81,7 +81,7 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<Map<String,String>> postAuthor(@RequestHeader("Authorization") String token,@Valid @RequestBody AuthorRequest authorRequest){
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Author authorEntity = authorRequestConverter.convertToEntity(authorRequest);
         Map<String, String> responseBody = new HashMap<>();
@@ -113,7 +113,7 @@ public class AuthorController {
             @RequestBody AuthorRequest editedAuthor
     ){
         if (token == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Author entity = authorRequestConverter.convertToEntity(editedAuthor);
         Map<String, String> responseBody = new HashMap<>();

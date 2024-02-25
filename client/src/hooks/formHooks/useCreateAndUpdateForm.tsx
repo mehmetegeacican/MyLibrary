@@ -185,7 +185,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       info:info,
       userId:user!.id // This might be problematic -- Add a check here
     }
-    const result = await postNewAuthor(requestBody);
+    const result = await postNewAuthor(requestBody,user!.token);
     const check = processResult(result);
     if(check){
       dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
@@ -203,7 +203,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       info:info,
       userId:user!.id // This might be problematic -- Add a check here
     }
-    const result = await updateAnAuthor(id,requestBody);
+    const result = await updateAnAuthor(id,requestBody,user!.token);
     const check = processResult(result);
     if(check){
       dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });

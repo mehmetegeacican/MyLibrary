@@ -66,7 +66,7 @@ export const useDeleteModal = () => {
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteAnAuthor(stringId);
+        const res = await deleteAnAuthor(stringId,user!.token);
         const check = processResult(res);
         if(check){
             dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });

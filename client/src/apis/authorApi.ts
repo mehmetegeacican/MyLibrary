@@ -40,9 +40,12 @@ export const fetchAllAuthors = async (userId:number,token:string) => {
  * @param requestBody 
  * @returns 
  */
-export const postNewAuthor = async (requestBody:object) => {
+export const postNewAuthor = async (requestBody:object,token:string) => {
     try{
-        const res = await axios.post(AUTHOR_ADDRESS + '/api/v1/authors',requestBody);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.post(AUTHOR_ADDRESS + '/api/v1/authors',requestBody,config);
         return res.data;
     }
     catch(e){
@@ -55,9 +58,12 @@ export const postNewAuthor = async (requestBody:object) => {
  * @param id the id
  * @returns 
  */
-export const deleteAnAuthor = async (id:string) => {
+export const deleteAnAuthor = async (id:string,token:string) => {
     try{
-        const res = await axios.delete(AUTHOR_ADDRESS + `/api/v1/authors/${id}`);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.delete(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,config);
         return res.data;
     }
     catch(e){
@@ -72,9 +78,12 @@ export const deleteAnAuthor = async (id:string) => {
  * @param requestBody the request body
  * @returns the message or the errorv message
  */
-export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string,userId:number}) => {
+export const updateAnAuthor =async (id:number,reqBody:{name:string,info:string,userId:number},token:string) => {
     try{
-        const res = await axios.put(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,reqBody);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.put(AUTHOR_ADDRESS + `/api/v1/authors/${id}`,reqBody,config);
         return res.data;
     }
     catch(e){

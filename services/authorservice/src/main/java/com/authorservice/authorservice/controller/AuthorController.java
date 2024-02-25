@@ -7,16 +7,18 @@ import com.authorservice.authorservice.model.Author;
 import com.authorservice.authorservice.request.AuthorRequest;
 import com.authorservice.authorservice.request.converter.AuthorRequestConverter;
 import com.authorservice.authorservice.service.AuthorService;
+import io.jsonwebtoken.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.antlr.v4.runtime.Token;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.time.Instant;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -28,6 +30,9 @@ public class AuthorController {
 
     private final AuthorRequestConverter authorRequestConverter;
 
+    @Value("${SECRET_KEY}")
+    private String secretKey;
+
     public AuthorController(AuthorService authorService, AuthorDtoConverter authorDtoConverter, AuthorRequestConverter authorRequestConverter) {
         this.authorService = authorService;
         this.authorDtoConverter = authorDtoConverter;
@@ -36,7 +41,10 @@ public class AuthorController {
 
 
     @GetMapping("/all/{id}")
-    public ResponseEntity<List<AuthorDto>> getAllAuthors(@PathVariable("id") Long userId) {
+    public ResponseEntity<List<AuthorDto>> getAllAuthors(@RequestHeader("Authorization") String token,@PathVariable("id") Long userId) {
+        if (token == null || isValidToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return new ResponseEntity<List<AuthorDto>>(
                 authorDtoConverter.convertToDto(authorService.getAuthorList(userId)), HttpStatus.OK
         );
@@ -45,7 +53,10 @@ public class AuthorController {
 
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getSpecificAuthor(@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity<?> getSpecificAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id) throws Exception{
+        if (token == null || isValidToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         Optional<Author> authorOptional = authorService.getAuthorById(id);
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
@@ -59,7 +70,10 @@ public class AuthorController {
 
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Map<String, String>> deleteAuthor(@PathVariable("id") Long id){
+    public ResponseEntity<Map<String, String>> deleteAuthor(@RequestHeader("Authorization") String token,@PathVariable("id") Long id){
+        if (token == null || isValidToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         authorService.deleteAuthor(id);
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("message", "Author Deleted Successfully");
@@ -70,7 +84,10 @@ public class AuthorController {
 
 
     @PostMapping
-    public ResponseEntity<Map<String,String>> postAuthor(@Valid @RequestBody AuthorRequest authorRequest){
+    public ResponseEntity<Map<String,String>> postAuthor(@RequestHeader("Authorization") String token,@Valid @RequestBody AuthorRequest authorRequest){
+        if (token == null || isValidToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         Author authorEntity = authorRequestConverter.convertToEntity(authorRequest);
         Map<String, String> responseBody = new HashMap<>();
         if(authorEntity.getName().isEmpty()){
@@ -96,9 +113,13 @@ public class AuthorController {
     @Transactional
     @PutMapping(path = "/{authorId}")
     public ResponseEntity<Map<String,String>> putAuthor(
+            @RequestHeader("Authorization") String token,
             @PathVariable("authorId") Long id,
             @RequestBody AuthorRequest editedAuthor
     ){
+        if (token == null || isValidToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         Author entity = authorRequestConverter.convertToEntity(editedAuthor);
         Map<String, String> responseBody = new HashMap<>();
         if(editedAuthor.getName().isEmpty()){
@@ -108,5 +129,20 @@ public class AuthorController {
         authorService.updateAuthor(id,entity);
         responseBody.put("message", "Author Updated Successfully");
         return ResponseEntity.ok().body(responseBody);
+    }
+
+    private boolean isValidToken(String token){
+        try {
+
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .build().parseClaimsJwt(token)
+                    .getBody();
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            return expiration != null && !expiration.before(now);
+        }catch (Exception e){
+            return false;
+        }
     }
 }

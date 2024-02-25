@@ -7,9 +7,12 @@ const CATEGORY_ADDRESS = `http://localhost:${PORT}`;
  * Fetches All of the Categories 
  * @returns The Category List
  */
-export const fetchAllCategories = async (id:number) => {
+export const fetchAllCategories = async (id:number,token:string) => {
     try {
-        const res = await axios.get(CATEGORY_ADDRESS + `/api/v1/categories/all/${id}`);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.get(CATEGORY_ADDRESS + `/api/v1/categories/all/${id}`,config);
         if(res.status === 500){
             return [500];
         }
@@ -26,9 +29,12 @@ export const fetchAllCategories = async (id:number) => {
  * @param reqBody 
  * @returns 
  */
-export const postNewCategory = async (reqBody:{name:string,info:string, userId:number}) => {
+export const postNewCategory = async (reqBody:{name:string,info:string, userId:number},token:string) => {
     try{
-        const res = await axios.post(CATEGORY_ADDRESS + '/api/v1/categories', reqBody);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.post(CATEGORY_ADDRESS + '/api/v1/categories', reqBody,config);
         if(res){
             return res.data;
         }
@@ -44,9 +50,12 @@ export const postNewCategory = async (reqBody:{name:string,info:string, userId:n
  * @param reqBody the request body
  * @returns 
  */
-export const updateExistingCategory =async (id:number,reqBody:{name:string,info:string}) => {
+export const updateExistingCategory =async (id:number,reqBody:{name:string,info:string},token:string) => {
     try{
-        const res = await axios.put(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,reqBody);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.put(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,reqBody,config);
         return res.data;
     }
     catch(e){
@@ -59,9 +68,12 @@ export const updateExistingCategory =async (id:number,reqBody:{name:string,info:
  * @param id 
  * @returns 
  */
-export const deleteExistingCategory = async (id:(number |string)) => {
+export const deleteExistingCategory = async (id:(number |string), token:string) => {
     try{
-        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/categories/${id}`);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,config);
         return res.data;
     }
     catch(e){

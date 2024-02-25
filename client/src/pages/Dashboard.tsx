@@ -22,9 +22,9 @@ export default function Dashboard() {
     //UseCallBack 
     const fetchStats = useCallback(async () => {
         if (user) {
-            const resBook = await fetchAllBookCountsByAuthor(user.id);
-            const resCategory = await fetchAllBookCountsByCategory(user.id);
-            const resStat = await fetchAllBookCountsByStat(user.id);
+            const resBook = await fetchAllBookCountsByAuthor(user.id,user.token);
+            const resCategory = await fetchAllBookCountsByCategory(user.id,user.token);
+            const resStat = await fetchAllBookCountsByStat(user.id,user.token);
             setBookCountByAuthor(resBook.slice(0, 12));
             setBookCountByCategory(resCategory.slice(0, 10));
             setBookCountByStat(resStat);
@@ -33,8 +33,8 @@ export default function Dashboard() {
 
     const fetchDatas = useCallback(async () => {
         if (user) {
-            const bookDatas = await fetchAllBooks(user.id);
-            const categoryDatas = await fetchAllCategories(user.id);
+            const bookDatas = await fetchAllBooks(user.id,user.token);
+            const categoryDatas = await fetchAllCategories(user.id,user.token);
             const resAuthors = await fetchAllAuthors(user.id);
             dispatch({ type: 'GET_CATEGORIES', payload: [] });
             dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });

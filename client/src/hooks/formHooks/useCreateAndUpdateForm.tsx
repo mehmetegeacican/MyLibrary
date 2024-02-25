@@ -109,14 +109,13 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookStatus: selectedStatus,
       userId:authId
     }
-    console.log(requestBody);
-    
-    const result = await postNewBook(requestBody);
-    const check = processResult(result);
-    if(check){
-      dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+    if(user){
+      const result = await postNewBook(requestBody,user.token);
+      const check = processResult(result);
+      if(check){
+        dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
+      }
     }
-    
   };
 
   const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string,selectedAuthors:string[]) => {
@@ -134,7 +133,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       userId:user!.id 
     }
     
-    const result = await updateABook(id, requestBody);
+    const result = await updateABook(id, requestBody,user!.token);
     //Step 1 -- If there is a user based error
     const check = processResult(result);
     if(check){
@@ -152,7 +151,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       info:info,
       userId:user!.id
     }
-    const result = await postNewCategory(requestBody);
+    const result = await postNewCategory(requestBody,user!.token);
     const check = processResult(result);
     if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
@@ -169,7 +168,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       name:name,
       info:info
     }
-    const result = await updateExistingCategory(id,requestBody);
+    const result = await updateExistingCategory(id,requestBody,user!.token);
     const check = processResult(result);
     if(check && result.status !== 500){
       dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });

@@ -10,10 +10,15 @@ const {
     bookDataIDValidate,
     bookBodyValidate
 } = require('../validators/book.validation');
+const reqAuth = require('../middleware/reqAuth');
 
 
 
 const router = express.Router();
+
+
+// Middleware for Authentication
+router.use(reqAuth);
 
 
 //Routes

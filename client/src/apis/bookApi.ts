@@ -9,9 +9,13 @@ const ADDRESS = `http://localhost:${PORT}`;
 /**
  * Fetches the Books from the Db
  */
-export const fetchAllBooks = async (userId:number) => {
+export const fetchAllBooks = async (userId: number, token: string) => {
     try {
-        const res = await axios.get(ADDRESS + `/api/v1/books/all/${userId}`);
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+
+        const res = await axios.get(ADDRESS + `/api/v1/books/all/${userId}`, config);
         return res.data;
     }
     catch {
@@ -23,14 +27,17 @@ export const fetchAllBooks = async (userId:number) => {
  * @param requestBody 
  * @returns 
  */
-export const postNewBook = async (requestBody:object) => {
-    try{
-        const res = await axios.post(ADDRESS + '/api/v1/books',requestBody);
+export const postNewBook = async (requestBody: object, token: string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.post(ADDRESS + '/api/v1/books', requestBody,config);
         return res.data;
     }
-    catch(e){
+    catch (e) {
         return e;
-        
+
     }
 }
 
@@ -39,12 +46,15 @@ export const postNewBook = async (requestBody:object) => {
  * @param id the id
  * @returns 
  */
-export const deleteABook = async (id:string) => {
-    try{
-        const res = await axios.delete(ADDRESS + `/api/v1/books/${id}`);
+export const deleteABook = async (id: string,token:string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.delete(ADDRESS + `/api/v1/books/${id}`,config);
         return res.data;
     }
-    catch(e){
+    catch (e) {
         return e;
     }
 }
@@ -54,12 +64,15 @@ export const deleteABook = async (id:string) => {
  * @param requestBody the request body
  * @returns the message or the errorv message
  */
-export const updateABook = async (id:string,requestBody:object) => {
-    try{
-        const res = await axios.put(ADDRESS + `/api/v1/books/${id}`,requestBody);
+export const updateABook = async (id: string, requestBody: object,token:string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.put(ADDRESS + `/api/v1/books/${id}`, requestBody,config);
         return res.data;
     }
-    catch(e){
+    catch (e) {
         return e;
     }
 }

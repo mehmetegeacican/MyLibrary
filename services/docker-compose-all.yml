@@ -51,7 +51,7 @@ services:
     networks:
       - library-network
   statservice:
-    image: statservice:1.6
+    image: statservice:1.7
     ports:
       - "4003:4000"
     environment:
@@ -69,7 +69,7 @@ services:
     networks:
       - library-network
   categoryservice:
-    image: categoryservice:2.0
+    image: categoryservice:2.5
     ports:
       - "4002:4000"
     environment:
@@ -82,7 +82,7 @@ services:
     networks:
       - library-network
   bookservice:
-    image: bookservice:2.7
+    image: bookservice:3.1
     ports:
       - "4001:4000"
     environment:

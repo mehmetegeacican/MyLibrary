@@ -40,3 +40,9 @@ model Author {
   info String
   books String[]
 }
+
+model User {
+  id      Int   @id @map("id") // Assuming the type of id field in the existing table is String
+  username String   @map("username")
+  password    String   @map("password")
+}

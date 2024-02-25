@@ -36,7 +36,7 @@ export default function BookAccordions() {
     //UseCallBack 
     const fetchData = useCallback(async () => {
         if(user){
-            const res = await fetchAllBooks(user.id);
+            const res = await fetchAllBooks(user.id,user.token);
             dispatch({ type: 'GET_BOOKS', payload: res });
         } 
     }, [bookTrigger]);
@@ -117,7 +117,7 @@ export const CategoryAccordions = () => {
     //UseCallBack 
     const fetchData = useCallback(async () => {
         if(user){
-            const res = await fetchAllCategories(user.id);
+            const res = await fetchAllCategories(user.id,user.token);
             dispatch({ type: 'GET_CATEGORIES', payload: res });   
         }
     }, [categoryTrigger]);

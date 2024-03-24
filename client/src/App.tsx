@@ -31,7 +31,7 @@ function App() {
           <Navbar open={open} toggleDrawer={toggleDrawer} />
           {<SideNav open={open} toggleDrawer={toggleDrawer} />}
           <Box
-            alignContent={"center"}
+            alignContent={"flex-start"}
             sx={{
               backgroundColor: (theme) =>
                 theme.palette.mode === 'light'

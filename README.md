@@ -3,7 +3,7 @@ A library web app
 
 ## CSS framework
 
-A CSS framework is a pre-written collection of CSS files containing styles, grids, and components that developers can use to style and layout web pages quickly. These frameworks typically include predefined styles for typography, colors, forms, buttons, navigation bars, and other UI elements. Some popular CSS frameworks include Bootstrap, Foundation, and Tailwind CSS.
+A CSS framework is a pre-written collection of CSS files containing styles, grids, and components that developers can use to style and layout web pages quickly. These frameworks typically include predefined styles for typography, colors, forms, buttons, navigation bars, and other UI elements. Some popular CSS frameworks include Bootstrap, Foundation, and Tailwind CSS[^1].
 
 #### Reasons why developers may choose to use a CSS framework instead of writing default CSS from scratch:
 
@@ -38,7 +38,7 @@ CSS frameworks benefit from large and active communities of developers who contr
 
 ## Front end Libraries 
 
-Front-end libraries are collections of pre-written code, typically written in languages like HTML, CSS, and JavaScript, that developers can use to expedite the process of building user interfaces (UIs) and web applications. These libraries provide reusable components, functions, and utilities that help streamline development tasks and improve efficiency. Front-end libraries often focus on specific areas of web development, such as UI components, state management, data visualization, or routing.
+Front-end libraries are collections of pre-written code, typically written in languages like HTML, CSS, and JavaScript, that developers can use to expedite the process of building user interfaces (UIs) and web applications. These libraries provide reusable components, functions, and utilities that help streamline development tasks and improve efficiency. Front-end libraries often focus on specific areas of web development, such as UI components, state management, data visualization, or routing[^2].
 
 Some popular front-end libraries include:
 
@@ -93,6 +93,12 @@ Some front-end frameworks come with a significant amount of overhead, including 
 Learning Purposes:
 
 While front-end frameworks can streamline development, relying solely on frameworks may hinder developers' understanding of core web technologies such as HTML, CSS, and JavaScript. For educational purposes or to gain a deeper understanding of web development principles, building projects from scratch can be more beneficial.
+
+## Reference
+
+[^1]: https://elementor.com/resources/glossary/what-is-a-css-framework/
+[^2]: https://www.revelo.com/blog/front-end-frameworks
+
 
 
 

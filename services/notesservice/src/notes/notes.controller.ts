@@ -3,7 +3,7 @@ import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
-@Controller('notes')
+@Controller('api/v2/notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
@@ -12,7 +12,7 @@ export class NotesController {
     return this.notesService.create(createNoteDto);
   }
 
-  @Get()
+  @Get('/all')
   findAll() {
     return this.notesService.findAll();
   }

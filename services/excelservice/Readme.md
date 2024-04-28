@@ -1,4 +1,4 @@
-# BookService
+# ExcelService
 This Service is an API service that handles the Importation opearations of the system.
 The user imports CSV's (not excels) with the apis below 
 For Authentication, JSON Web Token is used 

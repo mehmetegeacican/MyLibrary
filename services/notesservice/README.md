@@ -1,73 +1,50 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# NotesService
+This Service is an API service that handles the CRUD opearations of the Note Data of the system.
+The user adds, lists , updates and deletes Personal Notes by indirectly using this api service
+This Services main entry url is `http://localhost:PORT/api/v2/notes`,
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## API Endpoints
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<ul>
+    <li> GET --> api/v2/notes/all/:userId --> Receives all of the books of the db with the given user Id </li>
+    <li> GET --> api/v2/notes/:id --> Receives a specific note by Id </li>
+    <li>  POST --> api/v2/notes --> Adds a new Note to the system </li>
+    <li> PATCH --> api/v2/notes/:id --> Updates the note (via ID) based on the request body parameters </li>
+    <li> DELETE --> api/v2/notes/:id --> Deletes a note based on the Id </li>
+</ul>
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Request and Response Formats
+The Request and Response are in the json content,
+The responses return a json object with a message such as The Data have been inserted or the list of the notes
+The basic request body for POST and PUT requests
 
-## Installation
-
-```bash
-$ npm install
+```
+{
+  "title":"A docker note ",
+  "content":"lorem ipsum 2",
+  "userId":2
+}
 ```
 
-## Running the app
+## Authentication and Authorization
+The service uses jwt tokens to handle authentication and authorization
 
-```bash
-# development
-$ npm run start
+## Status Codes
+The Status Codes are standart API status codes <br/>
+<ul>
+    <li> 200 --> Success</li>
+    <li> 201 --> Success Created </li>
+    <li> 400 --> User based error </li>
+    <li> 404 --> Page not found, wrong url </li>
+    <li> 500 --> Internal Server Error </li>
+</ul>
 
-# watch mode
-$ npm run start:dev
+## Tests
+The following api methods and the internal functions of this service have not been fully tested
 
-# production mode
-$ npm run start:prod
-```
+## Commands
+While the service is dockerized and can be activated by docker-compose, If you want to run the service locally, use `npm run start:dev` command, make sure that the env variables are correct for db connection
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Tools
+This service has been implemented using Nest.js

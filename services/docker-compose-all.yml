@@ -68,6 +68,24 @@ services:
 
     networks:
       - library-network
+  notesservice:
+    build: ./notesservice
+    ports:
+      - "4007:4000"
+    environment:
+      PORT: 4007
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - notesservice-code:/app/
+      - notesservice-node-modules:/app/node_modules
+    command: npm run start:dev
+
+    networks:
+      - library-network
   categoryservice:
     image: categoryservice:2.5
     ports:
@@ -138,6 +156,8 @@ volumes:
   authorservice-node-modules:
   statservice-code:
   statservice-node-modules:
+  notesservice-code:
+  notesservice-node-modules:
   categoryservice-code:
   categoryservice-node-modules:
   bookservice-code:

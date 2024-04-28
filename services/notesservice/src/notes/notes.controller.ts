@@ -12,10 +12,12 @@ export class NotesController {
     return this.notesService.create(createNoteDto);
   }
 
-  @Get('/all')
-  findAll() {
-    return this.notesService.findAll();
+  @Get('/all/:userId')
+  findAll(@Param('userId') userId:string) {
+    return this.notesService.findMany(+userId);
   }
+
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

@@ -24,6 +24,14 @@ export class NotesService {
     return await this.noteRepository.find();
   }
 
+  async findMany(id:number){
+    return await this.noteRepository.find({
+      where:{
+        userId:id
+      }
+    });
+  }
+
   async findOne(id: number) {
     return await this.noteRepository.findOne({
       where:{

@@ -43,7 +43,8 @@ The Status Codes are standart API status codes <br/>
 ## Tests
 The following api methods and the internal functions of this service have not been fully tested
 
-## Commands
+
+## Commands
 While the service is dockerized and can be activated by docker-compose, If you want to run the service locally, use `npm run start:dev` command, make sure that the env variables are correct for db connection
 
 ## Tools

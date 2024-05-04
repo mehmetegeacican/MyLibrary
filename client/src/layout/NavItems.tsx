@@ -82,14 +82,13 @@ export const mainListItemsSignedOut = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItemButton>
+    <Link to="/notes">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="My Notes" color='secondary' />
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );

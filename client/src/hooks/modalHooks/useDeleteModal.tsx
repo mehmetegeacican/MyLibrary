@@ -87,5 +87,5 @@ export const useDeleteModal = () => {
         }
     }
     //Return Values
-    return {deleteBook,deleteCategory, deleteAuthor,deleteNotes,error,message,success};
+    return {deleteBook,deleteCategory, deleteAuthor,deleteNote,error,message,success};
 }

@@ -1,9 +1,8 @@
-import { Container, Grid, InputAdornment, MenuItem, Paper, Select, TextField } from '@mui/material'
-import React from 'react'
-import TabContent from '../components/tabbar/TabContent'
-import Tabbar from '../components/tabbar/Tabbar'
-import { CategoryTabs, CategoryTabContents } from '../data/tabs/TabDatas'
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
 import { SearchRounded } from '@mui/icons-material'
+import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
+import { INote } from '../interfaces/DataInterfaces'
+import defaultImg from '../assets/default.jpg';
 
 
 const currencies = [
@@ -28,10 +27,11 @@ const currencies = [
 
 
 export default function NotesPage() {
+    const { notes } = useLibraryDataContext();
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-                {/* Highlight Menu */}
+                {/* Search Menu */}
                 <Grid item xs={12}>
                     <Paper
                         sx={{
@@ -52,7 +52,7 @@ export default function NotesPage() {
                                     ),
                                 }}
                                 sx={{
-                                    width:'80%'
+                                    width: '80%'
                                 }}
                                 color="secondary"
                             />
@@ -62,7 +62,7 @@ export default function NotesPage() {
                                 color='secondary'
                                 defaultValue="0"
                                 sx={{
-                                    width:'20%'
+                                    width: '20%'
                                 }}
                             >
                                 {currencies.map((option) => (
@@ -75,14 +75,50 @@ export default function NotesPage() {
 
                     </Paper>
                 </Grid>
-                {/* Table */}
+                {/* Card List */}
                 <Grid item xs={12}>
                     <Paper sx={{
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 400
+                        height: 450,
+                        overflow: 'auto'
                     }}>
+                        <Grid container spacing={2}>
+                            {notes.map((note: INote) => (
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <Card sx={{borderRadius:5 }}>
+                                        <CardActionArea>
+                                            <CardMedia
+                                                sx={{ height: 140,borderRadius:2 }}
+                                                image={defaultImg}
+                                                title="card image"
+                                            />
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="div" color={'secondary'}>
+                                                    {note.title}
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    Last updated : {note.updatedAt.toString()}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                        <CardActions sx={{justifyContent:'center'}}>
+                                            <Button size="small" color="success">
+                                                Read more
+                                            </Button>
+                                            <Button size="small" color="info">
+                                                Edit
+                                            </Button>
+                                            <Button size="small" color="error">
+                                                Delete
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))}
+
+                        </Grid>
                     </Paper>
                 </Grid>
             </Grid>

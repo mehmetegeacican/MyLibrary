@@ -62,7 +62,7 @@ export default function NotesPage() {
                                 color='secondary'
                                 defaultValue="0"
                                 sx={{
-                                    width: '20%'
+                                    width: '12%'
                                 }}
                             >
                                 {currencies.map((option) => (
@@ -71,6 +71,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
+                            <Button variant="text" color='secondary'> Add New </Button>
                         </div>
 
                     </Paper>

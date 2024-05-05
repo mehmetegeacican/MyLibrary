@@ -1,6 +1,6 @@
 import { TableCell, Button, IconButton } from "@mui/material";
 import dayjs from "dayjs";
-import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
+import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -35,6 +35,16 @@ export function isIAuthor(value:any): value is IAuthor {
         "authorName" in value && 
         "authorDetails" in value
     );
+}
+
+export function isINote(value:any): value is INote {
+    return(
+        typeof value === "object" &&
+        "id" in value &&
+        "title" in value && 
+        "userId" in value &&
+        "content" in value
+    )
 }
 
 

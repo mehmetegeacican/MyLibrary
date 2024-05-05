@@ -3,6 +3,8 @@ import { SearchRounded } from '@mui/icons-material'
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
 import { INote } from '../interfaces/DataInterfaces'
 import defaultImg from '../assets/default.jpg';
+import { useState } from 'react';
+import DeleteModal from '../components/modals/DeleteModal';
 
 
 const currencies = [
@@ -28,6 +30,7 @@ const currencies = [
 
 export default function NotesPage() {
     const { notes } = useLibraryDataContext();
+    const [deleteModal,setDeleteModal] = useState(false);
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -87,9 +90,9 @@ export default function NotesPage() {
                     }}>
                         <Grid container spacing={2}>
                             {notes.map((note: INote) => (
-                                <Grid item xs={12} sm={6} md={4}>
+                                <Grid key={note.id} item xs={12} sm={6} md={4}>
                                     <Card sx={{borderRadius:5 }}>
-                                        <CardActionArea>
+                                        <CardActionArea >
                                             <CardMedia
                                                 sx={{ height: 140,borderRadius:2 }}
                                                 image={defaultImg}
@@ -111,11 +114,12 @@ export default function NotesPage() {
                                             <Button size="small" color="info">
                                                 Edit
                                             </Button>
-                                            <Button size="small" color="error">
+                                            <Button size="small" color="error" onClick={() => setDeleteModal(true)}>
                                                 Delete
                                             </Button>
                                         </CardActions>
                                     </Card>
+                                    {<DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={note!} />}
                                 </Grid>
                             ))}
 
@@ -123,6 +127,7 @@ export default function NotesPage() {
                     </Paper>
                 </Grid>
             </Grid>
+            
         </Container>
     )
 }

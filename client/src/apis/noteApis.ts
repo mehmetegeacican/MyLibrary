@@ -25,3 +25,22 @@ export const fetchAllNotes = async (id:number,token:string) => {
     }
 }
 
+/**
+ * The Function Required to Delete A Note
+ * @param id the Note Id
+ * @param token The JWT Token
+ * @returns 
+ */
+export const deleteNote = async (id: string,token:string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.delete(NOTE_ADDRESS + `/api/v2/notes/${id}`,config);
+        return res.data;
+    }
+    catch (e) {
+        return e;
+    }
+}
+

@@ -16,7 +16,7 @@ interface DeleteModalImnterface {
 export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteModalImnterface) {
 
     //Hooks & contexts
-    const { deleteBook ,deleteCategory, deleteAuthor} = useDeleteModal();
+    const { deleteBook ,deleteCategory, deleteAuthor,deleteNote} = useDeleteModal();
     const handleDelete = async () => {
         if(selectedIds){
             if(isIBook(data)){
@@ -52,7 +52,7 @@ export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteMo
                 await deleteAuthor(data.id);
             }
             else if(isINote(data)){
-                console.log("Note deletion", data);
+                await deleteNote(data.id);
             }
         }
         

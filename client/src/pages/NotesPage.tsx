@@ -5,6 +5,7 @@ import { INote } from '../interfaces/DataInterfaces'
 import defaultImg from '../assets/default.jpg';
 import { useState } from 'react';
 import DeleteModal from '../components/modals/DeleteModal';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
 const currencies = [
@@ -65,7 +66,7 @@ export default function NotesPage() {
                                 color='secondary'
                                 defaultValue="0"
                                 sx={{
-                                    width: '12%'
+                                    width: '14%'
                                 }}
                             >
                                 {currencies.map((option) => (
@@ -74,7 +75,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button variant="text" color='secondary'> Add New </Button>
+                            <Button color='secondary' variant='text'><PostAddIcon/></Button>
                         </div>
 
                     </Paper>

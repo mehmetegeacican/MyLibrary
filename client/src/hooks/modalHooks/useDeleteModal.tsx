@@ -6,6 +6,7 @@ import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 import { deleteAnAuthor } from "../../apis/authorApi";
 import { useAuthContext } from "../contextHooks/useAuthContext";
 import { deleteNotes } from "../../apis/noteApis";
+import { isINote } from "../../components/tables/DataRow";
 
 export const useDeleteModal = () => {
     //Hooks
@@ -21,6 +22,11 @@ export const useDeleteModal = () => {
             setMessage(res.message);
             return true
         }
+        else if(!res.response){
+            setSuccess(true);
+            setMessage("Deleted Successfully");
+            return true
+        }
         else if(res.response!.status === 400){
             setError(true);
             return false
@@ -29,7 +35,7 @@ export const useDeleteModal = () => {
             setError(true);
             setMessage(res.response!.data!.error!);
             return false;
-        }    
+        }
     }
     const deleteBook = async (id:number) => {
         let stringId = id.toString();

@@ -3,9 +3,11 @@ import { SearchRounded } from '@mui/icons-material'
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
 import { INote } from '../interfaces/DataInterfaces'
 import defaultImg from '../assets/default.jpg';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import DeleteModal from '../components/modals/DeleteModal';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import { fetchAllNotes } from '../apis/noteApis';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 
 
 const currencies = [
@@ -30,8 +32,26 @@ const currencies = [
 
 
 export default function NotesPage() {
-    const { notes } = useLibraryDataContext();
-    const [deleteModal,setDeleteModal] = useState(false);
+    const { notes, dispatch, noteTrigger } = useLibraryDataContext();
+    const { user } = useAuthContext();
+    const [deleteModal, setDeleteModal] = useState(false);
+
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        if (user) {
+            const res = await fetchAllNotes(user.id, user.token);
+            dispatch({ type: 'GET_NOTES', payload: res });
+        }
+    }, [noteTrigger]);
+
+    //UseEffect
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    const memoizedNotes = useMemo(() => {
+        return notes;
+    },[notes]);
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -75,7 +95,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color='secondary' variant='text'><PostAddIcon/></Button>
+                            <Button color='secondary' variant='text'><PostAddIcon /></Button>
                         </div>
 
                     </Paper>
@@ -90,12 +110,12 @@ export default function NotesPage() {
                         overflow: 'auto'
                     }}>
                         <Grid container spacing={2}>
-                            {notes.map((note: INote) => (
+                            {memoizedNotes.map((note: INote) => (
                                 <Grid key={note.id} item xs={12} sm={6} md={4}>
-                                    <Card sx={{borderRadius:5 }}>
+                                    <Card sx={{ borderRadius: 5 }}>
                                         <CardActionArea >
                                             <CardMedia
-                                                sx={{ height: 140,borderRadius:2 }}
+                                                sx={{ height: 140, borderRadius: 2 }}
                                                 image={defaultImg}
                                                 title="card image"
                                             />
@@ -108,7 +128,7 @@ export default function NotesPage() {
                                                 </Typography>
                                             </CardContent>
                                         </CardActionArea>
-                                        <CardActions sx={{justifyContent:'center'}}>
+                                        <CardActions sx={{ justifyContent: 'center' }}>
                                             <Button size="small" color="success">
                                                 Read more
                                             </Button>
@@ -128,7 +148,7 @@ export default function NotesPage() {
                     </Paper>
                 </Grid>
             </Grid>
-            
+
         </Container>
     )
 }

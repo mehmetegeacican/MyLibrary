@@ -5,6 +5,7 @@ import { ApiResult } from "../../interfaces/DataInterfaces";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 import { deleteAnAuthor } from "../../apis/authorApi";
 import { useAuthContext } from "../contextHooks/useAuthContext";
+import { deleteNotes } from "../../apis/noteApis";
 
 export const useDeleteModal = () => {
     //Hooks
@@ -12,7 +13,7 @@ export const useDeleteModal = () => {
     const [error,setError] = React.useState<boolean>(false);
     const [success,setSuccess] = React.useState<boolean>(false);
     const [message,setMessage] = React.useState<string>("");
-    const {dispatch,bookTrigger,categoryTrigger, authorTrigger} = useLibraryDataContext();
+    const {dispatch,bookTrigger,categoryTrigger, authorTrigger,noteTrigger} = useLibraryDataContext();
     //Functions
     const processResult = (res: ApiResult) => {
         if(res.message && !res.response){
@@ -72,6 +73,19 @@ export const useDeleteModal = () => {
             dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
         }
     }
+    const deleteNote = async (id:number) => {
+        let stringId = id.toString();
+        //Step 0 -- Reset
+        setError(false);
+        setMessage("");
+        setSuccess(false);
+        //Step 1 -- Send the Result
+        const res = await deleteNotes(stringId,user!.token);
+        const check = processResult(res);
+        if(check){
+            dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
+        }
+    }
     //Return Values
-    return {deleteBook,deleteCategory, deleteAuthor,error,message,success};
+    return {deleteBook,deleteCategory, deleteAuthor,deleteNotes,error,message,success};
 }

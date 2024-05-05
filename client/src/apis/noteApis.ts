@@ -31,7 +31,7 @@ export const fetchAllNotes = async (id:number,token:string) => {
  * @param token The JWT Token
  * @returns 
  */
-export const deleteNote = async (id: string,token:string) => {
+export const deleteNotes = async (id: string,token:string) => {
     try {
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }

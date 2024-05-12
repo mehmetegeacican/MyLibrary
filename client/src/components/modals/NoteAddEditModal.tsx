@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField } from '@mui/material'
 import { INote } from '../../interfaces/DataInterfaces';
 import { useState } from 'react';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 
 
 
@@ -13,8 +14,17 @@ interface NoteModalInterface {
 export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalInterface) {
 
   // Hooks & Contexts
+  const {user} = useAuthContext();
   const [title,setTitle] = useState(note?.title ?? '');
   const [content,setContent] = useState(note?.content ?? '');
+
+  // Handlers
+  const handleSave = () => {
+    if(mode === 'add'){
+        console.log("Saved")
+    }
+    handleClose();
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >
@@ -56,7 +66,7 @@ export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalI
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button>Add</Button>
+          <Button onClick={handleSave}>Add</Button>
         </DialogActions>
     </Dialog>
   )

@@ -38,6 +38,7 @@ export default function NotesPage() {
     const [deleteModal, setDeleteModal] = useState(false);
     const [openAddModal,setOpenAddModal] = useState(false);
     const [selectedNote,setSelectedNote] = useState<INote | null >(null);
+    const [query,setQuery] = useState("");
 
     //Handlers
     const handleDeleteNote = (note:INote) => {
@@ -72,8 +73,14 @@ export default function NotesPage() {
     }, [fetchData]);
 
     const memoizedNotes = useMemo(() => {
-        return notes;
-    },[notes]);
+        if(query !== ""){
+            return notes.filter((note:INote) => note.title.toLowerCase().includes(query.toLowerCase()));
+        }
+        else{
+            return notes;
+        }
+       
+    },[notes,query]);
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -101,6 +108,7 @@ export default function NotesPage() {
                                     width: '80%'
                                 }}
                                 color="secondary"
+                                onChange={(e) => setQuery(e.target.value)}
                             />
                             <TextField
                                 select

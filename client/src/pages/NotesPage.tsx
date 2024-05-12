@@ -37,6 +37,13 @@ export default function NotesPage() {
     const { user } = useAuthContext();
     const [deleteModal, setDeleteModal] = useState(false);
     const [openAddModal,setOpenAddModal] = useState(false);
+    const [selectedNote,setSelectedNote] = useState<INote | null >(null);
+
+    //Handlers
+    const handleDeleteNote = (note:INote) => {
+        setDeleteModal(true);
+        setSelectedNote(note)
+    }
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -137,15 +144,15 @@ export default function NotesPage() {
                                             <Button size="small" color="info">
                                                 Edit
                                             </Button>
-                                            <Button size="small" color="error" onClick={() => setDeleteModal(true)}>
+                                            <Button size="small" color="error" onClick={() => handleDeleteNote(note)}>
                                                 Delete
                                             </Button>
                                         </CardActions>
                                     </Card>
-                                    {<DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={note!} />}
                                 </Grid>
                             ))}
-                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)} mode='add'/> } 
+                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)}/> }
+                           {selectedNote && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedNote} />}
                         </Grid>
                     </Paper>
                 </Grid>

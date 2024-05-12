@@ -10,10 +10,9 @@ import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataCo
 interface NoteModalInterface {
   open:boolean;
   handleClose:() => void;
-  mode:string;
   note?:INote;
 }
-export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalInterface) {
+export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterface) {
 
   // Hooks & Contexts
   const [success,setSuccess] = useState(false);
@@ -27,19 +26,22 @@ export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalI
 
   // Handlers
   const handleSave = async () => {
-    if(mode === 'add'){
+    if(!note){
       await createNote(title,content);
-      dispatch({
-        type: 'TRIGGER_NOTES',
-        payload: !noteTrigger
-      })
     }
+    else {
+      console.log("asd")
+    }
+    dispatch({
+      type: 'TRIGGER_NOTES',
+      payload: !noteTrigger
+    })
     handleClose();
   }
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >
-        <DialogTitle>{mode === 'add' ? 'Add Note' : 'Edit Note'}</DialogTitle>
+        <DialogTitle>{!note ? 'Add Note' : 'Edit Note'}</DialogTitle>
         <Divider/>
         <DialogContent>
           <DialogContentText>

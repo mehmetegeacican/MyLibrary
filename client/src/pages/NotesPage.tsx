@@ -145,7 +145,7 @@ export default function NotesPage() {
                                     {<DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={note!} />}
                                 </Grid>
                             ))}
-                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)}/> } 
+                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)} mode='add'/> } 
                         </Grid>
                     </Paper>
                 </Grid>

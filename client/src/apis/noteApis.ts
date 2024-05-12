@@ -51,12 +51,12 @@ export const postNewNote = async (reqBody:object,token:string) => {
  * @param token Auth Token
  * @returns 
  */
-export const updateNote = async (id:string,reqBody:object,token:string) => {
+export const updateExistingNote = async (id:string,reqBody:object,token:string) => {
     try {
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.put(NOTE_ADDRESS + `/api/v2/notes/${id}`, reqBody,config);
+        const res = await axios.patch(NOTE_ADDRESS + `/api/v2/notes/${id}`, reqBody,config);
         return res.data;
     }
     catch (e) {

@@ -7,7 +7,7 @@ import { useLibraryDataContext } from '../contextHooks/useLibraryDataContext';
 import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi';
 import { postNewAuthor, updateAnAuthor } from '../../apis/authorApi';
 import { useAuthContext } from '../contextHooks/useAuthContext';
-import { postNewNote } from '../../apis/noteApis';
+import { postNewNote, updateExistingNote } from '../../apis/noteApis';
 
 
 //get strings of the categories
@@ -69,7 +69,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       setMessage(result.message);
       return true;
     }
-    else if(result && !result.response){
+    else if (result && !result.response) {
       setSuccess(true);
       setMessage("Successfully saved");
       return true;
@@ -217,6 +217,22 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
   }
 
   const createNote = async (title: string, content: string) => {
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    const requestBody = {
+      title: title,
+      content: content,
+      userId: user!.id // This might be problematic -- Add a check here
+    }
+    const result = await postNewNote(requestBody, user!.token);
+    const check = processResult(result);
+    if (check) {
+      dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
+    }
+  }
+
+  const updateNote = async (id: number, title: string, content: string) => {
       setMessage("");
       setError(false);
       setSuccess(false);
@@ -225,13 +241,13 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
         content: content,
         userId: user!.id // This might be problematic -- Add a check here
       }
-      const result = await postNewNote(requestBody, user!.token);
+      const result = await updateExistingNote(id.toString(),requestBody,user!.token);
       const check = processResult(result);
       if (check) {
         dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
       }
   }
 
-  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor, updateAuthor, createNote };
+  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor, updateAuthor, createNote, updateNote };
 }
 

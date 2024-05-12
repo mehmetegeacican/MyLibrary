@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField } from '@mui/material'
 import { INote } from '../../interfaces/DataInterfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { useCreateAndUpdateForm } from '../../hooks/formHooks/useCreateAndUpdateForm';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
@@ -10,7 +10,7 @@ import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataCo
 interface NoteModalInterface {
   open:boolean;
   handleClose:() => void;
-  note?:INote;
+  note?:INote | null;
 }
 export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterface) {
 
@@ -19,10 +19,10 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
   const [error,setError] = useState(false);
   const [message,setMessage] = useState("");
 
-  const {createNote} = useCreateAndUpdateForm(error,setError,message,setMessage,success,setSuccess);
+  const {createNote, updateNote} = useCreateAndUpdateForm(error,setError,message,setMessage,success,setSuccess);
   const {noteTrigger,dispatch} = useLibraryDataContext();
-  const [title,setTitle] = useState(note?.title ?? '');
-  const [content,setContent] = useState(note?.content ?? '');
+  const [title,setTitle] = useState('');
+  const [content,setContent] = useState('');
 
   // Handlers
   const handleSave = async () => {
@@ -30,7 +30,7 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
       await createNote(title,content);
     }
     else {
-      console.log("asd")
+      await updateNote(note.id,title,content);
     }
     dispatch({
       type: 'TRIGGER_NOTES',
@@ -38,6 +38,17 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
     })
     handleClose();
   }
+
+  useEffect(() => {
+    if(note && open){
+      setTitle(note.title);
+      setContent(note.content || "");
+    }
+    else {
+      setTitle("");
+      setContent("");
+    }
+  },[open])
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >

@@ -45,6 +45,19 @@ export default function NotesPage() {
         setSelectedNote(note)
     }
 
+
+    const handleUpdateNote = (note:INote) => {
+        setOpenAddModal(true);
+        setSelectedNote(note);
+    }
+
+    const handleCloseAddUpdate = () => {
+        setOpenAddModal(false);
+        if(selectedNote){
+            setSelectedNote(null);
+        }
+    }
+
     //UseCallBack 
     const fetchData = useCallback(async () => {
         if (user) {
@@ -141,7 +154,7 @@ export default function NotesPage() {
                                             <Button size="small" color="success">
                                                 Read more
                                             </Button>
-                                            <Button size="small" color="info">
+                                            <Button size="small" color="info" onClick={() => handleUpdateNote(note)}>
                                                 Edit
                                             </Button>
                                             <Button size="small" color="error" onClick={() => handleDeleteNote(note)}>
@@ -151,7 +164,7 @@ export default function NotesPage() {
                                     </Card>
                                 </Grid>
                             ))}
-                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)}/> }
+                           {<NoteAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} note={selectedNote}/> }
                            {selectedNote && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedNote} />}
                         </Grid>
                     </Paper>

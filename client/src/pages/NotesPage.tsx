@@ -8,6 +8,7 @@ import DeleteModal from '../components/modals/DeleteModal';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { fetchAllNotes } from '../apis/noteApis';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import NoteAddEditModal from '../components/modals/NoteAddEditModal';
 
 
 const currencies = [
@@ -35,6 +36,7 @@ export default function NotesPage() {
     const { notes, dispatch, noteTrigger } = useLibraryDataContext();
     const { user } = useAuthContext();
     const [deleteModal, setDeleteModal] = useState(false);
+    const [openAddModal,setOpenAddModal] = useState(false);
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -95,7 +97,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color='secondary' variant='text'><PostAddIcon /></Button>
+                            <Button color='secondary' variant='text' onClick={() => setOpenAddModal(true)}><PostAddIcon /></Button>
                         </div>
 
                     </Paper>
@@ -143,7 +145,7 @@ export default function NotesPage() {
                                     {<DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={note!} />}
                                 </Grid>
                             ))}
-
+                           {<NoteAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)}/> } 
                         </Grid>
                     </Paper>
                 </Grid>

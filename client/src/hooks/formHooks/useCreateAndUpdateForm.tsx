@@ -69,6 +69,11 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       setMessage(result.message);
       return true;
     }
+    else if(result && !result.response){
+      setSuccess(true);
+      setMessage("Successfully saved");
+      return true;
+    }
     else if (result.response!.status === 400) {
       if (result.response!.data!.errors) {
         let errors: string = "";

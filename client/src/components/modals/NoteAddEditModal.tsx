@@ -2,6 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { INote } from '../../interfaces/DataInterfaces';
 import { useState } from 'react';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useCreateAndUpdateForm } from '../../hooks/formHooks/useCreateAndUpdateForm';
+import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 
 
 
@@ -14,14 +16,23 @@ interface NoteModalInterface {
 export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalInterface) {
 
   // Hooks & Contexts
-  const {user} = useAuthContext();
+  const [success,setSuccess] = useState(false);
+  const [error,setError] = useState(false);
+  const [message,setMessage] = useState("");
+
+  const {createNote} = useCreateAndUpdateForm(error,setError,message,setMessage,success,setSuccess);
+  const {noteTrigger,dispatch} = useLibraryDataContext();
   const [title,setTitle] = useState(note?.title ?? '');
   const [content,setContent] = useState(note?.content ?? '');
 
   // Handlers
-  const handleSave = () => {
+  const handleSave = async () => {
     if(mode === 'add'){
-        console.log("Saved")
+      await createNote(title,content);
+      dispatch({
+        type: 'TRIGGER_NOTES',
+        payload: !noteTrigger
+      })
     }
     handleClose();
   }
@@ -66,7 +77,7 @@ export default function NoteAddEditModal({open,handleClose,mode,note}:NoteModalI
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Add</Button>
+          <Button onClick={async () => handleSave()}>Add</Button>
         </DialogActions>
     </Dialog>
   )

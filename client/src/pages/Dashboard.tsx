@@ -11,11 +11,12 @@ import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../apis/bookApi';
 import { fetchAllCategories } from '../apis/categoryApi';
 import { fetchAllAuthors } from '../apis/authorApi';
+import { fetchAllNotes } from '../apis/noteApis';
 
 export default function Dashboard() {
     //Hooks & Context
     const { user } = useAuthContext();
-    const { books, categories, authors, dispatch } = useLibraryDataContext();
+    const { books, categories, authors,notes, dispatch } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
     const [bookCountByCategory, setBookCountByCategory] = React.useState<any>();
     const [bookCountByStat, setBookCountByStat] = React.useState<any>();
@@ -36,9 +37,11 @@ export default function Dashboard() {
             const bookDatas = await fetchAllBooks(user.id,user.token);
             const categoryDatas = await fetchAllCategories(user.id,user.token);
             const resAuthors = await fetchAllAuthors(user.id,user.token);
+            const resNotes = await fetchAllNotes(user.id,user.token);
             dispatch({ type: 'GET_CATEGORIES', payload: [] });
             dispatch({ type: 'GET_AUTHORS', payload: resAuthors! });
             dispatch({ type: 'GET_BOOKS', payload: bookDatas });
+            dispatch({type:'GET_NOTES',payload:resNotes});
             // Added due to Prisma Initialization error
             if(categoryDatas.length > 0){
                 dispatch({ type: 'GET_CATEGORIES', payload: categoryDatas });
@@ -91,10 +94,11 @@ export default function Dashboard() {
                             height: 240,
                         }}
                     >
-                        <Stack spacing={2} divider={<Divider />}  >
+                        <Stack spacing={1.5} divider={<Divider />}  >
                             <Typography variant='h6' color={'primary'}> {books.length} Books </Typography>
                             <Typography variant='h6' color={'secondary'}> {authors.length} Authors </Typography>
                             <Typography variant='h6' color={'primary'}> {categories.length} Categories</Typography>
+                            <Typography variant='h6' color={'primary'}> {notes.length} Notes </Typography>
                         </Stack>
                     </Paper>
                 </Grid>

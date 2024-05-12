@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { IAuthor, IBook, ICategory, IUser } from "./DataInterfaces";
+import { IAuthor, IBook, ICategory, INote, IUser } from "./DataInterfaces";
 /**
  * State Interfaces regarding the LibraryDataContext
  */
@@ -10,6 +10,8 @@ export interface LibraryDataState {
     categoryTrigger:boolean;
     authors: IAuthor[];
     authorTrigger: boolean;
+    notes:INote[];
+    noteTrigger:boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }
@@ -59,8 +61,24 @@ export interface TriggerCategoriesInterface {
     type:'TRIGGER_CATEGORIES';
     payload:boolean;
 }
+
+export interface GetNotesAction{
+    type:'GET_NOTES';
+    payload:INote[];
+};
+
+
+export interface TriggerNotesInterface{
+    type:'TRIGGER_NOTES';
+    payload:boolean;
+};
+
+
 // Common Type for all the actions 
-export type LibraryDataAction = (GetBooksAction | TriggerBookInterface | GetAuthorsAction | TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface) ;
+export type LibraryDataAction = (GetBooksAction | 
+    TriggerBookInterface | GetAuthorsAction | 
+    TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface
+    | GetNotesAction | TriggerNotesInterface ) ;
 export type AuthAction = (LoginAction | SignUpAction | LogoutAction);
 /**
  * Dispatch Interface required for dispatch function

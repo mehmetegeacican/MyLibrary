@@ -11,6 +11,7 @@ import CategoriesPage from "./pages/Categories";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
+import NotesPage from "./pages/NotesPage";
 
 
 
@@ -46,6 +47,7 @@ function App() {
               <Route path="/books" element={user ? <BookPage /> : <Navigate to={'/login'} />} />
               <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
+              <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
             </Routes>

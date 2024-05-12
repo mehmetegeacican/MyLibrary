@@ -37,7 +37,10 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
         return {...state,authors: action.payload};
       case 'TRIGGER_AUTHORS':
         return {...state,authorTrigger: action.payload};
-
+      case 'GET_NOTES':
+        return {...state,notes: action.payload};
+      case 'TRIGGER_NOTES':
+        return {...state,noteTrigger: action.payload};
       default:
         return state;
     }
@@ -50,7 +53,9 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
       categories:[],
       categoryTrigger:false,
       authors: [],
-      authorTrigger:false
+      authorTrigger:false,
+      notes:[],
+      noteTrigger:false
       // Initialize other state properties here
     });
 

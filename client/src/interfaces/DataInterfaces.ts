@@ -21,6 +21,16 @@ export interface IBook {
   status: string;
 }
 
+export interface INote {
+  id: number;
+  userId: number;
+  title: string;
+  content?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
 export type ApiResult = {
   response?: {
     status?: number;

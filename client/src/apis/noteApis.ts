@@ -25,6 +25,24 @@ export const fetchAllNotes = async (id:number,token:string) => {
     }
 }
 
+
+export const fetchOneNote = async (id:number,token:string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.get(NOTE_ADDRESS + `/api/v2/notes/${id}`,config);
+        if(res.status === 500){
+            return [500];
+        }
+        return res.data;
+
+    }
+    catch {
+        return [];
+    }
+}
+
 /**
  * API function to post a new note
  * @param reqBody The Request Body for the new Note

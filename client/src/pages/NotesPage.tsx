@@ -9,6 +9,7 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import { fetchAllNotes } from '../apis/noteApis';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import NoteAddEditModal from '../components/modals/NoteAddEditModal';
+import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 
@@ -156,7 +157,7 @@ export default function NotesPage() {
                                                         {note.title}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Last updated : {note.updatedAt.toString()}
+                                                        Last updated : {formatDistanceToNow(note.updatedAt.toString())} ago
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>

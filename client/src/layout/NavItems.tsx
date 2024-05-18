@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ProfileIcon from  '@mui/icons-material/Person';
 import CategoryIcon from '@mui/icons-material/Category';
 import BookIcon from '@mui/icons-material/Book';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
@@ -87,7 +88,15 @@ export const secondaryListItems = (
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="My Notes" color='secondary' />
+        <ListItemText primary="My Essays" color='secondary' />
+      </ListItemButton>
+    </Link>
+    <Link to="/profile">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <ProfileIcon />
+        </ListItemIcon>
+        <ListItemText primary="Profile" color='secondary' />
       </ListItemButton>
     </Link>
   </React.Fragment>

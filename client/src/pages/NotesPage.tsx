@@ -9,6 +9,8 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import { fetchAllNotes } from '../apis/noteApis';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import NoteAddEditModal from '../components/modals/NoteAddEditModal';
+import { formatDistanceToNow } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 
 const currencies = [
@@ -36,25 +38,25 @@ export default function NotesPage() {
     const { notes, dispatch, noteTrigger } = useLibraryDataContext();
     const { user } = useAuthContext();
     const [deleteModal, setDeleteModal] = useState(false);
-    const [openAddModal,setOpenAddModal] = useState(false);
-    const [selectedNote,setSelectedNote] = useState<INote | null >(null);
-    const [query,setQuery] = useState("");
+    const [openAddModal, setOpenAddModal] = useState(false);
+    const [selectedNote, setSelectedNote] = useState<INote | null>(null);
+    const [query, setQuery] = useState("");
 
     //Handlers
-    const handleDeleteNote = (note:INote) => {
+    const handleDeleteNote = (note: INote) => {
         setDeleteModal(true);
         setSelectedNote(note)
     }
 
 
-    const handleUpdateNote = (note:INote) => {
+    const handleUpdateNote = (note: INote) => {
         setOpenAddModal(true);
         setSelectedNote(note);
     }
 
     const handleCloseAddUpdate = () => {
         setOpenAddModal(false);
-        if(selectedNote){
+        if (selectedNote) {
             setSelectedNote(null);
         }
     }
@@ -73,14 +75,14 @@ export default function NotesPage() {
     }, [fetchData]);
 
     const memoizedNotes = useMemo(() => {
-        if(query !== ""){
-            return notes.filter((note:INote) => note.title.toLowerCase().includes(query.toLowerCase()));
+        if (query !== "") {
+            return notes.filter((note: INote) => note.title.toLowerCase().includes(query.toLowerCase()));
         }
-        else{
+        else {
             return notes;
         }
-       
-    },[notes,query]);
+
+    }, [notes, query]);
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -143,25 +145,31 @@ export default function NotesPage() {
                             {memoizedNotes.map((note: INote) => (
                                 <Grid key={note.id} item xs={12} sm={6} md={4}>
                                     <Card sx={{ borderRadius: 5 }}>
-                                        <CardActionArea >
-                                            <CardMedia
-                                                sx={{ height: 140, borderRadius: 2 }}
-                                                image={defaultImg}
-                                                title="card image"
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div" color={'secondary'}>
-                                                    {note.title}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Last updated : {note.updatedAt.toString()}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
+                                        <Link to={'/notes/' + note.id}>
+                                            <CardActionArea >
+                                                <CardMedia
+                                                    sx={{ height: 140, borderRadius: 2 }}
+                                                    image={defaultImg}
+                                                    title="card image"
+                                                />
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="div" color={'secondary'}>
+                                                        {note.title}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Last updated : {formatDistanceToNow(note.updatedAt.toString())} ago
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Link>
+
                                         <CardActions sx={{ justifyContent: 'center' }}>
-                                            <Button size="small" color="success">
-                                                Read more
-                                            </Button>
+                                            <Link to={'/notes/' + note.id}>
+                                                <Button size="small" color="success">
+                                                    Read more
+                                                </Button>
+                                            </Link>
+
                                             <Button size="small" color="info" onClick={() => handleUpdateNote(note)}>
                                                 Edit
                                             </Button>
@@ -172,8 +180,8 @@ export default function NotesPage() {
                                     </Card>
                                 </Grid>
                             ))}
-                           {<NoteAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} note={selectedNote}/> }
-                           {selectedNote && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedNote} />}
+                            {<NoteAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} note={selectedNote} />}
+                            {selectedNote && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedNote} />}
                         </Grid>
                     </Paper>
                 </Grid>

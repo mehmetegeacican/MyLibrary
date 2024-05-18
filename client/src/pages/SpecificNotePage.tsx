@@ -5,6 +5,7 @@ import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchOneNote } from '../apis/noteApis';
 import { INote } from '../interfaces/DataInterfaces';
 import ReactMarkdown from 'react-markdown';
+import dayjs from 'dayjs';
 
 
 export default function SpecificNotePage() {
@@ -42,10 +43,13 @@ export default function SpecificNotePage() {
                             {note && (
                                 <div style={{
                                     display:'flex',
-                                    gap:5,
+                                    alignItems:'center',
+                                    justifyContent:'flex-start',
+                                    gap:25,
                                     marginLeft:10
                                 }}>
                                     <Typography variant='h5' color={'purple'}>{note.title}</Typography>
+                                    <Typography variant='subtitle2' color={'palevioletred'}>Created {dayjs(note.createdAt).format('DD/MM/YYYY')}</Typography>
                                 </div>
                                 
                             )}
@@ -59,6 +63,8 @@ export default function SpecificNotePage() {
                             display: 'flex',
                             flexDirection: 'column',
                             height: 400,
+                            overflowY:'auto',
+                            color:'darkgrey'
                         }}>
                            {note &&  
                                 <div style={{

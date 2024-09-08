@@ -6,7 +6,7 @@ import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 
 
 export const SignedInItems = [
-    (<MenuItem key={0} onClick={() => console.log("Profile")}>Profile</MenuItem>),
+    (<Link to={'/profile'} key={0}><MenuItem key={0} sx={{ color: "black" }}>Profile</MenuItem></Link>),
     (<MenuItem key={2} onClick={() => console.log("Logout")}>Logout</MenuItem>)
 ]
 

@@ -6,7 +6,7 @@ import { AppBarPropsColorOverrides } from '@mui/material';
 export const useLibraryTheme = () => {
     const { themeColor  } = useAuthContext();
 
-    const theme: OverridableStringUnion<"primary" | "secondary" | "error" | "warning" | "success" | "transparent", AppBarPropsColorOverrides> = useMemo(() => {
+    const libTheme: OverridableStringUnion<"primary" | "secondary" | "error" | "warning" | "success" | "transparent", AppBarPropsColorOverrides> = useMemo(() => {
         switch(themeColor) {
             case 'primary':
                 return 'primary';
@@ -24,6 +24,6 @@ export const useLibraryTheme = () => {
     }, [themeColor]);
 
     return {
-        theme
+        libTheme
     };
 }

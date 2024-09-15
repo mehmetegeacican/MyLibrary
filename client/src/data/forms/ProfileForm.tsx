@@ -1,18 +1,17 @@
-import { AppBarPropsColorOverrides, Avatar, Button, FilledInput, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack, styled, TextField } from '@mui/material'
+import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
 import React, { useMemo } from 'react'
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
 import PersonIcon from '@mui/icons-material/Person';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { OverridableStringUnion } from '@mui/types';
-import { useTheme } from '@emotion/react';
+
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import UploadButton from '../../components/buttons/uploadButton';
 
 
 
 export default function ProfileForm() {
   const { user } = useAuthContext();
-  const {theme} = useLibraryTheme()
+  const {libTheme} = useLibraryTheme()
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -25,20 +24,9 @@ export default function ProfileForm() {
   const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
 
   const avatarColor = useMemo(() => {
-      switch(theme){
+      switch(libTheme){
         case 'primary':
           return '#2196f3';
         case 'secondary':
@@ -52,7 +40,7 @@ export default function ProfileForm() {
         default:
           return 'blueviolet'
       }
-  },[theme]);
+  },[libTheme]);
   return (
     <Stack direction={'row'} spacing={7} alignItems={'center'} justifyContent={'space-between'}>
       <Avatar sx={{
@@ -65,18 +53,18 @@ export default function ProfileForm() {
         width: '83%'
       }} >
         <FormControl variant='standard'>
-          <InputLabel htmlFor="standard-adornment-password" color={theme}>Username</InputLabel>
+          <InputLabel htmlFor="standard-adornment-password" color={libTheme}>Username</InputLabel>
           <Input
             id="standard-adornment-username"
-            color={theme}
+            color={libTheme}
             value={user?.email ?? ""}
           />
         </FormControl>
         <FormControl variant="standard">
-          <InputLabel htmlFor="standard-adornment-password" color={theme}>Password</InputLabel>
+          <InputLabel htmlFor="standard-adornment-password" color={libTheme}>Password</InputLabel>
           <Input
             id="standard-adornment-password"
-            color={theme}
+            color={libTheme}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
@@ -92,22 +80,7 @@ export default function ProfileForm() {
             }
           />
         </FormControl>
-        <Button
-          component="label"
-          variant="contained"
-          color={theme}
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-          sx={{
-            width: '30%'
-          }}
-        >
-          Upload Profile Picture
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => console.log(event.target.files)}
-          />
-        </Button>
+        <UploadButton/>
       </Stack>
 
     </Stack>

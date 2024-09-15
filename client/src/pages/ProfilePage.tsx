@@ -3,10 +3,12 @@ import React, { useEffect } from 'react'
 import { SignUpForm } from './SignUpPage'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext'
 import ProfileForm from '../data/forms/ProfileForm';
+import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
 
 export default function ProfilePage() {
 
-    const { themeColor, dispatch } = useAuthContext();
+    const { dispatch } = useAuthContext();
+    const {theme} = useLibraryTheme();
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -43,7 +45,7 @@ export default function ProfilePage() {
                     >
                         <Typography sx={{
                             marginBottom: 2
-                        }} variant='h6' color={"secondary"}> Select Theme Color </Typography>
+                        }} variant='h6' color={theme}> Select Theme Color </Typography>
                         <RadioGroup name="use-radio-group" defaultValue="secondary" onChange={(e) => {
                             dispatch({
                                 type: 'SET_THEME_COLOR',

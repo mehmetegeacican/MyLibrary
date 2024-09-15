@@ -5,28 +5,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { OverridableStringUnion } from '@mui/types';
+import { useTheme } from '@emotion/react';
+import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 
 
 
 export default function ProfileForm() {
-  const { themeColor , user } = useAuthContext();
-
-  const theme: OverridableStringUnion<"primary" | "secondary" | "error" | "warning" | "success" | "transparent", AppBarPropsColorOverrides> = useMemo(() => {
-    switch(themeColor) {
-        case 'primary':
-            return 'primary';
-        case 'secondary':
-            return 'secondary';
-        case 'error':
-            return 'error';
-        case 'warning':
-            return 'warning';
-        case 'success':
-            return 'success';
-        default:
-            return 'secondary';
-    }
-}, [themeColor]);
+  const { user } = useAuthContext();
+  const {theme} = useLibraryTheme()
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -50,12 +36,30 @@ export default function ProfileForm() {
     whiteSpace: 'nowrap',
     width: 1,
   });
+
+  const avatarColor = useMemo(() => {
+      switch(theme){
+        case 'primary':
+          return '#2196f3';
+        case 'secondary':
+          return '#9c27b0';
+        case 'success':
+          return '#4caf50';
+        case 'error':
+          return '#c62828';
+        case 'warning':
+          return '#ff6f00';
+        default:
+          return 'blueviolet'
+      }
+  },[theme]);
   return (
     <Stack direction={'row'} spacing={7} alignItems={'center'} justifyContent={'space-between'}>
       <Avatar sx={{
         height: 200,
         width: 200,
-        backgroundColor: "blueviolet"
+        backgroundColor: avatarColor,
+        transition: '0.3s ease'
       }}> <PersonIcon sx={{ height: 90, width: 90 }} /> </Avatar>
       <Stack spacing={3} sx={{
         width: '83%'

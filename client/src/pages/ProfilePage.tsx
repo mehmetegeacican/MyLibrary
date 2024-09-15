@@ -8,7 +8,7 @@ import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
 export default function ProfilePage() {
 
     const { dispatch } = useAuthContext();
-    const {theme} = useLibraryTheme();
+    const {libTheme} = useLibraryTheme();
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -45,8 +45,8 @@ export default function ProfilePage() {
                     >
                         <Typography sx={{
                             marginBottom: 2
-                        }} variant='h6' color={theme}> Select Theme Color </Typography>
-                        <RadioGroup name="use-radio-group" defaultValue="secondary" onChange={(e) => {
+                        }} variant='h6' color={libTheme}> Select Theme Color </Typography>
+                        <RadioGroup name="use-radio-group" defaultValue={libTheme} onChange={(e) => {
                             dispatch({
                                 type: 'SET_THEME_COLOR',
                                 payload: e.target.value

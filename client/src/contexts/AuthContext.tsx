@@ -20,6 +20,8 @@ const authReducer = (state: AuthState, action: AuthAction) => {
         return {...state, user: null};
       case 'SIGN_UP':
         return {...state, user: action.payload};
+      case 'SET_THEME_COLOR':
+        return {...state, themeColor: action.payload};
       default:
         return state;
     }
@@ -28,7 +30,8 @@ const authReducer = (state: AuthState, action: AuthAction) => {
 
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({children}) => {
     const [state, dispatch] = useReducer(authReducer, {
-        user: null
+        user: null,
+        themeColor:'secondary'
     });
     useEffect(() => {
       //Parse the Local Storages json String

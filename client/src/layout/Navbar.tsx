@@ -3,8 +3,21 @@ import { drawerWidth } from '../constants/sizes';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import UserIcon from '@mui/icons-material/Person'
-import React from 'react';
+import React, { useMemo } from 'react';
 import DropdownMenu from '../components/dropdown/DropdownMenu';
+import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import { AppBarPropsColorOverrides } from '@mui/material/AppBar';
+import { OverridableStringUnion } from '@mui/types';
+import { PaletteColor } from '@mui/material/styles';
+
+
+declare module '@mui/material/AppBar' {
+    interface AppBarPropsColorOverrides {
+        success: true;
+        warning: true;
+        error: true;
+    }
+}
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -38,6 +51,25 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
     //Hooks
     const [openMenu,setOpenMenu] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const {themeColor} = useAuthContext();
+
+
+    const theme: OverridableStringUnion<"primary" | "secondary" | "error" | "warning" | "success" | "transparent", AppBarPropsColorOverrides> = useMemo(() => {
+        switch(themeColor) {
+            case 'primary':
+                return 'primary';
+            case 'secondary':
+                return 'secondary';
+            case 'error':
+                return 'error';
+            case 'warning':
+                return 'warning';
+            case 'success':
+                return 'success';
+            default:
+                return 'secondary';
+        }
+    }, [themeColor]);
 
     const handleToggle = (event:React.MouseEvent<HTMLElement>) => {
         setOpenMenu((prevOpen) => !prevOpen);
@@ -50,7 +82,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
       };
 
     return (
-        <AppBar position="absolute" open={open} color='secondary' >
+        <AppBar position="absolute" open={open} color={theme} >
             <Toolbar
                 sx={{
                     pr: '25px', // keep right padding when drawer closed

@@ -17,7 +17,8 @@ export interface LibraryDataState {
 }
 
 export interface AuthState {
-    user:IUser | null
+    user:IUser | null,
+    themeColor:String | null
 }
 /**
  * Action Interface for Auth Context
@@ -33,6 +34,11 @@ export interface SignUpAction {
 export interface LogoutAction {
     type: 'LOG_OUT';
     payload: IUser | null;
+}
+
+export interface SetThemeColorAction {
+    type: 'SET_THEME_COLOR';
+    payload: string | null;
 }
 /**
  * Action Interface Regarding the LibraryDataContext
@@ -79,7 +85,7 @@ export type LibraryDataAction = (GetBooksAction |
     TriggerBookInterface | GetAuthorsAction | 
     TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface
     | GetNotesAction | TriggerNotesInterface ) ;
-export type AuthAction = (LoginAction | SignUpAction | LogoutAction);
+export type AuthAction = (LoginAction | SignUpAction | LogoutAction | SetThemeColorAction);
 /**
  * Dispatch Interface required for dispatch function
  */

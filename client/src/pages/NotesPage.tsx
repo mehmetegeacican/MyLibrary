@@ -11,6 +11,8 @@ import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import NoteAddEditModal from '../components/modals/NoteAddEditModal';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
+
 
 
 const currencies = [
@@ -41,6 +43,7 @@ export default function NotesPage() {
     const [openAddModal, setOpenAddModal] = useState(false);
     const [selectedNote, setSelectedNote] = useState<INote | null>(null);
     const [query, setQuery] = useState("");
+    const {libTheme} = useLibraryTheme();
 
     //Handlers
     const handleDeleteNote = (note: INote) => {
@@ -109,13 +112,13 @@ export default function NotesPage() {
                                 sx={{
                                     width: '80%'
                                 }}
-                                color="secondary"
+                                color={libTheme}
                                 onChange={(e) => setQuery(e.target.value)}
                             />
                             <TextField
                                 select
                                 label="Filter based on"
-                                color='secondary'
+                                color={libTheme}
                                 defaultValue="0"
                                 sx={{
                                     width: '14%'
@@ -127,7 +130,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color='secondary' variant='text' onClick={() => setOpenAddModal(true)}><PostAddIcon /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => setOpenAddModal(true)}><PostAddIcon /></Button>
                         </div>
 
                     </Paper>

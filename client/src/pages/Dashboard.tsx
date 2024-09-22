@@ -12,6 +12,7 @@ import { fetchAllBooks } from '../apis/bookApi';
 import { fetchAllCategories } from '../apis/categoryApi';
 import { fetchAllAuthors } from '../apis/authorApi';
 import { fetchAllNotes } from '../apis/noteApis';
+import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
 
 export default function Dashboard() {
     //Hooks & Context
@@ -20,6 +21,7 @@ export default function Dashboard() {
     const [bookCountByAuthor, setBookCountByAuthor] = React.useState<IBookByAuthorStat[]>();
     const [bookCountByCategory, setBookCountByCategory] = React.useState<any>();
     const [bookCountByStat, setBookCountByStat] = React.useState<any>();
+    const {libTheme} = useLibraryTheme();
     //UseCallBack 
     const fetchStats = useCallback(async () => {
         if (user) {
@@ -95,10 +97,10 @@ export default function Dashboard() {
                         }}
                     >
                         <Stack spacing={1.5} divider={<Divider />}  >
-                            <Typography variant='h6' color={'primary'}> {books.length} Books </Typography>
-                            <Typography variant='h6' color={'secondary'}> {authors.length} Authors </Typography>
-                            <Typography variant='h6' color={'primary'}> {categories.length} Categories</Typography>
-                            <Typography variant='h6' color={'primary'}> {notes.length} Notes </Typography>
+                            <Typography variant='h6' color={libTheme}> {books.length} Books </Typography>
+                            <Typography variant='h6' color={libTheme}> {authors.length} Authors </Typography>
+                            <Typography variant='h6' color={libTheme}> {categories.length} Categories</Typography>
+                            <Typography variant='h6' color={libTheme}> {notes.length} Notes </Typography>
                         </Stack>
                     </Paper>
                 </Grid>

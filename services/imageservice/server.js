@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const cors = require("cors");
+const router = require("./routes/routes");
 
 dotenv.config();
 
@@ -15,8 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the 'images' directory
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use("/api/v2",router);
 
 // Start the server
 app.listen(PORT,HOST, () => {

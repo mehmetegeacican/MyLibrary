@@ -132,6 +132,18 @@ services:
 
     networks:
       - library-network
+  imageservice:
+    build: ./services/imageservice
+    ports:
+      - "4008:4000"
+    environment:
+      PORT: 4008
+    volumes:
+      - ./imageservice:/app 
+      - /app/node_modules
+    command: npm run start
+    networks:
+      - library-network
   postgres:
     image: postgres:latest
     ports:
@@ -158,6 +170,8 @@ volumes:
   statservice-node-modules:
   notesservice-code:
   notesservice-node-modules:
+  imageservice-code:
+  imageservice-node_modules:
   categoryservice-code:
   categoryservice-node-modules:
   bookservice-code:

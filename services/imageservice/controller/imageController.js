@@ -3,9 +3,8 @@ const {uploadImage} = require('../service/imageService');
 // Controller for handling image uploads
 const uploadImageRouter = async (req, res) => {
   try {
-    console.log("Step 1 -->");
+    console.log(req.body);
     const uploadResult = await uploadImage(req, res);
-    console.log("HELLO");
     if (uploadResult.success) {
       return res.status(200).json({
         message: 'Image uploaded successfully!',

@@ -1,4 +1,3 @@
-const { upload } = require('../service/imageService');
 
 // Controller for handling image uploads
 const imageController = async (req, res) => {

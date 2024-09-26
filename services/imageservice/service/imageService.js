@@ -23,7 +23,15 @@ const storage = multer.diskStorage({
 // File type validation
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-  if (allowedTypes.includes(file.mimetype)) {
+  const allowedFolders =  ['books','notes','profilepics'];
+  const {location} = req.body;
+  if(location === "" || !location){
+    cb(new Error('Location can not be empty'), false);
+  }
+  else if(!allowedFolders.includes(location)){
+    cb(new Error('Location must be one of the possible folders (books,notes,profilepics)'), false);
+  }
+  else if (allowedTypes.includes(file.mimetype)) {
     cb(null, true); // Accept file
   } else {
     cb(new Error('Invalid file type. Only JPEG, PNG, and JPG are allowed.'), false);

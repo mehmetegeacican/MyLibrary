@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const router = require('./routes/routes');
+const reqAuth = require('./middleware/reqAuth');
 
 const app = express();
 
@@ -12,6 +13,8 @@ const HOST = '0.0.0.0';
 app.use(cors());
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies (form data)
+
+
 
 // Serve static files from the 'images' directory
 app.use('/images', express.static(path.join(__dirname, 'images')));

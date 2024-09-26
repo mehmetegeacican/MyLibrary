@@ -1,10 +1,18 @@
 const express = require('express');
 const { upload } = require('../service/imageService');
+
 const multer = require('multer');  // Import multer
+
 
 const router = express.Router();
 
 const { imageController } = require('../controller/imageController');
+const reqAuth = require('../middleware/reqAuth');
+
+
+
+// Middleware for Authentication
+router.use(reqAuth)
 
 // Define the route for uploading images
 router.post('/uploadimg',

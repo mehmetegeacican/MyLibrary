@@ -45,6 +45,9 @@ export default function NotesPage() {
     const [query, setQuery] = useState("");
     const {libTheme} = useLibraryTheme();
 
+    const PORT = import.meta.env.VITE_IMAGESERVICE_PORT;
+    const IMAGE_ADDRESS = `http://localhost:${PORT}/images`;
+
     //Handlers
     const handleDeleteNote = (note: INote) => {
         setDeleteModal(true);
@@ -152,7 +155,7 @@ export default function NotesPage() {
                                             <CardActionArea >
                                                 <CardMedia
                                                     sx={{ height: 140, borderRadius: 2 }}
-                                                    image={defaultImg}
+                                                    image={note.imagePath ? IMAGE_ADDRESS + "/notes/" + note.imagePath : defaultImg}
                                                     title="card image"
                                                 />
                                                 <CardContent>

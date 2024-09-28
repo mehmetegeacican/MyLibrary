@@ -26,6 +26,7 @@ export interface INote {
   userId: number;
   title: string;
   content?: string;
+  imagePath?:string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -132,6 +132,24 @@ services:
 
     networks:
       - library-network
+  imageservice:
+    build: ./services/imageservice
+    ports:
+      - "4008:4000"
+    environment:
+      PORT: 4008
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - imageservice-images:/usr/src/app/images
+      - imageservice-code:/app/
+      - imageservice-node-modules:/app/node_modules
+    command: npm run start
+    networks:
+      - library-network
   postgres:
     image: postgres:latest
     ports:
@@ -158,6 +176,9 @@ volumes:
   statservice-node-modules:
   notesservice-code:
   notesservice-node-modules:
+  imageservice-images:
+  imageservice-code:
+  imageservice-node-modules:
   categoryservice-code:
   categoryservice-node-modules:
   bookservice-code:

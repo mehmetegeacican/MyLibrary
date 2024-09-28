@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { useCreateAndUpdateForm } from '../../hooks/formHooks/useCreateAndUpdateForm';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import UploadButton from '../buttons/uploadButton';
 
 
 
@@ -23,6 +24,7 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
   const {noteTrigger,dispatch} = useLibraryDataContext();
   const [title,setTitle] = useState('');
   const [content,setContent] = useState('');
+  const [uploadedPicture,setUploadedPicture] = useState("");
 
   // Handlers
   const handleSave = async () => {
@@ -87,6 +89,13 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
               fullWidth
               variant="outlined"
             />
+        </DialogContent>
+        <DialogContent>
+        <UploadButton 
+          title='Upload Note Picture' 
+          imagePath={uploadedPicture} 
+          setImagePath={setUploadedPicture}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

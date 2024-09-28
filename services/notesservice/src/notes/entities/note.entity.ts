@@ -14,6 +14,9 @@ export class Note {
     @Column({type:'text', nullable:true})
     content:string;
 
+    @Column({type:'text', default:''})  // New column for image path
+    imagePath: string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt:Date;
 

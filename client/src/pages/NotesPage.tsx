@@ -159,7 +159,7 @@ export default function NotesPage() {
                                                     title="card image"
                                                 />
                                                 <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div" color={'secondary'}>
+                                                    <Typography gutterBottom variant="h5" component="div" color={libTheme}>
                                                         {note.title}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">

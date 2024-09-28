@@ -7,11 +7,13 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 type UploadButtonInterface = {
     title: string;
     imagePath?: string;
+    imageFile?:File | null;
     setImagePath?: Function;
+    setImageFile?: Function;
 }
 
 
-export default function UploadButton({ title, imagePath, setImagePath }: UploadButtonInterface) {
+export default function UploadButton({ title, imagePath, imageFile,setImageFile, setImagePath }: UploadButtonInterface) {
     const { libTheme } = useLibraryTheme();
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg')); // Adjust as needed (e.g., 'md', 'xs')
@@ -61,7 +63,10 @@ export default function UploadButton({ title, imagePath, setImagePath }: UploadB
 
                         // If you want to store the image path or file details
                         if (setImagePath) {
-                            setImagePath(fileDetails); // Pass the file details instead of just the path
+                            setImagePath(fileDetails[0].name); // Pass the file details instead of just the path
+                        }
+                        if(setImageFile){
+                            setImageFile(files[0]);
                         }
                     }
 

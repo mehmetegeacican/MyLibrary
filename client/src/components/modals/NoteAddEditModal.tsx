@@ -1,21 +1,23 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, TextField } from '@mui/material'
 import { INote } from '../../interfaces/DataInterfaces';
 import { useEffect, useState } from 'react';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { useCreateAndUpdateForm } from '../../hooks/formHooks/useCreateAndUpdateForm';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 import UploadButton from '../buttons/uploadButton';
+import { postNewImage } from '../../apis/imageApis';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 
 
 
 interface NoteModalInterface {
   open:boolean;
   handleClose:() => void;
-  note?:INote | null;
+  note?:INote | null;
 }
 export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterface) {
 
   // Hooks & Contexts
+  const {user} = useAuthContext();
   const [success,setSuccess] = useState(false);
   const [error,setError] = useState(false);
   const [message,setMessage] = useState("");
@@ -24,15 +26,22 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
   const {noteTrigger,dispatch} = useLibraryDataContext();
   const [title,setTitle] = useState('');
   const [content,setContent] = useState('');
-  const [uploadedPicture,setUploadedPicture] = useState("");
+  const [imagePath,setImagePath] = useState("");
+  const [imageFile,setImageFile] = useState(null);
 
   // Handlers
   const handleSave = async () => {
+    if(imageFile){
+      let formData = new FormData();
+      formData.append('location','notes');
+      formData.append('image',imageFile);
+      await postNewImage(formData,user!.token)
+    }
     if(!note){
-      await createNote(title,content);
+      await createNote(title,content,imagePath);
     }
     else {
-      await updateNote(note.id,title,content);
+      await updateNote(note.id,title,content,imagePath);
     }
     dispatch({
       type: 'TRIGGER_NOTES',
@@ -45,12 +54,18 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
     if(note && open){
       setTitle(note.title);
       setContent(note.content || "");
+      setImagePath(note.imagePath || "");
     }
     else {
       setTitle("");
       setContent("");
     }
-  },[open])
+  },[open]);
+
+
+  useEffect(() => {
+    console.log("Uploaded Picture is ", imagePath);
+  },[imagePath]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >
@@ -93,8 +108,11 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
         <DialogContent>
         <UploadButton 
           title='Upload Note Picture' 
-          imagePath={uploadedPicture} 
-          setImagePath={setUploadedPicture}
+          imagePath={imagePath}
+          imageFile = {imageFile}
+          setImagePath={setImagePath}
+          setImageFile={setImageFile}
+
           />
         </DialogContent>
         <DialogActions>

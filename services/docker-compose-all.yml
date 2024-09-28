@@ -144,9 +144,9 @@ services:
       DB_PASSWORD: 123456
       DB_NAME: librarydb
     volumes:
+      - imageservice-images:/usr/src/app/images
       - imageservice-code:/app/
       - imageservice-node-modules:/app/node_modules
-      - ./images:/app/images  
     command: npm run start
     networks:
       - library-network
@@ -176,9 +176,9 @@ volumes:
   statservice-node-modules:
   notesservice-code:
   notesservice-node-modules:
+  imageservice-images:
   imageservice-code:
   imageservice-node-modules:
-  imageservice-images:
   categoryservice-code:
   categoryservice-node-modules:
   bookservice-code:

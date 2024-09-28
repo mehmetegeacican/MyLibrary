@@ -149,8 +149,8 @@ export default function NotesPage() {
                     }}>
                         <Grid container spacing={2}>
                             {memoizedNotes.map((note: INote) => (
-                                <Grid key={note.id} item xs={12} sm={6} md={4}>
-                                    <Card sx={{ borderRadius: 5 }}>
+                                <Grid key={note.id} item xs={12} sm={12} md={6} lg={4}>
+                                    <Card sx={{ borderRadius: 5 , minHeight:300}}>
                                         <Link to={'/notes/' + note.id}>
                                             <CardActionArea >
                                                 <CardMedia

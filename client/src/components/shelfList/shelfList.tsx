@@ -4,7 +4,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
@@ -64,7 +64,27 @@ export default function Shelflist() {
     }, [libTheme]);
 
 
-
+    const filteredBooks = useMemo(() => {
+        if (!filterChips.length) return books; // If no filters, return all books
+      
+        return books.filter((book) => {
+          return filterChips.every((chip) => {
+            const [filterType, filterValue] = chip.split('-');
+      
+            switch (filterType) {
+              case 'Name':
+                return book.name === filterValue;
+              case 'Author':
+                return book.authors.includes(filterValue);
+              case 'Categories':
+                return book.category.includes(filterValue);
+              // Add more cases for other filters if needed
+              default:
+                return true; // If filter type doesn't match, include the book
+            }
+          });
+        });
+      }, [books, filterChips]); // Include books and filterChips in dependencies
 
     return (
         <Container>
@@ -72,7 +92,7 @@ export default function Shelflist() {
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: 2
+                    gap: 1
                 }}>
                     <TextField
                         placeholder='Search Books by Title, Author'
@@ -82,7 +102,7 @@ export default function Shelflist() {
                             ),
                         }}
                         sx={{
-                            width: '80%'
+                            width: '70%'
                         }}
                         color={libTheme}
                         onChange={(e) => setQuery(e.target.value)}
@@ -99,10 +119,10 @@ export default function Shelflist() {
                         overflowY: 'auto',
                         scrollbarWidth: 'none'
                     }}>
-                        {books.map((book: IBook, index: number) => {
+                        {filteredBooks.map((book: IBook, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 return (
-                                    <Grid item xs={12} md={4} lg={2}>
+                                    <Grid item xs={6} md={4} lg={2}>
                                         <Avatar sx={{
                                             width: 150,
                                             height: 238,
@@ -139,7 +159,7 @@ export default function Shelflist() {
                         }}
                         rowsPerPageOptions={[6, 12, 24]}
                         colSpan={1}
-                        count={books.length}
+                        count={filteredBooks.length}
                         rowsPerPage={rowsPerPage}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}

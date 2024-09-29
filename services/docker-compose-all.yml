@@ -100,7 +100,7 @@ services:
     networks:
       - library-network
   bookservice:
-    image: bookservice:3.1
+    build: ./bookservice
     ports:
       - "4001:4000"
     environment:

@@ -11,7 +11,7 @@ import Shelflist from "../../components/shelfList/shelfList";
  */
 export const BookTabs: TabInterface[] = [
     { icon: (<BackupTableIcon />), label: "Table View" },
-    { icon: (<BookIcon />), label: "Card View" },
+    { icon: (<BookIcon />), label: "Shelf View" },
 ];
 
 /**

@@ -45,6 +45,9 @@ export default function NotesPage() {
     const [query, setQuery] = useState("");
     const {libTheme} = useLibraryTheme();
 
+    const PORT = import.meta.env.VITE_IMAGESERVICE_PORT;
+    const IMAGE_ADDRESS = `http://localhost:${PORT}/images`;
+
     //Handlers
     const handleDeleteNote = (note: INote) => {
         setDeleteModal(true);
@@ -146,17 +149,17 @@ export default function NotesPage() {
                     }}>
                         <Grid container spacing={2}>
                             {memoizedNotes.map((note: INote) => (
-                                <Grid key={note.id} item xs={12} sm={6} md={4}>
-                                    <Card sx={{ borderRadius: 5 }}>
+                                <Grid key={note.id} item xs={12} sm={12} md={6} lg={4}>
+                                    <Card sx={{ borderRadius: 5 , minHeight:300}}>
                                         <Link to={'/notes/' + note.id}>
                                             <CardActionArea >
                                                 <CardMedia
                                                     sx={{ height: 140, borderRadius: 2 }}
-                                                    image={defaultImg}
+                                                    image={note.imagePath ? IMAGE_ADDRESS + "/notes/" + note.imagePath : defaultImg}
                                                     title="card image"
                                                 />
                                                 <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div" color={'secondary'}>
+                                                    <Typography gutterBottom variant="h5" component="div" color={libTheme}>
                                                         {note.title}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">

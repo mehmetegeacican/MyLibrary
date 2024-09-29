@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('api/v2/notes')
 export class NotesController {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(private readonly notesService: NotesService) { }
 
   @Post()
   create(@Body() createNoteDto: CreateNoteDto) {
@@ -13,7 +13,7 @@ export class NotesController {
   }
 
   @Get('/all/:userId')
-  findAll(@Param('userId') userId:string) {
+  findAll(@Param('userId') userId: string) {
     return this.notesService.findMany(+userId);
   }
 

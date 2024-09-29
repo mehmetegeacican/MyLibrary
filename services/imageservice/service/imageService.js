@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, dir); // Save the image in the specified folder
   },
   filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`); // Name the file with timestamp
+    cb(null, `${file.originalname}`); // Name the file with timestamp
   },
 });
 

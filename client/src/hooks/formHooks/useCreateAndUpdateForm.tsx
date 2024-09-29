@@ -216,14 +216,15 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  const createNote = async (title: string, content: string) => {
+  const createNote = async (title: string, content: string, imagePath? : string) => {
     setMessage("");
     setError(false);
     setSuccess(false);
     const requestBody = {
       title: title,
       content: content,
-      userId: user!.id // This might be problematic -- Add a check here
+      userId: user!.id, // This might be problematic -- Add a check here
+      imagePath:imagePath
     }
     const result = await postNewNote(requestBody, user!.token);
     const check = processResult(result);
@@ -232,14 +233,15 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  const updateNote = async (id: number, title: string, content: string) => {
+  const updateNote = async (id: number, title: string, content: string,imagePath?:string) => {
       setMessage("");
       setError(false);
       setSuccess(false);
       const requestBody = {
         title: title,
         content: content,
-        userId: user!.id // This might be problematic -- Add a check here
+        userId: user!.id, // This might be problematic -- Add a check here
+        imagePath:imagePath ?? ""
       }
       const result = await updateExistingNote(id.toString(),requestBody,user!.token);
       const check = processResult(result);

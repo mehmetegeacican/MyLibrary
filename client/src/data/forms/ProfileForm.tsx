@@ -80,7 +80,7 @@ export default function ProfileForm() {
             }
           />
         </FormControl>
-        <UploadButton/>
+        <UploadButton title='Upload Profile Picture'/>
       </Stack>
 
     </Stack>

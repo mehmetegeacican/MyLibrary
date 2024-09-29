@@ -6,6 +6,7 @@ import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataCo
 import UploadButton from '../buttons/uploadButton';
 import { postNewImage } from '../../apis/imageApis';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 
 
 
@@ -19,6 +20,7 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
   // Hooks & Contexts
   const {user} = useAuthContext();
   const [success,setSuccess] = useState(false);
+  const {libTheme} = useLibraryTheme();
   const [error,setError] = useState(false);
   const [message,setMessage] = useState("");
 
@@ -48,6 +50,8 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
       payload: !noteTrigger
     })
     handleClose();
+    setImageFile(null);
+    setImagePath("");
   }
 
   useEffect(() => {
@@ -72,12 +76,13 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
         <DialogTitle>{!note ? 'Add Note' : 'Edit Note'}</DialogTitle>
         <Divider/>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText color={libTheme}>
               Add or Update Notes from here. Enter Note Content in Markdown format
           </DialogContentText>
           <TextField
               autoFocus
               required
+              color={libTheme}
               margin="dense"
               id="title"
               name="Title"
@@ -95,6 +100,7 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
               required
               multiline
               rows={12}
+              color={libTheme}
               id="content"
               name="Content"
               value={content}
@@ -116,8 +122,12 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={async () => handleSave()}>Add</Button>
+          <Button onClick={() => {
+              handleClose();
+              setImageFile(null);
+              setImagePath("");
+            }} color={libTheme} >Cancel</Button>
+          <Button onClick={async () => handleSave()} color={libTheme}>Add</Button>
         </DialogActions>
     </Dialog>
   )

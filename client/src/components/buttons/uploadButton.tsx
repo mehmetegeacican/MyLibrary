@@ -1,7 +1,7 @@
 import { Button, styled, useMediaQuery, useTheme } from '@mui/material'
-import React from 'react';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 type UploadButtonInterface = {
@@ -35,15 +35,16 @@ export default function UploadButton({ title, imagePath, imageFile,setImageFile,
             variant="contained"
             color={libTheme}
             tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ height: 25, width: 25 }} />}
+            startIcon={<CloudUploadIcon sx={{ height: 25, width: 25,transition:'0.2s ease' }} />}
             sx={{
                 width: '35%',
                 '& .MuiButton-label': {
                     display: isSmallScreen ? 'none' : 'inline', // Hide label on small screens
                 },
+                transition: '0.2s ease'
             }}
         >
-            {!isSmallScreen && title}
+            {!isSmallScreen && (imagePath ? imagePath:title)}
             <VisuallyHiddenInput
                 type="file"
                 multiple={false}

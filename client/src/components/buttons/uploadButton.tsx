@@ -1,4 +1,4 @@
-import { Button, styled, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, styled, useMediaQuery, useTheme } from '@mui/material'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -7,13 +7,13 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 type UploadButtonInterface = {
     title: string;
     imagePath?: string;
-    imageFile?:File | null;
+    imageFile?: File | null;
     setImagePath?: Function;
     setImageFile?: Function;
 }
 
 
-export default function UploadButton({ title, imagePath, imageFile,setImageFile, setImagePath }: UploadButtonInterface) {
+export default function UploadButton({ title, imagePath, imageFile, setImageFile, setImagePath }: UploadButtonInterface) {
     const { libTheme } = useLibraryTheme();
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg')); // Adjust as needed (e.g., 'md', 'xs')
@@ -35,16 +35,23 @@ export default function UploadButton({ title, imagePath, imageFile,setImageFile,
             variant="contained"
             color={libTheme}
             tabIndex={-1}
-            startIcon={<CloudUploadIcon sx={{ height: 25, width: 25,transition:'0.2s ease' }} />}
+            startIcon={<CloudUploadIcon sx={{ height: 25, width: 25, transition: '0.2s ease' }} />}
             sx={{
                 width: '35%',
                 '& .MuiButton-label': {
                     display: isSmallScreen ? 'none' : 'inline', // Hide label on small screens
-                },
-                transition: '0.2s ease'
+                }
             }}
         >
-            {!isSmallScreen && (imagePath ? imagePath:title)}
+            {/* Smooth text transition */}
+            <Box
+                sx={{
+                    transform: (imagePath) ? 'translatex(0)' : 'translateX(10px)', // Slide in/out effect
+                    transition: 'opacity 0.3s ease, transform 0.3s ease',
+                }}
+            >
+                {!isSmallScreen && (imagePath ? imagePath : title)}
+            </Box>
             <VisuallyHiddenInput
                 type="file"
                 multiple={false}
@@ -56,7 +63,7 @@ export default function UploadButton({ title, imagePath, imageFile,setImageFile,
                         // Create an array to store the file name and last modified date
                         const fileDetails = Array.from(files).map((file) => ({
                             name: file.name,
-                            lastModified: file.lastModified.toString() 
+                            lastModified: file.lastModified.toString()
                         }));
 
                         // Log the file details (name and last modified)
@@ -66,7 +73,7 @@ export default function UploadButton({ title, imagePath, imageFile,setImageFile,
                         if (setImagePath) {
                             setImagePath(fileDetails[0].name); // Pass the file details instead of just the path
                         }
-                        if(setImageFile){
+                        if (setImageFile) {
                             setImageFile(files[0]);
                         }
                     }

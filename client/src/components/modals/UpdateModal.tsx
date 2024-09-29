@@ -4,6 +4,7 @@ import { useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdate
 import React, { useEffect } from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
+import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 
 interface UpdateModalInterface {
     open: boolean;
@@ -11,13 +12,12 @@ interface UpdateModalInterface {
     data: (IBook |ICategory);
 }
 
-export default function UpdateModal({ open, handleClose,  data }: UpdateModalInterface) {
+export default function  UpdateModal({ open, handleClose,  data }: UpdateModalInterface) {
 
     //Hooks
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
-
     const { error, message, success } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
 
     return (

@@ -6,6 +6,9 @@ import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
+import UploadButton from "../../components/buttons/uploadButton";
+import { postNewImage } from "../../apis/imageApis";
+import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 
 
 /**
@@ -19,6 +22,7 @@ interface FormInterface {
 }
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
+    const {user} = useAuthContext();
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [desc, setDesc] = React.useState<string>('A wolves story by Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
@@ -29,38 +33,58 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
     const { error, success, message, createBook, updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
-    const { categories, authors } = useLibraryDataContext();
+    const { categories, authors , bookTrigger,dispatch } = useLibraryDataContext();
+
+    // Upload 
+    const [imagePath, setImagePath] = React.useState<string>("");
+    const [uploadedPicture, setUploadedPicture] = React.useState<File | null>(null);
 
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors),imagePath);
+            if(uploadedPicture){
+                let formData = new FormData();
+                formData.append('location','books');
+                formData.append('image',uploadedPicture);
+                await postNewImage(formData,user!.token);   
+            }
             handleClose!();
+            dispatch({type:'TRIGGER_BOOKS',payload:!bookTrigger})
         }
-        else { 
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
+        else {
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors),imagePath);
+            if(uploadedPicture){
+                let formData = new FormData();
+                formData.append('location','books');
+                formData.append('image',uploadedPicture);
+                await postNewImage(formData,user!.token);   
+            }
         }
     }
 
     useEffect(() => {
         if (data && isIBook(data)) {
             setBookName(data.name);
-            if(data.description){
+            if (data.description) {
                 setDesc(data.description);
             }
-            else{
+            else {
                 setDesc("");
+            }
+            if(data.imagePath){
+                setImagePath(data.imagePath);
             }
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
-            
-            if(data.authors){
-                setSelectedAuthors(getIAuthors(data.authors,authors));
+
+            if (data.authors) {
+                setSelectedAuthors(getIAuthors(data.authors, authors));
             }
-            else{
-                setSelectedAuthors(getIAuthors([],authors));
+            else {
+                setSelectedAuthors(getIAuthors([], authors));
             }
-            
+
         }
     }, [data]);
 
@@ -69,17 +93,17 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
-                    <Stack direction={'row'} spacing={2} alignItems={'center'} sx={{mt:1}}>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'} sx={{ mt: 1 }}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
                         <StringValueField label='Please Enter the Book Description' data={desc} setter={setDesc} />
                     </Stack>
                     <MultipleSelectionAutocomplete
-                            label="Select Author(s)"
-                            placeholder='Author(s)'
-                            dataset={authors}
-                            selected={selectedAuthors}
-                            setSelected={setSelectedAuthors}
-                        />
+                        label="Select Author(s)"
+                        placeholder='Author(s)'
+                        dataset={authors}
+                        selected={selectedAuthors}
+                        setSelected={setSelectedAuthors}
+                    />
                     <MultipleSelectionAutocomplete
                         label="Select Categories"
                         placeholder='categories'
@@ -96,6 +120,14 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         <Chip clickable onClick={() => setSelectedStatus("Not Planned")} label="Not Planned" color="default" variant={selectedStatus === "Not Planned" ? "filled" : "outlined"} />
                     </Stack>
                     <Divider />
+                    <UploadButton 
+                        title="Upload Cover" 
+                        imageFile={uploadedPicture} 
+                        setImageFile={setUploadedPicture}
+                        imagePath={imagePath}
+                        setImagePath={setImagePath}
+                    />
+                    <Divider/>
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
                     {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}

@@ -19,6 +19,7 @@ export interface IBook {
   entered?: string;
   category: string[];
   status: string;
+  imagePath?: string;
 }
 
 export interface INote {

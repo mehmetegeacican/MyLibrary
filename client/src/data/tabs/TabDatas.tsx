@@ -3,6 +3,7 @@ import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
 import { Typography } from "@mui/material";
 import BookAccordions, { AuthorAccordionDatas, AuthorAccordions, CategoryAccordions } from "../accordions/AccordionDatas";
+import Shelflist from "../../components/shelfList/shelfList";
 
 
 /**
@@ -18,7 +19,7 @@ export const BookTabs: TabInterface[] = [
  */
 export const BookTabContents: JSX.Element[] = [
     (<Typography component={'span'} variant={'body2'}> <BookAccordions /> </Typography>),
-    (<Typography component={'span'} variant={'body2'}> CARD </Typography>)
+    (<Typography component={'span'} variant={'body2'}> <Shelflist/> </Typography>)
 ];
 
 /**
@@ -26,7 +27,7 @@ export const BookTabContents: JSX.Element[] = [
  */
 export const AuthorTabs: TabInterface[] = [
     { icon: (<BackupTableIcon />), label: "Table View" },
-    { icon: (<BookIcon />), label: "Card View" },
+    //{ icon: (<BookIcon />), label: "Card View" },
 ]
 
 /**
@@ -42,7 +43,7 @@ export const AuthorTabContents: JSX.Element[] = [
  */
 export const CategoryTabs: TabInterface[] = [
     { icon: (<BackupTableIcon />), label: "Table View" },
-    { icon: (<BookIcon />), label: "Card View" },
+    //{ icon: (<BookIcon />), label: "Card View" },
 ]
 
 /**

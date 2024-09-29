@@ -69,7 +69,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
-                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'} sx={{mt:1}}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
                         <StringValueField label='Please Enter the Book Description' data={desc} setter={setDesc} />
                     </Stack>

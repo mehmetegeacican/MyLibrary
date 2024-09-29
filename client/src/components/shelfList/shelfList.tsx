@@ -1,5 +1,5 @@
 import { SearchRounded } from '@mui/icons-material'
-import { TextField, MenuItem, Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken } from '@mui/material';
+import { TextField, MenuItem, Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
@@ -11,6 +11,7 @@ import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataCo
 import { IBook } from '../../interfaces/DataInterfaces';
 import BookIcon from '@mui/icons-material/Book';
 import FilterModal from '../modals/FilterModal';
+import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
@@ -22,12 +23,38 @@ const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) 
     return check1 && check2;
 }
 
+
+const CreateBookModel = ({open,handleClose}: {open:boolean,handleClose:() => void}) => {
+    return(
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth
+            maxWidth='md'
+        >
+             <DialogTitle id="alert-dialog-title">
+                <Stack direction='row' justifyContent={'space-between'}>
+                    <Typography color={'info'} variant="h6"> Create </Typography>
+                    <Button onClick={handleClose}>Cancel</Button>
+                </Stack>
+            </DialogTitle>
+            <DialogContent>
+                <BookForm format={'create'} />
+            </DialogContent>
+        </Dialog>
+        
+    )
+}
+
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
     const [query, setQuery] = useState("");
     const { books } = useLibraryDataContext();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
+    const [openAdd,setOpenAdd] = useState<boolean>(false);
     const [openFilter, setOpenFilter] = useState<boolean>(false);
     const [filterChips, setFilterChips] = useState<string[]>([]);
 
@@ -110,7 +137,7 @@ export default function Shelflist() {
                     <Button color={'inherit'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
                     <Button color={'success'} variant='text' onClick={() => console.log("aaa")}><ExportIcon /></Button>
                     <Button color={'secondary'} variant='text' onClick={() => console.log("aaa")}><ImportIcon /></Button>
-                    <Button color={'inherit'} variant='text' onClick={() => console.log("aaa")}><PostAddIcon /></Button>
+                    <Button color={'inherit'} variant='text' onClick={() => setOpenAdd(true)}><PostAddIcon /></Button>
                     <Button color={'error'} variant='text' onClick={() => console.log("aaa")}><DeleteIcon /></Button>
                 </div>
                 <div>
@@ -168,7 +195,7 @@ export default function Shelflist() {
 
             </Stack>
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
-
+            {<CreateBookModel open={openAdd} handleClose={() => setOpenAdd(false)}/>}
         </Container>
     )
 }

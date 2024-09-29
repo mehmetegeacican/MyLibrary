@@ -10,6 +10,7 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 import { IBook } from '../../interfaces/DataInterfaces';
 import BookIcon from '@mui/icons-material/Book';
+import FilterModal from '../modals/FilterModal';
 
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
@@ -25,8 +26,10 @@ export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
     const [query, setQuery] = useState("");
     const { books } = useLibraryDataContext();
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
+    const [openFilter, setOpenFilter] = useState<boolean>(false);
+    const [filterChips, setFilterChips] = useState<string[]>([]);
 
     //Handlers
     const handleChangePage = (
@@ -84,7 +87,7 @@ export default function Shelflist() {
                         color={libTheme}
                         onChange={(e) => setQuery(e.target.value)}
                     />
-                    <Button color={'inherit'} variant='text' onClick={() => console.log("aaa")}><FilterListIcon /></Button>
+                    <Button color={'inherit'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
                     <Button color={'success'} variant='text' onClick={() => console.log("aaa")}><ExportIcon /></Button>
                     <Button color={'secondary'} variant='text' onClick={() => console.log("aaa")}><ImportIcon /></Button>
                     <Button color={'inherit'} variant='text' onClick={() => console.log("aaa")}><PostAddIcon /></Button>
@@ -144,7 +147,7 @@ export default function Shelflist() {
                 </div>
 
             </Stack>
-
+            {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
 
         </Container>
     )

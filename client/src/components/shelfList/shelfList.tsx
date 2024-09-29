@@ -4,7 +4,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
@@ -13,6 +13,8 @@ import BookIcon from '@mui/icons-material/Book';
 import FilterModal from '../modals/FilterModal';
 import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 import UpdateModal from '../modals/UpdateModal';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { fetchAllBooks } from '../../apis/bookApi';
 
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
@@ -52,6 +54,7 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
     const [query, setQuery] = useState("");
+    const {user} = useAuthContext();
     const { books, bookTrigger, dispatch } = useLibraryDataContext();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
@@ -76,6 +79,17 @@ export default function Shelflist() {
         setPage(0);
     };
 
+    const fetchData = useCallback(async () => {
+        if(user){
+            const res = await fetchAllBooks(user.id,user.token);
+            dispatch({ type: 'GET_BOOKS', payload: res });
+        } 
+    }, [bookTrigger]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
     const avatarColor = useMemo(() => {
         switch (libTheme) {
             case 'primary':
@@ -95,6 +109,7 @@ export default function Shelflist() {
 
 
     const filteredBooks = useMemo(() => {
+        setPage(0);
         if (!filterChips.length) return books; // If no filters, return all books
         
         return books.filter((book) => {

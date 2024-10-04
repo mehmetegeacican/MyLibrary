@@ -15,6 +15,7 @@ import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 import UpdateModal from '../modals/UpdateModal';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
+import { Image } from 'antd';
 
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
@@ -54,7 +55,7 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
     const [query, setQuery] = useState("");
-    const {user} = useAuthContext();
+    const { user } = useAuthContext();
     const { books, bookTrigger, dispatch } = useLibraryDataContext();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
@@ -80,10 +81,10 @@ export default function Shelflist() {
     };
 
     const fetchData = useCallback(async () => {
-        if(user){
-            const res = await fetchAllBooks(user.id,user.token);
+        if (user) {
+            const res = await fetchAllBooks(user.id, user.token);
             dispatch({ type: 'GET_BOOKS', payload: res });
-        } 
+        }
     }, [bookTrigger]);
 
     useEffect(() => {
@@ -111,7 +112,7 @@ export default function Shelflist() {
     const filteredBooks = useMemo(() => {
         setPage(0);
         if (!filterChips.length) return books; // If no filters, return all books
-        
+
         return books.filter((book) => {
             return filterChips.every((chip) => {
                 const [filterType, filterValue] = chip.split('-');
@@ -129,7 +130,7 @@ export default function Shelflist() {
                 }
             });
         });
-    }, [books, filterChips,bookTrigger]); // Include books and filterChips in dependencies
+    }, [books, filterChips, bookTrigger]); // Include books and filterChips in dependencies
 
     return (
         <Container>
@@ -166,36 +167,55 @@ export default function Shelflist() {
                     }}>
                         {filteredBooks.map((book: IBook, index: number) => {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
-                                return (
-                                    <Grid item xs={6} md={4} lg={2}>
-                                        <Avatar onClick={() => {
-                                            setSelectedBook(book);
-                                            setOpenUpdate(true);
-                                            
-                                        }}
-                                            sx={{
-                                                width: 150,
-                                                height: 238,
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: avatarColor,
-                                                '&:hover': {
-                                                    backgroundColor: darken(avatarColor, 0.2), // Use darken function from @mui/system
-                                                }
+                                if (book.imagePath) {
+                                    return (
+                                        <Grid item xs={6} md={4} lg={2}>
+                                            <Image
+                                                src={`http://localhost:4008/images/books/${book.imagePath}`}
+                                                width={150}
+                                                height={238}
+                                            />
+
+                                            <Stack gap={3} justifyContent={'center'}>
+                                                <Typography color={libTheme}>{book.name}</Typography>
+                                            </Stack>
+                                        </Grid>
+                                    )
+
+                                }
+                                else {
+                                    return (
+                                        <Grid item xs={6} md={4} lg={2}>
+                                            <Avatar onClick={() => {
+                                                setSelectedBook(book);
+                                                setOpenUpdate(true);
+
                                             }}
-                                            variant="rounded"
-                                            src={book.imagePath ? `http://localhost:4008/images/books/${book.imagePath}` : ''}
-                                        >
-                                            {/* Only show the icon if there's no image */}
-                                            {!book.imagePath && <BookIcon sx={{ height: 90, width: 90 }} />}
-                                        </Avatar>
-                                        <Stack gap={3} justifyContent={'center'}>
-                                            <Typography color={libTheme}>{book.name}</Typography>
-                                        </Stack>
-                                    </Grid>
-                                )
+                                                sx={{
+                                                    width: 150,
+                                                    height: 238,
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    backgroundColor: avatarColor,
+                                                    '&:hover': {
+                                                        backgroundColor: darken(avatarColor, 0.2), // Use darken function from @mui/system
+                                                    }
+                                                }}
+                                                variant="rounded"
+                                                src={book.imagePath ? `http://localhost:4008/images/books/${book.imagePath}` : ''}
+                                            >
+                                                {/* Only show the icon if there's no image */}
+                                                {!book.imagePath && <BookIcon sx={{ height: 90, width: 90 }} />}
+                                            </Avatar>
+                                            <Stack gap={3} justifyContent={'center'}>
+                                                <Typography color={libTheme}>{book.name}</Typography>
+                                            </Stack>
+                                        </Grid>
+                                    )
+                                }
+
                             }
                         })}
                     </Grid>

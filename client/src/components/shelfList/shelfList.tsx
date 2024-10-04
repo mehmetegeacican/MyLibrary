@@ -1,10 +1,8 @@
-import { SearchRounded } from '@mui/icons-material'
-import { TextField, MenuItem, Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { InfoOutlined, SearchRounded } from '@mui/icons-material'
+import { TextField, Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import ExportIcon from '@mui/icons-material/GetApp';
-import ImportIcon from '@mui/icons-material/FileUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import EditIcon from '@mui/icons-material/Edit';
+import { useState, useMemo, useEffect, useCallback, Fragment } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
@@ -16,7 +14,7 @@ import UpdateModal from '../modals/UpdateModal';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -161,7 +159,7 @@ export default function Shelflist() {
                 </div>
                 <div>
                     <Grid container spacing={2} style={{
-                        height: 280,
+                        height: 295,
                         overflowY: 'auto',
                         scrollbarWidth: 'none'
                     }}>
@@ -175,10 +173,25 @@ export default function Shelflist() {
                                                 width={150}
                                                 height={238}
                                             />
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-evenly' , alignItems:'center', marginTop:0.1,marginRight:1.8}}>
+                                                <IconButton aria-label="delete" color='info'>
+                                                    <InfoOutlined />
+                                                </IconButton>
+                                                <IconButton aria-label="edit" color='primary' sx={{
+                                                    height:40,
+                                                    width:40
+                                                }} onClick={() => {
+                                                    setSelectedBook(book);
+                                                    setOpenUpdate(true);
 
-                                            <Stack gap={3} justifyContent={'center'}>
-                                                <Typography color={libTheme}>{book.name}</Typography>
-                                            </Stack>
+                                                }}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="delete" color='error'>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Box>
+
                                         </Grid>
                                     )
 

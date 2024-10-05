@@ -124,6 +124,8 @@ export default function Shelflist() {
                         return book.category.includes(filterValue);
                     case 'Language':
                         return book.language?.includes(filterValue);
+                    case 'Status':
+                        return book.status === filterValue;
                     // Add more cases for other filters if needed
                     default:
                         return true; // If filter type doesn't match, include the book

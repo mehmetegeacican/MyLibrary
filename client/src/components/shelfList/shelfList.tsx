@@ -117,11 +117,13 @@ export default function Shelflist() {
 
                 switch (filterType) {
                     case 'Name':
-                        return book.name === filterValue;
+                        return book.name.includes(filterValue);
                     case 'Author':
                         return book.authors.includes(filterValue);
                     case 'Categories':
                         return book.category.includes(filterValue);
+                    case 'Language':
+                        return book.language?.includes(filterValue);
                     // Add more cases for other filters if needed
                     default:
                         return true; // If filter type doesn't match, include the book
@@ -173,13 +175,13 @@ export default function Shelflist() {
                                                 width={150}
                                                 height={238}
                                             />
-                                            <Box sx={{ display: 'flex', justifyContent: 'space-evenly' , alignItems:'center', marginTop:0.1,marginRight:1.8}}>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 0.1, marginRight: 1.8 }}>
                                                 <IconButton aria-label="delete" color='info'>
                                                     <InfoOutlined />
                                                 </IconButton>
                                                 <IconButton aria-label="edit" color='primary' sx={{
-                                                    height:40,
-                                                    width:40
+                                                    height: 40,
+                                                    width: 40
                                                 }} onClick={() => {
                                                     setSelectedBook(book);
                                                     setOpenUpdate(true);

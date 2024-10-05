@@ -58,7 +58,7 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => voi
             <TableCell align='center'> <Button color='primary' onClick={() => handleOpenView("Category")}> View </Button> </TableCell>
             <TableCell align='center'><StatusChip statusLabel={book.status} /> </TableCell>
             <TableCell align='center'> {dayjs(book.entered).format('DD-MM-YYYY')}</TableCell>
-            <TableCell align="center"><Flag code="TR" height="24" /></TableCell>
+            <TableCell align="center"><Flag code={book.language ?? "TR"} height="24" /></TableCell>
             <TableCell align="center">TR</TableCell>
             <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
             <TableCell align='center'>

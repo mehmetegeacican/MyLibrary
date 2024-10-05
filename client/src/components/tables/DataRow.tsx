@@ -5,6 +5,7 @@ import StatusChip from "../chip/StatusChip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Fragment } from "react";
+import  Flag  from "react-world-flags";
 
 // Type guard function to check if an object is of type IBook
 export function isIBook(value: any): value is IBook {
@@ -57,6 +58,8 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => voi
             <TableCell align='center'> <Button color='primary' onClick={() => handleOpenView("Category")}> View </Button> </TableCell>
             <TableCell align='center'><StatusChip statusLabel={book.status} /> </TableCell>
             <TableCell align='center'> {dayjs(book.entered).format('DD-MM-YYYY')}</TableCell>
+            <TableCell align="center"><Flag code="TR" height="24" /></TableCell>
+            <TableCell align="center">TR</TableCell>
             <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
             <TableCell align='center'>
                 <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(book)}>

@@ -41,7 +41,8 @@ export const BookFilterOptions = [
     "Name",
     "Author",
     "Categories",
-    "Status"
+    "Status",
+    "Language"
 ]
 
 export const CategoryFilterOptions = [

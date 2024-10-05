@@ -1,8 +1,8 @@
-import { InfoOutlined, SearchRounded } from '@mui/icons-material'
-import { TextField, Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material'
+import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
-import { useState, useMemo, useEffect, useCallback, Fragment } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
@@ -14,7 +14,11 @@ import UpdateModal from '../modals/UpdateModal';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
+import ExportIcon from '@mui/icons-material/GetApp';
+import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExportModal from '../modals/ExportModal';
+import ImportModal from '../modals/ImportModal';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -61,6 +65,8 @@ export default function Shelflist() {
     const [openFilter, setOpenFilter] = useState<boolean>(false);
     const [filterChips, setFilterChips] = useState<string[]>([]);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
+    const [openExport,setOpenExport] = useState<boolean>(false);
+    const [openImport,setOpenImport] = useState<boolean>(false);
     const [selectedBook, setSelectedBook] = useState<IBook | null>(null);
 
     //Handlers
@@ -140,9 +146,10 @@ export default function Shelflist() {
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent:'space-evenly',
                     gap: 1
                 }}>
-                    <TextField
+                    {/*<TextField
                         placeholder='Search Books by Title, Author'
                         InputProps={{
                             startAdornment: (
@@ -154,11 +161,11 @@ export default function Shelflist() {
                         }}
                         color={libTheme}
                         onChange={(e) => setQuery(e.target.value)}
-                    />
-                    <Button color={'inherit'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
-                    {/*<Button color={'success'} variant='text' onClick={() => console.log("aaa")}><ExportIcon /></Button>
-                    <Button color={'secondary'} variant='text' onClick={() => console.log("aaa")}><ImportIcon /></Button>*/}
-                    <Button color={'inherit'} variant='text' onClick={() => setOpenAdd(true)}><PostAddIcon /></Button>
+                    />*/}
+                    <Button color={'info'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
+                    <Button color={'success'} variant='text' onClick={() => setOpenExport(true)}><ExportIcon /></Button>
+                    <Button color={'secondary'} variant='text' onClick={() => setOpenImport(true)}><ImportIcon /></Button>
+                    <Button color={libTheme} variant='text' onClick={() => setOpenAdd(true)}><PostAddIcon /></Button>
                     {/*<Button color={'error'} variant='text' onClick={() => console.log("aaa")}><DeleteIcon /></Button>*/}
                 </div>
                 <div>
@@ -256,6 +263,8 @@ export default function Shelflist() {
             </Stack>
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
             {<CreateBookModel open={openAdd} handleClose={() => setOpenAdd(false)} />}
+            {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredBooks}/>}
+            {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={books[0]}/>}
             {selectedBook && <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedBook} />}
         </Container>
     )

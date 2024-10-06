@@ -31,9 +31,6 @@ type langInterface = {
 const languageList: langInterface[] = [
     { code: "TR", label: "Turkish" },
     { code: "GB", label: "English" },
-    { code: "ES", label: "Spanish" },
-    { code: "FR", label: "French" },
-    { code: "DE", label: "German" },
 ]
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
@@ -93,7 +90,16 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             }
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
-
+            if(data.language){
+                switch(data.language){
+                    case 'TR':
+                        setLanguage(languageList[0])
+                        break;
+                    case 'GB':
+                        setLanguage(languageList[1])
+                        break;
+                }
+            }
             if (data.authors) {
                 setSelectedAuthors(getIAuthors(data.authors, authors));
             }

@@ -10,7 +10,7 @@ export const BookTableHeader: string[] = [
     "Status",
     "Entered to the system",
     "Language",
-    "Publish Year",
+    //"Publish Year",
     "Notes",
     "Edit",
     "Delete"

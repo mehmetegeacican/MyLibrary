@@ -19,6 +19,7 @@ import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExportModal from '../modals/ExportModal';
 import ImportModal from '../modals/ImportModal';
+import DeleteModal from '../modals/DeleteModal';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -67,6 +68,7 @@ export default function Shelflist() {
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
     const [openExport,setOpenExport] = useState<boolean>(false);
     const [openImport,setOpenImport] = useState<boolean>(false);
+    const [openDelete,setOpenDelete] = useState<boolean>(false);
     const [selectedBook, setSelectedBook] = useState<IBook | null>(null);
 
     //Handlers
@@ -198,7 +200,11 @@ export default function Shelflist() {
                                                 }}>
                                                     <EditIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="delete" color='error'>
+                                                <IconButton aria-label="delete" color='error' onClick={() => {
+                                                    setSelectedBook(book);
+                                                    setOpenDelete(true);
+
+                                                }}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </Box>
@@ -266,6 +272,7 @@ export default function Shelflist() {
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredBooks}/>}
             {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={books[0]}/>}
             {selectedBook && <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedBook} />}
+            {selectedBook && <DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedBook} />}
         </Container>
     )
 }

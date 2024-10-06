@@ -58,7 +58,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath);
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');
@@ -69,7 +69,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger })
         }
         else {
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath);
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');

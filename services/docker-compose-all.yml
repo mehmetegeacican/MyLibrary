@@ -85,6 +85,24 @@ services:
 
     networks:
       - library-network
+  ctservice:
+    build: ./categoryservicenest
+    ports:
+      - "4009:4000"
+    environment:
+      PORT: 4009
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - ctservice-code:/app/
+      - ctservice-node-modules:/app/node_modules
+    command: npm run start:dev
+
+    networks:
+      - library-network
   categoryservice:
     image: categoryservice:2.5
     ports:
@@ -180,6 +198,8 @@ volumes:
   imageservice-node-modules:
   categoryservice-code:
   categoryservice-node-modules:
+  ctservice-code:
+  ctservice-node-modules:
   bookservice-code:
   bookservice-node_modules:
 

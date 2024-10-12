@@ -29,7 +29,6 @@ services:
       VITE_AUTHORSERVICE_PORT: 4004
     volumes: 
       - client-code:/app/
-      - client-node-modules:/app/node_modules
     command: npm run dev
 
     networks:

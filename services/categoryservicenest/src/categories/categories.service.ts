@@ -14,37 +14,43 @@ export class CategoriesService {
 
   }
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  async create(createCategoryDto: CreateCategoryDto) {
+    const ct = this.categoryRepository.create(createCategoryDto);
+    return await this.categoryRepository.save(ct);
   }
 
   async findAll() {
     return this.categoryRepository.find();
   }
 
-  async findMany(id:number) {
+  async findMany(id: number) {
     return await this.categoryRepository.find({
-      where:{
-        user_id:id
+      where: {
+        user_id: id
       }
     });
   }
 
   async findOne(id: number) {
     return await this.categoryRepository.findOne({
-      where:{
+      where: {
         id
       }
     });
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    const ct = await this.findOne(id);
+    if (!ct) {
+      throw new NotFoundException();
+    }
+    Object.assign(ct, updateCategoryDto);
+    return await this.categoryRepository.save(ct);
   }
 
   async remove(id: number) {
     const ct = await this.findOne(id);
-    if(!ct){
+    if (!ct) {
       throw new NotFoundException();
     }
 

@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id      Int     @id(map: "author_pk") @default(autoincrement())
+  name    String? @db.VarChar
+  user_id BigInt?
+  info    String? @db.VarChar
+}
+
+model Category {
+  id      Int     @id(map: "category_pk") @default(autoincrement())
+  name    String? @db.VarChar
+  user_id BigInt?
+  info    String? @db.VarChar
+}
+
+model User {
+  id          Int     @id(map: "users_pk") @default(autoincrement())
+  username    String? @db.VarChar
+  password    String? @db.VarChar
+  theme_color String? @default("secondary") @db.VarChar
+}
+
+model books {
+  id           Int       @id(map: "books_pk") @default(autoincrement())
+  name         String?   @db.VarChar
+  description  String?   @db.VarChar
+  authors      String[]  @db.VarChar
+  user_id      BigInt?
+  entered      DateTime? @db.Date
+  category     String[]  @db.VarChar
+  status       String?   @db.VarChar
+  imagePath    String?   @db.VarChar
+  language     String?   @db.VarChar
+  publish_year String?   @db.VarChar
+  publisher    String?   @db.VarChar
+}
+
+model notes {
+  id         Int      @id(map: "PK_af6206538ea96c4e77e9f400c3d") @default(autoincrement())
+  userId     Int
+  title      String   @default("Untitled")
+  content    String?
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  imagePath  String?  @db.VarChar
+}

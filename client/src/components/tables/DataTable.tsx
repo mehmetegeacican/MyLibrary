@@ -144,7 +144,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
 
     const filteredDatas = useMemo(() => {
         setPage(0);
-        return filterDataByFilterInputs(tableDatas, filterChips);
+        return filterDataByFilterInputs(tableDatas, filterChips).sort((a,b) => a.id - b.id);
     }, [tableDatas, filterChips]);
 
     return (

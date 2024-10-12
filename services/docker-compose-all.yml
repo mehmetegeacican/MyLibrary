@@ -24,7 +24,7 @@ services:
     build: ./client
     environment:
       VITE_BOOKSERVICE_PORT: 4001
-      VITE_CATEGORYSERVICE_PORT: 4002
+      VITE_CATEGORYSERVICE_PORT: 4009
       VITE_STATSERVICE_PORT: 4003
       VITE_AUTHORSERVICE_PORT: 4004
     volumes: 
@@ -103,19 +103,19 @@ services:
 
     networks:
       - library-network
-  categoryservice:
-    image: categoryservice:2.5
-    ports:
-      - "4002:4000"
-    environment:
-      DATABASE_URL: "postgresql://postgres:123456@postgres:5432/librarydb"
-    volumes:
-      - categoryservice-code:/app/
-      - categoryservice-node-modules:/app/node_modules
-    command: npm run dev
+  #categoryservice:
+    #image: categoryservice:2.5
+    #ports:
+      #- "4002:4000"
+    #environment:
+      #DATABASE_URL: "postgresql://postgres:123456@postgres:5432/librarydb"
+    #volumes:
+      #- categoryservice-code:/app/
+      #- categoryservice-node-modules:/app/node_modules
+    #command: npm run dev
 
-    networks:
-      - library-network
+    #networks:
+      #- library-network
   bookservice:
     build: ./bookservice
     ports:

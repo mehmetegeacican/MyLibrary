@@ -159,7 +159,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     const requestBody = {
       name: name,
       info: info,
-      userId: user!.id
+      user_id: user!.id
     }
     const result = await postNewCategory(requestBody, user!.token);
     const check = processResult(result);

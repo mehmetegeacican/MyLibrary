@@ -12,7 +12,7 @@ export const fetchAllCategories = async (id:number,token:string) => {
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.get(CATEGORY_ADDRESS + `/api/v1/categories/all/${id}`,config);
+        const res = await axios.get(CATEGORY_ADDRESS + `/api/v2/categories/all/${id}`,config);
         if(res.status === 500){
             return [500];
         }
@@ -29,12 +29,12 @@ export const fetchAllCategories = async (id:number,token:string) => {
  * @param reqBody 
  * @returns 
  */
-export const postNewCategory = async (reqBody:{name:string,info:string, userId:number},token:string) => {
+export const postNewCategory = async (reqBody:{name:string,info:string, user_id:number},token:string) => {
     try{
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.post(CATEGORY_ADDRESS + '/api/v1/categories', reqBody,config);
+        const res = await axios.post(CATEGORY_ADDRESS + '/api/v2/categories', reqBody,config);
         if(res){
             return res.data;
         }
@@ -55,7 +55,7 @@ export const updateExistingCategory =async (id:number,reqBody:{name:string,info:
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.put(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,reqBody,config);
+        const res = await axios.patch(CATEGORY_ADDRESS + `/api/v2/categories/${id}`,reqBody,config);
         return res.data;
     }
     catch(e){
@@ -73,7 +73,7 @@ export const deleteExistingCategory = async (id:(number |string), token:string) 
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v1/categories/${id}`,config);
+        const res = await axios.delete(CATEGORY_ADDRESS + `/api/v2/categories/${id}`,config);
         return res.data;
     }
     catch(e){

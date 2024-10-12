@@ -22,6 +22,14 @@ export class CategoriesService {
     return this.categoryRepository.find();
   }
 
+  async findMany(id:number) {
+    return await this.categoryRepository.find({
+      where:{
+        user_id:id
+      }
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} category`;
   }

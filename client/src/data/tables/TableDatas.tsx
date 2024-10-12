@@ -9,6 +9,8 @@ export const BookTableHeader: string[] = [
     "Categories",
     "Status",
     "Entered to the system",
+    "Language",
+    //"Publish Year",
     "Notes",
     "Edit",
     "Delete"
@@ -39,7 +41,8 @@ export const BookFilterOptions = [
     "Name",
     "Author",
     "Categories",
-    "Status"
+    "Status",
+    "Language"
 ]
 
 export const CategoryFilterOptions = [

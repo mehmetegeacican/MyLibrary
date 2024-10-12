@@ -27,6 +27,9 @@ export const useFilterModal = (filters:string[],tableDatas:IBook[] | ICategory[]
             } else if(stat === "Categories" && !item.category.includes(data)){
                 return false;
             }
+            else if(stat === "Language" && !item.language?.includes(data)){
+                return false;
+            }
         }
         return true;
     };

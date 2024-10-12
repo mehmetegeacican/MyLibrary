@@ -10,7 +10,7 @@ import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 interface FilterModalInterface {
     open: boolean;
     handleClose: () => void;
-    exampleData: IBook | ICategory | IAuthor;
+    exampleData: IBook | ICategory | IAuthor;
     setFilterChips: Function;
 }
 

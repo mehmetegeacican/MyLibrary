@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Divider, Chip, Button, Alert, Autocomplete, TextField } from "@mui/material";
+import { Box, Container, Stack, Divider, Chip, Button, Alert, Autocomplete, TextField, MenuItem, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
@@ -6,6 +6,11 @@ import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
 import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
+import UploadButton from "../../components/buttons/uploadButton";
+import { postNewImage } from "../../apis/imageApis";
+import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
+import { Label } from "@mui/icons-material";
+import Flag from "react-world-flags";
 
 
 /**
@@ -17,50 +22,91 @@ interface FormInterface {
     data?: IBook | ICategory | IAuthor;
     handleClose?: () => void;
 }
+
+type langInterface = {
+    code: string;
+    label: string;
+}
+
+const languageList: langInterface[] = [
+    { code: "TR", label: "Turkish" },
+    { code: "GB", label: "English" },
+]
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
+    const { user } = useAuthContext();
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [desc, setDesc] = React.useState<string>('A wolves story by Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
     const [selectedAuthors, setSelectedAuthors] = React.useState<IAuthor[]>([]);
     const [selectedStatus, setSelectedStatus] = React.useState<string>("Reading");
+    const [language, setLanguage] = React.useState<langInterface | null>(languageList[1]);
     //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
     const [formSuccess, setFormSuccess] = React.useState<boolean>(false);
     const { error, success, message, createBook, updateBook } = useCreateAndUpdateForm(formError, setFormError, formMessage, setFormMessage, formSuccess, setFormSuccess);
-    const { categories, authors } = useLibraryDataContext();
+    const { categories, authors, bookTrigger, dispatch } = useLibraryDataContext();
+
+    // Upload 
+    const [imagePath, setImagePath] = React.useState<string>("");
+    const [uploadedPicture, setUploadedPicture] = React.useState<File | null>(null);
 
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
+            if (uploadedPicture) {
+                let formData = new FormData();
+                formData.append('location', 'books');
+                formData.append('image', uploadedPicture);
+                await postNewImage(formData, user!.token);
+            }
             handleClose!();
+            dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger })
         }
-        else { 
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus,getStringAuthors(selectedAuthors));
+        else {
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
+            if (uploadedPicture) {
+                let formData = new FormData();
+                formData.append('location', 'books');
+                formData.append('image', uploadedPicture);
+                await postNewImage(formData, user!.token);
+            }
         }
     }
 
     useEffect(() => {
         if (data && isIBook(data)) {
             setBookName(data.name);
-            if(data.description){
+            if (data.description) {
                 setDesc(data.description);
             }
-            else{
+            else {
                 setDesc("");
+            }
+            if (data.imagePath) {
+                setImagePath(data.imagePath);
             }
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
-            
-            if(data.authors){
-                setSelectedAuthors(getIAuthors(data.authors,authors));
+            if(data.language){
+                switch(data.language){
+                    case 'TR':
+                        setLanguage(languageList[0])
+                        break;
+                    case 'GB':
+                        setLanguage(languageList[1])
+                        break;
+                }
             }
-            else{
-                setSelectedAuthors(getIAuthors([],authors));
+            if (data.authors) {
+                setSelectedAuthors(getIAuthors(data.authors, authors));
             }
-            
+            else {
+                setSelectedAuthors(getIAuthors([], authors));
+            }
+
         }
     }, [data]);
 
@@ -69,23 +115,41 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
         >
             <Container>
                 <Stack spacing={2} alignContent={'center'}>
-                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                    <Stack direction={'row'} spacing={2} alignItems={'center'} sx={{ mt: 1 }}>
                         <StringValueField label='Please Enter the Book name' data={bookName} setter={setBookName} />
                         <StringValueField label='Please Enter the Book Description' data={desc} setter={setDesc} />
                     </Stack>
                     <MultipleSelectionAutocomplete
-                            label="Select Author(s)"
-                            placeholder='Author(s)'
-                            dataset={authors}
-                            selected={selectedAuthors}
-                            setSelected={setSelectedAuthors}
-                        />
+                        label="Select Author(s)"
+                        placeholder='Author(s)'
+                        dataset={authors}
+                        selected={selectedAuthors}
+                        setSelected={setSelectedAuthors}
+                    />
                     <MultipleSelectionAutocomplete
                         label="Select Categories"
                         placeholder='categories'
                         dataset={categories}
                         selected={selectedCategories}
                         setSelected={setSelectedCategories}
+                    />
+                    <Autocomplete
+                        disablePortal
+                        options={languageList}
+                        sx={{ width: '50%' }}
+                        value={language}
+                        onChange={(event, newValue: langInterface | null) => {
+                            setLanguage(newValue);
+                        }}
+                        renderOption={(props, option) => (
+                            <MenuItem {...props}>
+                                <Box display="flex" alignItems="center">
+                                    <Flag code={option.code} style={{ width: 24, height: 18, marginRight: 8 }} />
+                                    <Typography>{option.label}</Typography>
+                                </Box>
+                            </MenuItem>
+                        )}
+                        renderInput={(params) => <TextField {...params} label="Language" />}
                     />
                     <Divider />
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
@@ -95,6 +159,14 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         <Chip clickable onClick={() => setSelectedStatus("Will Continue")} label="Will Continue" color="secondary" variant={selectedStatus === "Will Continue" ? "filled" : "outlined"} />
                         <Chip clickable onClick={() => setSelectedStatus("Not Planned")} label="Not Planned" color="default" variant={selectedStatus === "Not Planned" ? "filled" : "outlined"} />
                     </Stack>
+                    <Divider />
+                    <UploadButton
+                        title="Upload Cover"
+                        imageFile={uploadedPicture}
+                        setImageFile={setUploadedPicture}
+                        imagePath={imagePath}
+                        setImagePath={setImagePath}
+                    />
                     <Divider />
                     {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
                     {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}

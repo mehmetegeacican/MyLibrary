@@ -29,7 +29,6 @@ services:
       VITE_AUTHORSERVICE_PORT: 4004
     volumes: 
       - client-code:/app/
-      - client-node-modules:/app/node_modules
     command: npm run dev
 
     networks:
@@ -100,7 +99,7 @@ services:
     networks:
       - library-network
   bookservice:
-    image: bookservice:3.1
+    build: ./bookservice
     ports:
       - "4001:4000"
     environment:

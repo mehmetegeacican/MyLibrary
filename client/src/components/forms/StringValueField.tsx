@@ -15,7 +15,7 @@ export default function StringValueField({ label, data, setter, password }: Text
         setter(event.target.value);
     }
     return (
-        <TextField id="StringField" label={label}
+        <TextField id={"StringField" + label} label={label}
             value={data} variant="outlined"
             fullWidth
             type = {password ? 'password': 'text'}

@@ -180,7 +180,7 @@ export default function Shelflist() {
                             if (checkWhichRowsToShow(page, rowsPerPage, index)) {
                                 if (book.imagePath) {
                                     return (
-                                        <Grid item xs={6} md={4} lg={2}>
+                                        <Grid item xs={6} md={3} lg={2} key={book.id}>
                                             <Image
                                                 src={`http://localhost:4008/images/books/${book.imagePath}`}
                                                 width={150}

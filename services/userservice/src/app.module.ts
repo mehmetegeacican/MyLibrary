@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,11 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           username: configService.get('PGUSER'),
           password: configService.get('PGPASSWORD'),
           database: configService.get('PGDATABASE'),
-          entities: [],
+          entities: [User],
           // synchronize is used for migration
           //synchronize:true
       })
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

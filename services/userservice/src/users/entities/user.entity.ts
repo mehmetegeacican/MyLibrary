@@ -11,7 +11,7 @@ export class User {
     @Column()
     password:string;
 
-    @Column()
+    @Column({type:'text',default:'secondary'})
     theme_color:string;
 
     @CreateDateColumn({ name: 'created_at' })

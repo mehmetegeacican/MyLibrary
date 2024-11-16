@@ -14,6 +14,9 @@ export class User {
     @Column({type:'text',default:'secondary'})
     theme_color:string;
 
+    @Column({name:'image_path'})
+    imagePath:string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt:Date;
 

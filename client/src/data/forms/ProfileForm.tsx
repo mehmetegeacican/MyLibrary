@@ -6,7 +6,7 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../components/buttons/uploadButton';
-import { updateUser } from '../../apis/userApis';
+import { getUserById, updateUser } from '../../apis/userApis';
 import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
 import { Image, message } from 'antd';
 import { postNewImage } from '../../apis/imageApis';
@@ -44,6 +44,7 @@ export default function ProfileForm() {
         dispatch({type:'LOGIN', payload:updatedUser});
         // For Local Storage
         localStorage.setItem('user',JSON.stringify(updatedUser));
+        message.success('Username changed successfully');
       } catch (error) {
         console.error("Failed to update user:", error);
         message.error('Error occured! Could not change the username');
@@ -83,6 +84,25 @@ export default function ProfileForm() {
         return 'blueviolet'
     }
   }, [libTheme]);
+
+  /**
+   * Initial Fetch to Get the User
+   */
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if(user){
+        const res = await getUserById(user?.id.toString(),user?.token);
+        if(res.imagePath){
+          setImagePath(res.imagePath);
+        }
+        if(res.theme_color){
+          dispatch({type:'SET_THEME_COLOR',payload:res.theme_color});
+        }
+      }
+    }
+    fetchUserData();
+  },[]);
+
 
   // Update imagePath dynamically
   useEffect(() => {

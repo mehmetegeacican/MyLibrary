@@ -1,5 +1,5 @@
 import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack, Button } from '@mui/material'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
 import PersonIcon from '@mui/icons-material/Person';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
@@ -8,7 +8,8 @@ import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../components/buttons/uploadButton';
 import { updateUser } from '../../apis/userApis';
 import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
-import { message } from 'antd';
+import { Image, message } from 'antd';
+import { postNewImage } from '../../apis/imageApis';
 
 
 
@@ -23,6 +24,10 @@ export default function ProfileForm() {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = React.useState(false);
+
+  // Upload
+  const [imagePath, setImagePath] = React.useState<string>("");
+  const [uploadedPicture, setUploadedPicture] = React.useState<File | null>(null);
 
   // Handlers
 
@@ -78,6 +83,28 @@ export default function ProfileForm() {
     }
   }, [libTheme]);
 
+  // Update imagePath dynamically
+  useEffect(() => {
+    if (imagePath && uploadedPicture && user?.id) {
+      const updateProfilePicture = async () => {
+        try {
+          // Step 1 -- Update the User Info
+          await updateUser(user.id.toString(), { imagePath: imagePath }, user.token);
+          // Step 2 -- Add the Image
+          let formData = new FormData();
+          formData.append('location', 'profilepics');
+          formData.append('image', uploadedPicture);
+          await postNewImage(formData, user!.token);
+          // Step 3 -- Deliver Success Message
+          message.success('Profile picture updated successfully!');
+        } catch (error) {
+          console.error("Failed to update profile picture:", error);
+          message.error('Error occurred! Could not update the profile picture.');
+        }
+      };
+      updateProfilePicture();
+    }
+  }, [imagePath, user]);
 
   return (
     <Stack direction={'row'} spacing={7} alignItems={'center'} justifyContent={'space-between'}>
@@ -86,7 +113,10 @@ export default function ProfileForm() {
         width: 200,
         backgroundColor: avatarColor,
         transition: '0.3s ease'
-      }}> <PersonIcon sx={{ height: 90, width: 90 }} /> </Avatar>
+      }}>
+        {!imagePath && <PersonIcon sx={{ height: 90, width: 90 }} />}
+        {imagePath && <Image src={`http://localhost:4008/images/profilepics/${imagePath}`} height={200} width={200}/>}
+      </Avatar>
       <Stack spacing={3} sx={{
         width: '83%'
       }} >
@@ -121,7 +151,21 @@ export default function ProfileForm() {
             }
           />
         </FormControl>
-        <UploadButton title='Upload Profile Picture' />
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <UploadButton
+            title='Upload Profile Picture'
+            imageFile={uploadedPicture}
+            setImageFile={setUploadedPicture}
+            imagePath={imagePath}
+            setImagePath={setImagePath}
+          />
+        </div>
+
+
       </Stack>
 
     </Stack>

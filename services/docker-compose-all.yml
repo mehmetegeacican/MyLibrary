@@ -103,6 +103,24 @@ services:
 
     networks:
       - library-network
+  userservice:
+    build: ./userservice
+    ports:
+      - "4010:4000"
+    environment:
+      PORT: 4010
+      DB_HOST: postgres
+      DB_PORT: 35432
+      DB_USER: postgres
+      DB_PASSWORD: 123456
+      DB_NAME: librarydb
+    volumes:
+      - userservice-code:/app/
+      - userservice-node-modules:/app/node_modules
+    command: npm run start:dev
+
+    networks:
+      - library-network
   #categoryservice:
     #image: categoryservice:2.5
     #ports:
@@ -202,6 +220,8 @@ volumes:
   ctservice-node-modules:
   bookservice-code:
   bookservice-node_modules:
+  userservice-code:
+  userservice-node-modules:
 
 networks:
   library-network:

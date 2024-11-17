@@ -4,11 +4,23 @@ import { SignUpForm } from './SignUpPage'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext'
 import ProfileForm from '../data/forms/ProfileForm';
 import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
+import { updateUser } from '../apis/userApis';
 
 export default function ProfilePage() {
 
-    const { dispatch } = useAuthContext();
+    const { user ,dispatch } = useAuthContext();
     const {libTheme} = useLibraryTheme();
+
+
+    const handleColorSwitch = async (e: { target: { value: any; }; }) => {
+        dispatch({
+            type: 'SET_THEME_COLOR',
+            payload: e.target.value
+        });
+        if(user?.id && user){
+            await updateUser(user?.id.toString(),{theme_color:e.target.value},user?.token);
+        }
+    }
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -46,12 +58,7 @@ export default function ProfilePage() {
                         <Typography sx={{
                             marginBottom: 2
                         }} variant='h6' color={libTheme}> Select Theme Color </Typography>
-                        <RadioGroup name="use-radio-group" defaultValue={libTheme} onChange={(e) => {
-                            dispatch({
-                                type: 'SET_THEME_COLOR',
-                                payload: e.target.value
-                            })
-                        }}>
+                        <RadioGroup name="use-radio-group" value={libTheme} onChange={handleColorSwitch}>
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'row'

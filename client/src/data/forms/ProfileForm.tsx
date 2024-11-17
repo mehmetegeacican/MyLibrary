@@ -19,7 +19,7 @@ export default function ProfileForm() {
   const { libTheme } = useLibraryTheme();
   // Variables
   const [username, setUsername] = useState(user?.email || "");
-  const [debouncedUsername, setDebouncedUsername] = useState(user?.email || '');
+  //const [debouncedUsername, setDebouncedUsername] = useState(user?.email || '');
 
   const [password, setPassword] = useState("");
 
@@ -33,7 +33,7 @@ export default function ProfileForm() {
 
   // Use debounce to delay the update of debouncedUsername
   const debounceUsername = useDebounce(async (value: string) => {
-    setDebouncedUsername(value);
+    //setDebouncedUsername(value);
     if (user?.id) {
       try {
         // Update the username via API
@@ -52,6 +52,20 @@ export default function ProfileForm() {
     }
   }, 4000);
 
+  // Use debounce for Password Change as well
+  const debouncePassword = useDebounce(async (value:string) => {
+    if (user?.id) {
+      try {
+        // Update the username via API
+        await updateUser(user?.id.toString(), { username: user.email,password:value }, user?.token);
+        message.success('Password changed successfully');
+      } catch (error) {
+        console.error("Failed to update password:", error);
+        message.error('Error occured! Could not change the password');
+      }
+    }
+  },4000);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,6 +81,12 @@ export default function ProfileForm() {
     setUsername(value);
     debounceUsername(value);
   };
+
+  const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+    debouncePassword(value);
+  }
 
   const avatarColor = useMemo(() => {
     switch (libTheme) {
@@ -94,6 +114,9 @@ export default function ProfileForm() {
         const res = await getUserById(user?.id.toString(),user?.token);
         if(res.imagePath){
           setImagePath(res.imagePath);
+        }
+        if(res.password){
+          setPassword(res.password);
         }
       }
     }
@@ -160,7 +183,7 @@ export default function ProfileForm() {
             color={libTheme}
             type={showPassword ? 'text' : 'password'}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton

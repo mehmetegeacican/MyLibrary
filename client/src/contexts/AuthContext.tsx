@@ -1,5 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import { AuthAction, AuthContextProviderProps, AuthContextType, AuthState } from "../interfaces/ReducerInterfaces";
+import { getUserById } from "../apis/userApis";
 
 export const AuthDataContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -33,6 +34,18 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({childre
         user: null,
         themeColor:'secondary'
     });
+
+    const fetchUserData = async (id:string,token:string) => {
+        try{
+          const result = await getUserById(id,token);
+          if(result.theme_color){
+            dispatch({type:'SET_THEME_COLOR',payload:result.theme_color});
+          }
+        } catch(e){
+          return e;
+        }
+    }
+
     useEffect(() => {
       //Parse the Local Storages json String
       let userData;
@@ -42,8 +55,10 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({childre
       }
       //If this is present, then we have a user present, initial dispatch 
       if (user) {
+          fetchUserData(userData.id,userData.token);
           dispatch({ type: 'LOGIN', payload: userData });
       }
+
   }, []);
     return (
         <AuthDataContext.Provider value={{ ...state, dispatch }}>

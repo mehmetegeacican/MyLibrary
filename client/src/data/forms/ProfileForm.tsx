@@ -95,9 +95,6 @@ export default function ProfileForm() {
         if(res.imagePath){
           setImagePath(res.imagePath);
         }
-        if(res.theme_color){
-          dispatch({type:'SET_THEME_COLOR',payload:res.theme_color});
-        }
       }
     }
     fetchUserData();

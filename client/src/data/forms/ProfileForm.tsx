@@ -15,7 +15,7 @@ import { postNewImage } from '../../apis/imageApis';
 
 
 export default function ProfileForm() {
-  const { user } = useAuthContext();
+  const { user , dispatch } = useAuthContext();
   const { libTheme } = useLibraryTheme();
   // Variables
   const [username, setUsername] = useState(user?.email || "");
@@ -26,7 +26,7 @@ export default function ProfileForm() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   // Upload
-  const [imagePath, setImagePath] = React.useState<string>("");
+  const [imagePath, setImagePath] = React.useState<string>(user?.imagePath || "");
   const [uploadedPicture, setUploadedPicture] = React.useState<File | null>(null);
 
   // Handlers
@@ -41,8 +41,9 @@ export default function ProfileForm() {
 
         // Update username in localStorage
         const updatedUser = { ...user, email: value };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-        message.success('Username changed successfully!');
+        dispatch({type:'LOGIN', payload:updatedUser});
+        // For Local Storage
+        localStorage.setItem('user',JSON.stringify(updatedUser));
       } catch (error) {
         console.error("Failed to update user:", error);
         message.error('Error occured! Could not change the username');
@@ -95,6 +96,12 @@ export default function ProfileForm() {
           formData.append('location', 'profilepics');
           formData.append('image', uploadedPicture);
           await postNewImage(formData, user!.token);
+
+          const updatedUser = { ...user, imagePath: imagePath };
+          dispatch({type:'LOGIN', payload:updatedUser});
+
+          localStorage.setItem('user',JSON.stringify(updatedUser));
+
           // Step 3 -- Deliver Success Message
           message.success('Profile picture updated successfully!');
         } catch (error) {
@@ -104,7 +111,7 @@ export default function ProfileForm() {
       };
       updateProfilePicture();
     }
-  }, [imagePath, user]);
+  }, [imagePath]);
 
   return (
     <Stack direction={'row'} spacing={7} alignItems={'center'} justifyContent={'space-between'}>

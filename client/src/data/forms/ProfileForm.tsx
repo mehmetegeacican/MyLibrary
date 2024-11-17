@@ -1,17 +1,22 @@
-import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
-import React, { useMemo } from 'react'
+import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack , Button} from '@mui/material'
+import React, { useMemo, useState } from 'react'
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
 import PersonIcon from '@mui/icons-material/Person';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../components/buttons/uploadButton';
+import { updateUser } from '../../apis/userApis';
+
 
 
 
 export default function ProfileForm() {
   const { user } = useAuthContext();
-  const {libTheme} = useLibraryTheme()
+  const {libTheme} = useLibraryTheme();
+  // Variables
+  const [username,setUsername] = useState(user?.email || "");
+  const [password,setPassword] = useState("");
 
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -41,6 +46,13 @@ export default function ProfileForm() {
           return 'blueviolet'
       }
   },[libTheme]);
+
+  const handleUserInfoSave = async () => {
+     let obj = {
+       username: username
+     }
+  };
+
   return (
     <Stack direction={'row'} spacing={7} alignItems={'center'} justifyContent={'space-between'}>
       <Avatar sx={{
@@ -57,7 +69,8 @@ export default function ProfileForm() {
           <Input
             id="standard-adornment-username"
             color={libTheme}
-            value={user?.email ?? ""}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </FormControl>
         <FormControl variant="standard">
@@ -66,6 +79,8 @@ export default function ProfileForm() {
             id="standard-adornment-password"
             color={libTheme}
             type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -81,6 +96,17 @@ export default function ProfileForm() {
           />
         </FormControl>
         <UploadButton title='Upload Profile Picture'/>
+        <Button 
+          variant='contained'
+          color={libTheme}
+          style={{
+            width:'30vw',
+            alignSelf:'center'
+          }}
+          onClick={() => handleUserInfoSave()}
+        >
+          Update
+        </Button>
       </Stack>
 
     </Stack>

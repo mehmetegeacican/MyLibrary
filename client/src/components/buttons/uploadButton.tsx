@@ -50,7 +50,9 @@ export default function UploadButton({ title, imagePath, imageFile, setImageFile
                     transition: 'opacity 0.3s ease, transform 0.3s ease',
                 }}
             >
-                {!isSmallScreen && (imagePath ? imagePath : title)}
+                {!isSmallScreen && (imagePath
+                    ? (imagePath.length > 20 ? `${imagePath.substring(0, 17)}...` : imagePath)
+                    : title)}
             </Box>
             <VisuallyHiddenInput
                 type="file"

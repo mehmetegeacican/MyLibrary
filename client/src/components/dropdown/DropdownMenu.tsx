@@ -17,6 +17,7 @@ export default function DropdownMenu({ open, anchor, handleClose }: DropdownMenu
 
     const logOut = () => {
         dispatch({type:'LOG_OUT',payload:null});
+        dispatch({type:'SET_THEME_COLOR',payload:'secondary'})
         localStorage.removeItem('user');
     }
     

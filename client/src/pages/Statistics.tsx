@@ -1,16 +1,22 @@
 import { BarChart } from '@mui/icons-material'
-import { Box, Container, Divider, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
 import PolarAreaChart from '../data/charts/PolarAreaChart';
+import MultipleSelectionAutocomplete from '../components/forms/MultipleSelectionAutocomplete';
+import { IAuthor } from '../interfaces/DataInterfaces';
 
 export default function Statistics() {
     const { user } = useAuthContext();
-    const { books, dispatch } = useLibraryDataContext();
+    const { books, authors } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
+
+    const [authorDialogOpen, setAuthorDialogOpen] = useState<boolean>(false);
+    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+
 
     // Author Menu
     const [authorMenu, setAuthorMenu] = useState("Most Frequent");
@@ -20,7 +26,7 @@ export default function Statistics() {
      * 
      * @returns Component for Author Select
      */
-    const AuthorSelect = () => {
+    const AuthorMenuSelect = () => {
         const handleChange = (event: SelectChangeEvent) => {
             setAuthorMenu(event.target.value as string);
         };
@@ -63,6 +69,28 @@ export default function Statistics() {
         )
     };
 
+
+
+    const AuthorSelectDialog = () => {
+        return (
+            <Dialog open={authorDialogOpen}>
+                <DialogTitle>Select From Authors</DialogTitle>
+                <DialogContent>
+                    <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <FormControl sx={{ m: 0.5, minWidth: 300 }} fullWidth>
+                            
+                        </FormControl>
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setAuthorDialogOpen(false)}>Cancel</Button>
+                    <Button onClick={() => setAuthorDialogOpen(false)}>Ok</Button>
+                </DialogActions>
+            </Dialog>
+
+        )
+    }
+
     //UseCallBack 
     const fetchStats = useCallback(async () => {
         if (user) {
@@ -77,19 +105,23 @@ export default function Statistics() {
         if (!Array.isArray(bookCountByAuthor)) {
             return [];
         }
-        if(authorMenu === 'Most Frequent'){
-            return bookCountByAuthor.slice(0,authorLimit) || [];
+        if (authorMenu === 'Most Frequent') {
+            return bookCountByAuthor.slice(0, authorLimit) || [];
         }
-        else if(authorMenu === 'Least Frequent'){
+        else if (authorMenu === 'Least Frequent') {
             return bookCountByAuthor.slice(-authorLimit) || [];
         }
-        else if(authorMenu === 'Select Manually'){
-
+        else if (authorMenu === 'Select Manually') {
+            return []
         }
         else {
             return bookCountByAuthor;
         }
-    },[bookCountByAuthor,authorMenu,authorLimit]);
+    }, [bookCountByAuthor, authorMenu, authorLimit]);
+
+    
+
+
     
     //UseEffect
     useEffect(() => {
@@ -122,9 +154,17 @@ export default function Statistics() {
                             <span>Comparison of Authors</span>
                             <Box sx={{ display: 'flex', gap: 2 }}>
                                 {/* Dropdown 1 */}
-                                <AuthorSelect />
+                                <AuthorMenuSelect />
                                 {/*2*/}
-                                {(authorMenu === 'Most Frequent' || authorMenu === 'Least Frequent') && <FrequencySelect/>}
+                                {(authorMenu === 'Most Frequent' || authorMenu === 'Least Frequent') && <FrequencySelect />}
+                                {(authorMenu === 'Select Manually') && (
+                                    <div>
+                                        <Button onClick={() => setAuthorDialogOpen(true)}>Select from Authors</Button>
+                                        <AuthorSelectDialog />
+                                    </div>
+
+                                )}
+
                             </Box>
                         </Box>
                         <PolarAreaChart chartData={memoizedAuthorStats} />

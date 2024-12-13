@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Box, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Tooltip } from '@mui/material';
 import BarChart from '../../data/charts/BarChart';
 import DougnutChart from '../../data/charts/DougnutChart';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
 
 
@@ -110,32 +111,32 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
 
     }
 
-     /**
-      * Memoized Data to be shown on the Graph
-      */
-     const memoizedStats = useMemo(() => {
+    /**
+     * Memoized Data to be shown on the Graph
+     */
+    const memoizedStats = useMemo(() => {
         if (!Array.isArray(dataCounts)) {
             return [];
         }
         else {
             // If Stat is Author Stat
-            if(dataCounts.length > 0 && isBookByAuthorStat(dataCounts[0])){
-                if(menu === "Most Frequent"){
+            if (dataCounts.length > 0 && isBookByAuthorStat(dataCounts[0])) {
+                if (menu === "Most Frequent") {
                     return dataCounts.slice(0, freq) || [];
                 }
             }
-            else if(dataCounts.length > 0 && isBookByCategoryrStat(dataCounts[0])){
-                if(menu === "Most Frequent"){
+            else if (dataCounts.length > 0 && isBookByCategoryrStat(dataCounts[0])) {
+                if (menu === "Most Frequent") {
                     return dataCounts.slice(0, freq) || [];
                 }
-                else if(menu === "Least Frequent"){
+                else if (menu === "Least Frequent") {
 
                     return dataCounts.slice(-freq) || [];
                 }
             }
             return [];
         }
-        
+
     }, [dataCounts, menu, freq]);
 
     return (
@@ -155,9 +156,17 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
                     <MenuSelect />
                     {/*2*/}
                     {(menu === 'Most Frequent' || menu === 'Least Frequent') && <FreqSelect />}
+                    {/* Selection Dialog */}
+                    <Tooltip title="Manual Selection" arrow placement="top-start" onClick={() => console.log("aa")}>
+                        <IconButton aria-label="filter" sx={{
+                            mr:2
+                        }}>
+                            <FilterListIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             </Box>
-            <DataGraph/>
+            <DataGraph />
         </>
     )
 }

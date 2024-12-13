@@ -14,7 +14,6 @@ export default function Statistics() {
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
 
-    const [authorDialogOpen, setAuthorDialogOpen] = useState<boolean>(false);
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
 
 
@@ -40,7 +39,7 @@ export default function Statistics() {
                 >
                     <MenuItem value={"Most Frequent"}>Most Frequent</MenuItem>
                     <MenuItem value={"Least Frequent"}>Least Frequent</MenuItem>
-                    <MenuItem value={"Select Manually"}>Select Manually</MenuItem>
+                   
                 </Select>
             </FormControl>
         )
@@ -71,42 +70,7 @@ export default function Statistics() {
 
 
 
-    const AuthorSelectDialog = () => {
-        // Handle change for the Select component
-        const handleChangeAuthors = (event: SelectChangeEvent<string[]>) => {
-            setSelectedAuthors(event.target.value as string[]);
-        };
-
-        return (
-            <FormControl sx={{ m: 0.5, minWidth: 220 , maxWidth:220}} fullWidth>
-                <Select
-                    labelId="authorMenuLabel"
-                    id="authorMenuSelect"
-                    multiple
-                    value={selectedAuthors}
-                    onChange={handleChangeAuthors}  // Handle multiple selection
-                    renderValue={(selected) => selected.join(', ')} // Display selected authors
-                    MenuProps={{
-                        PaperProps: {
-                            style: {
-                                maxHeight: 300, // Set the maximum height to trigger scroll
-                                maxWidth:220,
-                                overflowY: 'auto', // Enable vertical scrolling
-                            },
-                        },
-                    }}
-                >
-                    {memoizedAuthorNames.map((authorName, index) => (
-                        <MenuItem key={index} value={authorName}>
-                            <Checkbox checked={selectedAuthors.indexOf(authorName) > -1} />
-                            <ListItemText primary={authorName} />
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        );
-    }
-
+   
     //UseCallBack 
     const fetchStats = useCallback(async () => {
         if (user) {
@@ -181,7 +145,6 @@ export default function Statistics() {
                                 <AuthorMenuSelect />
                                 {/*2*/}
                                 {(authorMenu === 'Most Frequent' || authorMenu === 'Least Frequent') && <FrequencySelect />}
-                                {(authorMenu === 'Select Manually') && (<AuthorSelectDialog />)}
 
                             </Box>
                         </Box>

@@ -86,6 +86,15 @@ export default function Statistics() {
                     value={selectedAuthors}
                     onChange={handleChangeAuthors}  // Handle multiple selection
                     renderValue={(selected) => selected.join(', ')} // Display selected authors
+                    MenuProps={{
+                        PaperProps: {
+                            style: {
+                                maxHeight: 300, // Set the maximum height to trigger scroll
+                                maxWidth:220,
+                                overflowY: 'auto', // Enable vertical scrolling
+                            },
+                        },
+                    }}
                 >
                     {memoizedAuthorNames.map((authorName, index) => (
                         <MenuItem key={index} value={authorName}>
@@ -111,17 +120,19 @@ export default function Statistics() {
 
     const memoizedAuthorNames = useMemo<string[]>(() => {
         return authors.map((author: IAuthor) => author.authorName);
-    }, [authors]);
+    }, [authors,authorMenu]);
 
     // Memoized Items
     const memoizedAuthorStats = useMemo(() => {
         if (!Array.isArray(bookCountByAuthor)) {
+            
             return [];
         }
         if (authorMenu === 'Most Frequent') {
             return bookCountByAuthor.slice(0, authorLimit) || [];
         }
         else if (authorMenu === 'Least Frequent') {
+
             return bookCountByAuthor.slice(-authorLimit) || [];
         }
         else if (authorMenu === 'Select Manually') {

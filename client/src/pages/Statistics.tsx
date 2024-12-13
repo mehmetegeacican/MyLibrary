@@ -1,5 +1,5 @@
 import { BarChart } from '@mui/icons-material'
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grid, ListItemText, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
@@ -72,23 +72,30 @@ export default function Statistics() {
 
 
     const AuthorSelectDialog = () => {
-        return (
-            <Dialog open={authorDialogOpen}>
-                <DialogTitle>Select From Authors</DialogTitle>
-                <DialogContent>
-                    <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <FormControl sx={{ m: 0.5, minWidth: 300 }} fullWidth>
-                            
-                        </FormControl>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setAuthorDialogOpen(false)}>Cancel</Button>
-                    <Button onClick={() => setAuthorDialogOpen(false)}>Ok</Button>
-                </DialogActions>
-            </Dialog>
+        // Handle change for the Select component
+        const handleChangeAuthors = (event: SelectChangeEvent<string[]>) => {
+            setSelectedAuthors(event.target.value as string[]);
+        };
 
-        )
+        return (
+            <FormControl sx={{ m: 0.5, minWidth: 220 , maxWidth:220}} fullWidth>
+                <Select
+                    labelId="authorMenuLabel"
+                    id="authorMenuSelect"
+                    multiple
+                    value={selectedAuthors}
+                    onChange={handleChangeAuthors}  // Handle multiple selection
+                    renderValue={(selected) => selected.join(', ')} // Display selected authors
+                >
+                    {memoizedAuthorNames.map((authorName, index) => (
+                        <MenuItem key={index} value={authorName}>
+                            <Checkbox checked={selectedAuthors.indexOf(authorName) > -1} />
+                            <ListItemText primary={authorName} />
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        );
     }
 
     //UseCallBack 
@@ -101,6 +108,12 @@ export default function Statistics() {
         }
     }, [books]);
 
+
+    const memoizedAuthorNames = useMemo<string[]>(() => {
+        return authors.map((author: IAuthor) => author.authorName);
+    }, [authors]);
+
+    // Memoized Items
     const memoizedAuthorStats = useMemo(() => {
         if (!Array.isArray(bookCountByAuthor)) {
             return [];
@@ -112,17 +125,17 @@ export default function Statistics() {
             return bookCountByAuthor.slice(-authorLimit) || [];
         }
         else if (authorMenu === 'Select Manually') {
-            return []
+            return bookCountByAuthor.filter((stat) => selectedAuthors.includes(stat.author_name));
         }
         else {
             return bookCountByAuthor;
         }
-    }, [bookCountByAuthor, authorMenu, authorLimit]);
-
-    
+    }, [bookCountByAuthor, authorMenu, authorLimit,selectedAuthors]);
 
 
-    
+
+
+
     //UseEffect
     useEffect(() => {
         fetchStats();
@@ -157,13 +170,7 @@ export default function Statistics() {
                                 <AuthorMenuSelect />
                                 {/*2*/}
                                 {(authorMenu === 'Most Frequent' || authorMenu === 'Least Frequent') && <FrequencySelect />}
-                                {(authorMenu === 'Select Manually') && (
-                                    <div>
-                                        <Button onClick={() => setAuthorDialogOpen(true)}>Select from Authors</Button>
-                                        <AuthorSelectDialog />
-                                    </div>
-
-                                )}
+                                {(authorMenu === 'Select Manually') && (<AuthorSelectDialog />)}
 
                             </Box>
                         </Box>

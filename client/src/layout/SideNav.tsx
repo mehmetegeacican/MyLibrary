@@ -57,10 +57,10 @@ export default function SideNav({ open, toggleDrawer }: DrawerProps) {
             <List component="nav">
                 {user  &&  mainListItems}
                 {!user && mainListItemsSignedOut}
-                <Divider sx={{ my: 0.5}} />
+                <Divider sx={{ my: 0.1}} />
                 {/*secondaryListItems*/}
                 {user && proListItems}
-                {user && <Divider sx={{my:0.5}}/>}
+                {user && <Divider sx={{my:0.1}}/>}
                 {user  &&  secondaryListItems}
             </List>
         </Drawer>

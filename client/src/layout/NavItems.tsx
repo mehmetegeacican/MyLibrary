@@ -12,7 +12,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import BookIcon from '@mui/icons-material/Book';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { Link } from "react-router-dom";
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import AnalyticsSharpIcon from '@mui/icons-material/AnalyticsSharp';
 
 export const mainListItems = (
   <React.Fragment>
@@ -108,7 +108,7 @@ export const proListItems = (
     <Link to="/statistics">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <QueryStatsIcon />
+          <AnalyticsSharpIcon />
         </ListItemIcon>
         <ListItemText primary="Stats" />
       </ListItemButton>

@@ -14,6 +14,7 @@ import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
 import NotesPage from "./pages/NotesPage";
 import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
+import Statistics from "./pages/Statistics";
 
 
 
@@ -50,6 +51,7 @@ function App() {
               <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
               <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
+              <Route path="/statistics" element={user ? <Statistics /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
               <Route path="/notes/:id" element={user ? <SpecificNotePage /> : <Navigate to={'/login'} />} />

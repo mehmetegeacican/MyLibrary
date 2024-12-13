@@ -1,18 +1,20 @@
-import { BarChart } from '@mui/icons-material'
-import { Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, Grid, ListItemText, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Box, Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
+import  { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
 import PolarAreaChart from '../data/charts/PolarAreaChart';
-import MultipleSelectionAutocomplete from '../components/forms/MultipleSelectionAutocomplete';
 import { IAuthor } from '../interfaces/DataInterfaces';
+import BarChart from '../data/charts/BarChart';
+import PieChart from '../data/charts/PieChart';
+import DougnutChart from '../data/charts/DougnutChart';
 
 export default function Statistics() {
     const { user } = useAuthContext();
     const { books, authors } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
+    const [graphT,setGraphT] = useState<string>("Polar Area"); 
 
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
 
@@ -39,6 +41,31 @@ export default function Statistics() {
                 >
                     <MenuItem value={"Most Frequent"}>Most Frequent</MenuItem>
                     <MenuItem value={"Least Frequent"}>Least Frequent</MenuItem>
+                   
+                </Select>
+            </FormControl>
+        )
+    };
+
+    /**
+     * 
+     * @returns Component for Author Select
+     */
+    const GraphTypeSelect = () => {
+        const handleChange = (event: SelectChangeEvent) => {
+            setGraphT(event.target.value as string);
+        };
+        return (
+            <FormControl sx={{ m: 0.5, minWidth: 80 }}>
+                <Select
+                    labelId="authorMenuLabel"
+                    id="authorMenuSelect"
+                    value={graphT}
+                    onChange={handleChange}
+                >
+                    <MenuItem value={"Bar"}>Bar Graph</MenuItem>
+                    <MenuItem value={"Dougnut"}>Dougnut Chart</MenuItem>
+                    <MenuItem value={"Polar Area"}>Polar Area</MenuItem>
                    
                 </Select>
             </FormControl>
@@ -116,6 +143,20 @@ export default function Statistics() {
         fetchStats();
     }, [fetchStats]);
 
+
+    const Graph = () => {
+        if(graphT === 'Bar'){
+            return <BarChart chartData={memoizedAuthorStats} />
+        }
+        else if(graphT === 'Dougnut'){
+            return <DougnutChart chartData={memoizedAuthorStats} />
+        }
+        else {
+            return <PolarAreaChart chartData={memoizedAuthorStats} />
+        }
+        
+    }
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -141,6 +182,7 @@ export default function Statistics() {
                         >
                             <span>Comparison of Authors</span>
                             <Box sx={{ display: 'flex', gap: 2 }}>
+                                <GraphTypeSelect/>
                                 {/* Dropdown 1 */}
                                 <AuthorMenuSelect />
                                 {/*2*/}
@@ -148,7 +190,7 @@ export default function Statistics() {
 
                             </Box>
                         </Box>
-                        <PolarAreaChart chartData={memoizedAuthorStats} />
+                        <Graph/>
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}

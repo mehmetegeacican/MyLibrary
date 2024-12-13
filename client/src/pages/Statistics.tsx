@@ -1,5 +1,5 @@
 import { Box, Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
-import  { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
@@ -8,13 +8,14 @@ import { IAuthor } from '../interfaces/DataInterfaces';
 import BarChart from '../data/charts/BarChart';
 import PieChart from '../data/charts/PieChart';
 import DougnutChart from '../data/charts/DougnutChart';
+import ComparisonChart from '../components/comparisonChart/comparisonChart';
 
 export default function Statistics() {
     const { user } = useAuthContext();
     const { books, authors } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
-    const [graphT,setGraphT] = useState<string>("Polar Area"); 
+    const [graphT, setGraphT] = useState<string>("Polar Area");
 
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
 
@@ -41,7 +42,7 @@ export default function Statistics() {
                 >
                     <MenuItem value={"Most Frequent"}>Most Frequent</MenuItem>
                     <MenuItem value={"Least Frequent"}>Least Frequent</MenuItem>
-                   
+
                 </Select>
             </FormControl>
         )
@@ -66,7 +67,7 @@ export default function Statistics() {
                     <MenuItem value={"Bar"}>Bar Graph</MenuItem>
                     <MenuItem value={"Dougnut"}>Dougnut Chart</MenuItem>
                     <MenuItem value={"Polar Area"}>Polar Area</MenuItem>
-                   
+
                 </Select>
             </FormControl>
         )
@@ -97,26 +98,26 @@ export default function Statistics() {
 
 
 
-   
+
     //UseCallBack 
     const fetchStats = useCallback(async () => {
         if (user) {
             const resBook = await fetchAllBookCountsByAuthor(user.id, user.token);
             const resCategory = await fetchAllBookCountsByCategory(user.id, user.token);
             setBookCountByAuthor(resBook);
-            setBookCountByCategory(resCategory.slice(0, 10));
+            setBookCountByCategory(resCategory);
         }
     }, [books]);
 
 
     const memoizedAuthorNames = useMemo<string[]>(() => {
         return authors.map((author: IAuthor) => author.authorName);
-    }, [authors,authorMenu]);
+    }, [authors, authorMenu]);
 
     // Memoized Items
     const memoizedAuthorStats = useMemo(() => {
         if (!Array.isArray(bookCountByAuthor)) {
-            
+
             return [];
         }
         if (authorMenu === 'Most Frequent') {
@@ -132,7 +133,7 @@ export default function Statistics() {
         else {
             return bookCountByAuthor;
         }
-    }, [bookCountByAuthor, authorMenu, authorLimit,selectedAuthors]);
+    }, [bookCountByAuthor, authorMenu, authorLimit, selectedAuthors]);
 
 
 
@@ -145,24 +146,24 @@ export default function Statistics() {
 
 
     const Graph = () => {
-        if(graphT === 'Bar'){
+        if (graphT === 'Bar') {
             return <BarChart chartData={memoizedAuthorStats} />
         }
-        else if(graphT === 'Dougnut'){
+        else if (graphT === 'Dougnut') {
             return <DougnutChart chartData={memoizedAuthorStats} />
         }
         else {
             return <PolarAreaChart chartData={memoizedAuthorStats} />
         }
-        
+
     }
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
                 {/* Comparsion By Author */}
                 <Grid item xs={12} md={12} lg={6}>
-
+                    
                     <Paper
                         sx={{
                             p: 2,
@@ -172,27 +173,11 @@ export default function Statistics() {
                         }}
                     >
                         {/* Header Section with Dropdowns */}
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-evenly',
-                                alignItems: 'center',
-                                mb: 2, // Margin bottom for spacing
-                            }}
-                        >
-                            <span>Comparison of Authors</span>
-                            <Box sx={{ display: 'flex', gap: 2 }}>
-                                <GraphTypeSelect/>
-                                {/* Dropdown 1 */}
-                                <AuthorMenuSelect />
-                                {/*2*/}
-                                {(authorMenu === 'Most Frequent' || authorMenu === 'Least Frequent') && <FrequencySelect />}
-
-                            </Box>
-                        </Box>
-                        <Graph/>
+                        <span style={{marginBottom:2}}>Comparison By Author </span>
+                        <ComparisonChart dataCounts={bookCountByAuthor ?? []} />
                     </Paper>
                 </Grid>
+
                 {/* Recent Deposits */}
                 <Grid item xs={12} md={12} lg={6}>
                     <Paper
@@ -200,10 +185,11 @@ export default function Statistics() {
                             p: 2,
                             display: 'flex',
                             flexDirection: 'column',
-                            height: 300,
+                            height: 380,
                         }}
                     >
-                        <PolarAreaChart chartData={bookCountByCategory} />
+                        <span style={{marginBottom:2}}>Comparison By Category </span>
+                        <ComparisonChart dataCounts={bookCountByCategory ?? []} />
                     </Paper>
                 </Grid>
             </Grid>

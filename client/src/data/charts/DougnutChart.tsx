@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Tooltip, Legend } from 'chart.js/auto';
 import { Container } from '@mui/system';
-import { isBookByAuthorStat, isBookByStatuesStat } from './chartDataCheck';
+import { isBookByAuthorStat, isBookByCategoryrStat, isBookByStatuesStat } from './chartDataCheck';
 
 interface ChartInterface {
     chartData: any;
@@ -94,6 +94,34 @@ export default function DougnutChart({ chartData }: ChartInterface) {
                 }]
             });
         }
+        else if(chart && isBookByCategoryrStat(chart[0])){
+            setData({
+                labels: chart.map((item: any) => item.category_name),
+                datasets: [{
+                    label: 'Number of Books by Author',
+                    data: chart.map((item: any) => item.category_count),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+            });
+        }
     }, [chart]);
 
     const [data, setData] = React.useState<any>({
@@ -106,6 +134,6 @@ export default function DougnutChart({ chartData }: ChartInterface) {
         }],
     });
     return (
-        <Container sx={{ height: { md: 220 } }}>{<Doughnut data={data} options={isBookByAuthorStat(chart[0]) ? optionsLabelsDisabled : options} />}</Container>
+        <Container sx={{ height: { md: 220 } }}>{<Doughnut data={data} options={isBookByStatuesStat(chart[0]) ? options : optionsLabelsDisabled} />}</Container>
     )
 }

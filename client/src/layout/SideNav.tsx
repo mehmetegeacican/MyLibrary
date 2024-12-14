@@ -38,7 +38,7 @@ interface DrawerProps {
 }
 
 export default function SideNav({ open, toggleDrawer }: DrawerProps) {
-    const {user} = useAuthContext();
+    const {user,plan} = useAuthContext();
     return (
         <Drawer variant="permanent" open={open} sx={{ height: '100vh' }}>
             <Toolbar
@@ -60,7 +60,7 @@ export default function SideNav({ open, toggleDrawer }: DrawerProps) {
                 <Divider sx={{ my: 0.1}} />
                 {/*secondaryListItems*/}
                 {user && proListItems}
-                {user && <Divider sx={{my:0.1}}/>}
+                {user &&  <Divider sx={{my:0.1}}/>}
                 {user  &&  secondaryListItems}
             </List>
         </Drawer>

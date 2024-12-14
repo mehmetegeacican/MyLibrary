@@ -2,16 +2,19 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
+
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import ProfileIcon from  '@mui/icons-material/Person';
+import ProfileIcon from '@mui/icons-material/Person';
 import CategoryIcon from '@mui/icons-material/Category';
-import BookIcon from '@mui/icons-material/Book';
+
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { Link } from "react-router-dom";
+import AnalyticsSharpIcon from '@mui/icons-material/AnalyticsSharp';
+import LoyaltyOutlinedIcon from '@mui/icons-material/LoyaltyOutlined';
+import { Tooltip } from 'antd';
 
 export const mainListItems = (
   <React.Fragment>
@@ -101,3 +104,17 @@ export const secondaryListItems = (
     </Link>
   </React.Fragment>
 );
+
+export const proListItems = (
+  <React.Fragment>
+    <Link to="/statistics">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <AnalyticsSharpIcon />
+        </ListItemIcon>
+        <ListItemText primary="Stats" />
+        <LoyaltyOutlinedIcon sx={{ height: 23, marginRight: 1, color: 'silver' }} />
+      </ListItemButton>
+    </Link>
+  </React.Fragment>
+)

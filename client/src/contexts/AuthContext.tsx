@@ -23,6 +23,8 @@ const authReducer = (state: AuthState, action: AuthAction) => {
       return { ...state, user: action.payload };
     case 'SET_THEME_COLOR':
       return { ...state, themeColor: action.payload };
+    case 'SET_PLAN' : 
+    return { ...state, plan: action.payload };
     default:
       return state;
   }
@@ -32,7 +34,8 @@ const authReducer = (state: AuthState, action: AuthAction) => {
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
-    themeColor: 'secondary'
+    themeColor: 'secondary',
+    plan:'free',
   });
 
 

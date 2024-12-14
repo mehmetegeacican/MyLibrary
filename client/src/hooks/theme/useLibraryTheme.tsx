@@ -13,6 +13,7 @@ export const useLibraryTheme = () => {
             const result = await getUserById(id, token);
             if (result.theme_color) {
                 dispatch({ type: 'SET_THEME_COLOR', payload: result.theme_color });
+                dispatch({ type: 'SET_PLAN' , payload: result.plan });
             }
         } catch (e) {
             return e;

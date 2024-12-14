@@ -17,6 +17,9 @@ export class User {
     @Column({name:'image_path'})
     imagePath:string;
 
+    @Column({name:'plan'})
+    plan:string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt:Date;
 

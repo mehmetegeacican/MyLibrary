@@ -19,7 +19,7 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
     const { user } = useAuthContext();
     const [menu, setMenu] = useState<string>('Most Frequent');
     const [freq, setFreq] = useState<number>(10);
-    const [graphType, setGraphType] = useState<string>("Polar Area");
+    const [graphType, setGraphType] = useState<string>("Bar");
     const [openFilter,setOpenFilter] = useState<boolean>(false);
     const [filterChips,setFilterChips] = useState<string[]>([]);
     const {authors,categories} = useLibraryDataContext();

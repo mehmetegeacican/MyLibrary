@@ -6,6 +6,8 @@ import DougnutChart from '../../data/charts/DougnutChart';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
+import FilterModal from '../modals/FilterModal';
+import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 
 
 
@@ -18,6 +20,9 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
     const [menu, setMenu] = useState<string>('Most Frequent');
     const [freq, setFreq] = useState<number>(10);
     const [graphType, setGraphType] = useState<string>("Polar Area");
+    const [openFilter,setOpenFilter] = useState<boolean>(false);
+    const [filterChips,setFilterChips] = useState<string[]>([]);
+    const {authors,categories} = useLibraryDataContext();
 
     /**
      * Menu Dropdown
@@ -121,23 +126,43 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
         else {
             // If Stat is Author Stat
             if (dataCounts.length > 0 && isBookByAuthorStat(dataCounts[0])) {
-                if (menu === "Most Frequent") {
+                if(filterChips.length > 0){
+                    return dataCounts.filter((res:any) => filterChips.includes('Name-'+res.author_name))
+                }
+                else if (menu === "Most Frequent") {
                     return dataCounts.slice(0, freq) || [];
+                }
+                else {
+                    return dataCounts.slice(-freq) || [];
                 }
             }
             else if (dataCounts.length > 0 && isBookByCategoryrStat(dataCounts[0])) {
-                if (menu === "Most Frequent") {
+                if(filterChips.length > 0){
+                    return dataCounts.filter((res:any) => filterChips.includes('Name-'+res.category_name))
+                }
+                else if (menu === "Most Frequent") {
                     return dataCounts.slice(0, freq) || [];
                 }
                 else if (menu === "Least Frequent") {
-
                     return dataCounts.slice(-freq) || [];
                 }
             }
             return [];
         }
 
-    }, [dataCounts, menu, freq]);
+    }, [dataCounts, menu, freq,filterChips]);
+
+
+    const memoizedExampleData = useMemo(() => {
+        switch(memoizedStats[0]){
+            case isBookByAuthorStat(memoizedStats[0]):
+                return authors[0];
+            case isBookByCategoryrStat(memoizedStats[0]):
+                return categories[0];
+            default:
+                return authors[0];
+        }
+    },[memoizedStats]);
 
     return (
         <>
@@ -157,7 +182,7 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
                     {/*2*/}
                     {(menu === 'Most Frequent' || menu === 'Least Frequent') && <FreqSelect />}
                     {/* Selection Dialog */}
-                    <Tooltip title="Manual Selection" arrow placement="top-start" onClick={() => console.log("aa")}>
+                    <Tooltip title="Manual Selection" arrow placement="top-start" onClick={() => setOpenFilter(true)}>
                         <IconButton aria-label="filter" sx={{
                             mr:2
                         }}>
@@ -167,6 +192,12 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
                 </Box>
             </Box>
             <DataGraph />
+            <FilterModal 
+                open={openFilter} 
+                handleClose={() => setOpenFilter(false)} 
+                exampleData={memoizedExampleData} 
+                setFilterChips={setFilterChips}
+            />
         </>
     )
 }

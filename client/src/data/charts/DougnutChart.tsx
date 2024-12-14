@@ -134,6 +134,6 @@ export default function DougnutChart({ chartData }: ChartInterface) {
         }],
     });
     return (
-        <Container sx={{ height: { md: 220 } }}>{<Doughnut data={data} options={isBookByStatuesStat(chart[0]) ? options : optionsLabelsDisabled} />}</Container>
+        <Container sx={{ height: { md: 220 } }}>{<Doughnut data={data} options={!window.location.href.includes('/statistics') ? options : optionsLabelsDisabled} />}</Container>
     )
 }

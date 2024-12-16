@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   authservice:
-    image: authservice:1.2
+    build: './authservice'
     ports:
       - "4005:4000"
     environment:
@@ -11,9 +11,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: 123456
       DB_NAME: librarydb
-    volumes:
-      - authservice-code:/app
-      - authservice-node-modules:/app/node_modules
+
     command: npm run dev
 
     networks:
@@ -201,8 +199,6 @@ services:
 
 volumes:
   postgres-data:
-  authservice-code:
-  authservice-node-modules:
   client-code:
   client-node-modules:
   authorservice-code:

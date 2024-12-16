@@ -181,9 +181,10 @@ export default function ProfileForm() {
           <Input
             id="standard-adornment-password"
             color={libTheme}
+            disabled={true}
             type={showPassword ? 'text' : 'password'}
             value={password}
-            onChange={handlePasswordChange}
+            onChange={() => console.log("password change is unavailable")}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -211,10 +212,7 @@ export default function ProfileForm() {
             setImagePath={setImagePath}
           />
         </div>
-
-
       </Stack>
-
     </Stack>
   )
 }

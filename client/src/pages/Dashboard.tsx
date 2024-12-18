@@ -29,7 +29,7 @@ export default function Dashboard() {
             const resCategory = await fetchAllBookCountsByCategory(user.id,user.token);
             const resStat = await fetchAllBookCountsByStat(user.id,user.token);
             setBookCountByAuthor(resBook.slice(0, 12));
-            setBookCountByCategory(resCategory.slice(0, 10));
+            setBookCountByCategory(resCategory.slice(0, 12).filter((item:any) => item.category_name !== 'Fiction' && item.category_name !== 'Nonfiction'));
             setBookCountByStat(resStat);
         }
     }, [books]);

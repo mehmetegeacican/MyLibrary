@@ -32,14 +32,13 @@ const getCache = async (key, id = null) => {
         const cacheValue = await redisClient.get(cacheKey);
         if (cacheValue) {
             return JSON.parse(cacheValue);
-        } else {
-            return null;
-        }
+        } 
     } catch(err){
         console.error("Error getting cache:", err)
     }
     finally {
         await closeRedis();
+        return;
     }
 }
 
@@ -57,7 +56,23 @@ const setCache = async (key, value, id = null) => {
     }
 }
 
+// Primary Redis Function for clearing Cache
+const clearCache = async (key,id = null) => {
+    try{
+        await connectRedis();  
+        const cacheKey = id ? `${key}:${id}` : key;
+        await redisClient.del(cacheKey);
+        console.log(`Cache cleared for key: ${cacheKey}`);
+    } catch(err){
+        console.error("Error clearing cache:", err)
+    }
+    finally {
+        await closeRedis();
+    }
+};
+
 module.exports = {
     getCache,
-    setCache
+    setCache,
+    clearCache
 }

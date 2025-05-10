@@ -1,8 +1,16 @@
 
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByName, executeDeleteABookViaId , executeUpdateBook} = require("../model/book");
+const { 
+    executeGetAllBooks,
+    executeGetSpecificBook, 
+    executeInsertNewBook,
+    executeFindABookByName,
+    executeDeleteABookViaId, 
+    executeUpdateBook 
+} = require("../model/book");
 const {
     getCache,
-    setCache
+    setCache,
+    clearCache
 } = require("../redisconnection");
 const { validationResult } = require('express-validator');
 
@@ -88,6 +96,9 @@ const addNewBook = async (req, res) => {
         }
         //Step 3 -- Insertion
         const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,userId,imagePath,language);
+        //Step 4 -- Clear the Cache
+        await clearCache("books");
+        //Step 5 -- Return the Result
         res.status(201).json({ message: result });
     }
     catch (e) {
@@ -118,6 +129,10 @@ const deleteABook = async (req, res) => {
         }
         //Step 2 -- Delete the Book
         const result = await executeDeleteABookViaId(id);
+        // Step 3 -- Clear the Cache
+        await clearCache('books');
+        await clearCache(`books`,id);
+        //Step 4 -- Return the Result
         res.status(200).json({ message: result });
     }
     catch (e) {
@@ -158,6 +173,10 @@ const updateABook = async (req,res) => {
         }
         //Step 5 -- Edit the Id
         const result = await executeUpdateBook(id,bookName,desc,bookCategories,bookStatus,bookAuthors,imagePath,language);
+        // Step 6 -- Clear the Cache
+        await clearCache('books');
+        await clearCache(`books`,id);
+        //Step 7 -- Return the Result
         res.status(200).json({message: result});
     }
     catch(e){

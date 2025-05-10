@@ -196,6 +196,14 @@ services:
       
     networks:
       - library-network
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - library-network
+
 
 volumes:
   postgres-data:

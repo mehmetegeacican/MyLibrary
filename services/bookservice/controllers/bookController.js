@@ -1,6 +1,9 @@
 
 const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByName, executeDeleteABookViaId , executeUpdateBook} = require("../model/book");
-
+const {
+    getCache,
+    setCache
+} = require("../redisconnection");
 const { validationResult } = require('express-validator');
 
 
@@ -35,7 +38,16 @@ const getABookById = async (req, res) => {
 const getAllBooks = async (req, res) => {
     try {
         const {id} = req.params;
+        // Step 1 -- Use the Cache If exists
+        const cachedBooks = await getCache('books');
+        if(cachedBooks){
+            console.log("Cache Hit");
+            return res.status(200).send(cachedBooks);
+        }
+        // Step 2 -- Use the DB and set the cache
         const allBooks = await executeGetAllBooks(id);
+        await setCache('books', allBooks);
+        
         res.send(allBooks);
     }
     catch (e) {

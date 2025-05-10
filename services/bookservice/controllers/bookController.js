@@ -14,12 +14,22 @@ const { validationResult } = require('express-validator');
  */
 const getABookById = async (req, res) => {
     try {
+        // Step 0 -- Error
         const { id } = req.params;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
+        // Step 1 -- Cache
+        const cache = await getCache("books",id);
+        if(cache){
+            console.log("cache retrieved");
+            return res.status(200).send(cache);
+        }
+
         const theBook = await executeGetSpecificBook(id);
+        await setCache("books",theBook,id);
+
         res.send(theBook);
     }
     catch (e) {

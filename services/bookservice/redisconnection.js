@@ -27,7 +27,8 @@ const closeRedis = async () => {
 const getCache = async (key, id = null) => {
     try {
         await connectRedis();  
-        const cacheKey = id ? `{key}:${id}` : key;
+        const cacheKey = id ? `${key}:${id}` : key;
+        console.log("Cache key is :" , cacheKey);
         const cacheValue = await redisClient.get(cacheKey);
         if (cacheValue) {
             return JSON.parse(cacheValue);
@@ -46,7 +47,7 @@ const getCache = async (key, id = null) => {
 const setCache = async (key, value, id = null) => {
     try {
         await connectRedis();  
-        const cacheKey = id ? `{key}:${id}` : key;
+        const cacheKey = id ? `${key}:${id}` : key;
         await redisClient.set(cacheKey, JSON.stringify(value), {EX: 3600});
         console.log(`Cache set for key: ${cacheKey}`);
     } catch(err){

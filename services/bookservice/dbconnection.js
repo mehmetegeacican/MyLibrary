@@ -1,5 +1,7 @@
 const dotenv = require("dotenv");
 const { Pool } = require("pg");
+
+
 dotenv.config();
 
 //Connect to Postgres
@@ -34,5 +36,5 @@ const closeDb = async (client) => {
 
 module.exports = {
     connectDb,
-    closeDb
+    closeDb,
 }

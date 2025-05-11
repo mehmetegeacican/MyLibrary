@@ -143,6 +143,8 @@ services:
       DB_USER: postgres
       DB_PASSWORD: 123456
       DB_NAME: librarydb
+      REDIS_PORT: 6379
+      REDIS_HOST: redis
     volumes:
       - ./bookservice:/app
       - /app/node_modules
@@ -196,6 +198,14 @@ services:
       
     networks:
       - library-network
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - library-network
+
 
 volumes:
   postgres-data:

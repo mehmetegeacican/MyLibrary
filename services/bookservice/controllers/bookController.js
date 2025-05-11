@@ -1,6 +1,17 @@
 
-const { executeGetAllBooks, executeGetSpecificBook, executeInsertNewBook, executeFindABookByName, executeDeleteABookViaId , executeUpdateBook} = require("../model/book");
-
+const { 
+    executeGetAllBooks,
+    executeGetSpecificBook, 
+    executeInsertNewBook,
+    executeFindABookByName,
+    executeDeleteABookViaId, 
+    executeUpdateBook 
+} = require("../model/book");
+const {
+    getCache,
+    setCache,
+    clearCache
+} = require("../redisconnection");
 const { validationResult } = require('express-validator');
 
 
@@ -11,12 +22,22 @@ const { validationResult } = require('express-validator');
  */
 const getABookById = async (req, res) => {
     try {
+        // Step 0 -- Error
         const { id } = req.params;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
+        // Step 1 -- Cache
+        const cache = await getCache("books",id);
+        if(cache){
+            console.log("cache retrieved");
+            return res.status(200).send(cache);
+        }
+
         const theBook = await executeGetSpecificBook(id);
+        await setCache("books",theBook,id);
+
         res.send(theBook);
     }
     catch (e) {
@@ -35,7 +56,16 @@ const getABookById = async (req, res) => {
 const getAllBooks = async (req, res) => {
     try {
         const {id} = req.params;
+        // Step 1 -- Use the Cache If exists
+        const cachedBooks = await getCache('books');
+        if(cachedBooks){
+            console.log("Cache Hit");
+            return res.status(200).send(cachedBooks);
+        }
+        // Step 2 -- Use the DB and set the cache
         const allBooks = await executeGetAllBooks(id);
+        await setCache('books', allBooks);
+        
         res.send(allBooks);
     }
     catch (e) {
@@ -66,6 +96,9 @@ const addNewBook = async (req, res) => {
         }
         //Step 3 -- Insertion
         const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,userId,imagePath,language);
+        //Step 4 -- Clear the Cache
+        await clearCache("books");
+        //Step 5 -- Return the Result
         res.status(201).json({ message: result });
     }
     catch (e) {
@@ -96,6 +129,10 @@ const deleteABook = async (req, res) => {
         }
         //Step 2 -- Delete the Book
         const result = await executeDeleteABookViaId(id);
+        // Step 3 -- Clear the Cache
+        await clearCache('books');
+        await clearCache(`books`,id);
+        //Step 4 -- Return the Result
         res.status(200).json({ message: result });
     }
     catch (e) {
@@ -136,6 +173,10 @@ const updateABook = async (req,res) => {
         }
         //Step 5 -- Edit the Id
         const result = await executeUpdateBook(id,bookName,desc,bookCategories,bookStatus,bookAuthors,imagePath,language);
+        // Step 6 -- Clear the Cache
+        await clearCache('books');
+        await clearCache(`books`,id);
+        //Step 7 -- Return the Result
         res.status(200).json({message: result});
     }
     catch(e){

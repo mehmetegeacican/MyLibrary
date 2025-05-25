@@ -94,6 +94,8 @@ services:
       DB_USER: postgres
       DB_PASSWORD: 123456
       DB_NAME: librarydb
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     volumes:
       - ctservice-code:/app/
       - ctservice-node-modules:/app/node_modules

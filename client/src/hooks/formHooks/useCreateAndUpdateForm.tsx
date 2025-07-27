@@ -101,7 +101,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
   /**
    * Functions that are used for Data Addition
    */
-  const createBook = async (bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string, language?:string) => {
+  const createBook = async (bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string, language?:string, liked?:number) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -115,7 +115,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookStatus: selectedStatus,
       userId: authId,
       imagePath:imagePath,
-      language:language || ""
+      language:language || "",
+      liked: liked || null
     }
     if (user) {
       const result = await postNewBook(requestBody, user.token);
@@ -126,7 +127,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   };
 
-  const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string,language?:string) => {
+  const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string,language?:string,liked?:number) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -140,7 +141,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookStatus: selectedStatus,
       userId: user!.id,
       imagePath:imagePath,
-      language:language || ""
+      language:language || "",
+      liked: liked || null
     }
 
     const result = await updateABook(id, requestBody, user!.token);

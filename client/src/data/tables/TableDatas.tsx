@@ -12,27 +12,11 @@ export const BookTableHeader: string[] = [
     "Language",
     //"Publish Year",
     //"Notes",
-    "Liked",
+    "Rating",
     "Edit",
     "Delete",
 ];
 
-export const BookTableHeaderPro: string[] = [
-    "Select",
-    "Book ID",
-    "Name",
-    "Author(s)",
-    "Categories",
-    "Status",
-    "Entered to the system",
-    "Language",
-    //"Publish Year",
-    //"Notes",
-    "Liked",
-    "Influence",
-    "Edit",
-    "Delete",
-];
 
 
 export const CategoryTableHeader: string[] = [

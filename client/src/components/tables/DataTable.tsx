@@ -13,6 +13,7 @@ import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
 import ExportModal from '../modals/ExportModal';
 import ImportModal from '../modals/ImportModal';
 import BookDataModal from '../modals/BookDataModal';
+import RatingModal from '../modals/RatingModal';
 
 
 interface TableInterfaces<T> {
@@ -34,6 +35,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
     const [openExport,setOpenExport] = React.useState<boolean>(false);
     const [openImport,setOpenImport] = React.useState<boolean>(false);
     const [openView,setOpenView] = React.useState<boolean>(false);
+    const [openRating,setOpenRating] = React.useState<boolean>(false);
 
     // selected Id and item for deletion and update
     const [selectedDeleteItem, setSelectedDeleteItem] = React.useState<IBook | ICategory>();
@@ -80,6 +82,11 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         setBookDataType(type);
     }
 
+    const handleOpenRating =(item:IBook) => {
+        setOpenRating(true);
+        setBookData(item);
+    }
+
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>, id: number) => {
         if (event.target.checked) {
             if (!selectedIds.includes(id)) {
@@ -108,7 +115,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
         if (value && isIBook(value)) {
             return (
                 <Fragment>
-                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),(type:string) => handleOpenBookView(value,type))}
+                    {renderBookRow(value, () => handleOpenUpdate(value), () => handleOpenDelete(value),(type:string) => handleOpenBookView(value,type),() => handleOpenRating(value))}
                 </Fragment>
             );
         }
@@ -256,6 +263,7 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
             {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredDatas}/>}
            {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={tableDatas[0]}/>}
            {<BookDataModal open={openView} handleClose={() => setOpenView(false)} data={bookData!} type={bookDataType}/>}
+           {(bookData?.liked || bookData?.influence) && <RatingModal open={openRating} handleClose={() => setOpenRating(false)} book={bookData!}/>}
 
         </Fragment>
     )

@@ -53,8 +53,7 @@ export function isINote(value: any): value is INote {
 }
 
 
-export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => void, handleOpenDelete: (id: number) => void, handleOpenView: (type: string) => void) => {
-    const { plan } = useAuthContext();
+export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => void, handleOpenDelete: (id: number) => void, handleOpenView: (type: string) => void, handleOpenRating: (type:IBook) => void) => {
     return (
         <>
             <TableCell align='center'> {book.id}</TableCell>
@@ -66,7 +65,10 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => vo
             <TableCell align="center"><Flag code={book.language ?? "TR"} height="24" /></TableCell>
             {/*<TableCell align="center">TR</TableCell>*/}
             {/* {<TableCell align='center'> <Button color='primary'> View </Button></TableCell>} */}
-            {<TableCell>
+            <TableCell>
+                <Button color='primary' onClick={() => handleOpenRating(book)}> View </Button>
+            </TableCell>
+            {/* {<TableCell>
                 <Rating
                     name="liked"
                     value={parseInt(book.liked ?? "0")}
@@ -78,8 +80,8 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => vo
                         color: 'red'
                     }}
                 />
-            </TableCell>}
-            {plan === 'pro' && <TableCell>
+            </TableCell>} */}
+            {/* {plan === 'pro' && <TableCell>
                 <Rating
                     name="influence"
                     value={parseInt(book.influence ?? "0")}
@@ -89,7 +91,7 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => vo
                         color: 'skyblue'
                     }}
                 />
-            </TableCell>}
+            </TableCell>} */}
             <TableCell align='center'>
                 <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(book)}>
                     <EditIcon />

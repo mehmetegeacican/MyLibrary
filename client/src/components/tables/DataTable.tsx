@@ -185,8 +185,15 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
                     </TableHead>
                 </Table>
             </TableContainer>
-            <TableContainer component={Paper} sx={{ minHeight: 100, maxHeight: 450, overflowY: 'auto' }}>
-                <Table stickyHeader >
+            <TableContainer
+                component={Paper}
+                sx={{
+                    minHeight: 100,
+                    maxHeight: 450,
+                    overflowY: 'auto',
+                }}
+            >
+                <Table stickyHeader>
                     <TableHead>
                         <TableRow>
                             {headers.map((header: string) => {
@@ -224,7 +231,6 @@ export default function DataTable({ headers, tableDatas }: TableInterfaces<IBook
 
                     </TableBody>
                 </Table>
-
             </TableContainer>
             <TableContainer component={Paper}>
                 <Table>

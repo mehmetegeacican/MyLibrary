@@ -35,7 +35,7 @@ const languageList: langInterface[] = [
 ]
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
-    const { user } = useAuthContext();
+    const { user, plan } = useAuthContext();
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [desc, setDesc] = React.useState<string>('A wolves story by Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
@@ -43,6 +43,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
     const [selectedStatus, setSelectedStatus] = React.useState<string>("Reading");
     const [language, setLanguage] = React.useState<langInterface | null>(languageList[1]);
     const [liked, setLiked] = React.useState<number>(0);
+    const [influence,setInfluence] = React.useState<number>(0);
     //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
@@ -57,7 +58,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked);
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');
@@ -68,7 +69,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger })
         }
         else {
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked);
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');
@@ -108,7 +109,12 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             else {
                 setSelectedAuthors(getIAuthors([], authors));
             }
-
+            if(data.liked){
+                setLiked(parseInt(data.liked));
+            }
+            if(data.influence){
+                setInfluence(parseInt(data.influence));
+            }
         }
     }, [data]);
 
@@ -135,7 +141,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         selected={selectedCategories}
                         setSelected={setSelectedCategories}
                     />
-                    <Stack direction={'row'} spacing={2} alignItems={'center'} sx={{ mt: 1 }}>
+                    <Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ mt: 1 }}>
                         <Autocomplete
                             disablePortal
                             options={languageList}
@@ -172,6 +178,22 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 }}
                             />
                         </Stack>
+                        {plan === 'pro' && <Stack>
+                            <Typography component="legend">Influence</Typography>
+                            <Rating
+                                name="influence"
+                                value={influence}
+                                size="medium"
+                                style={{
+                                    color: 'skyblue'
+                                }}
+                                onChange={(event, newValue) => {
+                                    if (newValue) {
+                                        setInfluence(newValue);
+                                    }
+                                }}
+                            />
+                        </Stack>}
                     </Stack>
 
                     <Divider />

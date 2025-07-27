@@ -21,6 +21,8 @@ export interface IBook {
   status: string;
   language?:string;
   imagePath?: string;
+  liked?:string;
+  influence?:number
 }
 
 export interface INote {

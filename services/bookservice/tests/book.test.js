@@ -1,4 +1,4 @@
-const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByName , executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook} = require('../model/book');
+const { executeGetAllBooks, executeGetSpecificBook, executeFindABookByName, executeInsertNewBook, executeDeleteABookViaId, executeUpdateBook } = require('../model/book');
 const { connectDb, closeDb } = require('../dbconnection');
 
 //Mock the ConnectDb & CloseDb
@@ -22,7 +22,7 @@ describe('executeGetAllBooks', () => {
         // Reset the call count of the mock function before each test
         connectDb.mockClear();
         closeDb.mockClear();
-        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
     });
 
     afterEach(() => {
@@ -53,12 +53,12 @@ describe('executeGetAllBooks', () => {
         closeDb.mockRejectedValue(closeDbError);
         //When
         await expect(executeGetAllBooks()).rejects.toThrow('Db Access Unsuccessful');
-        
+
         //Then
         expect(connectDb).toHaveBeenCalledTimes(1);
         expect(mockClient.query).toHaveBeenCalledTimes(1);
 
-        
+
         expect(closeDb).toHaveBeenCalledTimes(1);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
@@ -67,16 +67,16 @@ describe('executeGetAllBooks', () => {
 
 describe('executeGetSpecificBook', () => {
     beforeEach(() => {
-      // Reset the call count of the mock function before each test
-      connectDb.mockClear();
-      closeDb.mockClear();
-      // Mock the database closure function with a resolved Promise
-      closeDb.mockResolvedValue();
+        // Reset the call count of the mock function before each test
+        connectDb.mockClear();
+        closeDb.mockClear();
+        // Mock the database closure function with a resolved Promise
+        closeDb.mockResolvedValue();
     });
     afterEach(() => {
         jest.restoreAllMocks(); // Restore console.log after each test
     });
-  
+
     it('should retrieve the data from the db', async () => {
         // Given
         const mockBookId = 1;
@@ -94,28 +94,28 @@ describe('executeGetSpecificBook', () => {
         expect(closeDb).toHaveBeenCalledTimes(1);
         expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
-  
+
     it('should handle the db error', async () => {
-      // Given
-      const mockBookId = 1;
-      const mockClient = { query: jest.fn().mockRejectedValue('DB Error') };
-      connectDb.mockResolvedValue(mockClient);
-  
-      // Mock the database closure function to throw an error
-      const closeDbError = new Error('Db Access Unsuccessful');
-      closeDb.mockRejectedValue(closeDbError);
-  
-      // When
-      await expect(executeGetSpecificBook(mockBookId)).rejects.toThrow('Db Access Unsuccessful');
-  
-      // Then
-      expect(connectDb).toHaveBeenCalledTimes(1);
-      expect(mockClient.query).toHaveBeenCalledTimes(1);
-      expect(mockClient.query).toHaveBeenCalledWith(`SELECT * FROM books WHERE id = ${mockBookId}`);
-  
-      expect(closeDb).toHaveBeenCalledTimes(1);
-      expect(closeDb).toHaveBeenCalledWith(mockClient);
-      
+        // Given
+        const mockBookId = 1;
+        const mockClient = { query: jest.fn().mockRejectedValue('DB Error') };
+        connectDb.mockResolvedValue(mockClient);
+
+        // Mock the database closure function to throw an error
+        const closeDbError = new Error('Db Access Unsuccessful');
+        closeDb.mockRejectedValue(closeDbError);
+
+        // When
+        await expect(executeGetSpecificBook(mockBookId)).rejects.toThrow('Db Access Unsuccessful');
+
+        // Then
+        expect(connectDb).toHaveBeenCalledTimes(1);
+        expect(mockClient.query).toHaveBeenCalledTimes(1);
+        expect(mockClient.query).toHaveBeenCalledWith(`SELECT * FROM books WHERE id = ${mockBookId}`);
+
+        expect(closeDb).toHaveBeenCalledTimes(1);
+        expect(closeDb).toHaveBeenCalledWith(mockClient);
+
     });
 });
 
@@ -124,7 +124,7 @@ describe('executeFindABookByName', () => {
         // Reset the call count of the mock function before each test
         connectDb.mockClear();
         closeDb.mockClear();
-        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
         // Mock the database closure function with a resolved Promise
         closeDb.mockResolvedValue();
     });
@@ -137,11 +137,11 @@ describe('executeFindABookByName', () => {
         const mockClient = { query: jest.fn().mockResolvedValue(mockQueryResult) };
         connectDb.mockResolvedValue(mockClient);
         //When 
-        const result = await executeFindABookByName(bookName,1);
+        const result = await executeFindABookByName(bookName, 1);
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
             'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND user_id = $2',
-            [bookName,1]
+            [bookName, 1]
         );
         expect(result).toEqual(mockBookDataFiltered);
         //Verify
@@ -158,11 +158,11 @@ describe('executeFindABookByName', () => {
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeFindABookByName(bookName,1)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeFindABookByName(bookName, 1)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
             'SELECT * FROM books WHERE UPPER(name) = UPPER($1) AND user_id = $2',
-            [bookName,1]
+            [bookName, 1]
         );
         //Verify
         expect(mockClient.query).toHaveBeenCalledTimes(1);
@@ -180,7 +180,7 @@ describe('executeInsertNewBook', () => {
         closeDb.mockClear();
         // Mock the database closure function with a resolved Promise
         closeDb.mockResolvedValue();
-        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
     });
     afterEach(() => {
         jest.restoreAllMocks(); // Restore console.log after each test
@@ -194,19 +194,26 @@ describe('executeInsertNewBook', () => {
         const bookAuthors = ['Author 1', 'Author 2'];
         const bookStatus = 'Will Read';
         const mockClient = { query: jest.fn().mockResolvedValue() };
+        const language = 'GB';
+        const liked = 4;
+        const influence = 4;
         connectDb.mockResolvedValue(mockClient);
         //When
-        const result = await executeInsertNewBook(bookName,desc,bookCategories,bookStatus,bookAuthors,1);
+        const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus, bookAuthors, 1, "", language, liked, influence);
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,user_id) VALUES($1, $2, $3, $4, $5,$6,$7)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,"imagePath",language,user_id,liked,influence) VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9,$10,$11)`,
             [
-              bookName,
-              desc,
-              expect.any(String),
-              expect.any(String),
-              bookStatus,
-              expect.any(String),
-              1
+                bookName,
+                desc,
+                expect.any(String),
+                expect.any(String),
+                bookStatus,
+                expect.any(String),
+                expect.any(String),
+                language,
+                1,
+                liked,
+                influence
             ]
         );
         expect(result).toBe('Data Successfully inserted');
@@ -224,21 +231,28 @@ describe('executeInsertNewBook', () => {
         const bookCategories = ['Category 1', 'Category 2'];
         const bookStatus = 'Will Read';
         const bookAuthors = ['Author 1', 'Author 2'];
+        const language = 'GB';
+        const liked = 4;
+        const influence = 4;
         const mockError = new Error('DB Connection Unsuccessful');
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,1)).rejects.toThrow('Db Connection Unsuccessful');
+        await expect(executeInsertNewBook(bookName, desc, bookCategories, bookStatus, bookAuthors, 1, "", language, liked, influence)).rejects.toThrow('Db Connection Unsuccessful');
         //Then
-        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,user_id) VALUES($1, $2, $3, $4, $5,$6,$7)`,
+        expect(mockClient.query).toHaveBeenCalledWith(`INSERT INTO books (name, description, entered, category, status,authors,"imagePath",language,user_id,liked,influence) VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9,$10,$11)`,
             [
-              bookName,
-              desc,
-              expect.any(String),
-              expect.any(String),
-              bookStatus,
-              expect.any(String),
-              1
+                bookName,
+                desc,
+                expect.any(String),
+                expect.any(String),
+                bookStatus,
+                expect.any(String),
+                expect.any(String),
+                language,
+                1,
+                liked,
+                influence
             ]
         );
         //Verify
@@ -256,7 +270,7 @@ describe('executeDeleteABookViaId', () => {
         closeDb.mockClear();
         // Mock the database closure function with a resolved Promise
         closeDb.mockResolvedValue();
-        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
     });
     afterEach(() => {
         jest.restoreAllMocks(); // Restore console.log after each test
@@ -278,20 +292,20 @@ describe('executeDeleteABookViaId', () => {
         expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
     it('should handle db error', async () => {
-       // Given
-       const mockClient = { query: jest.fn().mockRejectedValue('DB Error') };
-       connectDb.mockResolvedValue(mockClient);
-       const mockId = 1;
-       // Mock the database closure function to throw an error
-       const closeDbError = new Error('Db Access Unsuccessful');
-       closeDb.mockRejectedValue(closeDbError);
-       //When
-       await expect(executeDeleteABookViaId(mockId)).rejects.toThrow('Db Access Unsuccessful');
-       //Then
-       expect(connectDb).toHaveBeenCalledTimes(1);
-       expect(mockClient.query).toHaveBeenCalledTimes(1);
-       expect(closeDb).toHaveBeenCalledTimes(1);
-       expect(closeDb).toHaveBeenCalledWith(mockClient);
+        // Given
+        const mockClient = { query: jest.fn().mockRejectedValue('DB Error') };
+        connectDb.mockResolvedValue(mockClient);
+        const mockId = 1;
+        // Mock the database closure function to throw an error
+        const closeDbError = new Error('Db Access Unsuccessful');
+        closeDb.mockRejectedValue(closeDbError);
+        //When
+        await expect(executeDeleteABookViaId(mockId)).rejects.toThrow('Db Access Unsuccessful');
+        //Then
+        expect(connectDb).toHaveBeenCalledTimes(1);
+        expect(mockClient.query).toHaveBeenCalledTimes(1);
+        expect(closeDb).toHaveBeenCalledTimes(1);
+        expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
 });
 
@@ -302,7 +316,7 @@ describe('executeUpdateBook', () => {
         closeDb.mockClear();
         // Mock the database closure function with a resolved Promise
         closeDb.mockResolvedValue();
-        jest.spyOn(console, 'log').mockImplementation(() => {}); // Suppress log messages
+        jest.spyOn(console, 'log').mockImplementation(() => { }); // Suppress log messages
     });
     afterEach(() => {
         jest.restoreAllMocks(); // Restore console.log after each test
@@ -316,13 +330,17 @@ describe('executeUpdateBook', () => {
         const bookAuthors = ["Author 1"];
         const bookStatus = 'Will Read';
         const mockClient = { query: jest.fn().mockResolvedValue() };
+        const imagePath = "";
+        const language = 'GB';
+        const liked = 4;
+        const influence = 4;
         connectDb.mockResolvedValue(mockClient);
         //When
-        const result = await executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus,bookAuthors);
+        const result = await executeUpdateBook(bookId, bookName, author, bookCategories, bookStatus, bookAuthors, imagePath, language, liked, influence);
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`,
-            [bookName, author, expect.any(String), bookStatus,expect.any(String), bookId]
+            `UPDATE books SET \"name\"=$1, description=$2, category=$3, status=$4, authors = $5 , \"imagePath\"=$6 , language = $7 , liked = $9, influence = $10 WHERE id=$8`,
+            [bookName, author, expect.any(String), bookStatus, expect.any(String), imagePath, language, bookId, liked, influence]
         );
         expect(result).toBe('Data Successfully updated');
         //Verify
@@ -339,15 +357,19 @@ describe('executeUpdateBook', () => {
         const bookCategories = ['Category 1', 'Category 2'];
         const bookStatus = 'Will Read';
         const bookAuthors = ["author 1"];
+        const imagePath = "";
+        const language = 'GB';
+        const liked = 4;
+        const influence = 4;
         const mockError = new Error('DB Connection Unsuccessful');
         const mockClient = { query: jest.fn().mockRejectedValue(mockError) };
         connectDb.mockResolvedValue(mockClient);
         //When
-        await expect(executeUpdateBook(bookId,bookName,author,bookCategories,bookStatus,bookAuthors)).rejects.toThrow('Db Connection Unsuccessful');;
+        await expect(executeUpdateBook(bookId, bookName, author, bookCategories, bookStatus, bookAuthors, imagePath, language, liked, influence)).rejects.toThrow('Db Connection Unsuccessful');;
         //Then
         expect(mockClient.query).toHaveBeenCalledWith(
-            `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 WHERE id=$6`,
-            [bookName, author, expect.any(String), bookStatus, expect.any(String), bookId]
+            `UPDATE books SET \"name\"=$1, description=$2, category=$3, status=$4, authors = $5 , \"imagePath\"=$6 , language = $7 , liked = $9, influence = $10 WHERE id=$8`,
+            [bookName, author, expect.any(String), bookStatus, expect.any(String), imagePath, language, bookId, liked, influence]
         );
         //Verify
         expect(connectDb).toHaveBeenCalledTimes(1);
@@ -356,4 +378,3 @@ describe('executeUpdateBook', () => {
         expect(closeDb).toHaveBeenCalledWith(mockClient);
     });
 });
-  

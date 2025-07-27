@@ -97,17 +97,16 @@ const formatDatas = (bookDatas) => {
 /**
  * Query Function To Insert a New Book
  */
-const executeInsertNewBook = async (bookName, description, bookCategories, bookStatus, bookAuthors,userId,imagePath="",language="") => {
+const executeInsertNewBook = async (bookName, description, bookCategories, bookStatus, bookAuthors,userId,imagePath="",language="", liked, influence) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     let date = dayjs().format('YYYY-MM-DD');
     const category = formatDatas(bookCategories);    
     const authors = formatDatas(bookAuthors);
-    console.log("Here at xecute Insert new book")
     try {
         //Step 2 -- Insert to the Table
-        const insertQuery = `INSERT INTO books (name, description, entered, category, status,authors,"imagePath",language,user_id) VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9)`;
-        const values = [bookName, description, date, category, bookStatus,authors,imagePath,language,userId];
+        const insertQuery = `INSERT INTO books (name, description, entered, category, status,authors,"imagePath",language,user_id,liked,influence) VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9,$10,$11)`;
+        const values = [bookName, description, date, category, bookStatus,authors,imagePath,language,userId,liked,influence];
         await client.query(insertQuery, values);
         return "Data Successfully inserted";
     }
@@ -153,12 +152,12 @@ const executeDeleteABookViaId = async (id) => {
  * @param {*} bookStatus 
  * @returns 
  */
-const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus,bookAuthors, imagePath = "",language="") => {
+const executeUpdateBook = async (id,bookName,author,bookCategories,bookStatus,bookAuthors, imagePath = "",language="",liked,influence) => {
     //Step 1 -- Open the Db
     let client = await connectDb();
     try{
-        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 , "imagePath"=$6 , language = $7 WHERE id=$8`;
-        const values = [bookName,author,formatDatas(bookCategories),bookStatus,formatDatas(bookAuthors),imagePath,language,id];
+        const updateQuery = `UPDATE books SET "name"=$1, description=$2, category=$3, status=$4, authors = $5 , "imagePath"=$6 , language = $7 , liked = $9, influence = $10 WHERE id=$8`;
+        const values = [bookName,author,formatDatas(bookCategories),bookStatus,formatDatas(bookAuthors),imagePath,language,id,liked,influence];
         await client.query(updateQuery,values);
         return "Data Successfully updated";
     }

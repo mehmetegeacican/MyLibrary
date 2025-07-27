@@ -50,7 +50,7 @@ const reqAuth = async (req,res,next) => {
         }
         
     }catch(e){
-        console.log(error);
+        console.log(e);
         res.status(401).error({ error: "Request is not authorized" });
     }
 }

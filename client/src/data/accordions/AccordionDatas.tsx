@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import DataTable from "../../components/tables/DataTable";
 import { AccordionData } from "../../interfaces/AccordionInterfaces";
-import { AuthorTableHeader, BookTableHeader, CategoryTableHeader } from "../tables/TableDatas";
+import { AuthorTableHeader, BookTableHeader, CategoryTableHeader, BookTableHeaderPro } from "../tables/TableDatas";
 import { fetchAllBooks } from "../../apis/bookApi";
 import LibraryAccordion from "../../components/accordions/LibraryAccordion";
 import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
@@ -26,7 +26,7 @@ export default function BookAccordions() {
     //Hooks & Contexts 
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const { bookTrigger, books, dispatch } = useLibraryDataContext();
-    const {user} = useAuthContext();
+    const {user, plan} = useAuthContext();
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -41,12 +41,17 @@ export default function BookAccordions() {
         } 
     }, [bookTrigger]);
 
+    const header = useMemo(() => {
+        return plan === 'free' ? BookTableHeader : BookTableHeaderPro
+    },[plan])
+
     //UseEffect
     useEffect(() => {
         fetchData();
     }, [fetchData]);
 
-    BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
+
+    BookAccordionDatas[0].data = (<DataTable headers={header} tableDatas={books} />);
     BookAccordionDatas[1].data = (<BookForm format={"create"} />)
 
 

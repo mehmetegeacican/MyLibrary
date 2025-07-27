@@ -22,7 +22,7 @@ export interface IBook {
   language?:string;
   imagePath?: string;
   liked?:string;
-  influence?:number
+  influence?:string;
 }
 
 export interface INote {

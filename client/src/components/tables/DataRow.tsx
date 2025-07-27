@@ -8,6 +8,8 @@ import { Fragment } from "react";
 import Flag from "react-world-flags";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
+
 
 // Type guard function to check if an object is of type IBook
 export function isIBook(value: any): value is IBook {
@@ -52,6 +54,7 @@ export function isINote(value: any): value is INote {
 
 
 export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => void, handleOpenDelete: (id: number) => void, handleOpenView: (type: string) => void) => {
+    const { plan } = useAuthContext();
     return (
         <>
             <TableCell align='center'> {book.id}</TableCell>
@@ -65,14 +68,25 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => vo
             {/* {<TableCell align='center'> <Button color='primary'> View </Button></TableCell>} */}
             {<TableCell>
                 <Rating
-                    name="book rating"
-                    value={parseInt(book.liked ?? "0") ?? 0}
+                    name="liked"
+                    value={parseInt(book.liked ?? "0")}
                     readOnly
                     size="small"
                     icon={<FavoriteIcon fontSize="inherit" />}
                     emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
                     style={{
-                        color:'red'
+                        color: 'red'
+                    }}
+                />
+            </TableCell>}
+            {plan === 'pro' && <TableCell>
+                <Rating
+                    name="influence"
+                    value={parseInt(book.influence ?? "0")}
+                    readOnly
+                    size="small"
+                    style={{
+                        color: 'skyblue'
                     }}
                 />
             </TableCell>}

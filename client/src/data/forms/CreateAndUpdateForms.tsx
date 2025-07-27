@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Divider, Chip, Button, Alert, Autocomplete, TextField, MenuItem, Typography } from "@mui/material";
+import { Box, Container, Stack, Divider, Chip, Button, Alert, Autocomplete, TextField, MenuItem, Typography, Rating } from "@mui/material";
 import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
@@ -9,8 +9,9 @@ import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow
 import UploadButton from "../../components/buttons/uploadButton";
 import { postNewImage } from "../../apis/imageApis";
 import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
-import { Label } from "@mui/icons-material";
 import Flag from "react-world-flags";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 /**
@@ -34,13 +35,15 @@ const languageList: langInterface[] = [
 ]
 export function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
-    const { user } = useAuthContext();
+    const { user, plan } = useAuthContext();
     const [bookName, setBookName] = React.useState<string>('White Fang');
     const [desc, setDesc] = React.useState<string>('A wolves story by Jack London');
     const [selectedCategories, setSelectedCategories] = React.useState<ICategory[]>([]);
     const [selectedAuthors, setSelectedAuthors] = React.useState<IAuthor[]>([]);
     const [selectedStatus, setSelectedStatus] = React.useState<string>("Reading");
     const [language, setLanguage] = React.useState<langInterface | null>(languageList[1]);
+    const [liked, setLiked] = React.useState<number>(0);
+    const [influence,setInfluence] = React.useState<number>(0);
     //The useCreateAndUpdateForm hook variables
     const [formMessage, setFormMessage] = React.useState<string>("");
     const [formError, setFormError] = React.useState<boolean>(false);
@@ -55,7 +58,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
     const submit = async () => {
         if (format === "update" && data) {
-            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
+            await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');
@@ -66,7 +69,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger })
         }
         else {
-            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath,language?.code);
+            await createBook(bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
                 formData.append('location', 'books');
@@ -90,8 +93,8 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             }
             setSelectedStatus(data.status);
             setSelectedCategories(getICategories(data.category, categories));
-            if(data.language){
-                switch(data.language){
+            if (data.language) {
+                switch (data.language) {
                     case 'TR':
                         setLanguage(languageList[0])
                         break;
@@ -106,7 +109,12 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
             else {
                 setSelectedAuthors(getIAuthors([], authors));
             }
-
+            if(data.liked){
+                setLiked(parseInt(data.liked));
+            }
+            if(data.influence){
+                setInfluence(parseInt(data.influence));
+            }
         }
     }, [data]);
 
@@ -133,24 +141,61 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         selected={selectedCategories}
                         setSelected={setSelectedCategories}
                     />
-                    <Autocomplete
-                        disablePortal
-                        options={languageList}
-                        sx={{ width: '50%' }}
-                        value={language}
-                        onChange={(event, newValue: langInterface | null) => {
-                            setLanguage(newValue);
-                        }}
-                        renderOption={(props, option) => (
-                            <MenuItem {...props}>
-                                <Box display="flex" alignItems="center">
-                                    <Flag code={option.code} style={{ width: 24, height: 18, marginRight: 8 }} />
-                                    <Typography>{option.label}</Typography>
-                                </Box>
-                            </MenuItem>
-                        )}
-                        renderInput={(params) => <TextField {...params} label="Language" />}
-                    />
+                    <Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ mt: 1 }}>
+                        <Autocomplete
+                            disablePortal
+                            options={languageList}
+                            sx={{ width: '50%' }}
+                            value={language}
+                            onChange={(event, newValue: langInterface | null) => {
+                                setLanguage(newValue);
+                            }}
+                            renderOption={(props, option) => (
+                                <MenuItem {...props}>
+                                    <Box display="flex" alignItems="center">
+                                        <Flag code={option.code} style={{ width: 24, height: 18, marginRight: 8 }} />
+                                        <Typography>{option.label}</Typography>
+                                    </Box>
+                                </MenuItem>
+                            )}
+                            renderInput={(params) => <TextField {...params} label="Language" />}
+                        />
+                        <Stack>
+                            <Typography component="legend">Liked</Typography>
+                            <Rating
+                                name="book rating"
+                                value={liked}
+                                size="medium"
+                                icon={<FavoriteIcon fontSize="inherit" />}
+                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                style={{
+                                    color: 'red'
+                                }}
+                                onChange={(event, newValue) => {
+                                    if (newValue) {
+                                        setLiked(newValue);
+                                    }
+                                }}
+                            />
+                        </Stack>
+                        {plan === 'pro' && <Stack>
+                            <Typography component="legend">Influence</Typography>
+                            <Rating
+                                name="influence"
+                                value={influence}
+                                size="medium"
+                                style={{
+                                    color: 'skyblue'
+                                }}
+                                onChange={(event, newValue) => {
+                                    if (newValue) {
+                                        setInfluence(newValue);
+                                    }
+                                }}
+                            />
+                        </Stack>}
+                    </Stack>
+
                     <Divider />
                     <Stack direction={'row'} spacing={2} alignContent={'center'}>
                         <Chip clickable onClick={() => setSelectedStatus("Read")} label="Read" color="error" variant={selectedStatus === "Read" ? "filled" : "outlined"} />

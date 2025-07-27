@@ -1,11 +1,15 @@
-import { TableCell, Button, IconButton } from "@mui/material";
+import { TableCell, Button, IconButton, Rating } from "@mui/material";
 import dayjs from "dayjs";
 import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Fragment } from "react";
-import  Flag  from "react-world-flags";
+import Flag from "react-world-flags";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
+
 
 // Type guard function to check if an object is of type IBook
 export function isIBook(value: any): value is IBook {
@@ -20,8 +24,8 @@ export function isIBook(value: any): value is IBook {
     );
 }
 
-export function isICategory(value:any): value is ICategory {
-    return(
+export function isICategory(value: any): value is ICategory {
+    return (
         typeof value === "object" &&
         "id" in value &&
         "name" in value &&
@@ -29,27 +33,27 @@ export function isICategory(value:any): value is ICategory {
     );
 }
 
-export function isIAuthor(value:any): value is IAuthor {
+export function isIAuthor(value: any): value is IAuthor {
     return (
         typeof value === "object" &&
         "id" in value &&
-        "authorName" in value && 
+        "authorName" in value &&
         "authorDetails" in value
     );
 }
 
-export function isINote(value:any): value is INote {
-    return(
+export function isINote(value: any): value is INote {
+    return (
         typeof value === "object" &&
         "id" in value &&
-        "title" in value && 
+        "title" in value &&
         "userId" in value &&
         "content" in value
     )
 }
 
 
-export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => void, handleOpenDelete: (id:number) => void, handleOpenView : (type:string) => void) => {
+export const renderBookRow = (book: IBook, handleOpenUpdate: (book: IBook) => void, handleOpenDelete: (id: number) => void, handleOpenView: (type: string) => void, handleOpenRating: (type:IBook) => void) => {
     return (
         <>
             <TableCell align='center'> {book.id}</TableCell>
@@ -60,23 +64,48 @@ export const renderBookRow = (book: IBook, handleOpenUpdate: (book:IBook) => voi
             <TableCell align='center'> {dayjs(book.entered).format('DD-MM-YYYY')}</TableCell>
             <TableCell align="center"><Flag code={book.language ?? "TR"} height="24" /></TableCell>
             {/*<TableCell align="center">TR</TableCell>*/}
-            <TableCell align='center'> <Button color='primary'> View </Button></TableCell>
+            {/* {<TableCell align='center'> <Button color='primary'> View </Button></TableCell>} */}
+            <TableCell>
+                <Button color='primary' onClick={() => handleOpenRating(book)}> View </Button>
+            </TableCell>
+            {/* {<TableCell>
+                <Rating
+                    name="liked"
+                    value={parseInt(book.liked ?? "0")}
+                    readOnly
+                    size="small"
+                    icon={<FavoriteIcon fontSize="inherit" />}
+                    emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                    style={{
+                        color: 'red'
+                    }}
+                />
+            </TableCell>} */}
+            {/* {plan === 'pro' && <TableCell>
+                <Rating
+                    name="influence"
+                    value={parseInt(book.influence ?? "0")}
+                    readOnly
+                    size="small"
+                    style={{
+                        color: 'skyblue'
+                    }}
+                />
+            </TableCell>} */}
             <TableCell align='center'>
                 <IconButton aria-label="edit" color='info' onClick={() => handleOpenUpdate(book)}>
                     <EditIcon />
                 </IconButton>
-
             </TableCell>
             <TableCell align='center'>
                 <IconButton aria-label="delete" color='error' onClick={() => handleOpenDelete(book.id)}>
                     <DeleteIcon />
                 </IconButton>
-
             </TableCell>
         </>
     )
 }
-export const renderCategoryRow = (category: ICategory, handleOpenUpdate: (category:ICategory) => void, handleOpenDelete: (id:number) => void) => {
+export const renderCategoryRow = (category: ICategory, handleOpenUpdate: (category: ICategory) => void, handleOpenDelete: (id: number) => void) => {
     return (
         <>
             <TableCell align='center'> {category.id}</TableCell>
@@ -97,7 +126,7 @@ export const renderCategoryRow = (category: ICategory, handleOpenUpdate: (catego
 }
 
 
-export const renderAuthorRow = (author:IAuthor, handleOpenUpdate: (author:IAuthor) => void, handleOpenDelete: (id:number) => void) => {
+export const renderAuthorRow = (author: IAuthor, handleOpenUpdate: (author: IAuthor) => void, handleOpenDelete: (id: number) => void) => {
     return (
         <Fragment>
             <TableCell align='center'> {author.id} </TableCell>

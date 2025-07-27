@@ -83,7 +83,7 @@ const getAllBooks = async (req, res) => {
 const addNewBook = async (req, res) => {
     try {
         //Step 1 -- Get the Variables 
-        const { bookName, desc, bookCategories, bookStatus, bookAuthors, userId, imagePath, language } = req.body;
+        const { bookName, desc, bookCategories, bookStatus, bookAuthors, userId, imagePath, language, liked, influence } = req.body;
         //Step 2 -- Validation Result -- Check for Inputs         
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -95,7 +95,7 @@ const addNewBook = async (req, res) => {
             return res.status(400).json({ error: "The Book Already Exists in the db!" })
         }
         //Step 3 -- Insertion
-        const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,userId,imagePath,language);
+        const result = await executeInsertNewBook(bookName, desc, bookCategories, bookStatus,bookAuthors,userId,imagePath,language,liked,influence);
         //Step 4 -- Clear the Cache
         await clearCache("books");
         //Step 5 -- Return the Result
@@ -152,7 +152,7 @@ const updateABook = async (req,res) => {
     try{
         //Step 1 -- Get the Variables
         const {id} = req.params;
-        const { bookName, desc, bookCategories, bookStatus, bookAuthors, userId,imagePath, language } = req.body;
+        const { bookName, desc, bookCategories, bookStatus, bookAuthors, userId,imagePath, language, liked, influence } = req.body;
         //Step 2 -- Validate the Variables
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -172,7 +172,7 @@ const updateABook = async (req,res) => {
             return res.status(400).json({error:"There already is a book with the updated name and author"});
         }
         //Step 5 -- Edit the Id
-        const result = await executeUpdateBook(id,bookName,desc,bookCategories,bookStatus,bookAuthors,imagePath,language);
+        const result = await executeUpdateBook(id,bookName,desc,bookCategories,bookStatus,bookAuthors,imagePath,language,liked,influence);
         // Step 6 -- Clear the Cache
         await clearCache('books');
         await clearCache(`books`,id);

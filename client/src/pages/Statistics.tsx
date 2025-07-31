@@ -1,7 +1,7 @@
 import { Box, Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
-import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
+import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat, fetchAllLikedAvgByAuthor } from '../apis/statApi';
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
 import PolarAreaChart from '../data/charts/PolarAreaChart';
 import { IAuthor } from '../interfaces/DataInterfaces';
@@ -15,6 +15,7 @@ export default function Statistics() {
     const { books, authors } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
+    const [likedAvgByAuthor,setLikedAvgByAuthor] = useState<any>();
     const [graphT, setGraphT] = useState<string>("Polar Area");
 
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
@@ -104,8 +105,10 @@ export default function Statistics() {
         if (user) {
             const resBook = await fetchAllBookCountsByAuthor(user.id, user.token);
             const resCategory = await fetchAllBookCountsByCategory(user.id, user.token);
+            const resAvgAuthor = await fetchAllLikedAvgByAuthor(user.id,user.token)
             setBookCountByAuthor(resBook);
             setBookCountByCategory(resCategory);
+            setLikedAvgByAuthor(resAvgAuthor);
         }
     }, [books]);
 
@@ -178,7 +181,7 @@ export default function Statistics() {
                     </Paper>
                 </Grid>
 
-                {/* Recent Deposits */}
+                {/* Comparison By Category */}
                 <Grid item xs={12} md={12} lg={6}>
                     <Paper
                         sx={{
@@ -192,6 +195,24 @@ export default function Statistics() {
                         <ComparisonChart dataCounts={bookCountByCategory ?? []} />
                     </Paper>
                 </Grid>
+
+                <Grid item xs={12} md={12} lg={6}>
+                    
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 380,
+                        }}
+                    >
+                        {/* Header Section with Dropdowns */}
+                        <span style={{marginBottom:2}}>Comparison By Author </span>
+                        <ComparisonChart dataCounts={likedAvgByAuthor ?? []} />
+                    </Paper>
+                </Grid>
+
+
             </Grid>
 
 

@@ -1,4 +1,4 @@
-import { IBookByAuthorStat, IBookByCategoryStat, IBookByStatusStat } from "../../interfaces/DataInterfaces";
+import { IAvgAuthor, IBookByAuthorStat, IBookByCategoryStat, IBookByStatusStat } from "../../interfaces/DataInterfaces";
 
 export function isBookByAuthorStat(value: any): value is IBookByAuthorStat {
     return (
@@ -19,5 +19,13 @@ export function isBookByStatuesStat(value: any): value is IBookByStatusStat {
         typeof value === "object" &&
         "status" in value &&
         "total" in value
+    );
+}
+
+export function isAvgLikedByAuthorStat(value: any): value is IAvgAuthor {
+    return (
+        typeof value === "object" &&
+        "author_name" in value &&
+        "avg_liked" in value
     );
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { executeGetAuthorCounts, executeGetCategoryCounts, executeGetStatusCounts } from '../model/statModel';
+import { executeGetAuthorCounts, executeGetAverageLikedOfAuthors, executeGetAverageLikedOfCategories, executeGetCategoryCounts, executeGetStatusCounts } from '../model/statModel';
 
 
 /**
@@ -9,7 +9,7 @@ import { executeGetAuthorCounts, executeGetCategoryCounts, executeGetStatusCount
  */
 export const getTotalBasedByAuthor = async (req: express.Request, res: express.Response) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const data = await executeGetAuthorCounts(parseInt(id));
         res.json(data);
     }
@@ -26,7 +26,7 @@ export const getTotalBasedByAuthor = async (req: express.Request, res: express.R
  */
 export const getTotalBasedByCategory = async (req: express.Request, res: express.Response) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const data = await executeGetCategoryCounts(parseInt(id));
         res.json(data);
     }
@@ -41,12 +41,45 @@ export const getTotalBasedByCategory = async (req: express.Request, res: express
  * @param req Request
  * @param res Response
  */
-export const getTotalBasedByStatuses =async (req:express.Request,res:express.Response) => {
-    const {id} = req.params;
-    try{
+export const getTotalBasedByStatuses = async (req: express.Request, res: express.Response) => {
+    const { id } = req.params;
+    try {
         const data = await executeGetStatusCounts(parseInt(id));
         res.json(data);
-    }catch(e){
+    } catch (e) {
+        console.log(e);
+        const err = "Db Connection not established";
+        res.status(500).json({ error: err });
+    }
+}
+
+/**
+ * Gets Average of Liked points, Sum of liked points, number of books by author
+ * @param req 
+ * @param res 
+ */
+export const getAvgLikedOfAuthors = async (req: express.Request, res: express.Response) => {
+    const { id } = req.params;
+    try {
+        const data = await executeGetAverageLikedOfAuthors(parseInt(id));
+        res.json(data);
+    } catch (e) {
+        console.log(e);
+        const err = "Db Connection not established";
+        res.status(500).json({ error: err });
+    }
+}
+/**
+ * Gets Average of Liked points, Sum of liked points, number of books by category 
+ * @param req 
+ * @param res 
+ */
+export const getAvgLikedOfCategories = async (req: express.Request, res: express.Response) => {
+    const { id } = req.params;
+    try {
+        const data = await executeGetAverageLikedOfCategories(parseInt(id));
+        res.json(data);
+    } catch (e) {
         console.log(e);
         const err = "Db Connection not established";
         res.status(500).json({ error: err });

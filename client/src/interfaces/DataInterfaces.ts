@@ -70,3 +70,13 @@ export interface IBookByCategoryStat {
   category_name: string;
   category_count: number;
 }
+
+export interface IAvgAuthorStat {
+  author_name: string;
+  avg_liked:number | null;
+}
+
+export interface IAvgCategoryStat {
+  category_name: string;
+  avg_liked:number | null;
+}

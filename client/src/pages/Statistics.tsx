@@ -1,7 +1,7 @@
 import { Box, Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
-import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat } from '../apis/statApi';
+import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat, fetchAllLikedAvgByAuthor, fetchAllLikedAvgByCategory } from '../apis/statApi';
 import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
 import PolarAreaChart from '../data/charts/PolarAreaChart';
 import { IAuthor } from '../interfaces/DataInterfaces';
@@ -15,6 +15,8 @@ export default function Statistics() {
     const { books, authors } = useLibraryDataContext();
     const [bookCountByAuthor, setBookCountByAuthor] = useState<any>();
     const [bookCountByCategory, setBookCountByCategory] = useState<any>();
+    const [likedAvgByAuthor, setLikedAvgByAuthor] = useState<any>();
+    const [likeAvgByCategory,setLikeAvgByCategory] = useState<any>();
     const [graphT, setGraphT] = useState<string>("Polar Area");
 
     const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
@@ -104,8 +106,12 @@ export default function Statistics() {
         if (user) {
             const resBook = await fetchAllBookCountsByAuthor(user.id, user.token);
             const resCategory = await fetchAllBookCountsByCategory(user.id, user.token);
+            const resAvgAuthor = await fetchAllLikedAvgByAuthor(user.id, user.token);
+            const resAvgCategory = await fetchAllLikedAvgByCategory(user.id,user.token);
             setBookCountByAuthor(resBook);
             setBookCountByCategory(resCategory);
+            setLikedAvgByAuthor(resAvgAuthor);
+            setLikeAvgByCategory(resAvgCategory);
         }
     }, [books]);
 
@@ -162,8 +168,10 @@ export default function Statistics() {
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
                 {/* Comparsion By Author */}
-                <Grid item xs={12} md={12} lg={6}>
-                    
+                <Grid item xs={12} md={12} lg={6} sx={{
+                    padding:4
+                }}>
+
                     <Paper
                         sx={{
                             p: 2,
@@ -173,13 +181,15 @@ export default function Statistics() {
                         }}
                     >
                         {/* Header Section with Dropdowns */}
-                        <span style={{marginBottom:2}}>Comparison By Author </span>
+                        <span style={{ marginBottom: 2 }}>Comparison By Author </span>
                         <ComparisonChart dataCounts={bookCountByAuthor ?? []} />
                     </Paper>
                 </Grid>
 
-                {/* Recent Deposits */}
-                <Grid item xs={12} md={12} lg={6}>
+                {/* Comparison By Category */}
+                <Grid item xs={12} md={12} lg={6} sx={{
+                    padding:4
+                }}>
                     <Paper
                         sx={{
                             p: 2,
@@ -188,10 +198,45 @@ export default function Statistics() {
                             height: 380,
                         }}
                     >
-                        <span style={{marginBottom:2}}>Comparison By Category </span>
+                        <span style={{ marginBottom: 2 }}>Comparison By Category </span>
                         <ComparisonChart dataCounts={bookCountByCategory ?? []} />
                     </Paper>
                 </Grid>
+
+                <Grid item xs={12} md={12} lg={6} sx={{
+                    padding:4
+                }}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 380,
+                        }}
+                    >
+                        {/* Header Section with Dropdowns */}
+                        <span style={{ marginBottom: 2 }}>Average Like Comparison of Authors </span>
+                        <ComparisonChart dataCounts={likedAvgByAuthor ?? []} />
+                    </Paper>
+                </Grid>
+
+                <Grid item xs={12} md={12} lg={6} sx={{
+                    padding:4
+                }}>
+                    <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 380,
+                        }}
+                    >
+                        {/* Header Section with Dropdowns */}
+                        <span style={{ marginBottom: 2 }}>Average Like Comparison of Categories </span>
+                        <ComparisonChart dataCounts={likeAvgByCategory ?? []} />
+                    </Paper>
+                </Grid>
+
             </Grid>
 
 

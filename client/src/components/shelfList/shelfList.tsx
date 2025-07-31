@@ -1,5 +1,5 @@
 import { InfoOutlined } from '@mui/icons-material'
-import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box } from '@mui/material';
+import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useMemo, useEffect, useCallback } from 'react'
@@ -20,6 +20,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ExportModal from '../modals/ExportModal';
 import ImportModal from '../modals/ImportModal';
 import DeleteModal from '../modals/DeleteModal';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -58,7 +60,7 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
     const [query, setQuery] = useState("");
-    const { user } = useAuthContext();
+    const { user, plan } = useAuthContext();
     const { books, bookTrigger, dispatch } = useLibraryDataContext();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
@@ -66,9 +68,9 @@ export default function Shelflist() {
     const [openFilter, setOpenFilter] = useState<boolean>(false);
     const [filterChips, setFilterChips] = useState<string[]>([]);
     const [openUpdate, setOpenUpdate] = useState<boolean>(false);
-    const [openExport,setOpenExport] = useState<boolean>(false);
-    const [openImport,setOpenImport] = useState<boolean>(false);
-    const [openDelete,setOpenDelete] = useState<boolean>(false);
+    const [openExport, setOpenExport] = useState<boolean>(false);
+    const [openImport, setOpenImport] = useState<boolean>(false);
+    const [openDelete, setOpenDelete] = useState<boolean>(false);
     const [selectedBook, setSelectedBook] = useState<IBook | null>(null);
 
     //Handlers
@@ -148,7 +150,7 @@ export default function Shelflist() {
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent:'space-evenly',
+                    justifyContent: 'space-evenly',
                     gap: 1
                 }}>
                     {/*<TextField
@@ -172,7 +174,7 @@ export default function Shelflist() {
                 </div>
                 <div>
                     <Grid container spacing={2} style={{
-                        height: 295,
+                        height: 353,
                         overflowY: 'auto',
                         scrollbarWidth: 'none'
                     }}>
@@ -181,11 +183,43 @@ export default function Shelflist() {
                                 if (book.imagePath) {
                                     return (
                                         <Grid item xs={6} md={3} lg={2} key={book.id}>
+
                                             <Image
                                                 src={`http://localhost:4008/images/books/${book.imagePath}`}
                                                 width={150}
                                                 height={238}
                                             />
+
+                                            <Rating
+                                                name="liked"
+                                                value={parseInt(book.liked ?? "0")}
+                                                readOnly
+                                                size="small"
+                                                icon={<FavoriteIcon fontSize="inherit" />}
+                                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                                sx={{
+                                                    color: 'red',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    mt: 1,
+                                                    mb: 0.7,
+                                                    mr: 1.4
+                                                }}
+                                            />
+                                            {plan === 'pro' && <Rating
+                                                name="influence"
+                                                value={parseInt(book.influence ?? "0")}
+                                                readOnly
+                                                size="small"
+                                                sx={{
+                                                    color: 'skyblue',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    mt: 1,
+                                                    mb: 0.7,
+                                                    mr: 1.4
+                                                }}
+                                            />}
                                             <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 0.1, marginRight: 1.8 }}>
                                                 <IconButton aria-label="delete" color='info'>
                                                     <InfoOutlined />
@@ -269,8 +303,8 @@ export default function Shelflist() {
             </Stack>
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
             {<CreateBookModel open={openAdd} handleClose={() => setOpenAdd(false)} />}
-            {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredBooks}/>}
-            {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={books[0]}/>}
+            {<ExportModal open={openExport} handleClose={() => setOpenExport(false)} data={filteredBooks} />}
+            {<ImportModal open={openImport} handleClose={() => setOpenImport(false)} data={books[0]} />}
             {selectedBook && <UpdateModal open={openUpdate} handleClose={() => setOpenUpdate(false)} data={selectedBook} />}
             {selectedBook && <DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedBook} />}
         </Container>

@@ -69,3 +69,20 @@ export const fetchAllLikedAvgByAuthor = async (userId:number,token:string) => {
         return [];
     }
 }
+
+/**
+ * The API for Liked Average by Author
+ * @returns 
+ */
+export const fetchAllLikedAvgByCategory = async (userId:number,token:string) => {
+    try{
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.get(ADDRESS + `/api/v1/stats/all/liked/categories/${userId}`,config);
+        return res.data;
+    }
+    catch{
+        return [];
+    }
+}

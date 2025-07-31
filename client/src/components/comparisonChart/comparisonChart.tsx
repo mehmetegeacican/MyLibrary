@@ -5,7 +5,7 @@ import BarChart from '../../data/charts/BarChart';
 import DougnutChart from '../../data/charts/DougnutChart';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { isAvgLikedByAuthorStat, isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
+import { isAvgLikedByAuthorStat, isAvgLikedByCategoryStat, isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
 import FilterModal from '../modals/FilterModal';
 import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 
@@ -151,6 +151,18 @@ export default function ComparisonChart({ dataCounts }: IChartData) {
                 const updatedDataCounts = dataCounts.filter((data:any) => data.avg_liked);
                 if (filterChips.length > 0) {
                     return updatedDataCounts.filter((res: any) => filterChips.includes('Name-' + res.author_name))
+                }
+                else if (menu === "Most Frequent") {
+                    return updatedDataCounts.slice(0, freq) || [];
+                }
+                else if (menu === "Least Frequent") {
+                    return updatedDataCounts.slice(-freq) || [];
+                }
+            }
+            else if (dataCounts.length > 0 && isAvgLikedByCategoryStat(dataCounts[0])) {
+                const updatedDataCounts = dataCounts.filter((data:any) => data.avg_liked);
+                if (filterChips.length > 0) {
+                    return updatedDataCounts.filter((res: any) => filterChips.includes('Name-' + res.category_name))
                 }
                 else if (menu === "Most Frequent") {
                     return updatedDataCounts.slice(0, freq) || [];

@@ -16,6 +16,7 @@ import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
 import SubscriptionPage from "./pages/SubscriptionPage";
+import { PLAN } from "./constants/enums";
 
 
 
@@ -52,7 +53,7 @@ function App() {
               <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
               <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
-              <Route path="/statistics" element={user  && plan === 'pro' ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/statistics" element={user  && plan === PLAN.PROFESSIONAL ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
               <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />

@@ -22,6 +22,7 @@ import ImportModal from '../modals/ImportModal';
 import DeleteModal from '../modals/DeleteModal';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { PLAN } from '../../constants/enums';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -206,7 +207,7 @@ export default function Shelflist() {
                                                     mr: 1.4
                                                 }}
                                             />
-                                            {plan === 'pro' && <Rating
+                                            {plan === PLAN.PROFESSIONAL && <Rating
                                                 name="influence"
                                                 value={parseInt(book.influence ?? "0")}
                                                 readOnly

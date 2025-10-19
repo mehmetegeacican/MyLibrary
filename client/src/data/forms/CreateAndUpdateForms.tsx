@@ -12,6 +12,7 @@ import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 import Flag from "react-world-flags";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { PLAN } from "../../constants/enums";
 
 
 /**
@@ -178,7 +179,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 }}
                             />
                         </Stack>
-                        {plan === 'pro' && <Stack>
+                        {plan === PLAN.PROFESSIONAL && <Stack>
                             <Typography component="legend">Influence</Typography>
                             <Rating
                                 name="influence"

@@ -5,6 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 import { useEffect } from 'react';
+import { PLAN } from '../../constants/enums';
 
 interface RatingModalInterface {
     open: boolean;
@@ -47,7 +48,7 @@ export default function RatingModal({
                         />
                     </Stack>
 
-                    {plan === 'pro' &&
+                    {plan === PLAN.PROFESSIONAL &&
                         <Stack direction={'row'} spacing={2}>
                             <Typography>Influence</Typography>
                             <Rating

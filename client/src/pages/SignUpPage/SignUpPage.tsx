@@ -2,8 +2,8 @@
 import { Alert, Avatar, Box, Button, Container, Divider, Grid, IconButton, Paper, Stack, Typography, } from '@mui/material';
 import React, { useState } from 'react';
 import { Fragment } from 'react';
-import StringValueField from '../components/forms/StringValueField';
-import { useAuthForms } from '../hooks/formHooks/useAuthForms';
+import StringValueField from '../../components/forms/StringValueField';
+import { useAuthForms } from '../../hooks/formHooks/useAuthForms';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 

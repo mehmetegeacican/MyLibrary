@@ -11,7 +11,7 @@ import CategoriesPage from "./pages/Categories";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
-import NotesPage from "./pages/NotesPage";
+import NotesPage from "./pages/NotesPage/NotesPage";
 import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";

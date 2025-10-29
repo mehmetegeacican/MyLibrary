@@ -19,6 +19,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardPage";
 import MindMapWhiteBoardPage from "./pages/WhiteboardPage/MindMapWhiteBoardPage";
 import { SUBSCRIPTION_METHOD } from "./enums/enums";
+import MainLayout from "./layout/MainLayout/MainLayout";
 
 
 
@@ -34,40 +35,27 @@ function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-        <Box sx={{ display: 'flex', maxWidth: "100vw" }}>
-          {<CssBaseline />}
-          {<Navbar open={open} toggleDrawer={toggleDrawer} />}
-          {<SideNav open={open} toggleDrawer={toggleDrawer} />}
-          <Box
-            alignContent={"flex-start"}
-            sx={{
-              backgroundColor: (theme) =>
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[200]
-                  : theme.palette.grey[800],
-              width: "100vw"
-            }}
-          >
-            <Toolbar />
-            <Routes>
-              <Route path="/" element={user ? <Dashboard /> : <Navigate to={'/login'} />} />
-              <Route path="/books" element={user ? <BookPage /> : <Navigate to={'/login'} />} />
-              <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
-              <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
-              <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
-              <Route path="/statistics" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/mindmap" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/mindmap/:id" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapWhiteBoardPage /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
-              <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
-              <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
-              <Route path="/notes/:id" element={user ? <SpecificNotePage /> : <Navigate to={'/login'} />} />
-              <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to={'/login'} />} />
-            </Routes>
-          </Box>
-        </Box>
-      </BrowserRouter>
 
+        <Routes>
+          {/* Routes that use the main layout */}
+          <Route element={<MainLayout open={open} toggleDrawer={toggleDrawer} />}>
+            <Route path="/" element={user ? <Dashboard /> : <Navigate to={'/login'} />} />
+            <Route path="/books" element={user ? <BookPage /> : <Navigate to={'/login'} />} />
+            <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
+            <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
+            <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
+            <Route path="/statistics" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
+            <Route path="/mindmap" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
+            <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
+            <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
+            <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
+            <Route path="/notes/:id" element={user ? <SpecificNotePage /> : <Navigate to={'/login'} />} />
+            <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to={'/login'} />} />
+          </Route>
+          {/* Routes that DO NOT use the main layout */}
+          <Route path="/mindmap/:id" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapWhiteBoardPage /> : <Navigate to={'/subscriptions'} />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

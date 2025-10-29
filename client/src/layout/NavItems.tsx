@@ -2,6 +2,7 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import MapIcon from '@mui/icons-material/Map';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
@@ -113,6 +114,15 @@ export const proListItems = (
           <AnalyticsSharpIcon />
         </ListItemIcon>
         <ListItemText primary="Stats" />
+        <LoyaltyOutlinedIcon sx={{ height: 23, marginRight: 1, color: 'silver' }} />
+      </ListItemButton>
+    </Link>
+    <Link to="/mindmap">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <MapIcon />
+        </ListItemIcon>
+        <ListItemText primary="Mind Map" />
         <LoyaltyOutlinedIcon sx={{ height: 23, marginRight: 1, color: 'silver' }} />
       </ListItemButton>
     </Link>

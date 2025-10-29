@@ -1,25 +1,27 @@
 import { ReactNode } from "react";
-import { IAuthor, IBook, ICategory, INote, IUser } from "./DataInterfaces";
+import { IAuthor, IBook, ICategory, IMindMap, INote, IUser } from "./DataInterfaces";
 /**
  * State Interfaces regarding the LibraryDataContext
  */
 export interface LibraryDataState {
-    books:IBook[];
-    bookTrigger:boolean;
+    books: IBook[];
+    bookTrigger: boolean;
     categories: ICategory[];
-    categoryTrigger:boolean;
+    categoryTrigger: boolean;
     authors: IAuthor[];
     authorTrigger: boolean;
-    notes:INote[];
-    noteTrigger:boolean;
+    notes: INote[];
+    noteTrigger: boolean;
+    mindMaps: IMindMap[];
+    mindMapTrigger: boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }
 
 export interface AuthState {
-    user:IUser | null,
-    themeColor:String | null,
-    plan:string | null
+    user: IUser | null,
+    themeColor: String | null,
+    plan: string | null
 }
 /**
  * Action Interface for Auth Context
@@ -44,7 +46,7 @@ export interface SetThemeColorAction {
 
 export interface SetPlanAction {
     type: 'SET_PLAN';
-    payload:string | null;
+    payload: string | null;
 }
 /**
  * Action Interface Regarding the LibraryDataContext
@@ -54,46 +56,57 @@ export interface GetBooksAction {
     payload: IBook[];
 }
 export interface TriggerBookInterface {
-    type:'TRIGGER_BOOKS';
-    payload:boolean;
+    type: 'TRIGGER_BOOKS';
+    payload: boolean;
 }
 export interface GetAuthorsAction {
     type: 'GET_AUTHORS';
-    payload: IAuthor[] | [];
+    payload: IAuthor[] | [];
 }
 export interface TriggerAuthorsAction {
     type: 'TRIGGER_AUTHORS';
     payload: boolean;
 }
 export interface GetCategoriesAction {
-    type:'GET_CATEGORIES';
-    payload:ICategory[];
+    type: 'GET_CATEGORIES';
+    payload: ICategory[];
 }
 export interface TriggerCategoriesInterface {
-    type:'TRIGGER_CATEGORIES';
-    payload:boolean;
+    type: 'TRIGGER_CATEGORIES';
+    payload: boolean;
 }
 
-export interface GetNotesAction{
-    type:'GET_NOTES';
-    payload:INote[];
+export interface GetNotesAction {
+    type: 'GET_NOTES';
+    payload: INote[];
 };
 
 
-export interface TriggerNotesInterface{
-    type:'TRIGGER_NOTES';
-    payload:boolean;
+export interface TriggerNotesInterface {
+    type: 'TRIGGER_NOTES';
+    payload: boolean;
 };
+
+
+export interface GetMindMapsAction {
+    type: 'GET_MIND_MAPS';
+    payload: IMindMap[];
+}
+
+export interface TriggerMindMapsInterface {
+    type: 'TRIGGER_MIND_MAPS';
+    payload: boolean;
+}
 
 
 
 
 
 // Common Type for all the actions 
-export type LibraryDataAction = (GetBooksAction | 
-    TriggerBookInterface | GetAuthorsAction | 
+export type LibraryDataAction = (GetBooksAction |
+    TriggerBookInterface | GetAuthorsAction |
     TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface
-    | GetNotesAction | TriggerNotesInterface ) ;
+    | GetNotesAction | TriggerNotesInterface | GetMindMapsAction | TriggerMindMapsInterface);
 
 export type AuthAction = (LoginAction | SignUpAction | LogoutAction | SetThemeColorAction | SetPlanAction);
 /**
@@ -111,5 +124,5 @@ export interface LibraryDataContextProviderProps {
     children: ReactNode;
 }
 export interface AuthContextProviderProps {
-    children:ReactNode;
+    children: ReactNode;
 }

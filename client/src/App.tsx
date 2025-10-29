@@ -16,6 +16,7 @@ import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
 import SubscriptionPage from "./pages/SubscriptionPage";
+import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardPage";
 
 
 
@@ -53,6 +54,7 @@ function App() {
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
               <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
               <Route path="/statistics" element={user  && plan === 'pro' ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/mindmap" element={user  && plan === 'pro' ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
               <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />

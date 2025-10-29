@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardPage";
+import MindMapWhiteBoardPage from "./pages/WhiteboardPage/MindMapWhiteBoardPage";
 
 
 
@@ -27,14 +28,14 @@ function App() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { user , plan } = useAuthContext();
+  const { user, plan } = useAuthContext();
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <Box sx={{ display: 'flex', maxWidth: "100vw" }}>
-          <CssBaseline />
-          <Navbar open={open} toggleDrawer={toggleDrawer} />
+          {<CssBaseline />}
+          {<Navbar open={open} toggleDrawer={toggleDrawer} />}
           {<SideNav open={open} toggleDrawer={toggleDrawer} />}
           <Box
             alignContent={"flex-start"}
@@ -53,8 +54,9 @@ function App() {
               <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
               <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
-              <Route path="/statistics" element={user  && plan === 'pro' ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/mindmap" element={user  && plan === 'pro' ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/statistics" element={user && plan === 'pro' ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/mindmap" element={user && plan === 'pro' ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/mindmap/:id" element={user && plan === 'pro' ? <MindMapWhiteBoardPage /> : <Navigate to={'/subscriptions'} />} />
               <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />
@@ -64,6 +66,7 @@ function App() {
           </Box>
         </Box>
       </BrowserRouter>
+
     </ThemeProvider>
   );
 }

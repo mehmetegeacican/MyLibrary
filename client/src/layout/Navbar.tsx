@@ -85,7 +85,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
         <AppBar position="absolute" open={open} color={theme} >
             <Toolbar
                 sx={{
-                    pr: '25px', // keep right padding when drawer closed
+                    //pr: '25px', // keep right padding when drawer closed
                 }}
             >
                 <IconButton

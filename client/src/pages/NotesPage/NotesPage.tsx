@@ -12,27 +12,8 @@ import NoteAddEditModal from '../../components/modals/NoteAddEditModal';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import {currencies} from "./data/NotesData";
 
-
-
-const currencies = [
-    {
-        value: '0',
-        label: 'All',
-    },
-    {
-        value: '1',
-        label: 'Day',
-    },
-    {
-        value: '7',
-        label: 'Week',
-    },
-    {
-        value: '30',
-        label: 'Month',
-    },
-];
 
 
 

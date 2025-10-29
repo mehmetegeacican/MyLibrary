@@ -9,26 +9,9 @@ import { IMindMap } from '../../interfaces/DataInterfaces';
 import { formatDistanceToNow } from 'date-fns';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
+import { currencies } from './data/mindMapData';
 
 
-const currencies = [
-    {
-        value: '0',
-        label: 'All',
-    },
-    {
-        value: '1',
-        label: 'Day',
-    },
-    {
-        value: '7',
-        label: 'Week',
-    },
-    {
-        value: '30',
-        label: 'Month',
-    },
-];
 
 
 export default function MindMapDashboardPage() {

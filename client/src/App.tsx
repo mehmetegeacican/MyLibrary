@@ -18,6 +18,7 @@ import Statistics from "./pages/Statistics";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardPage";
 import MindMapWhiteBoardPage from "./pages/WhiteboardPage/MindMapWhiteBoardPage";
+import { SUBSCRIPTION_METHOD } from "./enums/enums";
 
 
 
@@ -54,9 +55,9 @@ function App() {
               <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
               <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
               <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
-              <Route path="/statistics" element={user && plan === 'pro' ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/mindmap" element={user && plan === 'pro' ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
-              <Route path="/mindmap/:id" element={user && plan === 'pro' ? <MindMapWhiteBoardPage /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/statistics" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/mindmap" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
+              <Route path="/mindmap/:id" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapWhiteBoardPage /> : <Navigate to={'/subscriptions'} />} />
               <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />
               <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={'/'} />} />
               <Route path="/signup" element={!user ? <SignUpPage /> : <Navigate to={'/'} />} />

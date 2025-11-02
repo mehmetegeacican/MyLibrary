@@ -1,0 +1,57 @@
+/* === Draggable Node Styling === */
+
+.draggable-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40em;
+  height: 50px;
+  border-radius: 0.9em;
+  background-color: var(--color-background, #fefefe);
+  border: 2px dashed var(--color-primary, #ff0073);
+  color: var(--color-primary, #ff0073);
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: grab;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    border-color 0.2s ease;
+  box-shadow: var(--xy-node-boxshadow-default, 0px 3px 6px rgba(0, 0, 0, 0.1));
+}
+
+.draggable-node:hover {
+  background-color: var(--color-hover-bg, #f6f6f6);
+  border-color: var(--xy-theme-hover, #c5c5c5);
+  transform: scale(1.02);
+}
+
+.draggable-node:active {
+  cursor: grabbing;
+  background-color: var(--color-primary, #ff0073);
+  color: #fff;
+  border-color: var(--color-primary, #ff0073);
+  transform: scale(0.98);
+}
+
+/* Optional variant for compact or small draggable nodes */
+.draggable-node.small {
+  width: 100px;
+  height: 40px;
+  font-size: 0.8rem;
+}
+
+/* === Type-based color variations === */
+
+.draggable-node.input {
+  --color-primary: #4caf50; /* green */
+}
+
+.draggable-node.default {
+  --color-primary: #2196f3; /* blue */
+}
+
+.draggable-node.output {
+  --color-primary: #ff0000; /* red */
+}

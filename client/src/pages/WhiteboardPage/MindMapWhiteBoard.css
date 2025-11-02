@@ -1,0 +1,115 @@
+.dndflow {
+  flex-direction: row;
+  display: flex;
+  flex-grow: 1;
+  height: '100vh';
+  width: '100vw'
+}
+ 
+.dndflow aside {
+  padding: 20px 10px;
+  font-size: 12px;
+}
+ 
+.dndflow aside .description {
+  margin-bottom: 10px;
+}
+
+
+ 
+.dndflow .ghostnode {
+  position: fixed;
+  pointer-events: none;
+  width: 100px;
+}
+ 
+
+ 
+.dndflow .reactflow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+ 
+@media screen and (min-width: 768px) {
+  .dndflow {
+    flex-direction: row;
+  }
+ 
+  .dndflow aside {
+    width: 20%;
+    max-width: 250px;
+  }
+}
+
+.dndflow .dndnode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 2px dashed var(--color-primary, #ff0073);
+  background-color: var(--color-background, #fefefe);
+  color: var(--color-primary, #ff0073);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-align: center;
+  text-wrap: nowrap;
+  cursor: grab;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+  touch-action: none; /* Prevent zoom/scroll when dragging on mobile */
+}
+
+/* Hover & Active Effects */
+.dndflow .dndnode:hover {
+  background-color: var(--color-hover-bg, #f6f6f6);
+  border-color: var(--xy-theme-hover, #c5c5c5);
+  transform: scale(1.02);
+}
+
+.dndflow .dndnode:active {
+  cursor: grabbing;
+  background-color: var(--color-primary, #ff0073);
+  color: #fff;
+  border-color: var(--color-primary, #ff0073);
+  transform: scale(0.98);
+}
+
+/* === Node Type Variants === */
+.dndflow .dndnode.input {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.dndflow .dndnode.default {
+  border-color: #ff0073;
+  color: #ff0073;
+}
+
+.dndflow .dndnode.output {
+  border-color: #00b894;
+  color: #00b894;
+}
+
+.dndflow .dndnode.input:active {
+  background-color: #007bff;
+  color: white;
+}
+
+.dndflow .dndnode.output:active {
+  background-color: #00b894;
+  color: white;
+}
+
+/* Hide default styling if needed */
+.custom-handle {
+  width: 10px;
+  height: 10px;
+  background-color: #ff5a5f;
+  border-radius: 50%;
+}
+

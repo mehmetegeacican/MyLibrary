@@ -1,0 +1,100 @@
+/* -----------------------
+   Base node styles
+------------------------ */
+.react-flow__node {
+    border-radius: 0.9em;
+    font-weight: 500;
+    font-size: 0.9rem;
+    box-shadow: var(--xy-node-boxshadow-default, 0px 3px 6px rgba(0, 0, 0, 0.1));
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* -----------------------
+   Input nodes
+------------------------ */
+.react-flow__node-input {
+    background-color: var(--color-background-input, #f0f8ff); /* light blue */
+    border: 2px dashed var(--color-border-input, #1e90ff);
+    color:#1e90ff
+}
+
+/* Hover state */
+.react-flow__node-input.selectable:hover {
+    background-color: #e0f0ff;
+    border-color: #3399ff;
+    box-shadow: 0 4px 8px rgba(126, 20, 240, 0.2);
+    color: #104e8b;
+}
+
+/* Selected / focused state */
+.react-flow__node-input.selectable.selected,
+.react-flow__node-input.selectable:focus,
+.react-flow__node-input.selectable:focus-visible {
+    border-color: #104e8b !important; /* darker blue */
+    box-shadow: none !important; /* remove default box shadow */
+    color: #104e8b;
+}
+
+/* -----------------------
+   Default nodes
+------------------------ */
+.react-flow__node-default {
+    background-color: var(--color-background-default, #fefefe); /* white */
+    border: 2px dashed var(--color-border-default, #ff0073); /* pink */
+    color: #ff0073;
+}
+
+/* Hover state */
+.react-flow__node-default.selectable:hover {
+    background-color: #fff0f5; /* light pink */
+    border-color: #ff3399;
+    box-shadow: 0 4px 8px rgba(255, 0, 115, 0.2);
+    color:#951d59
+}
+
+/* Selected / focused state */
+.react-flow__node-default.selectable.selected,
+.react-flow__node-default.selectable:focus,
+.react-flow__node-default.selectable:focus-visible {
+    border-color: #bf01af !important; /* darker pink */
+    box-shadow: none !important;
+    color:#951d59
+}
+
+/* -----------------------
+   Output nodes
+------------------------ */
+.react-flow__node-output {
+    background-color: var(--color-background-output, #f0fff0); /* light green */
+    border: 2px dashed var(--color-border-output, #32cd32);
+    color: #32cd32;
+}
+
+/* Hover state */
+.react-flow__node-output.selectable:hover {
+    background-color: #e6ffe6;
+    border-color: #33cc33;
+    box-shadow: 0 4px 8px rgba(50, 205, 50, 0.2);
+    color:#228b22
+}
+
+/* Selected / focused state */
+.react-flow__node-output.selectable.selected,
+.react-flow__node-output.selectable:focus,
+.react-flow__node-output.selectable:focus-visible {
+    border-color: #228b22 !important; /* darker green */
+    box-shadow: none !important;
+    color: #228b22;
+}
+
+
+/* Hide default styling if needed */
+.custom-handle {
+    width: 10px;
+    height: 10px;
+    background-color: #ff5a5f;
+    border-radius: 50%;
+}

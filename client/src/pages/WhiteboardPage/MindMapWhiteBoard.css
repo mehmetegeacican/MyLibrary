@@ -105,11 +105,5 @@
   color: white;
 }
 
-/* Hide default styling if needed */
-.custom-handle {
-  width: 10px;
-  height: 10px;
-  background-color: #ff5a5f;
-  border-radius: 50%;
-}
+
 

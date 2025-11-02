@@ -1,6 +1,6 @@
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
-import '../../MindMapWhiteBoard.css'; // your CSS file with .dndnode styles
+import './styles.css'
 
 export default function CustomNode({ data, type }: any) {
   return (

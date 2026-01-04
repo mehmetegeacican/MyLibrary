@@ -30,6 +30,10 @@ const nodeTypes = {
 export default function MindMapWhiteBoardPage() {
     const [nodes, setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
+    const [settings,setSettings] = useState({
+        miniMapOpen:true,
+        zoomOpen:true
+    });
 
     const onNodesChange = useCallback(
         (changes: any) => setNodes((nodesSnapshot: any) => applyNodeChanges(changes, nodesSnapshot)),
@@ -46,13 +50,14 @@ export default function MindMapWhiteBoardPage() {
     return (
         <ReactFlowProvider>
             <div className='dndflow'>
-                <MindMapSideBar />
+                
                 <Paper
                     sx={{
-                        width: '80vw',
+                        display:'flex',
+                        width: '100vw',
                         height: '100vh',
                     }}>
-
+                    <MindMapSideBar settings={settings} setSettings={setSettings} />
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}
@@ -63,8 +68,8 @@ export default function MindMapWhiteBoardPage() {
                         fitView
                     >
                         <Background />
-                        <Controls />
-                        <MiniMap />
+                        {settings.zoomOpen && <Controls />}
+                        {settings.miniMapOpen && <MiniMap />}
                     </ReactFlow>
                 </Paper>
             </div>

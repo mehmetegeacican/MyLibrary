@@ -1,32 +1,39 @@
 version: "3.5"
 services:
+  # --- INFRASTRUCTURE --- #
+  postgres:
+    image: postgres:latest
+    ports:
+      - "${DB_PORT_EXTERNAL}:${DB_PORT_INTERNAL}"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      
+    networks:
+      - library-network
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - library-network
+  # --- MICROSERVICES ---
   authservice:
     build: './authservice'
     ports:
-      - "4005:4000"
+      - "${PORT_AUTH}:4000"
     environment:
-      PORT: 4005
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
+      PORT: ${PORT_AUTH}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
 
-    command: npm run dev
-
-    networks:
-      - library-network
-  client:
-    ports:
-      - "3000:5173"
-    build: ./client
-    environment:
-      VITE_BOOKSERVICE_PORT: 4001
-      VITE_CATEGORYSERVICE_PORT: 4009
-      VITE_STATSERVICE_PORT: 4003
-      VITE_AUTHORSERVICE_PORT: 4004
-    volumes: 
-      - client-code:/app/
     command: npm run dev
 
     networks:
@@ -34,12 +41,12 @@ services:
   authorservice:
     build: ./authorservice
     ports:
-      - "4004:8080"
+      - "${PORT_AUTHORS}:8080"
     environment:
-      PORT: 4004
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/librarydb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 123456
+      PORT: ${PORT_AUTHORS}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT_INTERNAL}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_MVC_CORS_ENABLED: false
     volumes:
       - ./authorservice:/app 
@@ -47,77 +54,38 @@ services:
 
     networks:
       - library-network
-  statservice:
-    image: statservice:1.8
+  bookservice:
+    build: ./bookservice
     ports:
-      - "4003:4000"
+      - "${PORT_BOOK}:4000"
     environment:
-      PORT: 4003
+      PORT: ${PORT_BOOK}
       DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_HOST: ${REDIS_HOST}
     volumes:
-      - statservice-code:/app/
-      - statservice-node-modules:/app/node_modules
+      - ./bookservice:/app
+      - /app/node_modules
     command: npm run dev
 
     networks:
       - library-network
-  notesservice:
-    build: ./notesservice
+  client:
     ports:
-      - "4007:4000"
+      - "${PORT_CLIENT}:${PORT_CLIENT_INTERNAL}"
+    build: ./client
     environment:
-      PORT: 4007
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
-    volumes:
-      - notesservice-code:/app/
-      - notesservice-node-modules:/app/node_modules
-    command: npm run start:dev
-
-    networks:
-      - library-network
-  ctservice:
-    build: ./categoryservicenest
-    ports:
-      - "4009:4000"
-    environment:
-      PORT: 4009
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    volumes:
-      - ctservice-code:/app/
-      - ctservice-node-modules:/app/node_modules
-    command: npm run start:dev
-
-    networks:
-      - library-network
-  userservice:
-    build: ./userservice
-    ports:
-      - "4010:4000"
-    environment:
-      PORT: 4010
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
-    volumes:
-      - userservice-code:/app/
-      - userservice-node-modules:/app/node_modules
-    command: npm run start:dev
+      VITE_BOOKSERVICE_PORT: ${PORT_BOOK}
+      VITE_CATEGORYSERVICE_PORT: ${PORT_CATEGORY}
+      VITE_STATSERVICE_PORT: ${PORT_STATS}
+      VITE_AUTHORSERVICE_PORT: ${PORT_AUTHORS}
+    volumes: 
+      - client-code:/app/
+    command: npm run dev
 
     networks:
       - library-network
@@ -134,37 +102,37 @@ services:
 
     #networks:
       #- library-network
-  bookservice:
-    build: ./bookservice
+  ctservice:
+    build: ./categoryservicenest
     ports:
-      - "4001:4000"
+      - "${PORT_CATEGORY}:4000"
     environment:
-      PORT: 4001
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
-      REDIS_PORT: 6379
-      REDIS_HOST: redis
+      PORT: ${PORT_CATEGORY}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
     volumes:
-      - ./bookservice:/app
-      - /app/node_modules
-    command: npm run dev
+      - ctservice-code:/app/
+      - ctservice-node-modules:/app/node_modules
+    command: npm run start:dev
 
     networks:
       - library-network
   excelservice:
     build: ./services/excelservice
     ports:
-      - "4006:4000"
+      - "${PORT_EXCEL}:${PORT_MAIN}"
     environment:
-      PORT: 4006
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
+      PORT: ${PORT_EXCEL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     command: npm run dev
 
     networks:
@@ -172,14 +140,14 @@ services:
   imageservice:
     build: ./services/imageservice
     ports:
-      - "4008:4000"
+      - "${PORT_IMAGE}:${PORT_MAIN}"
     environment:
-      PORT: 4008
-      DB_HOST: postgres
-      DB_PORT: 35432
-      DB_USER: postgres
-      DB_PASSWORD: 123456
-      DB_NAME: librarydb
+      PORT: ${PORT_IMAGE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     volumes:
       - imageservice-images:/usr/src/app/images
       - imageservice-code:/app/
@@ -187,26 +155,61 @@ services:
     command: npm run start
     networks:
       - library-network
-  postgres:
-    image: postgres:latest
+  notesservice:
+    build: ./notesservice
     ports:
-      - "35432:5432"
+      - "${PORT_NOTES}:${PORT_MAIN}"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: librarydb
+      PORT: ${PORT_NOTES}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      
+      - notesservice-code:/app/
+      - notesservice-node-modules:/app/node_modules
+    command: npm run start:dev
+
     networks:
       - library-network
-  redis:
-    image: redis:7.2
-    container_name: redis
+  statservice:
+    image: statservice:1.8
     ports:
-      - "6379:6379"
+      - "${PORT_STATS}:${PORT_MAIN}"
+    environment:
+      PORT: ${PORT_STATS}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - statservice-code:/app/
+      - statservice-node-modules:/app/node_modules
+    command: npm run dev
+
     networks:
       - library-network
+  userservice:
+    build: ./userservice
+    ports:
+      - "${PORT_USER}:${PORT_MAIN}"
+    environment:
+      PORT: ${PORT_USER}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT_EXTERNAL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - userservice-code:/app/
+      - userservice-node-modules:/app/node_modules
+    command: npm run start:dev
+
+    networks:
+      - library-network
+  
 
 
 volumes:

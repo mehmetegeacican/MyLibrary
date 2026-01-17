@@ -24,7 +24,8 @@ export default function MindMapSideBar({
 }: {
     settings: {
         miniMapOpen: boolean,
-        zoomOpen: boolean
+        zoomOpen: boolean,
+        fitView:boolean
     },
     setSettings: Function
 }) {
@@ -159,12 +160,27 @@ export default function MindMapSideBar({
                                             miniMapOpen: !prev.miniMapOpen
                                         }))
                                     }} />} label="Mini Map" />
-                                <FormControlLabel control={<Switch checked={settings.zoomOpen} onChange={() => {
+                                <FormControlLabel 
+                                    control={
+                                    <Switch 
+                                        checked={settings.zoomOpen} 
+                                        onChange={() => {
+                                            setSettings((prev: any) => ({
+                                                ...prev,
+                                                zoomOpen: !prev.zoomOpen
+                                            }))
+                                            }} />
+                                        
+                                        }
+                                        color={libTheme} 
+                                        label="Zoom Bar" 
+                                    />
+                                <FormControlLabel control={<Switch checked={settings.fitView} onChange={() => {
                                     setSettings((prev: any) => ({
                                         ...prev,
-                                        zoomOpen: !prev.zoomOpen
+                                        fitView: !prev.fitView
                                     }))
-                                }} />} label="Zoom Bar" />
+                                }} />} label="Zoom in on initial insert" />
 
                             </FormGroup>
                         </AccordionDetails>

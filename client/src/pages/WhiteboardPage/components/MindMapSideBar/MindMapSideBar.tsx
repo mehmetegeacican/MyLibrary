@@ -10,6 +10,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { Fab } from '@mui/material';
+import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 
 
 
@@ -31,6 +33,7 @@ export default function MindMapSideBar({
     const [openNodeAccordion, setOpenNodeAccordion] = useState<boolean>(false);
     const [openEdgeAccordion, setOpenEdgeAccordion] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
+    const {libTheme} = useLibraryTheme();
 
 
     const handleNodeDrop = useCallback(
@@ -151,6 +154,16 @@ export default function MindMapSideBar({
                     </AccordionDetails>
                 </Accordion>
             </div>
+            <Fab
+                className='sidebar-toggle'
+                color={libTheme}
+                size="small"
+                onClick={() => {
+                    console.log("toggle sidebar");
+                }}
+            >
+                <ArrowBackIcon />
+            </Fab>
         </Paper>
     )
 }

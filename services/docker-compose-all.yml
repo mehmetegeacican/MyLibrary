@@ -25,7 +25,7 @@ services:
   authservice:
     build: './authservice'
     ports:
-      - "${PORT_AUTH}:4000"
+      - "${PORT_AUTH}:${PORT_MAIN}"
     environment:
       PORT: ${PORT_AUTH}
       DB_HOST: ${DB_HOST}
@@ -41,7 +41,7 @@ services:
   authorservice:
     build: ./authorservice
     ports:
-      - "${PORT_AUTHORS}:8080"
+      - "${PORT_AUTHORS}:${PORT_MAIN_BE}"
     environment:
       PORT: ${PORT_AUTHORS}
       SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT_INTERNAL}/${DB_NAME}
@@ -57,7 +57,7 @@ services:
   bookservice:
     build: ./bookservice
     ports:
-      - "${PORT_BOOK}:4000"
+      - "${PORT_BOOK}:${PORT_MAIN}"
     environment:
       PORT: ${PORT_BOOK}
       DB_HOST: postgres
@@ -105,7 +105,7 @@ services:
   ctservice:
     build: ./categoryservicenest
     ports:
-      - "${PORT_CATEGORY}:4000"
+      - "${PORT_CATEGORY}:${PORT_MAIN}"
     environment:
       PORT: ${PORT_CATEGORY}
       DB_HOST: ${DB_HOST}

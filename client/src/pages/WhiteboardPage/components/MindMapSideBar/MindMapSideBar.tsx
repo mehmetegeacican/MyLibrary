@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
-import { IconButton, Paper } from '@mui/material'
+import { Collapse, IconButton, Paper } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./styles.css";
 import StringValueField from '../../../../components/forms/StringValueField';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForward  from '@mui/icons-material/ArrowForward';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -88,81 +88,86 @@ export default function MindMapSideBar({
                     setMindMapname(e);
                 }} />}
             </div>
-            {<div className="sidebar-accordions">
-                <Accordion key={0} expanded={openNodeAccordion} onChange={() => setOpenNodeAccordion(!openNodeAccordion)}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                    >
-                        <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
-                            Nodes
-                        </Typography>
+            <Collapse in={!collapsed} timeout={300} unmountOnExit>
+                {<div className="sidebar-accordions">
+                    <Accordion key={0} expanded={openNodeAccordion} onChange={() => setOpenNodeAccordion(!openNodeAccordion)}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
+                                Nodes
+                            </Typography>
 
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <div className="draggable-node-list">
-                            <DraggableNode className="input" nodeType="input" onDrop={handleNodeDrop}>
-                                Input Node
-                            </DraggableNode>
-                            <DraggableNode className="default" nodeType="default" onDrop={handleNodeDrop}>
-                                Default Node
-                            </DraggableNode>
-                            <DraggableNode className="output" nodeType="output" onDrop={handleNodeDrop}>
-                                Output Node
-                            </DraggableNode>
-                        </div>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion key={1} expanded={openEdgeAccordion} onChange={() => setOpenEdgeAccordion(!openEdgeAccordion)}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                    >
-                        <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
-                            Edges
-                        </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div className="draggable-node-list">
+                                <DraggableNode className="input" nodeType="input" onDrop={handleNodeDrop}>
+                                    Input Node
+                                </DraggableNode>
+                                <DraggableNode className="default" nodeType="default" onDrop={handleNodeDrop}>
+                                    Default Node
+                                </DraggableNode>
+                                <DraggableNode className="output" nodeType="output" onDrop={handleNodeDrop}>
+                                    Output Node
+                                </DraggableNode>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion key={1} expanded={openEdgeAccordion} onChange={() => setOpenEdgeAccordion(!openEdgeAccordion)}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
+                                Edges
+                            </Typography>
 
-                    </AccordionSummary>
-                    <AccordionDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
 
-                    </AccordionDetails>
-                </Accordion>
-            </div>}
-            {<div className="sidebar-accordions">
+                        </AccordionDetails>
+                    </Accordion>
+                </div>}
+            </Collapse>
+            <Collapse in={!collapsed} timeout={300} unmountOnExit>
+                {<div className="sidebar-accordions">
 
-                <Accordion key={2} expanded={openSettings} onChange={() => setOpenSettings(!openSettings)}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                    >
-                        <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
-                            Settings
-                        </Typography>
+                    <Accordion key={2} expanded={openSettings} onChange={() => setOpenSettings(!openSettings)}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                        >
+                            <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
+                                Settings
+                            </Typography>
 
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <FormGroup>
-                            <FormControlLabel control={<Switch checked={settings.miniMapOpen}
-                                onChange={() => {
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <FormGroup>
+                                <FormControlLabel control={<Switch checked={settings.miniMapOpen}
+                                    onChange={() => {
+                                        setSettings((prev: any) => ({
+                                            ...prev,
+                                            miniMapOpen: !prev.miniMapOpen
+                                        }))
+                                    }} />} label="Mini Map" />
+                                <FormControlLabel control={<Switch checked={settings.zoomOpen} onChange={() => {
                                     setSettings((prev: any) => ({
                                         ...prev,
-                                        miniMapOpen: !prev.miniMapOpen
+                                        zoomOpen: !prev.zoomOpen
                                     }))
-                                }} />} label="Mini Map" />
-                            <FormControlLabel control={<Switch checked={settings.zoomOpen} onChange={() => {
-                                setSettings((prev: any) => ({
-                                    ...prev,
-                                    zoomOpen: !prev.zoomOpen
-                                }))
-                            }} />} label="Zoom Bar" />
+                                }} />} label="Zoom Bar" />
 
-                        </FormGroup>
-                    </AccordionDetails>
-                </Accordion>
-            </div>}
+                            </FormGroup>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>}
+            </Collapse>
+
             <div style={{
                 marginTop: 'auto',
                 marginBottom: 20
@@ -174,7 +179,7 @@ export default function MindMapSideBar({
                         setCollapsed(!collapsed);
                     }}
                 >
-                    {collapsed && <ArrowForward/>}
+                    {collapsed && <ArrowForward />}
                     {!collapsed && <ArrowBackIcon />}
                 </Fab>
             </div>

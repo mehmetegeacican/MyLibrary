@@ -66,11 +66,6 @@ export default function NoteAddEditModal({open,handleClose,note}:NoteModalInterf
     }
   },[open]);
 
-
-  useEffect(() => {
-    console.log("Uploaded Picture is ", imagePath);
-  },[imagePath]);
-
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >
         <DialogTitle>{!note ? 'Add Note' : 'Edit Note'}</DialogTitle>

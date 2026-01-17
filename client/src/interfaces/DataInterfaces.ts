@@ -36,6 +36,13 @@ export interface INote {
 }
 
 
+export interface IMindMap{
+  id:string | number;
+  title:string;
+  updatedAt?:Date;
+}
+
+
 export type ApiResult = {
   response?: {
     status?: number;

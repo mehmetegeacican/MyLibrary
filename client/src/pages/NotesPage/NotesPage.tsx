@@ -1,38 +1,19 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
 import { SearchRounded } from '@mui/icons-material'
-import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext'
-import { INote } from '../interfaces/DataInterfaces'
-import defaultImg from '../assets/default.jpg';
+import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext'
+import { INote } from '../../interfaces/DataInterfaces'
+import defaultImg from '../../assets/default.jpg';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import DeleteModal from '../components/modals/DeleteModal';
+import DeleteModal from '../../components/modals/DeleteModal';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { fetchAllNotes } from '../apis/noteApis';
-import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
-import NoteAddEditModal from '../components/modals/NoteAddEditModal';
+import { fetchAllNotes } from '../../apis/noteApis';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import NoteAddEditModal from '../../components/modals/NoteAddEditModal';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
+import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import {currencies} from "./data/NotesData";
 
-
-
-const currencies = [
-    {
-        value: '0',
-        label: 'All',
-    },
-    {
-        value: '1',
-        label: 'Day',
-    },
-    {
-        value: '7',
-        label: 'Week',
-    },
-    {
-        value: '30',
-        label: 'Month',
-    },
-];
 
 
 

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import { AuthAction, AuthContextProviderProps, AuthContextType, AuthState } from "../interfaces/ReducerInterfaces";
-import { getUserById } from "../apis/userApis";
+import { SUBSCRIPTION_METHOD } from "../enums/enums";
+import { IUser } from "../interfaces/DataInterfaces";
 
 export const AuthDataContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -23,8 +24,10 @@ const authReducer = (state: AuthState, action: AuthAction) => {
       return { ...state, user: action.payload };
     case 'SET_THEME_COLOR':
       return { ...state, themeColor: action.payload };
-    case 'SET_PLAN' : 
-    return { ...state, plan: action.payload };
+    case 'SET_PLAN':
+      return { ...state, plan: action.payload };
+    case 'INITIALIZE':
+      return { ...state, isInitialized: true };
     default:
       return state;
   }
@@ -35,12 +38,32 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
     themeColor: 'secondary',
-    plan:'free',
+    plan: SUBSCRIPTION_METHOD.DEFAULT,
+    isInitialized: false
   });
 
 
-
-
+  useEffect(() => {
+    const rawData = JSON.parse(localStorage.getItem('user') ?? "");
+    if (rawData) {
+      try {
+        const signedInUser: IUser = {
+          id: rawData?.id,
+          email: rawData?.email,
+          token: rawData?.token,
+        }
+        if (signedInUser) {
+          dispatch({ type: 'LOGIN', payload: signedInUser });
+          dispatch({ type: 'INITIALIZE' });
+        }
+      } catch (e: any) {
+        dispatch({ type: 'INITIALIZE' });
+      }
+    }
+    else {
+      dispatch({ type: 'INITIALIZE' });
+    }
+  }, []);
 
   return (
     <AuthDataContext.Provider value={{ ...state, dispatch }}>

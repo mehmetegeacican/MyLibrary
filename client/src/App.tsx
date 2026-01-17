@@ -1,10 +1,8 @@
-import { Box, CssBaseline, ThemeProvider, Toolbar, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BookPage from "./pages/Books";
-import Navbar from "./layout/Navbar";
-import SideNav from "./layout/SideNav";
 import Dashboard from "./pages/Dashboard";
 import AuthorsPage from "./pages/Authors";
 import CategoriesPage from "./pages/Categories";
@@ -20,6 +18,8 @@ import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardP
 import MindMapWhiteBoardPage from "./pages/WhiteboardPage/MindMapWhiteBoardPage";
 import { SUBSCRIPTION_METHOD } from "./enums/enums";
 import MainLayout from "./layout/MainLayout/MainLayout";
+import CircularProgress from '@mui/material/CircularProgress';
+import { useLibraryTheme } from "./hooks/theme/useLibraryTheme";
 
 
 
@@ -30,12 +30,16 @@ function App() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { user, plan } = useAuthContext();
+  const { user, plan, isInitialized } = useAuthContext();
+  const {libTheme} = useLibraryTheme();
+
+  if (!isInitialized) {
+    return  <CircularProgress color={libTheme}/>;
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-
         <Routes>
           {/* Routes that use the main layout */}
           <Route element={<MainLayout open={open} toggleDrawer={toggleDrawer} />}>

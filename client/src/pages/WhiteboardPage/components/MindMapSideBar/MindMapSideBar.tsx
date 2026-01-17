@@ -13,6 +13,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { Fab } from '@mui/material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 
 
@@ -73,7 +75,7 @@ export default function MindMapSideBar({
             flexDirection: 'column',
             width: collapsed ? 50 : 320,
             transition: 'width 0.3s ease',
-            overflow: 'hidden',
+            overflow: 'visible',
         }}>
             <div style={{
                 display: 'flex',
@@ -99,6 +101,7 @@ export default function MindMapSideBar({
                             <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
                                 Nodes
                             </Typography>
+                            
 
                         </AccordionSummary>
                         <AccordionDetails>
@@ -141,10 +144,11 @@ export default function MindMapSideBar({
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
+                           
                             <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
                                 Settings
                             </Typography>
-
+                            
                         </AccordionSummary>
                         <AccordionDetails>
                             <FormGroup>

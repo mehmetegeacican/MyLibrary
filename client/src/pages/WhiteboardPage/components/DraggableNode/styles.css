@@ -45,13 +45,13 @@
 /* === Type-based color variations === */
 
 .draggable-node.input {
-  --color-primary: #4caf50; /* green */
+  --color-primary: #007bff; 
 }
 
 .draggable-node.default {
-  --color-primary: #2196f3; /* blue */
+  --color-primary: #ff0073; 
 }
 
 .draggable-node.output {
-  --color-primary: #ff0000; /* red */
+  --color-primary: #00b894; 
 }

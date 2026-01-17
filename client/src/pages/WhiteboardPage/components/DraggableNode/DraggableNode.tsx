@@ -24,6 +24,7 @@ export default function DraggableNode({ className, children, nodeType, onDrop }:
                 y: offsetY,
             });
         },
+        
         onDragEnd: ({ event }) => {
             setPosition({ x: 0, y: 0 });
             onDrop(nodeType, {

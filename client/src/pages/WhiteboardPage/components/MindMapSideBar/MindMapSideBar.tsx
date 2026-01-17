@@ -167,7 +167,6 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
-
             <div style={{
                 marginTop: 'auto',
                 marginBottom: 20

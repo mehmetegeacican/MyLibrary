@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./styles.css";
 import StringValueField from '../../../../components/forms/StringValueField';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForward  from '@mui/icons-material/ArrowForward';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -33,7 +34,9 @@ export default function MindMapSideBar({
     const [openNodeAccordion, setOpenNodeAccordion] = useState<boolean>(false);
     const [openEdgeAccordion, setOpenEdgeAccordion] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
-    const {libTheme} = useLibraryTheme();
+    const [collapsed, setCollapsed] = useState<boolean>(false);
+
+    const { libTheme } = useLibraryTheme();
 
 
     const handleNodeDrop = useCallback(
@@ -65,7 +68,13 @@ export default function MindMapSideBar({
     );
 
     return (
-        <Paper className='sidebar'>
+        <Paper className='sidebar' sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: collapsed ? 50 : 320,
+            transition: 'width 0.3s ease',
+            overflow: 'hidden',
+        }}>
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -75,11 +84,11 @@ export default function MindMapSideBar({
                 <IconButton aria-label="back">
                     <ArrowBackIcon />
                 </IconButton>
-                <StringValueField label={'Mind Map Name'} data={mindMapName} setter={(e: any) => {
+                {!collapsed && <StringValueField label={'Mind Map Name'} data={mindMapName} setter={(e: any) => {
                     setMindMapname(e);
-                }} />
+                }} />}
             </div>
-            <div className="sidebar-accordions">
+            {<div className="sidebar-accordions">
                 <Accordion key={0} expanded={openNodeAccordion} onChange={() => setOpenNodeAccordion(!openNodeAccordion)}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -120,8 +129,8 @@ export default function MindMapSideBar({
 
                     </AccordionDetails>
                 </Accordion>
-            </div>
-            <div className="sidebar-accordions">
+            </div>}
+            {<div className="sidebar-accordions">
 
                 <Accordion key={2} expanded={openSettings} onChange={() => setOpenSettings(!openSettings)}>
                     <AccordionSummary
@@ -153,17 +162,22 @@ export default function MindMapSideBar({
                         </FormGroup>
                     </AccordionDetails>
                 </Accordion>
+            </div>}
+            <div style={{
+                marginTop: 'auto',
+                marginBottom: 20
+            }}>
+                <Fab
+                    color={libTheme}
+                    size="small"
+                    onClick={() => {
+                        setCollapsed(!collapsed);
+                    }}
+                >
+                    {collapsed && <ArrowForward/>}
+                    {!collapsed && <ArrowBackIcon />}
+                </Fab>
             </div>
-            <Fab
-                className='sidebar-toggle'
-                color={libTheme}
-                size="small"
-                onClick={() => {
-                    console.log("toggle sidebar");
-                }}
-            >
-                <ArrowBackIcon />
-            </Fab>
         </Paper>
     )
 }

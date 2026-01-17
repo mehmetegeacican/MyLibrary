@@ -43,9 +43,6 @@
 }
 
 .sidebar-toggle {
-  position: absolute;
-  top: 68%;
-  transform: translateY(-50%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;

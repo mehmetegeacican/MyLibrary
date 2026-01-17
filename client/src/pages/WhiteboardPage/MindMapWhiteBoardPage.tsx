@@ -65,7 +65,7 @@ export default function MindMapWhiteBoardPage() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
-                        fitView
+                        //fitView
                     >
                         <Background />
                         {settings.zoomOpen && <Controls />}

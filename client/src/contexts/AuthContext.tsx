@@ -44,7 +44,12 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
 
 
   useEffect(() => {
-    const rawData = JSON.parse(localStorage.getItem('user') ?? "");
+    const storedUser = localStorage.getItem('user');
+
+    const rawData = storedUser
+      ? JSON.parse(storedUser)
+      : null;
+      
     if (rawData) {
       try {
         const signedInUser: IUser = {

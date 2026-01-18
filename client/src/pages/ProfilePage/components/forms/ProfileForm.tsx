@@ -1,13 +1,13 @@
 import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useAuthContext } from '../../hooks/contextHooks'
+import { useAuthContext } from '../../../../hooks/contextHooks'
 import { VisibilityOff, Visibility, Person } from '@mui/icons-material';
-import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
-import UploadButton from '../../components/buttons/uploadButton';
-import { getUserById, updateUser } from '../../apis/userApis';
-import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
+import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
+import UploadButton from '../../../../components/buttons/uploadButton';
+import { getUserById, updateUser } from '../../../../apis/userApis';
+import { useDebounce } from '../../../../hooks/asyncHooks/useDebounce';
 import { Image, message } from 'antd';
-import { postNewImage } from '../../apis/imageApis';
+import { postNewImage } from '../../../../apis/imageApis';
 
 
 

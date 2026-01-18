@@ -3,8 +3,8 @@ import { AccordionData } from "../../interfaces/AccordionInterfaces";
 import { AuthorTableHeader, BookTableHeader } from "../tables/TableDatas";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
 import { BookForm } from "../../pages/BooksPage/components";
-import AuthorForm from "../../pages/AuthorsPage/components/forms/AuthorForm";
-import CategoryForm from "../../pages/CategoriesPage/components/forms/CategoryForm";
+import { AuthorForm } from "../../pages/AuthorsPage/components";
+import { CategoryForm } from "../../pages/CategoriesPage/components";
 
 /**
  * Accordion Datas for Book Page
@@ -19,7 +19,7 @@ export const BookAccordionDatas: AccordionData[] = [
  */
 export const AuthorAccordionDatas: AccordionData[] = [
     { title: "View Authors", info: "View the Authors in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
-    { title: "Add New Author", info: "Add new Author to the DB", data: (<AuthorForm format={CREATE_UPDATE_FORM_FORMAT.CREATE}  />) },
+    { title: "Add New Author", info: "Add new Author to the DB", data: (<AuthorForm format={CREATE_UPDATE_FORM_FORMAT.CREATE} />) },
 ]
 
 /**
@@ -27,5 +27,5 @@ export const AuthorAccordionDatas: AccordionData[] = [
  */
 export const CategoryAccordionDatas: AccordionData[] = [
     { title: "View Categories", info: "View the Categories in Table Format", data: (<DataTable headers={AuthorTableHeader} tableDatas={[]} />) },
-    { title: "Add Category", info: "Add new Category to the System", data: (<CategoryForm format={CREATE_UPDATE_FORM_FORMAT.CREATE}/>) },
+    { title: "Add Category", info: "Add new Category to the System", data: (<CategoryForm format={CREATE_UPDATE_FORM_FORMAT.CREATE} />) },
 ];

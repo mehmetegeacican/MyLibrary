@@ -1,8 +1,8 @@
 import { Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material'
-import { useAuthContext } from '../hooks/contextHooks/useAuthContext'
-import ProfileForm from '../data/forms/ProfileForm';
-import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
-import { updateUser } from '../apis/userApis';
+import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
+import ProfileForm from '../../data/forms/ProfileForm';
+import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import { updateUser } from '../../apis/userApis';
 
 export default function ProfilePage() {
 

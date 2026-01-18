@@ -18,7 +18,7 @@ export default function Statistics() {
     const [likeAvgByCategory,setLikeAvgByCategory] = useState<any>();
     const [graphT, setGraphT] = useState<string>("Polar Area");
 
-    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+    const selectedAuthors: string[] = [];
 
 
     // Author Menu

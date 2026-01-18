@@ -2,27 +2,26 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MapIcon from '@mui/icons-material/Map';
-
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
-
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import ProfileIcon from '@mui/icons-material/Person';
-import CategoryIcon from '@mui/icons-material/Category';
-
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { Link } from "react-router-dom";
-import AnalyticsSharpIcon from '@mui/icons-material/AnalyticsSharp';
-import LoyaltyOutlinedIcon from '@mui/icons-material/LoyaltyOutlined';
-import { Tooltip } from 'antd';
+import {
+  Assignment,
+  Dashboard,
+  LoyaltyOutlined, 
+  AnalyticsSharp,
+  LocalLibrary,
+  Category,
+  People,
+  Person,
+  Map
+} from '@mui/icons-material';
+
 
 export const mainListItems = (
   <React.Fragment>
     <Link to="/">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <DashboardIcon />
+          <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Dashboard" color='secondary' />
       </ListItemButton>
@@ -31,7 +30,7 @@ export const mainListItems = (
     <Link to="/books">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <LocalLibraryIcon />
+          <LocalLibrary />
         </ListItemIcon>
         <ListItemText primary="Books" />
       </ListItemButton>
@@ -40,7 +39,7 @@ export const mainListItems = (
     <Link to="/authors">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <PeopleIcon />
+          <People/>
         </ListItemIcon>
         <ListItemText primary="Authors" />
       </ListItemButton>
@@ -49,7 +48,7 @@ export const mainListItems = (
     <Link to="/categories">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <CategoryIcon />
+          <Category/>
         </ListItemIcon>
         <ListItemText primary="Categories" />
       </ListItemButton>
@@ -61,14 +60,14 @@ export const mainListItemsSignedOut = (
   <React.Fragment>
     <ListItemButton sx={{ color: "black" }}>
       <ListItemIcon>
-        <DashboardIcon />
+        <Dashboard />
       </ListItemIcon>
       <ListItemText primary="Introduction" color='secondary' />
     </ListItemButton>
     <Link to="/signup">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <DashboardIcon />
+          <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Sign Up" color='secondary' />
       </ListItemButton>
@@ -76,7 +75,7 @@ export const mainListItemsSignedOut = (
     <Link to="/login">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <DashboardIcon />
+          <Dashboard />
         </ListItemIcon>
         <ListItemText primary="Login" color='secondary' />
       </ListItemButton>
@@ -90,7 +89,7 @@ export const secondaryListItems = (
     <Link to="/notes">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <AssignmentIcon />
+          <Assignment/>
         </ListItemIcon>
         <ListItemText primary="My Essays" color='secondary' />
       </ListItemButton>
@@ -98,7 +97,7 @@ export const secondaryListItems = (
     <Link to="/profile">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <ProfileIcon />
+          <Person />
         </ListItemIcon>
         <ListItemText primary="Profile" color='secondary' />
       </ListItemButton>
@@ -111,19 +110,19 @@ export const proListItems = (
     <Link to="/statistics">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <AnalyticsSharpIcon />
+          <AnalyticsSharp/>
         </ListItemIcon>
         <ListItemText primary="Stats" />
-        <LoyaltyOutlinedIcon sx={{ height: 23, marginRight: 1, color: 'silver' }} />
+        <LoyaltyOutlined sx={{ height: 23, marginRight: 1, color: 'silver' }} />
       </ListItemButton>
     </Link>
     <Link to="/mindmap">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <MapIcon />
+          <Map />
         </ListItemIcon>
         <ListItemText primary="Mind Map" />
-        <LoyaltyOutlinedIcon sx={{ height: 23, marginRight: 1, color: 'silver' }} />
+        <LoyaltyOutlined sx={{ height: 23, marginRight: 1, color: 'silver' }} />
       </ListItemButton>
     </Link>
   </React.Fragment>

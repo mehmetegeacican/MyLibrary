@@ -1,19 +1,16 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
 import { Collapse, IconButton, Paper } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./styles.css";
 import StringValueField from '../../../../components/forms/StringValueField';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForward from '@mui/icons-material/ArrowForward';
+import {ArrowBack,ArrowForward,ExpandMore} from '@mui/icons-material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { Fab } from '@mui/material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
-import SettingsIcon from '@mui/icons-material/Settings';
 
 
 
@@ -85,7 +82,7 @@ export default function MindMapSideBar({
                 justifyContent: 'center'
             }}>
                 <IconButton aria-label="back">
-                    <ArrowBackIcon />
+                    <ArrowBack />
                 </IconButton>
                 {!collapsed && <StringValueField label={'Mind Map Name'} data={mindMapName} setter={(e: any) => {
                     setMindMapname(e);
@@ -95,7 +92,7 @@ export default function MindMapSideBar({
                 {<div className="sidebar-accordions">
                     <Accordion key={0} expanded={openNodeAccordion} onChange={() => setOpenNodeAccordion(!openNodeAccordion)}>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMore />}
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
@@ -121,7 +118,7 @@ export default function MindMapSideBar({
                     </Accordion>
                     <Accordion key={1} expanded={openEdgeAccordion} onChange={() => setOpenEdgeAccordion(!openEdgeAccordion)}>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMore />}
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
@@ -141,7 +138,7 @@ export default function MindMapSideBar({
 
                     <Accordion key={2} expanded={openSettings} onChange={() => setOpenSettings(!openSettings)}>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMore />}
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
@@ -199,7 +196,7 @@ export default function MindMapSideBar({
                     }}
                 >
                     {collapsed && <ArrowForward />}
-                    {!collapsed && <ArrowBackIcon />}
+                    {!collapsed && <ArrowBack />}
                 </Fab>
             </div>
         </Paper>

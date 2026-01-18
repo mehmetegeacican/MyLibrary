@@ -1,5 +1,5 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import { SearchRounded } from '@mui/icons-material'
+
 import { useAuthContext , useLibraryDataContext } from '../../hooks/contextHooks'
 import { INote } from '../../interfaces/DataInterfaces'
 import defaultImg from '../../assets/default.jpg';
@@ -8,7 +8,7 @@ import {
     DeleteModal,
     NoteAddEditModal
 } from '../../components/modals';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+import { SearchRounded, PostAdd } from '@mui/icons-material'
 import { fetchAllNotes } from '../../apis/noteApis';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
@@ -115,7 +115,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => setOpenAddModal(true)}><PostAddIcon /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => setOpenAddModal(true)}><PostAdd /></Button>
                         </div>
 
                     </Paper>

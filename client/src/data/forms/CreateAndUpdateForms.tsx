@@ -9,8 +9,7 @@ import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow
 import UploadButton from "../../components/buttons/uploadButton";
 import { postNewImage } from "../../apis/imageApis";
 import Flag from "react-world-flags";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {Favorite,FavoriteBorder} from '@mui/icons-material';
 
 
 /**
@@ -165,8 +164,8 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 name="book rating"
                                 value={liked}
                                 size="medium"
-                                icon={<FavoriteIcon fontSize="inherit" />}
-                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                icon={<Favorite fontSize="inherit" />}
+                                emptyIcon={<FavoriteBorder fontSize="inherit" />}
                                 style={{
                                     color: 'red'
                                 }}

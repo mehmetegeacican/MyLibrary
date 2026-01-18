@@ -1,6 +1,5 @@
 import { TabInterface } from "../../interfaces/TabInterfaces";
-import BackupTableIcon from '@mui/icons-material/BackupTable';
-import BookIcon from '@mui/icons-material/Book';
+import {BackupTable, Book} from '@mui/icons-material';
 import { Typography } from "@mui/material";
 import Shelflist from "../../components/shelfList/shelfList";
 import {
@@ -19,8 +18,8 @@ import {
  * Book Tabs for the Book Page
  */
 export const BookTabs: TabInterface[] = [
-    { icon: (<BackupTableIcon />), label: "Table View" },
-    { icon: (<BookIcon />), label: "Shelf View" },
+    { icon: (<BackupTable />), label: "Table View" },
+    { icon: (<Book />), label: "Shelf View" },
 ];
 
 /**
@@ -35,7 +34,7 @@ export const BookTabContents: JSX.Element[] = [
  * Tab Buttons for Authors
  */
 export const AuthorTabs: TabInterface[] = [
-    { icon: (<BackupTableIcon />), label: "Table View" },
+    { icon: (<BackupTable />), label: "Table View" },
     //{ icon: (<BookIcon />), label: "Card View" },
 ]
 
@@ -51,7 +50,7 @@ export const AuthorTabContents: JSX.Element[] = [
  * Tab Buttons for Categories
  */
 export const CategoryTabs: TabInterface[] = [
-    { icon: (<BackupTableIcon />), label: "Table View" },
+    { icon: (<BackupTable />), label: "Table View" },
     //{ icon: (<BookIcon />), label: "Card View" },
 ]
 

@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import { Fragment } from 'react';
 import StringValueField from '../../components/forms/StringValueField';
 import { useAuthForms } from '../../hooks/formHooks';
-import { VisibilityOff, Visibility } from '@mui/icons-material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import { VisibilityOff, Visibility, LockOutlined } from '@mui/icons-material';
 interface IAuthForm {
     name: string;
     setName: Function;
@@ -31,7 +29,7 @@ export const LoginForm = ({ name, setName, password, setPassword }: IAuthForm) =
                 <Box sx={{ display: 'flex', alignItems:'center' , mr: 2, alignSelf:"center"}}>
                     <Typography variant='h5' color={'primary'}> Login </Typography>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                        <LockOutlined />
                     </Avatar>
                 </Box>
                 <Divider/>

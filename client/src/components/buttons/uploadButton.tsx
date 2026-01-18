@@ -1,7 +1,6 @@
 import { Box, Button, styled, useMediaQuery, useTheme } from '@mui/material'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 type UploadButtonInterface = {

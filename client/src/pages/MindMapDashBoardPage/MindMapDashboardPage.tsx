@@ -1,8 +1,8 @@
-import { SearchRounded } from '@mui/icons-material'
+
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+import { SearchRounded, PostAdd } from '@mui/icons-material'
 import {  useLibraryDataContext } from '../../hooks/contextHooks';
 import { IMindMap } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
@@ -73,7 +73,7 @@ export default function MindMapDashboardPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => console.log("aaa")}><PostAddIcon /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => console.log("aaa")}><PostAdd /></Button>
                         </div>
 
                     </Paper>

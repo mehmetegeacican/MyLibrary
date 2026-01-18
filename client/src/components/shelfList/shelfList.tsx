@@ -1,22 +1,16 @@
-import { InfoOutlined } from '@mui/icons-material'
+
 import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating, TableFooter, TableRow, Table } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import EditIcon from '@mui/icons-material/Edit';
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
-import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IBook } from '../../interfaces/DataInterfaces';
-import BookIcon from '@mui/icons-material/Book';
 import { FilterModal, UpdateModal, ExportModal, ImportModal, DeleteModal } from '../modals';
 import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { InfoOutlined, Book , Edit, FilterList, FavoriteBorder, Favorite, Delete, PostAdd} from '@mui/icons-material'
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -69,7 +63,7 @@ export default function Shelflist() {
 
     //Handlers
     const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
+        _: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
     ) => {
         setPage(newPage);
@@ -160,10 +154,10 @@ export default function Shelflist() {
                         color={libTheme}
                         onChange={(e) => setQuery(e.target.value)}
                     />*/}
-                    <Button color={'info'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
+                    <Button color={'info'} variant='text' onClick={() => setOpenFilter(true)}><FilterList /></Button>
                     <Button color={'success'} variant='text' onClick={() => setOpenExport(true)}><ExportIcon /></Button>
                     <Button color={'secondary'} variant='text' onClick={() => setOpenImport(true)}><ImportIcon /></Button>
-                    <Button color={libTheme} variant='text' onClick={() => setOpenAdd(true)}><PostAddIcon /></Button>
+                    <Button color={libTheme} variant='text' onClick={() => setOpenAdd(true)}><PostAdd /></Button>
                     {/*<Button color={'error'} variant='text' onClick={() => console.log("aaa")}><DeleteIcon /></Button>*/}
                 </div>
                 <div>
@@ -189,8 +183,8 @@ export default function Shelflist() {
                                                 value={parseInt(book.liked ?? "0")}
                                                 readOnly
                                                 size="small"
-                                                icon={<FavoriteIcon fontSize="inherit" />}
-                                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                                icon={<Favorite fontSize="inherit" />}
+                                                emptyIcon={<FavoriteBorder fontSize="inherit" />}
                                                 sx={{
                                                     color: 'red',
                                                     display: 'flex',
@@ -226,14 +220,14 @@ export default function Shelflist() {
                                                     setOpenUpdate(true);
 
                                                 }}>
-                                                    <EditIcon />
+                                                    <Edit />
                                                 </IconButton>
                                                 <IconButton aria-label="delete" color='error' onClick={() => {
                                                     setSelectedBook(book);
                                                     setOpenDelete(true);
 
                                                 }}>
-                                                    <DeleteIcon />
+                                                    <Delete />
                                                 </IconButton>
                                             </Box>
 
@@ -265,7 +259,7 @@ export default function Shelflist() {
                                                 src={book.imagePath ? `http://localhost:4008/images/books/${book.imagePath}` : ''}
                                             >
                                                 {/* Only show the icon if there's no image */}
-                                                {!book.imagePath && <BookIcon sx={{ height: 90, width: 90 }} />}
+                                                {!book.imagePath && <Book sx={{ height: 90, width: 90 }} />}
                                             </Avatar>
                                             <Stack gap={3} justifyContent={'center'}>
                                                 <Typography color={libTheme}>{book.name}</Typography>

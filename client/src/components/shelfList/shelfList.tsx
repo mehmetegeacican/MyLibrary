@@ -11,6 +11,7 @@ import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import { InfoOutlined, Book , Edit, FilterList, FavoriteBorder, Favorite, Delete, PostAdd} from '@mui/icons-material'
+import { SUBSCRIPTION_METHOD } from '../../enums/enums';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -171,7 +172,6 @@ export default function Shelflist() {
                                 if (book.imagePath) {
                                     return (
                                         <Grid item xs={6} md={3} lg={2} key={book.id}>
-
                                             <Image
                                                 src={`http://localhost:4008/images/books/${book.imagePath}`}
                                                 width={150}
@@ -189,12 +189,12 @@ export default function Shelflist() {
                                                     color: 'red',
                                                     display: 'flex',
                                                     justifyContent: 'center',
-                                                    mt: 1,
+                                                    mt: 2,
                                                     mb: 0.7,
-                                                    mr: 1.4
+                                                    ml:3.5
                                                 }}
                                             />
-                                            {plan === 'pro' && <Rating
+                                            {plan === SUBSCRIPTION_METHOD.PRO && <Rating
                                                 name="influence"
                                                 value={parseInt(book.influence ?? "0")}
                                                 readOnly
@@ -205,7 +205,7 @@ export default function Shelflist() {
                                                     justifyContent: 'center',
                                                     mt: 1,
                                                     mb: 0.7,
-                                                    mr: 1.4
+                                                    ml: 3.5
                                                 }}
                                             />}
                                             <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 0.1, marginRight: 1.8 }}>

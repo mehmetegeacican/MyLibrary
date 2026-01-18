@@ -6,6 +6,7 @@ import { BookForm } from "../../../../data/forms/CreateAndUpdateForms";
 import { BookTableHeader } from "../../../../data/tables/TableDatas";
 import { BookAccordionDatas } from "../../../../data/accordions/AccordionDatas";
 import LibraryAccordion from "../../../../components/accordions/LibraryAccordion";
+import { CREATE_UPDATE_FORM_FORMAT } from "../../../../enums/enums";
 
 /**
  * Accordion for Book Page
@@ -38,7 +39,7 @@ export default function BookAccordions() {
 
 
     BookAccordionDatas[0].data = (<DataTable headers={BookTableHeader} tableDatas={books} />);
-    BookAccordionDatas[1].data = (<BookForm format={"create"} />)
+    BookAccordionDatas[1].data = (<BookForm format={CREATE_UPDATE_FORM_FORMAT.CREATE} />)
 
 
     //Render

@@ -10,6 +10,7 @@ import UploadButton from "../../components/buttons/uploadButton";
 import { postNewImage } from "../../apis/imageApis";
 import Flag from "react-world-flags";
 import {Favorite,FavoriteBorder} from '@mui/icons-material';
+import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
 
 
 /**
@@ -55,7 +56,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
 
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
@@ -211,8 +212,8 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         setImagePath={setImagePath}
                     />
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>
@@ -234,7 +235,7 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
 
     //submit
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateAuthor(data.id, formName, formInfo);
             handleClose!();
         }
@@ -265,8 +266,8 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
 
                     </Stack>
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>
@@ -294,7 +295,7 @@ export function CategoryForm({ format, data, handleClose }: FormInterface) {
     }, [data]);
 
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateCategory(data.id, formName, formInfo);
             handleClose!();
         }
@@ -317,8 +318,8 @@ export function CategoryForm({ format, data, handleClose }: FormInterface) {
                         <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
                     </Stack>
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

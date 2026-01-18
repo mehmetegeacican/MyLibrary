@@ -1,5 +1,5 @@
 import { InfoOutlined } from '@mui/icons-material'
-import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating } from '@mui/material';
+import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating, TableFooter, TableRow, Table } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useMemo, useEffect, useCallback } from 'react'
@@ -282,22 +282,22 @@ export default function Shelflist() {
                         })}
                     </Grid>
                 </div>
-                <div>
-                    <TablePagination
-                        align='center'
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}
-                        rowsPerPageOptions={[6, 12, 24]}
-                        colSpan={1}
-                        count={filteredBooks.length}
-                        rowsPerPage={rowsPerPage}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        page={page} />
-                </div>
-
+                <Table>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[6, 12, 24]}
+                                colSpan={100}
+                                count={filteredBooks.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                sx={{ justifyContent: 'center' }}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
             </Stack>
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
             {<CreateBookModel open={openAdd} handleClose={() => setOpenAdd(false)} />}

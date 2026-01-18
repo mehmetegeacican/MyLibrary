@@ -1,21 +1,21 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BookPage from "./pages/Books";
 import Dashboard from "./pages/Dashboard";
 import AuthorsPage from "./pages/Authors";
 import CategoriesPage from "./pages/Categories";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import SignUpPage from "./pages/SignUpPage/SignUpPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
-import NotesPage from "./pages/NotesPage/NotesPage";
+import NotesPage from "./pages/NotesPage";
 import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
 import Statistics from "./pages/Statistics";
 import SubscriptionPage from "./pages/SubscriptionPage";
-import MindMapDashboardPage from "./pages/MindMapDashBoardPage/MindMapDashboardPage";
-import MindMapWhiteBoardPage from "./pages/WhiteboardPage/MindMapWhiteBoardPage";
+import MindMapDashboardPage from "./pages/MindMapDashBoardPage";
+import MindMapWhiteBoardPage from "./pages/WhiteboardPage";
 import { SUBSCRIPTION_METHOD } from "./enums/enums";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import CircularProgress from '@mui/material/CircularProgress';

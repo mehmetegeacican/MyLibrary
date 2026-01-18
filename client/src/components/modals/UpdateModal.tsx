@@ -1,18 +1,20 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
-import { AuthorForm, BookForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
 import { useCreateAndUpdateForm } from "../../hooks/formHooks";
 import React from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
+import { BookForm } from "../../pages/BooksPage/components";
+import { AuthorForm } from "../../pages/AuthorsPage/components";
+import { CategoryForm } from "../../pages/CategoriesPage/components";
 
 interface UpdateModalInterface {
     open: boolean;
     handleClose: () => void;
-    data: (IBook |ICategory);
+    data: (IBook | ICategory);
 }
 
-export default function  UpdateModal({ open, handleClose,  data }: UpdateModalInterface) {
+export default function UpdateModal({ open, handleClose, data }: UpdateModalInterface) {
 
     //Hooks
     const [formError, setFormError] = React.useState<boolean>(false);
@@ -36,13 +38,13 @@ export default function  UpdateModal({ open, handleClose,  data }: UpdateModalIn
             <DialogContent sx={{ mt: 1 }} dividers>
 
                 <Stack spacing={2} sx={{ mt: 1 }}>
-                    {isIBook(data) &&  (<BookForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose}/>)}
-                    {isICategory(data) && (<CategoryForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose}/> )}
-                    {isIAuthor(data) && (<AuthorForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose}/> )}
+                    {isIBook(data) && (<BookForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose} />)}
+                    {isICategory(data) && (<CategoryForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose} />)}
+                    {isIAuthor(data) && (<AuthorForm format={CREATE_UPDATE_FORM_FORMAT.UPDATE} data={data} handleClose={handleClose} />)}
                 </Stack>
 
                 {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
-                
+
             </DialogContent>
         </Dialog>
     )

@@ -1,13 +1,13 @@
 import { Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material'
 import { useAuthContext } from '../../hooks/contextHooks'
-import ProfileForm from '../../data/forms/ProfileForm';
+import { ProfileForm } from './components';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { updateUser } from '../../apis/userApis';
 
 export default function ProfilePage() {
 
-    const { user ,dispatch } = useAuthContext();
-    const {libTheme} = useLibraryTheme();
+    const { user, dispatch } = useAuthContext();
+    const { libTheme } = useLibraryTheme();
 
 
     const handleColorSwitch = async (e: { target: { value: any; }; }) => {
@@ -15,8 +15,8 @@ export default function ProfilePage() {
             type: 'SET_THEME_COLOR',
             payload: e.target.value
         });
-        if(user?.id && user){
-            await updateUser(user?.id.toString(),{theme_color:e.target.value},user?.token);
+        if (user?.id && user) {
+            await updateUser(user?.id.toString(), { theme_color: e.target.value }, user?.token);
         }
     }
 

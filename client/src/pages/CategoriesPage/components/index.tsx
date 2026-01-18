@@ -1,0 +1,1 @@
+export {default as CategoryAccordions} from "./accordions/CategoryAccordions";

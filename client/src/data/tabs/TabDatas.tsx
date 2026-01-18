@@ -2,8 +2,17 @@ import { TabInterface } from "../../interfaces/TabInterfaces";
 import BackupTableIcon from '@mui/icons-material/BackupTable';
 import BookIcon from '@mui/icons-material/Book';
 import { Typography } from "@mui/material";
-import BookAccordions, { AuthorAccordionDatas, AuthorAccordions, CategoryAccordions } from "../accordions/AccordionDatas";
 import Shelflist from "../../components/shelfList/shelfList";
+import {
+    BookAccordions
+} from "../../pages/BooksPage/components";
+import {
+    AuthorAccordions
+} from "../../pages/AuthorsPage/components";
+
+import {
+    CategoryAccordions
+} from "../../pages/CategoriesPage/components"
 
 
 /**

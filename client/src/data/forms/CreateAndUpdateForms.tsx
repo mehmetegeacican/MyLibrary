@@ -146,7 +146,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                             options={languageList}
                             sx={{ width: '50%' }}
                             value={language}
-                            onChange={(event, newValue: langInterface | null) => {
+                            onChange={(_, newValue: langInterface | null) => {
                                 setLanguage(newValue);
                             }}
                             renderOption={(props, option) => (
@@ -170,7 +170,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 style={{
                                     color: 'red'
                                 }}
-                                onChange={(event, newValue) => {
+                                onChange={(_, newValue) => {
                                     if (newValue) {
                                         setLiked(newValue);
                                     }
@@ -186,7 +186,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 style={{
                                     color: 'skyblue'
                                 }}
-                                onChange={(event, newValue) => {
+                                onChange={(_, newValue) => {
                                     if (newValue) {
                                         setInfluence(newValue);
                                     }

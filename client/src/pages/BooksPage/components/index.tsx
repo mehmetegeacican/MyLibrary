@@ -1,0 +1,1 @@
+export {default as BookAccordions } from './accordions/BookAccordions'

@@ -1,5 +1,4 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
-import { CategoryForm } from "../../data/forms/CreateAndUpdateForms";
 import { useCreateAndUpdateForm } from "../../hooks/formHooks";
 import React from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
@@ -7,6 +6,7 @@ import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
 import { BookForm } from "../../pages/BooksPage/components/forms/BookForm";
 import AuthorForm from "../../pages/AuthorsPage/components/forms/AuthorForm";
+import CategoryForm from "../../pages/CategoriesPage/components/forms/CategoryForm";
 
 interface UpdateModalInterface {
     open: boolean;

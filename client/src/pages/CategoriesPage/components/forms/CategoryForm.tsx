@@ -1,25 +1,13 @@
-import { Box, Container, Stack, Divider,  Button, Alert } from "@mui/material";
 import React, { useEffect } from "react";
-import StringValueField from "../../components/forms/StringValueField";
-import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { useCreateAndUpdateForm } from "../../hooks/formHooks";
-import { isIAuthor, isICategory } from "../../components/tables/DataRow";
-import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
+import { FormInterface } from "../../../../interfaces/FormInterfaces";
+import { useCreateAndUpdateForm } from "../../../../hooks/formHooks";
+import { isICategory } from "../../../../components/tables/DataRow";
+import { CREATE_UPDATE_FORM_FORMAT } from "../../../../enums/enums";
+import { Alert, Box, Button, Container, Divider, Stack } from "@mui/material";
+import StringValueField from "../../../../components/forms/StringValueField";
 
 
-/**
- * Create & Update Forms for Book
- * @returns rendered create book form component
- */
-interface FormInterface {
-    format: string;
-    data?: IBook | ICategory | IAuthor;
-    handleClose?: () => void;
-}
-
-
-
-export function CategoryForm({ format, data, handleClose }: FormInterface) {
+export default function CategoryForm({ format, data, handleClose }: FormInterface) {
 
     //Hooks and Contexts
     const [formName, setFormName] = React.useState<string>("");

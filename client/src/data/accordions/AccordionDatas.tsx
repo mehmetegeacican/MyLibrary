@@ -1,8 +1,9 @@
 import DataTable from "../../components/tables/DataTable";
 import { AccordionData } from "../../interfaces/AccordionInterfaces";
 import { AuthorTableHeader, BookTableHeader } from "../tables/TableDatas";
-import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
+import { AuthorForm, CategoryForm } from "../forms/CreateAndUpdateForms";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
+import { BookForm } from "../../pages/BooksPage/components/forms/BookForm";
 
 /**
  * Accordion Datas for Book Page

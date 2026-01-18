@@ -1,10 +1,11 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
-import { AuthorForm, BookForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
+import { AuthorForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
 import { useCreateAndUpdateForm } from "../../hooks/formHooks";
 import React from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
+import { BookForm } from "../../pages/BooksPage/components/forms/BookForm";
 
 interface UpdateModalInterface {
     open: boolean;

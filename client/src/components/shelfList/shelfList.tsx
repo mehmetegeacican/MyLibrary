@@ -5,13 +5,13 @@ import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IBook } from '../../interfaces/DataInterfaces';
 import { FilterModal, UpdateModal, ExportModal, ImportModal, DeleteModal } from '../modals';
-import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import { InfoOutlined, Book , Edit, FilterList, FavoriteBorder, Favorite, Delete, PostAdd} from '@mui/icons-material'
-import { SUBSCRIPTION_METHOD } from '../../enums/enums';
+import { CREATE_UPDATE_FORM_FORMAT, SUBSCRIPTION_METHOD } from '../../enums/enums';
+import { BookForm } from '../../pages/BooksPage/components/forms/BookForm';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -40,7 +40,7 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
                 </Stack>
             </DialogTitle>
             <DialogContent>
-                <BookForm format={'create'} />
+                <BookForm format={CREATE_UPDATE_FORM_FORMAT.CREATE} />
             </DialogContent>
         </Dialog>
 

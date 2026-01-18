@@ -2,10 +2,10 @@ import { ThemeProvider, createTheme } from "@mui/material";
 
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import BookPage from "./pages/Books";
+import BookPage from "./pages/BooksPage";
 import Dashboard from "./pages/Dashboard";
-import AuthorsPage from "./pages/Authors";
-import CategoriesPage from "./pages/Categories";
+import AuthorsPage from "./pages/AuthorsPage";
+import CategoriesPage from "./pages/CategoriesPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { useAuthContext } from "./hooks/contextHooks/useAuthContext";

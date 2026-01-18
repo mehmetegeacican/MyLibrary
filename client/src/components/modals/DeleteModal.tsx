@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory, isINote } from "../tables/DataRow";
-import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
+import { useDeleteModal } from "../../hooks/modalHooks";
 
 
 

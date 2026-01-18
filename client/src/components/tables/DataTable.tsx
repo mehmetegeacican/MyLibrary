@@ -15,7 +15,7 @@ import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterModal from '../modals/FilterModal';
-import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
+import { useFilterModal } from '../../hooks/modalHooks';
 
 
 interface TableInterfaces<T> {

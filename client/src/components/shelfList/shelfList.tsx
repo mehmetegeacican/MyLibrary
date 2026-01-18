@@ -8,17 +8,13 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IBook } from '../../interfaces/DataInterfaces';
 import BookIcon from '@mui/icons-material/Book';
-import FilterModal from '../modals/FilterModal';
+import { FilterModal, UpdateModal, ExportModal, ImportModal, DeleteModal } from '../modals';
 import { BookForm } from '../../data/forms/CreateAndUpdateForms';
-import UpdateModal from '../modals/UpdateModal';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ExportModal from '../modals/ExportModal';
-import ImportModal from '../modals/ImportModal';
-import DeleteModal from '../modals/DeleteModal';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 

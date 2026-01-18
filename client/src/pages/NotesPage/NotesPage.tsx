@@ -4,10 +4,12 @@ import { useAuthContext , useLibraryDataContext } from '../../hooks/contextHooks
 import { INote } from '../../interfaces/DataInterfaces'
 import defaultImg from '../../assets/default.jpg';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import DeleteModal from '../../components/modals/DeleteModal';
+import {
+    DeleteModal,
+    NoteAddEditModal
+} from '../../components/modals';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { fetchAllNotes } from '../../apis/noteApis';
-import NoteAddEditModal from '../../components/modals/NoteAddEditModal';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';

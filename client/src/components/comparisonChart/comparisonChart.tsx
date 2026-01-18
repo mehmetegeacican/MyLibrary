@@ -6,7 +6,7 @@ import DougnutChart from '../../data/charts/DougnutChart';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { isAvgLikedByAuthorStat, isAvgLikedByCategoryStat, isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
-import FilterModal from '../modals/FilterModal';
+import {FilterModal} from '../modals';
 
 
 

@@ -3,8 +3,7 @@ import { Button, Flex, Typography } from 'antd';
 import { IBook } from '../../interfaces/DataInterfaces';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
-import { useEffect } from 'react';
+import { useAuthContext } from "../../hooks/contextHooks";
 
 interface RatingModalInterface {
     open: boolean;

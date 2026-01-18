@@ -2,10 +2,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { INote } from '../../interfaces/DataInterfaces';
 import { useEffect, useState } from 'react';
 import { useCreateAndUpdateForm } from '../../hooks/formHooks/useCreateAndUpdateForm';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import UploadButton from '../buttons/uploadButton';
 import { postNewImage } from '../../apis/imageApis';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 
 

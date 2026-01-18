@@ -1,12 +1,10 @@
 import { SearchRounded } from '@mui/icons-material'
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import {  useLibraryDataContext } from '../../hooks/contextHooks';
 import { IMindMap } from '../../interfaces/DataInterfaces';
-import { formatDistanceToNow } from 'date-fns';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import { currencies } from './data/mindMapData';
@@ -17,12 +15,8 @@ import { currencies } from './data/mindMapData';
 export default function MindMapDashboardPage() {
 
     const { libTheme } = useLibraryTheme();
-    const { user } = useAuthContext();
-    const { mindMaps, dispatch, mindMapTrigger } = useLibraryDataContext();
+    const { mindMaps, } = useLibraryDataContext();
     const [query, setQuery] = useState("");
-
-    const PORT = import.meta.env.VITE_IMAGESERVICE_PORT;
-    const IMAGE_ADDRESS = `http://localhost:${PORT}/images`;
 
     const memoizedMindMaps = useMemo(() => {
 

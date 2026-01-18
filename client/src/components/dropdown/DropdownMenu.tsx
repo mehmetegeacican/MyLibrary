@@ -2,7 +2,6 @@ import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@mui
 import { NotSignedInItems, SignedInItems } from './DropdownItems';
 import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 
 interface DropdownMenuInterface {

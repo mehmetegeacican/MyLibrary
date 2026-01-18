@@ -1,9 +1,8 @@
-import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack, Button } from '@mui/material'
+import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
+import { useAuthContext } from '../../hooks/contextHooks'
 import PersonIcon from '@mui/icons-material/Person';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
-
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../components/buttons/uploadButton';
 import { getUserById, updateUser } from '../../apis/userApis';

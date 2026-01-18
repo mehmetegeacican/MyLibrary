@@ -1,8 +1,7 @@
 import { Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllLikedAvgByAuthor, fetchAllLikedAvgByCategory } from '../../apis/statApi';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
 import { IAuthor } from '../../interfaces/DataInterfaces';
 import BarChart from '../../data/charts/BarChart';

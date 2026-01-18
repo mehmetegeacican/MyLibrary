@@ -1,5 +1,5 @@
 import { Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext'
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks'
 import BarChart from '../../data/charts/BarChart';
 import { useCallback, useEffect, useMemo } from 'react';
 
@@ -7,7 +7,6 @@ import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookC
 import React from 'react';
 import DougnutChart from '../../data/charts/DougnutChart';
 import { IBookByAuthorStat } from '../../interfaces/DataInterfaces';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { fetchAllCategories } from '../../apis/categoryApi';
 import { fetchAllAuthors } from '../../apis/authorApi';

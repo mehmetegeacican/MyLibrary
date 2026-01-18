@@ -8,7 +8,7 @@ import AuthorsPage from "./pages/AuthorsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
+import { useAuthContext } from "./hooks/contextHooks";
 import NotesPage from "./pages/NotesPage";
 import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";

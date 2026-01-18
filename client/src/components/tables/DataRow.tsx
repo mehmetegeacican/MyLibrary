@@ -1,4 +1,4 @@
-import { TableCell, Button, IconButton, Rating } from "@mui/material";
+import { TableCell, Button, IconButton } from "@mui/material";
 import dayjs from "dayjs";
 import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
 import StatusChip from "../chip/StatusChip";
@@ -6,12 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Fragment } from "react";
 import Flag from "react-world-flags";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 
 
-// Type guard function to check if an object is of type IBook
 export function isIBook(value: any): value is IBook {
     return (
         typeof value === "object" &&

@@ -8,7 +8,6 @@ import DropdownMenu from '../components/dropdown/DropdownMenu';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { AppBarPropsColorOverrides } from '@mui/material/AppBar';
 import { OverridableStringUnion } from '@mui/types';
-import { PaletteColor } from '@mui/material/styles';
 
 
 declare module '@mui/material/AppBar' {

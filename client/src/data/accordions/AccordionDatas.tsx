@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import DataTable from "../../components/tables/DataTable";
 import { AccordionData } from "../../interfaces/AccordionInterfaces";
 import { AuthorTableHeader, BookTableHeader, CategoryTableHeader } from "../tables/TableDatas";
 import { fetchAllBooks } from "../../apis/bookApi";
 import LibraryAccordion from "../../components/accordions/LibraryAccordion";
 import { AuthorForm, BookForm, CategoryForm } from "../forms/CreateAndUpdateForms";
-import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { useAuthContext, useLibraryDataContext } from "../../hooks/contextHooks";
 import { fetchAllCategories } from "../../apis/categoryApi";
 import { fetchAllAuthors } from "../../apis/authorApi";
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 
 /**
  * Accordion Datas for Book Page
@@ -26,7 +25,7 @@ export default function BookAccordions() {
     //Hooks & Contexts 
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const { bookTrigger, books, dispatch } = useLibraryDataContext();
-    const {user, plan} = useAuthContext();
+    const {user} = useAuthContext();
 
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

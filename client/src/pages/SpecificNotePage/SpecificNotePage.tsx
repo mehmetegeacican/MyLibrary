@@ -1,7 +1,7 @@
 import { Button, Container, Grid, Paper, Typography } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useAuthContext } from '../../hooks/contextHooks';
 import { fetchOneNote } from '../../apis/noteApis';
 import { INote } from '../../interfaces/DataInterfaces';
 import ReactMarkdown from 'react-markdown';

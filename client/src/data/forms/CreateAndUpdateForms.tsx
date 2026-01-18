@@ -4,11 +4,10 @@ import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelect
 import StringValueField from "../../components/forms/StringValueField";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
-import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { useAuthContext,  useLibraryDataContext } from "../../hooks/contextHooks";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
 import UploadButton from "../../components/buttons/uploadButton";
 import { postNewImage } from "../../apis/imageApis";
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 import Flag from "react-world-flags";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';

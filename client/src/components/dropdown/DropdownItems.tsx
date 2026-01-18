@@ -1,6 +1,5 @@
 import { MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 
 
 

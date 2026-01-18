@@ -5,13 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IBook } from '../../interfaces/DataInterfaces';
 import BookIcon from '@mui/icons-material/Book';
 import FilterModal from '../modals/FilterModal';
 import { BookForm } from '../../data/forms/CreateAndUpdateForms';
 import UpdateModal from '../modals/UpdateModal';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
@@ -59,7 +58,6 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
 
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
-    const [query, setQuery] = useState("");
     const { user, plan } = useAuthContext();
     const { books, bookTrigger, dispatch } = useLibraryDataContext();
     const [page, setPage] = useState(0);
@@ -309,9 +307,5 @@ export default function Shelflist() {
             {selectedBook && <DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedBook} />}
         </Container>
     )
-}
-
-function filterDataByFilterInputs(tableDatas: any, filterChips: any) {
-    throw new Error('Function not implemented.');
 }
 

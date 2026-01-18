@@ -1,5 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+    ExpandMore
+} from '@mui/icons-material';
 import { AccordionData } from '../../interfaces/AccordionInterfaces';
 
 
@@ -12,12 +14,12 @@ interface AccordionInterface {
 export default function LibraryAccordion({ expanded, handleChange, accordions }: AccordionInterface) {
 
     const getAccordionDatas = (accordions: AccordionData[]) => {
-        
-        return accordions && accordions.map((accordion: AccordionData, index:number) => {
+
+        return accordions && accordions.map((accordion: AccordionData, index: number) => {
             return (
-                <Accordion  key={index} expanded={expanded === accordion.title} onChange={handleChange(accordion.title)}>
+                <Accordion key={index} expanded={expanded === accordion.title} onChange={handleChange(accordion.title)}>
                     <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        expandIcon={<ExpandMore />}
                         aria-controls="panel1bh-content"
                         id="panel1bh-header"
                     >

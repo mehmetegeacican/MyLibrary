@@ -1,8 +1,8 @@
 import { Container, Grid, Paper } from '@mui/material'
-import Tabbar from '../components/tabbar/Tabbar'
+import Tabbar from '../../components/tabbar/Tabbar'
 import React from 'react'
-import TabContent from '../components/tabbar/TabContent';
-import {CategoryTabContents, CategoryTabs } from '../data/tabs/TabDatas';
+import TabContent from '../../components/tabbar/TabContent';
+import {CategoryTabContents, CategoryTabs } from '../../data/tabs/TabDatas';
 
 
 export default function CategoriesPage() {

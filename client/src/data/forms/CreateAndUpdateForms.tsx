@@ -3,15 +3,14 @@ import React, { useEffect } from "react";
 import MultipleSelectionAutocomplete from "../../components/forms/MultipleSelectionAutocomplete";
 import StringValueField from "../../components/forms/StringValueField";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
-import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
-import { useLibraryDataContext } from "../../hooks/contextHooks/useLibraryDataContext";
+import { getIAuthors, getICategories, getStringAuthors, getStringCategories, useCreateAndUpdateForm } from "../../hooks/formHooks";
+import { useAuthContext,  useLibraryDataContext } from "../../hooks/contextHooks";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";
 import UploadButton from "../../components/buttons/uploadButton";
 import { postNewImage } from "../../apis/imageApis";
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
 import Flag from "react-world-flags";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {Favorite,FavoriteBorder} from '@mui/icons-material';
+import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
 
 
 /**
@@ -57,7 +56,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
 
 
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateBook(data.id.toString(), bookName, desc, getStringCategories(selectedCategories), selectedStatus, getStringAuthors(selectedAuthors), imagePath, language?.code,liked,influence);
             if (uploadedPicture) {
                 let formData = new FormData();
@@ -147,7 +146,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                             options={languageList}
                             sx={{ width: '50%' }}
                             value={language}
-                            onChange={(event, newValue: langInterface | null) => {
+                            onChange={(_, newValue: langInterface | null) => {
                                 setLanguage(newValue);
                             }}
                             renderOption={(props, option) => (
@@ -166,12 +165,12 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 name="book rating"
                                 value={liked}
                                 size="medium"
-                                icon={<FavoriteIcon fontSize="inherit" />}
-                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                icon={<Favorite fontSize="inherit" />}
+                                emptyIcon={<FavoriteBorder fontSize="inherit" />}
                                 style={{
                                     color: 'red'
                                 }}
-                                onChange={(event, newValue) => {
+                                onChange={(_, newValue) => {
                                     if (newValue) {
                                         setLiked(newValue);
                                     }
@@ -187,7 +186,7 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                                 style={{
                                     color: 'skyblue'
                                 }}
-                                onChange={(event, newValue) => {
+                                onChange={(_, newValue) => {
                                     if (newValue) {
                                         setInfluence(newValue);
                                     }
@@ -213,8 +212,8 @@ export function BookForm({ format, data, handleClose }: FormInterface) {
                         setImagePath={setImagePath}
                     />
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>
@@ -236,7 +235,7 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
 
     //submit
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateAuthor(data.id, formName, formInfo);
             handleClose!();
         }
@@ -267,8 +266,8 @@ export function AuthorForm({ format, data, handleClose }: FormInterface) {
 
                     </Stack>
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>
@@ -296,7 +295,7 @@ export function CategoryForm({ format, data, handleClose }: FormInterface) {
     }, [data]);
 
     const submit = async () => {
-        if (format === "update" && data) {
+        if (format === CREATE_UPDATE_FORM_FORMAT.UPDATE && data) {
             await updateCategory(data.id, formName, formInfo);
             handleClose!();
         }
@@ -319,8 +318,8 @@ export function CategoryForm({ format, data, handleClose }: FormInterface) {
                         <StringValueField label='Please Enter the Category Info' data={formInfo} setter={setFormInfo} />
                     </Stack>
                     <Divider />
-                    {format === "create" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
-                    {format === "update" && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.CREATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Add </Button>)}
+                    {format === CREATE_UPDATE_FORM_FORMAT.UPDATE && (<Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' onClick={submit}> Update </Button>)}
                     {error && <Alert sx={{ mt: 2 }} severity="error"> {message}</Alert>}
                     {success && <Alert sx={{ mt: 2 }} severity="success"> {message}</Alert>}
                 </Stack>

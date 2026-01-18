@@ -3,7 +3,8 @@ import {
     ReactFlow,
     applyNodeChanges,
     applyEdgeChanges, addEdge,
-    Controls, Background, MiniMap, ReactFlowProvider
+    Controls, Background, MiniMap, ReactFlowProvider,
+    type ColorMode,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Container, Grid, Paper } from '@mui/material';
@@ -32,7 +33,8 @@ export default function MindMapWhiteBoardPage() {
     const [edges, setEdges] = useState(initialEdges);
     const [settings,setSettings] = useState({
         miniMapOpen:true,
-        zoomOpen:true
+        zoomOpen:true,
+        fitView:false
     });
 
     const onNodesChange = useCallback(
@@ -65,7 +67,7 @@ export default function MindMapWhiteBoardPage() {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
-                        //fitView
+                        fitView={settings.fitView}
                     >
                         <Background />
                         {settings.zoomOpen && <Controls />}

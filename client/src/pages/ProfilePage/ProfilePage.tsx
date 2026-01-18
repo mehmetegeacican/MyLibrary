@@ -1,10 +1,8 @@
-import { Avatar, Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
-import { SignUpForm } from './SignUpPage'
-import { useAuthContext } from '../hooks/contextHooks/useAuthContext'
-import ProfileForm from '../data/forms/ProfileForm';
-import { useLibraryTheme } from '../hooks/theme/useLibraryTheme';
-import { updateUser } from '../apis/userApis';
+import { Container, FormControlLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material'
+import { useAuthContext } from '../../hooks/contextHooks'
+import ProfileForm from '../../data/forms/ProfileForm';
+import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import { updateUser } from '../../apis/userApis';
 
 export default function ProfilePage() {
 

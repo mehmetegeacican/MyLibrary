@@ -28,7 +28,7 @@ export default function MultipleSelectionAutocomplete({ label, placeholder, data
             fullWidth
             filterSelectedOptions
             disableCloseOnSelect
-            onChange={(event: any, newValue: IDataSet[] | null) => {
+            onChange={(_: any, newValue: IDataSet[] | null) => {
                 setSelected(newValue);
             }}
             getOptionLabel={(option) => {

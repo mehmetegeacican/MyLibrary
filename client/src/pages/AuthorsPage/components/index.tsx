@@ -1,0 +1,1 @@
+export {default as AuthorAccordions} from "./accordions/AuthorAccordions";

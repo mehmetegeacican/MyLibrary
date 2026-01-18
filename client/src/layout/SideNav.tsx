@@ -3,7 +3,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import { drawerWidth } from '../constants/sizes';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, mainListItemsSignedOut, proListItems, secondaryListItems } from './NavItems';
-import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
+import { useAuthContext } from '../hooks/contextHooks';
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({

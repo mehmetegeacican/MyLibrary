@@ -1,9 +1,7 @@
-import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack, Button } from '@mui/material'
+import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext'
-import PersonIcon from '@mui/icons-material/Person';
-import { VisibilityOff, Visibility } from '@mui/icons-material';
-
+import { useAuthContext } from '../../hooks/contextHooks'
+import { VisibilityOff, Visibility, Person } from '@mui/icons-material';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../components/buttons/uploadButton';
 import { getUserById, updateUser } from '../../apis/userApis';
@@ -161,7 +159,7 @@ export default function ProfileForm() {
         backgroundColor: avatarColor,
         transition: '0.3s ease'
       }}>
-        {!imagePath && <PersonIcon sx={{ height: 90, width: 90 }} />}
+        {!imagePath && <Person sx={{ height: 90, width: 90 }} />}
         {imagePath && <Image src={`http://localhost:4008/images/profilepics/${imagePath}`} height={200} width={200}/>}
       </Avatar>
       <Stack spacing={3} sx={{

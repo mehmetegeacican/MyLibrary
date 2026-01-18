@@ -1,27 +1,17 @@
-import { InfoOutlined } from '@mui/icons-material'
-import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import EditIcon from '@mui/icons-material/Edit';
+
+import { Button, Container, Stack, Grid, TablePagination, Avatar, Typography, darken, Dialog, DialogTitle, DialogContent, IconButton, Box, Rating, TableFooter, TableRow, Table } from '@mui/material';
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IBook } from '../../interfaces/DataInterfaces';
-import BookIcon from '@mui/icons-material/Book';
-import FilterModal from '../modals/FilterModal';
+import { FilterModal, UpdateModal, ExportModal, ImportModal, DeleteModal } from '../modals';
 import { BookForm } from '../../data/forms/CreateAndUpdateForms';
-import UpdateModal from '../modals/UpdateModal';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
 import { fetchAllBooks } from '../../apis/bookApi';
 import { Image } from 'antd';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ExportModal from '../modals/ExportModal';
-import ImportModal from '../modals/ImportModal';
-import DeleteModal from '../modals/DeleteModal';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { InfoOutlined, Book , Edit, FilterList, FavoriteBorder, Favorite, Delete, PostAdd} from '@mui/icons-material'
+import { SUBSCRIPTION_METHOD } from '../../enums/enums';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;
@@ -59,7 +49,6 @@ const CreateBookModel = ({ open, handleClose }: { open: boolean, handleClose: ()
 
 export default function Shelflist() {
     const { libTheme } = useLibraryTheme();
-    const [query, setQuery] = useState("");
     const { user, plan } = useAuthContext();
     const { books, bookTrigger, dispatch } = useLibraryDataContext();
     const [page, setPage] = useState(0);
@@ -75,7 +64,7 @@ export default function Shelflist() {
 
     //Handlers
     const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
+        _: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
     ) => {
         setPage(newPage);
@@ -166,10 +155,10 @@ export default function Shelflist() {
                         color={libTheme}
                         onChange={(e) => setQuery(e.target.value)}
                     />*/}
-                    <Button color={'info'} variant='text' onClick={() => setOpenFilter(true)}><FilterListIcon /></Button>
+                    <Button color={'info'} variant='text' onClick={() => setOpenFilter(true)}><FilterList /></Button>
                     <Button color={'success'} variant='text' onClick={() => setOpenExport(true)}><ExportIcon /></Button>
                     <Button color={'secondary'} variant='text' onClick={() => setOpenImport(true)}><ImportIcon /></Button>
-                    <Button color={libTheme} variant='text' onClick={() => setOpenAdd(true)}><PostAddIcon /></Button>
+                    <Button color={libTheme} variant='text' onClick={() => setOpenAdd(true)}><PostAdd /></Button>
                     {/*<Button color={'error'} variant='text' onClick={() => console.log("aaa")}><DeleteIcon /></Button>*/}
                 </div>
                 <div>
@@ -183,7 +172,6 @@ export default function Shelflist() {
                                 if (book.imagePath) {
                                     return (
                                         <Grid item xs={6} md={3} lg={2} key={book.id}>
-
                                             <Image
                                                 src={`http://localhost:4008/images/books/${book.imagePath}`}
                                                 width={150}
@@ -195,18 +183,18 @@ export default function Shelflist() {
                                                 value={parseInt(book.liked ?? "0")}
                                                 readOnly
                                                 size="small"
-                                                icon={<FavoriteIcon fontSize="inherit" />}
-                                                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                                                icon={<Favorite fontSize="inherit" />}
+                                                emptyIcon={<FavoriteBorder fontSize="inherit" />}
                                                 sx={{
                                                     color: 'red',
                                                     display: 'flex',
                                                     justifyContent: 'center',
-                                                    mt: 1,
+                                                    mt: 2,
                                                     mb: 0.7,
-                                                    mr: 1.4
+                                                    ml:3.5
                                                 }}
                                             />
-                                            {plan === 'pro' && <Rating
+                                            {plan === SUBSCRIPTION_METHOD.PRO && <Rating
                                                 name="influence"
                                                 value={parseInt(book.influence ?? "0")}
                                                 readOnly
@@ -217,7 +205,7 @@ export default function Shelflist() {
                                                     justifyContent: 'center',
                                                     mt: 1,
                                                     mb: 0.7,
-                                                    mr: 1.4
+                                                    ml: 3.5
                                                 }}
                                             />}
                                             <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 0.1, marginRight: 1.8 }}>
@@ -232,14 +220,14 @@ export default function Shelflist() {
                                                     setOpenUpdate(true);
 
                                                 }}>
-                                                    <EditIcon />
+                                                    <Edit />
                                                 </IconButton>
                                                 <IconButton aria-label="delete" color='error' onClick={() => {
                                                     setSelectedBook(book);
                                                     setOpenDelete(true);
 
                                                 }}>
-                                                    <DeleteIcon />
+                                                    <Delete />
                                                 </IconButton>
                                             </Box>
 
@@ -271,7 +259,7 @@ export default function Shelflist() {
                                                 src={book.imagePath ? `http://localhost:4008/images/books/${book.imagePath}` : ''}
                                             >
                                                 {/* Only show the icon if there's no image */}
-                                                {!book.imagePath && <BookIcon sx={{ height: 90, width: 90 }} />}
+                                                {!book.imagePath && <Book sx={{ height: 90, width: 90 }} />}
                                             </Avatar>
                                             <Stack gap={3} justifyContent={'center'}>
                                                 <Typography color={libTheme}>{book.name}</Typography>
@@ -284,22 +272,22 @@ export default function Shelflist() {
                         })}
                     </Grid>
                 </div>
-                <div>
-                    <TablePagination
-                        align='center'
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}
-                        rowsPerPageOptions={[6, 12, 24]}
-                        colSpan={1}
-                        count={filteredBooks.length}
-                        rowsPerPage={rowsPerPage}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        page={page} />
-                </div>
-
+                <Table>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[6, 12, 24]}
+                                colSpan={100}
+                                count={filteredBooks.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                sx={{ justifyContent: 'center' }}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
             </Stack>
             {<FilterModal open={openFilter} handleClose={() => setOpenFilter(false)} exampleData={books[0]!} setFilterChips={setFilterChips} />}
             {<CreateBookModel open={openAdd} handleClose={() => setOpenAdd(false)} />}
@@ -309,9 +297,5 @@ export default function Shelflist() {
             {selectedBook && <DeleteModal open={openDelete} handleClose={() => setOpenDelete(false)} data={selectedBook} />}
         </Container>
     )
-}
-
-function filterDataByFilterInputs(tableDatas: any, filterChips: any) {
-    throw new Error('Function not implemented.');
 }
 

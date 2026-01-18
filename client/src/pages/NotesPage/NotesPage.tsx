@@ -1,14 +1,15 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import { SearchRounded } from '@mui/icons-material'
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext'
+
+import { useAuthContext , useLibraryDataContext } from '../../hooks/contextHooks'
 import { INote } from '../../interfaces/DataInterfaces'
 import defaultImg from '../../assets/default.jpg';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import DeleteModal from '../../components/modals/DeleteModal';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+import {
+    DeleteModal,
+    NoteAddEditModal
+} from '../../components/modals';
+import { SearchRounded, PostAdd } from '@mui/icons-material'
 import { fetchAllNotes } from '../../apis/noteApis';
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
-import NoteAddEditModal from '../../components/modals/NoteAddEditModal';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
@@ -114,7 +115,7 @@ export default function NotesPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => setOpenAddModal(true)}><PostAddIcon /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => setOpenAddModal(true)}><PostAdd /></Button>
                         </div>
 
                     </Paper>

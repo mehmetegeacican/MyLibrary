@@ -1,6 +1,6 @@
 import React from "react";
 import { login, signup } from "../../apis/authApis";
-import { useAuthContext } from "../contextHooks/useAuthContext";
+import { useAuthContext } from "../contextHooks";
 
 export const useAuthForms = () => {
     const [error, setError] = React.useState<boolean>(false);

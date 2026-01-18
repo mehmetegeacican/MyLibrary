@@ -1,10 +1,8 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Stack, Rating } from '@mui/material'
 import { Button, Flex, Typography } from 'antd';
 import { IBook } from '../../interfaces/DataInterfaces';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
-import { useEffect } from 'react';
+import {Favorite, FavoriteBorder} from '@mui/icons-material';
+import { useAuthContext } from "../../hooks/contextHooks";
 
 interface RatingModalInterface {
     open: boolean;
@@ -39,8 +37,8 @@ export default function RatingModal({
                             value={parseInt(book.liked ?? "0")}
                             readOnly
                             size="medium"
-                            icon={<FavoriteIcon fontSize="inherit" />}
-                            emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                            icon={<Favorite fontSize="inherit" />}
+                            emptyIcon={<FavoriteBorder fontSize="inherit" />}
                             style={{
                                 color: 'red'
                             }}

@@ -1,11 +1,11 @@
 import { Container, Grid, Paper } from '@mui/material'
-import Tabbar from '../components/tabbar/Tabbar'
+import Tabbar from '../../components/tabbar/Tabbar'
 import React from 'react'
-import TabContent from '../components/tabbar/TabContent';
-import { AuthorTabs, AuthorTabContents } from '../data/tabs/TabDatas';
+import TabContent from '../../components/tabbar/TabContent';
+import { BookTabContents, BookTabs } from '../../data/tabs/TabDatas';
 
 
-export default function AuthorsPage() {
+export default function BookPage() {
     //State
     const [tabValue, setTabValue] = React.useState<number>(0);
 
@@ -20,7 +20,7 @@ export default function AuthorsPage() {
                             flexDirection: 'column',
                             height: 74,
                         }}>
-                        <Tabbar tabElements={AuthorTabs} tabValue={tabValue} setTabValue={setTabValue} />
+                        <Tabbar tabElements={BookTabs} tabValue={tabValue} setTabValue={setTabValue} />
                     </Paper>
                 </Grid>
                 {/* Table */}
@@ -30,7 +30,7 @@ export default function AuthorsPage() {
                         display: 'flex',
                         flexDirection: 'column',
                     }}>
-                        <TabContent value={tabValue} items={AuthorTabContents}/>
+                        <TabContent value={tabValue} items={BookTabContents}/>
                     </Paper>
                 </Grid>
             </Grid>

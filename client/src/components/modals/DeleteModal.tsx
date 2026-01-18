@@ -1,8 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory, isINote } from "../tables/DataRow";
-import { useDeleteModal } from "../../hooks/modalHooks/useDeleteModal";
-import { useAuthContext } from "../../hooks/contextHooks/useAuthContext";
+import { useDeleteModal } from "../../hooks/modalHooks";
 
 
 
@@ -10,7 +9,7 @@ interface DeleteModalImnterface {
     selectedIds? : number[];
     open:boolean;
     handleClose: () => void;
-    data : IBook | ICategory | IAuthor | INote;
+    data : IBook | ICategory | IAuthor | INote;
 }
 
 export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteModalImnterface) {

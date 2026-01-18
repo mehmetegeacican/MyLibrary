@@ -1,14 +1,12 @@
-import { Box, Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
+import { Container, FormControl, Grid, MenuItem, Paper, Select, SelectChangeEvent } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
-import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllBookCountsByStat, fetchAllLikedAvgByAuthor, fetchAllLikedAvgByCategory } from '../apis/statApi';
-import { useLibraryDataContext } from '../hooks/contextHooks/useLibraryDataContext';
-import PolarAreaChart from '../data/charts/PolarAreaChart';
-import { IAuthor } from '../interfaces/DataInterfaces';
-import BarChart from '../data/charts/BarChart';
-import PieChart from '../data/charts/PieChart';
-import DougnutChart from '../data/charts/DougnutChart';
-import ComparisonChart from '../components/comparisonChart/comparisonChart';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
+import { fetchAllBookCountsByAuthor, fetchAllBookCountsByCategory, fetchAllLikedAvgByAuthor, fetchAllLikedAvgByCategory } from '../../apis/statApi';
+import PolarAreaChart from '../../data/charts/PolarAreaChart';
+import { IAuthor } from '../../interfaces/DataInterfaces';
+import BarChart from '../../data/charts/BarChart';
+import DougnutChart from '../../data/charts/DougnutChart';
+import ComparisonChart from '../../components/comparisonChart/comparisonChart';
 
 export default function Statistics() {
     const { user } = useAuthContext();
@@ -19,7 +17,7 @@ export default function Statistics() {
     const [likeAvgByCategory,setLikeAvgByCategory] = useState<any>();
     const [graphT, setGraphT] = useState<string>("Polar Area");
 
-    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+    const selectedAuthors: string[] = [];
 
 
     // Author Menu

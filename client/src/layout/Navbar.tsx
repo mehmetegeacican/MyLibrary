@@ -1,14 +1,12 @@
 import { Badge, IconButton, Toolbar, Typography, styled } from '@mui/material';
 import { drawerWidth } from '../constants/sizes';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import MenuIcon from '@mui/icons-material/Menu';
-import UserIcon from '@mui/icons-material/Person'
+import {Menu, Person} from '@mui/icons-material';
 import React, { useMemo } from 'react';
 import DropdownMenu from '../components/dropdown/DropdownMenu';
 import { useAuthContext } from '../hooks/contextHooks/useAuthContext';
 import { AppBarPropsColorOverrides } from '@mui/material/AppBar';
 import { OverridableStringUnion } from '@mui/types';
-import { PaletteColor } from '@mui/material/styles';
 
 
 declare module '@mui/material/AppBar' {
@@ -76,7 +74,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
         setAnchorEl(event.currentTarget);
       };
     
-      const handleClose = (event: Event | React.SyntheticEvent) => {
+      const handleClose = (_: Event | React.SyntheticEvent) => {
         setAnchorEl(null);
         setOpenMenu(false);
       };
@@ -98,7 +96,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
                         ...(open && { display: 'none' }),
                     }}
                 >
-                    <MenuIcon />
+                    <Menu/>
                 </IconButton>
                 <Typography
                     component="h1"
@@ -112,7 +110,7 @@ export default function Navbar({ open, toggleDrawer }: NavbarProps) {
                 </Typography>
                 <IconButton color="inherit" onClick={handleToggle}>
                     <Badge>
-                        <UserIcon />
+                        <Person />
                     </Badge>
                     <DropdownMenu open={openMenu} anchor={anchorEl || null}  handleClose={handleClose}/>
                 </IconButton>

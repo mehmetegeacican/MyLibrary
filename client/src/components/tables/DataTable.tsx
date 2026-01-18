@@ -3,17 +3,19 @@ import React, { Fragment, useEffect, useMemo } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
-import DeleteModal from '../modals/DeleteModal';
-import UpdateModal from '../modals/UpdateModal';
+import {
+    DeleteModal,
+    UpdateModal,
+    ExportModal,
+    ImportModal,
+    BookDataModal,
+    RatingModal
+} from '../modals';
 import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
 import { isIAuthor, isIBook, isICategory, renderAuthorRow, renderBookRow, renderCategoryRow } from './DataRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterModal from '../modals/FilterModal';
-import { useFilterModal } from '../../hooks/modalHooks/useFilterModal';
-import ExportModal from '../modals/ExportModal';
-import ImportModal from '../modals/ImportModal';
-import BookDataModal from '../modals/BookDataModal';
-import RatingModal from '../modals/RatingModal';
+import { useFilterModal } from '../../hooks/modalHooks';
 
 
 interface TableInterfaces<T> {

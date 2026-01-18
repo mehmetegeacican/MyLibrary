@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
-import { useAuthContext } from '../contextHooks/useAuthContext';
+import { useEffect, useMemo } from 'react'
+import { useAuthContext } from '../contextHooks';
 import { OverridableStringUnion } from '@mui/types';
 import { AppBarPropsColorOverrides } from '@mui/material';
 import { getUserById } from '../../apis/userApis';

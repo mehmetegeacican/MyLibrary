@@ -2,11 +2,9 @@ import React from "react"
 import { deleteABook } from "../../apis/bookApi";
 import { deleteExistingCategory } from "../../apis/categoryApi";
 import { ApiResult } from "../../interfaces/DataInterfaces";
-import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
+import { useLibraryDataContext, useAuthContext } from "../contextHooks";
 import { deleteAnAuthor } from "../../apis/authorApi";
-import { useAuthContext } from "../contextHooks/useAuthContext";
 import { deleteNotes } from "../../apis/noteApis";
-import { isINote } from "../../components/tables/DataRow";
 
 export const useDeleteModal = () => {
     //Hooks

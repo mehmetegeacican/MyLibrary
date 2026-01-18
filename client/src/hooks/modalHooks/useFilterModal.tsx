@@ -1,4 +1,3 @@
-import { useEffect, useMemo } from "react";
 import { useLibraryDataContext } from "../contextHooks/useLibraryDataContext";
 import { IAuthor, IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../../components/tables/DataRow";

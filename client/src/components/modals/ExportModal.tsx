@@ -1,6 +1,6 @@
 import { IBook, ICategory, IAuthor } from '../../interfaces/DataInterfaces';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
-import React, { useEffect, useMemo } from 'react';
+import {useMemo } from 'react';
 import { CSVLink } from 'react-csv';
 import { isIAuthor, isIBook, isICategory } from '../tables/DataRow';
 

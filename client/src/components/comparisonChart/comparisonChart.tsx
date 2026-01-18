@@ -1,13 +1,12 @@
-import React, { useMemo, useState } from 'react'
-import { useAuthContext } from '../../hooks/contextHooks/useAuthContext';
+import { useMemo, useState } from 'react'
+import { useLibraryDataContext } from '../../hooks/contextHooks';
 import { Box, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Tooltip } from '@mui/material';
 import BarChart from '../../data/charts/BarChart';
 import DougnutChart from '../../data/charts/DougnutChart';
 import PolarAreaChart from '../../data/charts/PolarAreaChart';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { isAvgLikedByAuthorStat, isAvgLikedByCategoryStat, isBookByAuthorStat, isBookByCategoryrStat } from '../../data/charts/chartDataCheck';
-import FilterModal from '../modals/FilterModal';
-import { useLibraryDataContext } from '../../hooks/contextHooks/useLibraryDataContext';
+import {FilterModal} from '../modals';
 
 
 
@@ -16,7 +15,6 @@ interface IChartData {
 }
 
 export default function ComparisonChart({ dataCounts }: IChartData) {
-    const { user } = useAuthContext();
     const [menu, setMenu] = useState<string>('Most Frequent');
     const [freq, setFreq] = useState<number>(10);
     const [graphType, setGraphType] = useState<string>("Bar");

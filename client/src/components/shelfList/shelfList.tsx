@@ -11,7 +11,7 @@ import ExportIcon from '@mui/icons-material/GetApp';
 import ImportIcon from '@mui/icons-material/FileUpload';
 import { InfoOutlined, Book , Edit, FilterList, FavoriteBorder, Favorite, Delete, PostAdd} from '@mui/icons-material'
 import { CREATE_UPDATE_FORM_FORMAT, SUBSCRIPTION_METHOD } from '../../enums/enums';
-import { BookForm } from '../../pages/BooksPage/components/forms/BookForm';
+import { BookForm } from '../../pages/BooksPage/components';
 
 const checkWhichRowsToShow = (page: number, rowsPerPage: number, index: number) => {
     let multiplied: number = page * rowsPerPage;

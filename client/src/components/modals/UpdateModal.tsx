@@ -4,7 +4,7 @@ import React from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../enums/enums";
-import { BookForm } from "../../pages/BooksPage/components/forms/BookForm";
+import { BookForm } from "../../pages/BooksPage/components";
 import AuthorForm from "../../pages/AuthorsPage/components/forms/AuthorForm";
 import CategoryForm from "../../pages/CategoriesPage/components/forms/CategoryForm";
 

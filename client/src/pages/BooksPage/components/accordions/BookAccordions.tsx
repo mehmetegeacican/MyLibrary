@@ -6,7 +6,7 @@ import { BookTableHeader } from "../../../../data/tables/TableDatas";
 import { BookAccordionDatas } from "../../../../data/accordions/AccordionDatas";
 import LibraryAccordion from "../../../../components/accordions/LibraryAccordion";
 import { CREATE_UPDATE_FORM_FORMAT } from "../../../../enums/enums";
-import { BookForm } from "../forms/BookForm";
+import BookForm from "../forms/BookForm";
 
 /**
  * Accordion for Book Page

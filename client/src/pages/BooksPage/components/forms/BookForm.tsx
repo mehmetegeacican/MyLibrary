@@ -23,7 +23,7 @@ const languageList: langInterface[] = [
  * Create & Update Forms for Book
  * @returns rendered create book form component
  */
-export function BookForm({ format, data, handleClose }: FormInterface) {
+export default function BookForm({ format, data, handleClose }: FormInterface) {
     // Variables -- Hooks 
     const { user, plan } = useAuthContext();
     const [bookName, setBookName] = React.useState<string>('White Fang');

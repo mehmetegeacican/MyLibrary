@@ -6,6 +6,11 @@ import { isIAuthor } from "../../../../components/tables/DataRow";
 import { Alert, Box, Button, Container, Divider, Stack } from "@mui/material";
 import StringValueField from "../../../../components/forms/StringValueField";
 
+
+/**
+ * Create & Update Forms for Authors
+ * @returns rendered create author form component
+ */
 export default function AuthorForm({ format, data, handleClose }: FormInterface) {
     //Hooks & Contexts
     const [formName, setFormName] = React.useState<string>("");

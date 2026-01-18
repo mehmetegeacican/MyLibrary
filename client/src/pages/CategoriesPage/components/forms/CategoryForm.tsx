@@ -7,6 +7,10 @@ import { Alert, Box, Button, Container, Divider, Stack } from "@mui/material";
 import StringValueField from "../../../../components/forms/StringValueField";
 
 
+/**
+ * Create & Update Forms for Categories
+ * @returns rendered create category form component
+ */
 export default function CategoryForm({ format, data, handleClose }: FormInterface) {
 
     //Hooks and Contexts

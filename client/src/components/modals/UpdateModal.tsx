@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, Button, Stack, Alert } from "@mui/material";
 import { AuthorForm, BookForm, CategoryForm } from "../../data/forms/CreateAndUpdateForms";
-import { useCreateAndUpdateForm } from "../../hooks/formHooks/useCreateAndUpdateForm";
+import { useCreateAndUpdateForm } from "../../hooks/formHooks";
 import React from "react";
 import { IBook, ICategory } from "../../interfaces/DataInterfaces";
 import { isIAuthor, isIBook, isICategory } from "../tables/DataRow";

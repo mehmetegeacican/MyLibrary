@@ -12,7 +12,7 @@ import { useAuthContext } from "./hooks/contextHooks/useAuthContext";
 import NotesPage from "./pages/NotesPage";
 import SpecificNotePage from "./pages/SpecificNotePage";
 import ProfilePage from "./pages/ProfilePage";
-import Statistics from "./pages/Statistics";
+import Statistics from "./pages/StatisticsPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import MindMapDashboardPage from "./pages/MindMapDashBoardPage";
 import MindMapWhiteBoardPage from "./pages/WhiteboardPage";

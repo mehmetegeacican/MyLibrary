@@ -21,6 +21,19 @@ services:
       - "${REDIS_PORT}:${REDIS_PORT}"
     networks:
       - library-network
+  mongodb:
+    image: mongo:6.0
+    container_name: library-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    networks:
+      - library-network
   # --- MICROSERVICES ---
   authservice:
     build: './authservice'
@@ -233,7 +246,8 @@ volumes:
   bookservice-node_modules:
   userservice-code:
   userservice-node-modules:
-
+  mongo_data:
+  
 networks:
   library-network:
     external:

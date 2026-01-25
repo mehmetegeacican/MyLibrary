@@ -17,3 +17,31 @@ export const fetchAllMindMaps = async (ownerId:string) => {
 export const fetchMindMapById = async (mindMapId:string) => {
     return await MindMap.findById(mindMapId).lean();
 }
+
+/**
+ * Creates a new MindMap
+ * @param payload Request payload for creating a mindmap
+ * @returns 
+ */
+export const postMindMap = async (payload: any) => {
+    return await MindMap.create(payload);
+}
+
+/**
+ * Updates a MindMap by its id
+ * @param mindMapId the mindmap's id
+ * @param payload the update payload
+ * @returns the updated mindmap document
+ */
+export const putMindMap = async (mindMapId: string, payload: any) => {
+    return await MindMap.findByIdAndUpdate(mindMapId, payload, { new: true }).lean();
+}
+
+/**
+ * Deletes a MindMap by its id
+ * @param mindMapId Mindmap's id
+ * @returns deleted mindmap document
+ */
+export const removeMindMapById = async (mindMapId: string, safe: boolean = true) => {
+    return await MindMap.findByIdAndDelete(mindMapId).lean();
+}

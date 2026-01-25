@@ -1,4 +1,4 @@
-import { fetchAllMindMaps, fetchMindMapById } from "../service/mindmap.service";
+import { fetchAllMindMaps, fetchMindMapById, postMindMap, putMindMap, removeMindMapById } from "../service/mindmap.service";
 
 /**
  * The controller for receiving all mindmaps
@@ -51,7 +51,31 @@ export const getMindMapById = async (req: any, res: any) => {
  * @param res
  */
 export const createMindMap = async (req: any, res: any) => {
-    res.status(201).json({ message: "Create mindmap - To be implemented" });
+    try {
+        const {
+            title,
+            nodes,
+            edges
+        } = req.body;
+
+        const {
+            ownerId
+        } = req.query;
+
+        const newlyAddedMindMap = await postMindMap({
+            title,
+            nodes,
+            edges,
+            ownerId
+        });
+
+
+        return res.status(201).json(newlyAddedMindMap);
+
+    } catch (error) {
+        console.error("Error creating mindmap:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
 /**
@@ -60,7 +84,20 @@ export const createMindMap = async (req: any, res: any) => {
  * @param res 
  */
 export const updateMindMapById = async (req: any, res: any) => {
-    res.status(200).json({ message: "Update mindmap by id - To be implemented" });
+
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ message: "MindMap id parameter is required" });
+        }
+        const { title, nodes, edges } = req.body;
+        const updatedMindMap = await putMindMap(id, { title, nodes, edges });
+        return res.status(200).json(updatedMindMap);
+
+    } catch(error) {
+        console.error("Error updating mindmap by id :", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
 /**
@@ -69,5 +106,16 @@ export const updateMindMapById = async (req: any, res: any) => {
  * @param res 
  */
 export const deleteMindMapById = async (req: any, res: any) => {
-    res.status(200).json({ message: "Delete mindmap by id - To be implemented" });
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ message: "MindMap id parameter is required" });
+        }
+        const deletedMindMap = await removeMindMapById(id, false);
+        return res.status(200).json(deletedMindMap);
+
+    } catch (error) {
+        console.error("Error deleting mindmap by id :", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }

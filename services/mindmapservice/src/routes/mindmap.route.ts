@@ -20,7 +20,6 @@ const router: express.Router = express.Router();
 
 router.get('/all', getAllMindMapsValidation, getAllMindMaps);
 router.get('/:id',getMindMapByIdValidation, getMindMapById);
-
 router.post('/',postMindMapValidation, createMindMap);
 router.put('/:id',putMindMapValidation, updateMindMapById);
 router.delete('/:id',deleteMindMapByIdValidation,deleteMindMapById);

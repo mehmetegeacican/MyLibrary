@@ -33,7 +33,6 @@ export const getMindMapById = async (req: any, res: any) => {
             return res.status(400).json({ message: "MindMap id parameter is required" });
         }
         const mindmap = await fetchMindMapById(id);
-        console.log("Fetched mindmap:", mindmap);
         if (!mindmap) {
             return res.status(404).json({ message: "MindMap not found" });
         }

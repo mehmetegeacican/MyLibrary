@@ -9,15 +9,16 @@ import {
 } from "../controller/mindmap.controller";
 import {
     getAllMindMapsValidation,
-    validate
+    getMindMapByIdValidation
 } from "../validator/mindmap.validation";
 
 const router: express.Router = express.Router(); 
 
 
 router.get('/all', getAllMindMapsValidation, getAllMindMaps);
+router.get('/:id',getMindMapByIdValidation, getMindMapById);
+
 router.post('/', createMindMap);
-router.get('/:id', getMindMapById);
 router.put('/:id', updateMindMapById);
 router.delete('/:id', deleteMindMapById);
 export default router;

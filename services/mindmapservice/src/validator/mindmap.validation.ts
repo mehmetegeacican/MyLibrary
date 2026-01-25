@@ -1,4 +1,4 @@
-import { query, validationResult } from "express-validator";
+import { param, query, validationResult } from "express-validator";
 
 export const validate = (req: any, res: any, next: any) => {
     const errors = validationResult(req);
@@ -17,5 +17,14 @@ export const getAllMindMapsValidation = [
         .notEmpty().withMessage('ownerId cannot be empty'),
     validate
 ];
+
+export const getMindMapByIdValidation = [
+    param('id')
+        .exists().withMessage("Id is required")
+        .isString().withMessage("Id must be a string")
+        .notEmpty().withMessage('Id cannot be empty')
+        .isMongoId().withMessage("Id must be a valid mongo id, 24 character hex string, 12 byte Uint8Array, or an integer"),
+    validate
+]
 
 

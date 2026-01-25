@@ -10,7 +10,7 @@ const app:express.Application = express();
  * Middleware
  */
 app.use(express.json()); // Parse JSON request bodies
-app.use('/api/v1/mindmaps',router);
+app.use('/api/v3/mindmaps',router);
 
 /**
  * Routes

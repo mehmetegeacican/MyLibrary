@@ -22,6 +22,7 @@ export const getAllMindMaps = async (req: any, res: any) => {
 
 /**
  * The Controller for receiving a mindmap by id
+ * GET /api/v3/mindmaps/:id
  * @param req 
  * @param res 
  */
@@ -47,6 +48,7 @@ export const getMindMapById = async (req: any, res: any) => {
 
 /**
  * The Controller for creating a mindmap
+ * POST /api/v3/mindmaps
  * @param req 
  * @param res
  */
@@ -80,6 +82,7 @@ export const createMindMap = async (req: any, res: any) => {
 
 /**
  * The Controller for updating a mindmap by id
+ * PUT /api/v3/mindmaps/:id
  * @param req 
  * @param res 
  */
@@ -102,6 +105,7 @@ export const updateMindMapById = async (req: any, res: any) => {
 
 /**
  * The Controller for deleting a mindmap by id
+ * DELETE /api/v3/mindmaps/:id
  * @param req 
  * @param res 
  */

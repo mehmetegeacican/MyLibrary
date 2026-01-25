@@ -9,5 +9,3 @@ export const MindMapNodeSchema = new mongoose.Schema({
         label: {type:String, required:true, default: 'New Node'}
     }
 },{ timestamps: true });
-
-export const MindMapNode = mongoose.model('MindMapNode', MindMapNodeSchema);

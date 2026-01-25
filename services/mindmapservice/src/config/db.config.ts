@@ -12,7 +12,6 @@ export const connectToMongoDb = async (mongoURI: string) : Promise<boolean> => {
         return true;
     } catch(error:any){
         console.error("MongoDB Connection Error:",error.message);
-        process.exit(1);
         return false;
     }
 }

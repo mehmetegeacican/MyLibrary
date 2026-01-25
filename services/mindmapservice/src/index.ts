@@ -2,16 +2,24 @@ import dotenv from 'dotenv';
 dotenv.config(); // load environment variables first
 
 import app from './app';
+import { connectToMongoDb } from './config/db.config';
 
 const port = process.env.PORT || 4000;
+const mongoURI = process.env.MONGO_URI || '';
 
 const startServer = async () => {
   try {
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
+    const isConnected = await connectToMongoDb(mongoURI);
+    if (isConnected) {
+      app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+      });
+    }
+    else {
+      console.error('Failed to connect to MongoDB. Server not started.');
+    }
   } catch (error) {
-    console.error('Error occurred:', error);
+    console.error('Server not started ,Error occurred:', error);
   }
 };
 

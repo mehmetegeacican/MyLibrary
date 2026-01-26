@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Tooltip, Legend } from 'chart.js/auto';
 import { Container } from '@mui/system';
 import { isBookByCategoryrStat } from './chartDataCheck';

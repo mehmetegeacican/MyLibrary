@@ -1,14 +1,12 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
     ReactFlow,
     applyNodeChanges,
     applyEdgeChanges, addEdge,
     Controls, Background, MiniMap, ReactFlowProvider,
-    type ColorMode,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Container, Grid, Paper } from '@mui/material';
-import SideNav from '../../layout/SideNav';
+import { Paper } from '@mui/material';
 import MindMapSideBar from './components/MindMapSideBar/MindMapSideBar';
 import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';

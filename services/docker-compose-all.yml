@@ -222,6 +222,19 @@ services:
 
     networks:
       - library-network
+  mindmapservice:
+    build: ./mindmapservice
+    ports:
+      - "${PORT_MIND_MAP}:${PORT_MAIN}"
+    environment:
+      PORT: ${PORT_MIND_MAP}
+      MONGO_URI: ${MONGO_URI}
+    volumes:
+      - mindmapservice-code:/app/
+      - mindmapservice-node_modules:/app/node_modules
+    command: npm run dev
+    networks:
+      - library-network
   
 
 
@@ -246,6 +259,8 @@ volumes:
   bookservice-node_modules:
   userservice-code:
   userservice-node-modules:
+  mindmapservice-code:
+  mindmapservice-node_modules:
   mongo_data:
   
 networks:

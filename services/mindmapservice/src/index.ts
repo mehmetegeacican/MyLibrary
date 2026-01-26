@@ -4,14 +4,14 @@ dotenv.config(); // load environment variables first
 import app from './app';
 import { connectToMongoDb } from './config/db.config';
 
-const port = process.env.PORT || 4000;
+const port = 4000;
 const mongoURI = process.env.MONGO_URI || '';
 
 const startServer = async () => {
   try {
     const isConnected = await connectToMongoDb(mongoURI);
     if (isConnected) {
-      app.listen(port, () => {
+      app.listen(port, '0.0.0.0', () => {
         console.log(`Server is running on port ${port}`);
       });
     }

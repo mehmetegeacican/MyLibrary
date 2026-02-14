@@ -27,7 +27,7 @@ export const getMindMapByIdValidation = [
 
 export const postMindMapValidation = [
     query('ownerId')
-        .exists().withMessage("Owner Id is required")
+        .trim()
         .notEmpty().withMessage("Owner Id can not be empty")
         .isString().withMessage("Owner Id must be a string"),
     body('title')

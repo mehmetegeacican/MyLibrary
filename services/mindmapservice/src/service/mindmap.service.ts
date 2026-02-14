@@ -1,3 +1,4 @@
+import { IMindMap } from "../interface/mindmap.interface";
 import { MindMap } from "../model/MindMap.model";
 
 /**
@@ -23,7 +24,7 @@ export const fetchMindMapById = async (mindMapId:string) => {
  * @param payload Request payload for creating a mindmap
  * @returns 
  */
-export const postMindMap = async (payload: any) => {
+export const postMindMap = async (payload: Partial<IMindMap>) => {
     return await MindMap.create(payload);
 }
 
@@ -33,7 +34,7 @@ export const postMindMap = async (payload: any) => {
  * @param payload the update payload
  * @returns the updated mindmap document
  */
-export const putMindMap = async (mindMapId: string, payload: any) => {
+export const putMindMap = async (mindMapId: string, payload: Partial<IMindMap>) => {
     return await MindMap.findByIdAndUpdate(mindMapId, payload, { new: true }).lean();
 }
 
@@ -42,6 +43,6 @@ export const putMindMap = async (mindMapId: string, payload: any) => {
  * @param mindMapId Mindmap's id
  * @returns deleted mindmap document
  */
-export const removeMindMapById = async (mindMapId: string, safe: boolean = true) => {
+export const removeMindMapById = async (mindMapId: string) => {
     return await MindMap.findByIdAndDelete(mindMapId).lean();
 }

@@ -103,7 +103,7 @@ export const updateMindMapById = async (req: express.Request, res: express.Respo
 export const deleteMindMapById = async (req: express.Request, res: express.Response) => {
     try {
         const id  = req.params.id as string;
-        const deletedMindMap = await removeMindMapById(id, false);
+        const deletedMindMap = await removeMindMapById(id);
         if (!deletedMindMap) {
             return res.status(404).json({ message: "MindMap not found" });
         }

@@ -30,7 +30,8 @@ export const getMindMapByIdValidation = [
 export const postMindMapValidation = [
     query('ownerId')
         .exists().withMessage("Owner Id is required")
-        .notEmpty().withMessage("Owner Id can not be empty"),
+        .notEmpty().withMessage("Owner Id can not be empty")
+        .isString().withMessage("Owner Id must be a string"),
     body('title')
         .exists().withMessage("Mind Map title is required")
         .isString().withMessage("Mind Map title must be a string")

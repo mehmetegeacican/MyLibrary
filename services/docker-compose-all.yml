@@ -105,9 +105,9 @@ services:
   #categoryservice:
     #image: categoryservice:2.5
     #ports:
-      #- "4002:4000"
+      #- "${PORT_CATEGORY_EXPRESS}:${PORT_MAIN}"
     #environment:
-      #DATABASE_URL: "postgresql://postgres:123456@postgres:5432/librarydb"
+      #DATABASE_URL: "${DB_URL}"
     #volumes:
       #- categoryservice-code:/app/
       #- categoryservice-node-modules:/app/node_modules

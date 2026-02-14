@@ -1,4 +1,5 @@
 import { fetchAllMindMaps, fetchMindMapById, postMindMap, putMindMap, removeMindMapById } from "../service/mindmap.service";
+import express from 'express';
 
 /**
  * The controller for receiving all mindmaps
@@ -6,12 +7,9 @@ import { fetchAllMindMaps, fetchMindMapById, postMindMap, putMindMap, removeMind
  * @param req 
  * @param res 
  */
-export const getAllMindMaps = async (req: any, res: any) => {
+export const getAllMindMaps = async (req: express.Request, res: express.Response) => {
     try {
         const { ownerId } = req.query;
-        if (!ownerId) {
-            return res.status(400).json({ message: "ownerId query parameter is required" });
-        }
         const mindmaps = await fetchAllMindMaps(ownerId as string);
         return res.status(200).json(mindmaps);
     } catch (error) {
@@ -26,13 +24,10 @@ export const getAllMindMaps = async (req: any, res: any) => {
  * @param req 
  * @param res 
  */
-export const getMindMapById = async (req: any, res: any) => {
+export const getMindMapById = async (req: express.Request, res: express.Response) => {
     try {
         const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: "MindMap id parameter is required" });
-        }
-        const mindmap = await fetchMindMapById(id);
+        const mindmap = await fetchMindMapById(id as string);
         if (!mindmap) {
             return res.status(404).json({ message: "MindMap not found" });
         }
@@ -51,7 +46,7 @@ export const getMindMapById = async (req: any, res: any) => {
  * @param req 
  * @param res
  */
-export const createMindMap = async (req: any, res: any) => {
+export const createMindMap = async (req: express.Request, res: express.Response) => {
     try {
         const {
             title,
@@ -59,9 +54,7 @@ export const createMindMap = async (req: any, res: any) => {
             edges
         } = req.body;
 
-        const {
-            ownerId
-        } = req.query;
+        const ownerId = req.query.ownerId as string;
 
         const newlyAddedMindMap = await postMindMap({
             title,
@@ -85,17 +78,16 @@ export const createMindMap = async (req: any, res: any) => {
  * @param req 
  * @param res 
  */
-export const updateMindMapById = async (req: any, res: any) => {
+export const updateMindMapById = async (req: express.Request, res: express.Response) => {
 
     try {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: "MindMap id parameter is required" });
-        }
+        const id  = req.params.id as string;
         const { title, nodes, edges } = req.body;
         const updatedMindMap = await putMindMap(id, { title, nodes, edges });
+        if (!updatedMindMap) {
+            return res.status(404).json({ message: "MindMap not found" });
+        }
         return res.status(200).json(updatedMindMap);
-
     } catch(error) {
         console.error("Error updating mindmap by id :", error);
         return res.status(500).json({ message: "Internal Server Error" });
@@ -108,13 +100,13 @@ export const updateMindMapById = async (req: any, res: any) => {
  * @param req 
  * @param res 
  */
-export const deleteMindMapById = async (req: any, res: any) => {
+export const deleteMindMapById = async (req: express.Request, res: express.Response) => {
     try {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ message: "MindMap id parameter is required" });
+        const id  = req.params.id as string;
+        const deletedMindMap = await removeMindMapById(id);
+        if (!deletedMindMap) {
+            return res.status(404).json({ message: "MindMap not found" });
         }
-        const deletedMindMap = await removeMindMapById(id, false);
         return res.status(200).json(deletedMindMap);
 
     } catch (error) {

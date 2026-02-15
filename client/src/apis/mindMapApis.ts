@@ -70,6 +70,28 @@ export const createNewMindMap = async (userId: number, reqBody: object, token: s
     }
 }
 
+
+/**
+ * Updates Existing MindMap
+ * @param id The Mind maps id
+ * @param reqBody The edited mindmap
+ * @param token the user token
+ */
+export const updateExistingMindMap = async (id: string, reqBody: object, token: string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token },
+        };
+        const res = await axios.put(MINDMAP_ADDRESS + `/api/v3/mindmaps/${id}`, reqBody, config);
+        if (res.status === 200) {
+            return res.data;
+        }
+        return;
+    } catch (e) {
+        return e;
+    }
+}
+
 /**
  * Deletion Function for MindMap
  * @param id MindMap ID to delete 

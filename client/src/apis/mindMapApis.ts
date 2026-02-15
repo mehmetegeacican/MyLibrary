@@ -76,7 +76,7 @@ export const createNewMindMap = async (userId: number, reqBody: object, token: s
  * @param token the user token 
  * @returns 
  */
-export const deleteMindMap = async (id: string, token: string) => {
+export const deleteMindMapById = async (id: string, token: string) => {
     try {
         const config = {
             headers: { 'Authorization': 'Bearer ' + token },

@@ -5,91 +5,107 @@ import { ApiResult } from "../../interfaces/DataInterfaces";
 import { useLibraryDataContext, useAuthContext } from "../contextHooks";
 import { deleteAnAuthor } from "../../apis/authorApi";
 import { deleteNotes } from "../../apis/noteApis";
+import { deleteMindMapById } from "../../apis/mindMapApis";
 
 export const useDeleteModal = () => {
     //Hooks
-    const {user} = useAuthContext();
-    const [error,setError] = React.useState<boolean>(false);
-    const [success,setSuccess] = React.useState<boolean>(false);
-    const [message,setMessage] = React.useState<string>("");
-    const {dispatch,bookTrigger,categoryTrigger, authorTrigger,noteTrigger} = useLibraryDataContext();
+    const { user } = useAuthContext();
+    const [error, setError] = React.useState<boolean>(false);
+    const [success, setSuccess] = React.useState<boolean>(false);
+    const [message, setMessage] = React.useState<string>("");
+    const { dispatch, bookTrigger, categoryTrigger, authorTrigger, noteTrigger, mindMapTrigger } = useLibraryDataContext();
     //Functions
     const processResult = (res: ApiResult) => {
-        if(res.message && !res.response){
+        if (res.message && !res.response) {
             setSuccess(true);
             setMessage(res.message);
             return true
         }
-        else if(!res.response){
+        else if (!res.response) {
             setSuccess(true);
             setMessage("Deleted Successfully");
             return true
         }
-        else if(res.response!.status === 400){
+        else if (res.response!.status === 400) {
             setError(true);
             return false
         }
-        else if(res.response!.status === 500){
+        else if (res.response!.status === 500) {
             setError(true);
             setMessage(res.response!.data!.error!);
             return false;
         }
     }
-    const deleteBook = async (id:number) => {
+    const deleteBook = async (id: number) => {
         let stringId = id.toString();
         //Step 0 -- Reset
         setError(false);
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        if(user){
-            const res = await deleteABook(stringId,user.token);
+        if (user) {
+            const res = await deleteABook(stringId, user.token);
             const check = processResult(res);
-            if(check){
+            if (check) {
                 dispatch({ type: 'TRIGGER_BOOKS', payload: !bookTrigger });
             }
         }
     }
-    const deleteCategory = async ( id: number) => {
+    const deleteCategory = async (id: number) => {
         let stringId = id.toString();
         //Step 0 -- Reset
         setError(false);
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteExistingCategory(stringId,user!.token);
+        const res = await deleteExistingCategory(stringId, user!.token);
         console.log(res);
         const check = processResult(res);
-        if(check){
+        if (check) {
             dispatch({ type: 'TRIGGER_CATEGORIES', payload: !categoryTrigger });
         }
     }
-    const deleteAuthor = async (id:number) => {
+    const deleteAuthor = async (id: number) => {
         let stringId = id.toString();
         //Step 0 -- Reset
         setError(false);
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteAnAuthor(stringId,user!.token);
+        const res = await deleteAnAuthor(stringId, user!.token);
         const check = processResult(res);
-        if(check){
+        if (check) {
             dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
         }
     }
-    const deleteNote = async (id:number) => {
+    const deleteNote = async (id: number) => {
         let stringId = id.toString();
         //Step 0 -- Reset
         setError(false);
         setMessage("");
         setSuccess(false);
         //Step 1 -- Send the Result
-        const res = await deleteNotes(stringId,user!.token);
+        const res = await deleteNotes(stringId, user!.token);
         const check = processResult(res);
-        if(check){
+        if (check) {
             dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
         }
     }
+    const deleteMindMap = async (id: string) => {
+        // Step 0 -- Reset
+        setError(false);
+        setMessage("");
+        setSuccess(false);
+        //Step 1 -- Send the Result
+        if (user) {
+            const res = await deleteMindMapById(id, user.token);
+            const check = processResult(res);
+            if (check) {
+                dispatch({ type: 'TRIGGER_MIND_MAPS', payload: !mindMapTrigger });
+            }
+        }
+
+    }
     //Return Values
-    return {deleteBook,deleteCategory, deleteAuthor,deleteNote,error,message,success};
+    return { deleteBook, deleteCategory, deleteAuthor, deleteNote,deleteMindMap, error, message, success };
 }

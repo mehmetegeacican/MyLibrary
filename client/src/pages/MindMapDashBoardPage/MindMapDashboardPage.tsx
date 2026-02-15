@@ -8,9 +8,10 @@ import { IMindMap } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import { currencies } from './data/mindMapData';
-import { createNewMindMap, deleteMindMap, fetchAllMindMaps } from '../../apis/mindMapApis';
+import { createNewMindMap, fetchAllMindMaps } from '../../apis/mindMapApis';
 import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { DeleteModal } from '../../components/modals';
 
 
 
@@ -21,14 +22,16 @@ export default function MindMapDashboardPage() {
     const { mindMaps, mindMapTrigger, dispatch } = useLibraryDataContext();
     const { user } = useAuthContext();
     const [query, setQuery] = useState("");
+    const [deleteModal, setDeleteModal] = useState<boolean>(false);
+    const [selectedMindMap, setSelectedMindMap] = useState<IMindMap>();
     const navigate = useNavigate();
 
 
     // Handlers
     const handleNewMindMap = async () => {
-        if(user) {
-            const newMindMap = await createNewMindMap(user.id, {title:"New Mindmap"},user.token);
-            if(newMindMap && newMindMap._id){
+        if (user) {
+            const newMindMap = await createNewMindMap(user.id, { title: "New Mindmap" }, user.token);
+            if (newMindMap && newMindMap._id) {
                 navigate(`/mindmap/${newMindMap._id}`);
                 dispatch({
                     type: 'TRIGGER_MIND_MAPS',
@@ -41,17 +44,7 @@ export default function MindMapDashboardPage() {
         }
     };
 
-    const handleDeleteMindMap = async (mindMapId:string) => {
-        if(user){
-            const deletedMindMap = await deleteMindMap(mindMapId,user.token);
-            if(deletedMindMap){
-                dispatch({
-                    type:'TRIGGER_MIND_MAPS',
-                    payload: !mindMapTrigger
-                })
-            }
-        }
-    }
+
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -64,7 +57,7 @@ export default function MindMapDashboardPage() {
     // UseEffect
     useEffect(() => {
         fetchData();
-    },[]);
+    }, [fetchData]);
 
     const memoizedMindMaps = useMemo(() => {
 
@@ -156,11 +149,14 @@ export default function MindMapDashboardPage() {
                                                 </CardContent>
                                             </CardActionArea>
                                         </Link>
-                                        <CardActions sx={{ justifyContent: 'center' }}>
+                                        <CardActions sx={{ justifyContent: 'space-evenly' }}>
                                             <Button size="small" color="info" onClick={() => console.log("aa")}>
                                                 Archive
                                             </Button>
-                                            <Button size="small" color="error" onClick={() => handleDeleteMindMap(map._id)}>
+                                            <Button size="small" color="error" onClick={() => {
+                                                setSelectedMindMap(map);
+                                                setDeleteModal(true);
+                                            }}>
                                                 Delete
                                             </Button>
                                         </CardActions>
@@ -168,6 +164,7 @@ export default function MindMapDashboardPage() {
                                 </Grid>
                             ))}
                         </Grid>
+                        {selectedMindMap && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedMindMap} />}
                     </Paper>
                 </Grid>
             </Grid>

@@ -1,13 +1,15 @@
 
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { SearchRounded, PostAdd } from '@mui/icons-material'
-import {  useLibraryDataContext } from '../../hooks/contextHooks';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IMindMap } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import { currencies } from './data/mindMapData';
+import { fetchAllMindMaps } from '../../apis/mindMapApis';
+import { formatDistanceToNow } from 'date-fns';
 
 
 
@@ -15,8 +17,22 @@ import { currencies } from './data/mindMapData';
 export default function MindMapDashboardPage() {
 
     const { libTheme } = useLibraryTheme();
-    const { mindMaps, } = useLibraryDataContext();
+    const { mindMaps, mindMapTrigger, dispatch } = useLibraryDataContext();
+    const { user } = useAuthContext();
     const [query, setQuery] = useState("");
+
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        if (user) {
+            const res = await fetchAllMindMaps(user.id, user.token);
+            dispatch({ type: 'GET_MIND_MAPS', payload: res });
+        }
+    }, [mindMapTrigger]);
+
+    // UseEffect
+    useEffect(() => {
+        fetchData();
+    },[]);
 
     const memoizedMindMaps = useMemo(() => {
 
@@ -103,7 +119,7 @@ export default function MindMapDashboardPage() {
                                                         {map.title}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Last updated :  ago
+                                                        Last updated : {formatDistanceToNow(map.updatedAt.toString())} ago
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>

@@ -8,8 +8,9 @@ import { IMindMap } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import { currencies } from './data/mindMapData';
-import { fetchAllMindMaps } from '../../apis/mindMapApis';
+import { createNewMindMap, deleteMindMap, fetchAllMindMaps } from '../../apis/mindMapApis';
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,6 +21,37 @@ export default function MindMapDashboardPage() {
     const { mindMaps, mindMapTrigger, dispatch } = useLibraryDataContext();
     const { user } = useAuthContext();
     const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
+
+    // Handlers
+    const handleNewMindMap = async () => {
+        if(user) {
+            const newMindMap = await createNewMindMap(user.id, {title:"New Mindmap"},user.token);
+            if(newMindMap && newMindMap._id){
+                navigate(`/mindmap/${newMindMap._id}`);
+                dispatch({
+                    type: 'TRIGGER_MIND_MAPS',
+                    payload: !mindMapTrigger
+                })
+            }
+            else {
+                console.log("Failed to fetch new MindMap")
+            }
+        }
+    };
+
+    const handleDeleteMindMap = async (mindMapId:string) => {
+        if(user){
+            const deletedMindMap = await deleteMindMap(mindMapId,user.token);
+            if(deletedMindMap){
+                dispatch({
+                    type:'TRIGGER_MIND_MAPS',
+                    payload: !mindMapTrigger
+                })
+            }
+        }
+    }
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -89,7 +121,7 @@ export default function MindMapDashboardPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => console.log("aaa")}><PostAdd /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={handleNewMindMap}><PostAdd /></Button>
                         </div>
 
                     </Paper>
@@ -105,9 +137,9 @@ export default function MindMapDashboardPage() {
                     }}>
                         <Grid container spacing={2}>
                             {memoizedMindMaps.map((map: IMindMap) => (
-                                <Grid key={map.id} item xs={12} sm={12} md={6} lg={4}>
+                                <Grid key={map._id} item xs={12} sm={12} md={6} lg={4}>
                                     <Card sx={{ borderRadius: 5, minHeight: 300 }}>
-                                        <Link to={'/mindmap/' + map.id}>
+                                        <Link to={'/mindmap/' + map._id}>
                                             <CardActionArea >
                                                 <CardMedia
                                                     sx={{ height: 140, borderRadius: 2 }}
@@ -125,7 +157,10 @@ export default function MindMapDashboardPage() {
                                             </CardActionArea>
                                         </Link>
                                         <CardActions sx={{ justifyContent: 'center' }}>
-                                            <Button size="small" color="error" onClick={() => console.log("zz")}>
+                                            <Button size="small" color="info" onClick={() => console.log("aa")}>
+                                                Archive
+                                            </Button>
+                                            <Button size="small" color="error" onClick={() => handleDeleteMindMap(map._id)}>
                                                 Delete
                                             </Button>
                                         </CardActions>

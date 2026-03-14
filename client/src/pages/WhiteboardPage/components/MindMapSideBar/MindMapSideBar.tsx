@@ -71,7 +71,7 @@ export default function MindMapSideBar({
         <Paper className='sidebar' sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: collapsed ? 50 : 320,
+            width: collapsed ? 38 : 240,
             transition: 'width 0.3s ease',
             overflow: 'visible',
         }}>

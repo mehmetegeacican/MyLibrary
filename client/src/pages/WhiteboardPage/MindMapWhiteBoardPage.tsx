@@ -55,7 +55,7 @@ export default function MindMapWhiteBoardPage() {
                     sx={{
                         display:'flex',
                         width: '100vw',
-                        height: '100vh',
+                        height: '99.8vh',
                     }}>
                     <MindMapSideBar settings={settings} setSettings={setSettings} />
                     <ReactFlow

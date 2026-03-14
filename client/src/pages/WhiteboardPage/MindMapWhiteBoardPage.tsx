@@ -57,7 +57,6 @@ export default function MindMapWhiteBoardPage() {
             setTitle(data?.title);
             const formattedNodes = formatNodesFromApiForState(data?.nodes);
             const formattedEdges = formatEdgesFromApiForState(data?.edges);
-            console.log(formattedEdges,formattedNodes);
             setNodes(formattedNodes);
             setEdges(formattedEdges);
         }

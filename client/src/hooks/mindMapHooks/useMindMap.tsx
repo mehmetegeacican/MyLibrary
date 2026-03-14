@@ -63,7 +63,7 @@ export function useMindMap() {
                 type: node?.type,
                 position: node?.position,
                 data: node?.data,
-                ...(node?._id && !node?._id.includes('statenode_') && { _id: node._id })
+                _id:node?._id
             }
         })
         return updatedNodes;

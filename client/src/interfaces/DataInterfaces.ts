@@ -51,6 +51,7 @@ export interface IMindMapNode {
     x:number;
     y:number;
   }
+  type:string;
   data: {
     label:string;
     information:string;

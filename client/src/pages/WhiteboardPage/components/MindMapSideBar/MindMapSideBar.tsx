@@ -5,7 +5,7 @@ import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import "./styles.css";
 import StringValueField from '../../../../components/forms/StringValueField';
-import {ArrowBack,ArrowForward,ExpandMore} from '@mui/icons-material';
+import { ArrowBack, ArrowForward, ExpandMore } from '@mui/icons-material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -16,21 +16,26 @@ import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 
 
 export default function MindMapSideBar({
+    title,
+    setTitle,
     settings,
-    setSettings
+    setSettings,
+    save
 }: {
+    title: string,
+    setTitle: Function,
     settings: {
         miniMapOpen: boolean,
         zoomOpen: boolean,
-        fitView:boolean
+        fitView: boolean
     },
-    setSettings: Function
+    setSettings: Function,
+    save: Function
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
     let id = 0;
     const getId = () => `dndnode_${id++}`;
-    const [mindMapName, setMindMapname] = useState<string>("");
     const [openNodeAccordion, setOpenNodeAccordion] = useState<boolean>(false);
     const [openEdgeAccordion, setOpenEdgeAccordion] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
@@ -55,7 +60,7 @@ export default function MindMapSideBar({
                 const assignedId = getId()
                 const newNode = {
                     id: assignedId,
-                    _id:assignedId,
+                    _id: assignedId,
                     type: nodeType,
                     position,
                     data: { label: `${nodeType} node` },
@@ -84,8 +89,8 @@ export default function MindMapSideBar({
                 <IconButton aria-label="back">
                     <ArrowBack />
                 </IconButton>
-                {!collapsed && <StringValueField label={'Mind Map Name'} data={mindMapName} setter={(e: any) => {
-                    setMindMapname(e);
+                {!collapsed && <StringValueField label={'Mind Map Name'} data={title} setter={(e: any) => {
+                    setTitle(e);
                 }} />}
             </div>
             <Collapse in={!collapsed} timeout={300} unmountOnExit>
@@ -99,7 +104,7 @@ export default function MindMapSideBar({
                             <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
                                 Nodes
                             </Typography>
-                            
+
 
                         </AccordionSummary>
                         <AccordionDetails>
@@ -133,7 +138,7 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
-            
+
             <Collapse in={!collapsed} timeout={300} unmountOnExit>
                 {<div className="sidebar-accordions">
 
@@ -143,11 +148,11 @@ export default function MindMapSideBar({
                             aria-controls="panel1bh-content"
                             id="panel1bh-header"
                         >
-                           
+
                             <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
                                 Settings
                             </Typography>
-                            
+
                         </AccordionSummary>
                         <AccordionDetails>
                             <FormGroup>
@@ -158,21 +163,21 @@ export default function MindMapSideBar({
                                             miniMapOpen: !prev.miniMapOpen
                                         }))
                                     }} />} label="Mini Map" />
-                                <FormControlLabel 
+                                <FormControlLabel
                                     control={
-                                    <Switch 
-                                        checked={settings.zoomOpen} 
-                                        onChange={() => {
-                                            setSettings((prev: any) => ({
-                                                ...prev,
-                                                zoomOpen: !prev.zoomOpen
-                                            }))
+                                        <Switch
+                                            checked={settings.zoomOpen}
+                                            onChange={() => {
+                                                setSettings((prev: any) => ({
+                                                    ...prev,
+                                                    zoomOpen: !prev.zoomOpen
+                                                }))
                                             }} />
-                                        
-                                        }
-                                        color={libTheme} 
-                                        label="Zoom Bar" 
-                                    />
+
+                                    }
+                                    color={libTheme}
+                                    label="Zoom Bar"
+                                />
                                 <FormControlLabel control={<Switch checked={settings.fitView} onChange={() => {
                                     setSettings((prev: any) => ({
                                         ...prev,
@@ -186,7 +191,7 @@ export default function MindMapSideBar({
                 </div>}
             </Collapse>
             <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' color={libTheme} onClick={() => {
-                
+                save()
             }}> Save </Button>
             <div style={{
                 marginTop: 'auto',

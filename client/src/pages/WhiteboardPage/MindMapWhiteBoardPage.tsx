@@ -11,8 +11,9 @@ import MindMapSideBar from './components/MindMapSideBar/MindMapSideBar';
 import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';
 import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
-import { IMindMapNode } from '../../interfaces/DataInterfaces';
+import { IMindMap, IMindMapNode } from '../../interfaces/DataInterfaces';
 import { MIND_MAP_NODE_DATA_ATTRIBUTE } from '../../enums/enums';
+import { useParams } from 'react-router-dom';
 
 const initialNodes: any[] = [
     // { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -30,6 +31,8 @@ const nodeTypes = {
 
 
 export default function MindMapWhiteBoardPage() {
+    const { id } = useParams();
+    const [title, setTitle] = useState<string>("");
     const [nodes, setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
     const [settings, setSettings] = useState({
@@ -77,17 +80,33 @@ export default function MindMapWhiteBoardPage() {
         (params: any) => setEdges((edgesSnapshot: any) => addEdge(params, edgesSnapshot)),
         [],
     );
+
+    const handleMindMapUpdate = async () => {
+        if (id) {
+            const updatedMindMap: IMindMap = {
+                _id: id,
+                title: title,
+            }
+            console.log(updatedMindMap);
+        }
+    };
+
     return (
         <ReactFlowProvider>
             <div className='dndflow'>
-
                 <Paper
                     sx={{
                         display: 'flex',
                         width: '100vw',
                         height: '99.8vh',
                     }}>
-                    <MindMapSideBar settings={settings} setSettings={setSettings} />
+                    <MindMapSideBar
+                        settings={settings}
+                        setSettings={setSettings}
+                        title={title}
+                        setTitle={setTitle}
+                        save={handleMindMapUpdate}
+                    />
                     <ReactFlow
                         nodes={nodes}
                         edges={edges}

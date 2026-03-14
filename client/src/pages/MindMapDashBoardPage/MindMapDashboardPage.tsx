@@ -1,13 +1,17 @@
 
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { SearchRounded, PostAdd } from '@mui/icons-material'
-import {  useLibraryDataContext } from '../../hooks/contextHooks';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { IMindMap } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
 import { Link } from 'react-router-dom';
 import { currencies } from './data/mindMapData';
+import { createNewMindMap, fetchAllMindMaps } from '../../apis/mindMapApis';
+import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import { DeleteModal } from '../../components/modals';
 
 
 
@@ -15,8 +19,45 @@ import { currencies } from './data/mindMapData';
 export default function MindMapDashboardPage() {
 
     const { libTheme } = useLibraryTheme();
-    const { mindMaps, } = useLibraryDataContext();
+    const { mindMaps, mindMapTrigger, dispatch } = useLibraryDataContext();
+    const { user } = useAuthContext();
     const [query, setQuery] = useState("");
+    const [deleteModal, setDeleteModal] = useState<boolean>(false);
+    const [selectedMindMap, setSelectedMindMap] = useState<IMindMap>();
+    const navigate = useNavigate();
+
+
+    // Handlers
+    const handleNewMindMap = async () => {
+        if (user) {
+            const newMindMap = await createNewMindMap(user.id, { title: "New Mindmap" }, user.token);
+            if (newMindMap && newMindMap._id) {
+                navigate(`/mindmap/${newMindMap._id}`);
+                dispatch({
+                    type: 'TRIGGER_MIND_MAPS',
+                    payload: !mindMapTrigger
+                })
+            }
+            else {
+                console.log("Failed to fetch new MindMap")
+            }
+        }
+    };
+
+
+
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        if (user) {
+            const res = await fetchAllMindMaps(user.id, user.token);
+            dispatch({ type: 'GET_MIND_MAPS', payload: res });
+        }
+    }, [mindMapTrigger]);
+
+    // UseEffect
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const memoizedMindMaps = useMemo(() => {
 
@@ -73,7 +114,7 @@ export default function MindMapDashboardPage() {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={() => console.log("aaa")}><PostAdd /></Button>
+                            <Button color={libTheme ?? 'secondary'} variant='text' onClick={handleNewMindMap}><PostAdd /></Button>
                         </div>
 
                     </Paper>
@@ -89,9 +130,9 @@ export default function MindMapDashboardPage() {
                     }}>
                         <Grid container spacing={2}>
                             {memoizedMindMaps.map((map: IMindMap) => (
-                                <Grid key={map.id} item xs={12} sm={12} md={6} lg={4}>
+                                <Grid key={map._id} item xs={12} sm={12} md={6} lg={4}>
                                     <Card sx={{ borderRadius: 5, minHeight: 300 }}>
-                                        <Link to={'/mindmap/' + map.id}>
+                                        <Link to={'/mindmap/' + map._id}>
                                             <CardActionArea >
                                                 <CardMedia
                                                     sx={{ height: 140, borderRadius: 2 }}
@@ -103,13 +144,19 @@ export default function MindMapDashboardPage() {
                                                         {map.title}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        Last updated :  ago
+                                                        Last updated : {formatDistanceToNow(map.updatedAt.toString())} ago
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>
                                         </Link>
-                                        <CardActions sx={{ justifyContent: 'center' }}>
-                                            <Button size="small" color="error" onClick={() => console.log("zz")}>
+                                        <CardActions sx={{ justifyContent: 'space-evenly' }}>
+                                            <Button size="small" color="info" onClick={() => console.log("aa")}>
+                                                Archive
+                                            </Button>
+                                            <Button size="small" color="error" onClick={() => {
+                                                setSelectedMindMap(map);
+                                                setDeleteModal(true);
+                                            }}>
                                                 Delete
                                             </Button>
                                         </CardActions>
@@ -117,6 +164,7 @@ export default function MindMapDashboardPage() {
                                 </Grid>
                             ))}
                         </Grid>
+                        {selectedMindMap && <DeleteModal open={deleteModal} handleClose={() => setDeleteModal(false)} data={selectedMindMap} />}
                     </Paper>
                 </Grid>
             </Grid>

@@ -61,10 +61,6 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     notes: [],
     noteTrigger: false,
     mindMaps: [
-      {
-        id:1,
-        title:"Mind Map trial"
-      }
     ],
     mindMapTrigger: false
   });

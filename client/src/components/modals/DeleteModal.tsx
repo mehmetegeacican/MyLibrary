@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
-import { IAuthor, IBook, ICategory, INote } from "../../interfaces/DataInterfaces";
-import { isIAuthor, isIBook, isICategory, isINote } from "../tables/DataRow";
+import { IAuthor, IBook, ICategory, IMindMap, INote } from "../../interfaces/DataInterfaces";
+import { isIAuthor, isIBook, isICategory, isIMindMap, isINote } from "../tables/DataRow";
 import { useDeleteModal } from "../../hooks/modalHooks";
 
 
@@ -9,13 +9,13 @@ interface DeleteModalImnterface {
     selectedIds? : number[];
     open:boolean;
     handleClose: () => void;
-    data : IBook | ICategory | IAuthor | INote;
+    data : IBook | ICategory | IAuthor | INote | IMindMap;
 }
 
 export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteModalImnterface) {
 
     //Hooks & contexts
-    const { deleteBook ,deleteCategory, deleteAuthor,deleteNote} = useDeleteModal();
+    const { deleteBook ,deleteCategory, deleteAuthor,deleteNote, deleteMindMap} = useDeleteModal();
     const handleDelete = async () => {
         if(selectedIds){
             if(isIBook(data)){
@@ -53,8 +53,10 @@ export default function DeleteModal({selectedIds,open,handleClose,data}:DeleteMo
             else if(isINote(data)){
                 await deleteNote(data.id);
             }
+            else if(isIMindMap(data)){
+                await deleteMindMap(data._id);
+            }
         }
-        
         handleClose();
     }
     return (

@@ -3,15 +3,17 @@ import { Accordion, AccordionDetails, AccordionSummary, Collapse, Fab, Paper, Te
 import { useState } from "react"
 import { useLibraryTheme } from "../../../../hooks/theme/useLibraryTheme";
 import StringValueField from "../../../../components/forms/StringValueField";
+import { IMindMapNode } from "../../../../interfaces/DataInterfaces";
+import { MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../../../enums/enums";
 
 interface DetailPropsInterface {
-    selectedMindMapNode: any,
-    selectedMindMapEdge: any
+    selectedMindMapNode: IMindMapNode | null,
+    updateNodeData: Function,
 }
 
 export default function MindMapDetailBar({
     selectedMindMapNode,
-    selectedMindMapEdge
+    updateNodeData
 }: DetailPropsInterface) {
 
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -32,8 +34,8 @@ export default function MindMapDetailBar({
                 gap: 3,
                 justifyContent: 'center'
             }}>
-                {!collapsed && <StringValueField label={'Node Title'} data={""} setter={(e: any) => {
-                    console.log(selectedMindMapEdge,selectedMindMapNode,e)
+                {!collapsed && <StringValueField label={'Node Title'} data={selectedMindMapNode?.data?.label ?? ""} setter={(e: any) => {
+                    selectedMindMapNode && updateNodeData(selectedMindMapNode?._id, e, MIND_MAP_NODE_DATA_ATTRIBUTE.LABEL);
                 }} />}
             </div>
             <Collapse in={!collapsed} timeout={300} unmountOnExit>
@@ -56,7 +58,7 @@ export default function MindMapDetailBar({
                                 variant="outlined"
                                 color={libTheme}
                                 style={{
-                                    width:"100%"
+                                    width: "100%"
                                 }}
                             />
                         </AccordionDetails>

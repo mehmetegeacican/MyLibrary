@@ -53,9 +53,10 @@ export default function MindMapSideBar({
             // Create a new node and add it to the flow
             if (isInFlow) {
                 const position = screenToFlowPosition(screenPosition);
-
+                const assignedId = getId()
                 const newNode = {
-                    id: getId(),
+                    id: assignedId,
+                    _id:assignedId,
                     type: nodeType,
                     position,
                     data: { label: `${nodeType} node` },

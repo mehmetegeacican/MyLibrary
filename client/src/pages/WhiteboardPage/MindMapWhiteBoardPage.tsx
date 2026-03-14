@@ -12,6 +12,7 @@ import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';
 import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
 import { IMindMapEdge, IMindMapNode } from '../../interfaces/DataInterfaces';
+import { MIND_MAP_NODE_DATA_ATTRIBUTE } from '../../enums/enums';
 
 const initialNodes: any[] = [
     // { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -52,7 +53,26 @@ export default function MindMapWhiteBoardPage() {
         setSelectedNode(params.nodes.length > 0 ? params.nodes[0] : null);
         setSelectedEdge(params.edges.length > 0 ? params.edges[0] : null);
     }, []);
-    
+
+    const updateNodeData = useCallback((nodeId: string, newData: string, updatedDataType: MIND_MAP_NODE_DATA_ATTRIBUTE) => {
+        setNodes((nds) =>
+            nds.map((node) => {
+                if (node._id === nodeId) {
+                    const result = {
+                        ...node,
+                        data: {
+                            ...node?.data,
+                            [updatedDataType]: newData
+                        }
+                    };
+                    setSelectedNode(result);
+                    return result;
+                }
+                return node;
+            })
+        );
+    }, [setNodes]);
+
     const onConnect = useCallback(
         (params: any) => setEdges((edgesSnapshot: any) => addEdge(params, edgesSnapshot)),
         [],
@@ -82,7 +102,7 @@ export default function MindMapWhiteBoardPage() {
                         {settings.zoomOpen && <Controls />}
                         {settings.miniMapOpen && <MiniMap />}
                     </ReactFlow>
-                    <MindMapDetailBar selectedMindMapNode={selectedNode} selectedMindMapEdge={selectedEdge} />
+                    <MindMapDetailBar selectedMindMapNode={selectedNode} updateNodeData={updateNodeData} />
                 </Paper>
             </div>
         </ReactFlowProvider>

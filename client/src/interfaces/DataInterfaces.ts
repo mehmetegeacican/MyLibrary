@@ -54,10 +54,10 @@ export interface IMindMapNode {
     information:string;
   }
 };
-
-
 export interface IMindMapEdge {
-
+  _id:string,
+  source:string;
+  target:string;
 }
 
 

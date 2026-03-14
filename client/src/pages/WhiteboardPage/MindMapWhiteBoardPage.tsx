@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
     ReactFlow,
     Controls, Background, MiniMap, ReactFlowProvider,
@@ -12,6 +12,10 @@ import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
 import { IMindMap } from '../../interfaces/DataInterfaces';
 import { useParams } from 'react-router-dom';
 import { useMindMap } from '../../hooks/mindMapHooks';
+import { updateExistingMindMap } from '../../apis/mindMapApis';
+import { useAuthContext } from '../../hooks/contextHooks';
+import { useUtils } from '../../hooks/utils/useUtils';
+import { MESSAGE_TYPES } from '../../enums/enums';
 
 const nodeTypes = {
     input: CustomNode,
@@ -22,7 +26,10 @@ const nodeTypes = {
 
 export default function MindMapWhiteBoardPage() {
     const { id } = useParams();
+    const { user } = useAuthContext();
     const [title, setTitle] = useState<string>("");
+    const {renderMessage,contextHolder} = useUtils();
+
     const [settings, setSettings] = useState({
         miniMapOpen: true,
         zoomOpen: true,
@@ -38,16 +45,16 @@ export default function MindMapWhiteBoardPage() {
         onSelectionChange,
         updateNodeData,
     } = useMindMap();
-    
+
 
 
     const handleMindMapUpdate = async () => {
         if (id) {
-            const updatedMindMap: IMindMap = {
-                _id: id,
+            const updatedMindMap: Pick<IMindMap, "title"> = {
                 title: title,
             }
-            console.log(updatedMindMap);
+            user && await updateExistingMindMap(id, updatedMindMap, user.token);
+            renderMessage(MESSAGE_TYPES.SUCCESS,"Mind Map Saved");
         }
     };
 
@@ -82,7 +89,9 @@ export default function MindMapWhiteBoardPage() {
                         {settings.miniMapOpen && <MiniMap />}
                     </ReactFlow>
                     {<MindMapDetailBar selectedMindMapNode={selectedNode} updateNodeData={updateNodeData} />}
+                    {contextHolder}
                 </Paper>
+                
             </div>
         </ReactFlowProvider>
 

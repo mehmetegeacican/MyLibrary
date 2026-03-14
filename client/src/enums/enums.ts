@@ -13,3 +13,9 @@ export enum MIND_MAP_NODE_DATA_ATTRIBUTE {
     LABEL = "label",
     INFO = "information"
 }
+
+export enum MESSAGE_TYPES {
+    SUCCESS = "success",
+    ERROR = "error",
+    WARNING = "warning"
+}

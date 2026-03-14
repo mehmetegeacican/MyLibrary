@@ -44,7 +44,15 @@ export interface IMindMap{
 }
 
 export interface IMindMapNode {
-
+  _id:string;
+  position: {
+    x:number;
+    y:number;
+  }
+  data: {
+    label:string;
+    information:string;
+  }
 };
 
 

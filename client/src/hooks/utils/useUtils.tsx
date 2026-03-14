@@ -1,5 +1,6 @@
 import { message } from "antd";
 import { MESSAGE_TYPES } from "../../enums/enums";
+import { ObjectId } from 'bson';
 
 export function useUtils() {
     const [messageApi, contextHolder] = message.useMessage();
@@ -12,8 +13,11 @@ export function useUtils() {
         });
     }
 
+    const generateMongoId = () => new ObjectId().toHexString();
+
     return {
         renderMessage,
-        contextHolder
+        contextHolder,
+        generateMongoId
     }
 } 

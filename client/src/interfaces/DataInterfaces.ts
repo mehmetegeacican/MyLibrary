@@ -43,6 +43,15 @@ export interface IMindMap{
   updatedAt:Date;
 }
 
+export interface IMindMapNode {
+
+};
+
+
+export interface IMindMapEdge {
+
+}
+
 
 export type ApiResult = {
   response?: {

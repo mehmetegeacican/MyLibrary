@@ -10,6 +10,7 @@ import { Paper } from '@mui/material';
 import MindMapSideBar from './components/MindMapSideBar/MindMapSideBar';
 import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';
+import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
 
 const initialNodes:any[] = [
     // { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
@@ -71,6 +72,7 @@ export default function MindMapWhiteBoardPage() {
                         {settings.zoomOpen && <Controls />}
                         {settings.miniMapOpen && <MiniMap />}
                     </ReactFlow>
+                    <MindMapDetailBar selectedMindMapNode={null} selectedMindMapEdge={null}/>
                 </Paper>
             </div>
         </ReactFlowProvider>

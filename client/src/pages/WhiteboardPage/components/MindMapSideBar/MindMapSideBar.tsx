@@ -11,6 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { Fab } from '@mui/material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
+import { useUtils } from '../../../../hooks/utils/useUtils';
 
 
 
@@ -34,14 +35,13 @@ export default function MindMapSideBar({
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
-    let id = 0;
-    const getId = () => `statenode_${id++}`;
     const [openNodeAccordion, setOpenNodeAccordion] = useState<boolean>(false);
     const [openEdgeAccordion, setOpenEdgeAccordion] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     const { libTheme } = useLibraryTheme();
+    const {generateMongoId} = useUtils();
 
 
     const handleNodeDrop = useCallback(
@@ -57,7 +57,7 @@ export default function MindMapSideBar({
 
             if (isInFlow) {
                 const position = screenToFlowPosition(screenPosition);
-                const assignedId = getId()
+                const assignedId = generateMongoId();
                 const newNode = {
                     id: assignedId,
                     _id: assignedId,

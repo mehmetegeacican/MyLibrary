@@ -38,40 +38,39 @@ export default function MindMapWhiteBoardPage() {
         nodes,
         edges,
         setNodes,
+        setEdges,
         selectedNode,
         onNodesChange,
         onEdgesChange,
         onConnect,
         onSelectionChange,
         updateNodeData,
+        formatNodesFromApiForState,
+        formatNodesFromStateForApi,
+        formatEdgesFromStateForApi,
+        formatEdgesFromApiForState
     } = useMindMap();
 
     const getMindMapById = async (id: string | undefined) => {
         if (id && user) {
             const data = await fetchMindMapByID(id, user.token)
-            console.log(data);
             setTitle(data?.title);
-            const formattedNodes = data.nodes.map((node: any) => ({
-                ...node,
-                id: node._id
-            }));
+            const formattedNodes = formatNodesFromApiForState(data?.nodes);
+            const formattedEdges = formatEdgesFromApiForState(data?.edges);
+            console.log(formattedEdges,formattedNodes);
             setNodes(formattedNodes);
+            setEdges(formattedEdges);
         }
     }
 
     const handleMindMapUpdate = async () => {
         if (id) {
-            const updatedNodes = nodes.map((node: any) => {
-                return {
-                    type:node?.type,
-                    position: node?.position,
-                    data: node?.data
-                }
-            })
-            console.log(nodes);
-            const updatedMindMap: Pick<any, "title" | "nodes"> = {
+            const updatedNodes = formatNodesFromStateForApi(nodes);
+            const updatedEdges = formatEdgesFromStateForApi(edges);
+            const updatedMindMap: Pick<any, "title" | "nodes" | "edges"> = {
                 title: title,
-                nodes: updatedNodes
+                nodes: updatedNodes,
+                edges:updatedEdges
             }
             user && await updateExistingMindMap(id, updatedMindMap, user.token);
             renderMessage(MESSAGE_TYPES.SUCCESS, "Mind Map Saved");

@@ -35,7 +35,7 @@ export default function MindMapSideBar({
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
     let id = 0;
-    const getId = () => `dndnode_${id++}`;
+    const getId = () => `statenode_${id++}`;
     const [openNodeAccordion, setOpenNodeAccordion] = useState<boolean>(false);
     const [openEdgeAccordion, setOpenEdgeAccordion] = useState<boolean>(false);
     const [openSettings, setOpenSettings] = useState<boolean>(false);

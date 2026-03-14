@@ -1,4 +1,4 @@
-import { applyNodeChanges, applyEdgeChanges, addEdge } from "@xyflow/react";
+import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from "@xyflow/react";
 import { useCallback, useState } from "react";
 import { MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
 import { IMindMapEdge, IMindMapNode } from "../../interfaces/DataInterfaces";
@@ -49,7 +49,43 @@ export function useMindMap() {
         );
     }, [setNodes]);
 
-    
+
+    const formatNodesFromApiForState = (fetchedNodes: IMindMapNode[]) => {
+        return fetchedNodes?.map((node: IMindMapNode) => ({
+            ...node,
+            id: node._id
+        })) ?? [];
+    }
+
+    const formatNodesFromStateForApi = (nodesFromState: Node[]) => {
+        const updatedNodes = nodesFromState.map((node: any) => {
+            return {
+                type: node?.type,
+                position: node?.position,
+                data: node?.data,
+                ...(node?._id && !node?._id.includes('statenode_') && { _id: node._id })
+            }
+        })
+        return updatedNodes;
+    }
+
+    const formatEdgesFromStateForApi = (edgesFromState: Edge[]) => {
+        const updatedEdges = edgesFromState.map((edge: any) => {
+            return {
+                source: edge?.source,
+                target: edge?.target,
+            }
+        })
+        return updatedEdges;
+    }
+
+    const formatEdgesFromApiForState = (fetchedEdges: IMindMapEdge[]) => {
+        return fetchedEdges?.map((edge: IMindMapEdge) => ({
+            ...edge,
+            id: edge._id
+        })) ?? [];
+    }
+
 
     return {
         nodes,
@@ -64,6 +100,10 @@ export function useMindMap() {
         onEdgesChange,
         onConnect,
         onSelectionChange,
-        updateNodeData
+        updateNodeData,
+        formatNodesFromApiForState,
+        formatNodesFromStateForApi,
+        formatEdgesFromStateForApi,
+        formatEdgesFromApiForState
     }
 }

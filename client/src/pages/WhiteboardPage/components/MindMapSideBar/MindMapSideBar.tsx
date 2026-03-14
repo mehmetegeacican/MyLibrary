@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
-import { Collapse, IconButton, Paper } from '@mui/material'
+import { Button, Collapse, IconButton, Paper } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import "./styles.css";
@@ -133,6 +133,7 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
+            
             <Collapse in={!collapsed} timeout={300} unmountOnExit>
                 {<div className="sidebar-accordions">
 
@@ -184,6 +185,9 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
+            <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' color={libTheme} onClick={() => {
+                
+            }}> Save </Button>
             <div style={{
                 marginTop: 'auto',
                 marginBottom: 20

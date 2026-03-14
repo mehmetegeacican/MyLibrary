@@ -50,7 +50,6 @@ export default function MindMapSideBar({
                 screenPosition.y >= flowRect.top &&
                 screenPosition.y <= flowRect.bottom;
 
-            // Create a new node and add it to the flow
             if (isInFlow) {
                 const position = screenToFlowPosition(screenPosition);
                 const assignedId = getId()

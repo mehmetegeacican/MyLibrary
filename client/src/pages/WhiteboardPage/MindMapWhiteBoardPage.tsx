@@ -9,7 +9,6 @@ import MindMapSideBar from './components/MindMapSideBar/MindMapSideBar';
 import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';
 import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
-import { IMindMap } from '../../interfaces/DataInterfaces';
 import { useParams } from 'react-router-dom';
 import { useMindMap } from '../../hooks/mindMapHooks';
 import { fetchMindMapByID, updateExistingMindMap } from '../../apis/mindMapApis';

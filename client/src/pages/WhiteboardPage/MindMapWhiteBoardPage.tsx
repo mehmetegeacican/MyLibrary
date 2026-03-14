@@ -11,7 +11,7 @@ import MindMapSideBar from './components/MindMapSideBar/MindMapSideBar';
 import './MindMapWhiteBoard.css';
 import CustomNode from './components/CustomNode/CustomNode';
 import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
-import { IMindMapEdge, IMindMapNode } from '../../interfaces/DataInterfaces';
+import { IMindMapNode } from '../../interfaces/DataInterfaces';
 import { MIND_MAP_NODE_DATA_ATTRIBUTE } from '../../enums/enums';
 
 const initialNodes: any[] = [
@@ -38,7 +38,7 @@ export default function MindMapWhiteBoardPage() {
         fitView: false
     });
     const [selectedNode, setSelectedNode] = useState<IMindMapNode | null>(null);
-    const [selectedEdge, setSelectedEdge] = useState<IMindMapEdge | null>(null);
+    //const [selectedEdge, setSelectedEdge] = useState<IMindMapEdge | null>(null);
 
     const onNodesChange = useCallback(
         (changes: any) => setNodes((nodesSnapshot: any) => applyNodeChanges(changes, nodesSnapshot)),
@@ -51,7 +51,7 @@ export default function MindMapWhiteBoardPage() {
 
     const onSelectionChange = useCallback((params: { nodes: any[]; edges: any[] }) => {
         setSelectedNode(params.nodes.length > 0 ? params.nodes[0] : null);
-        setSelectedEdge(params.edges.length > 0 ? params.edges[0] : null);
+        //setSelectedEdge(params.edges.length > 0 ? params.edges[0] : null);
     }, []);
 
     const updateNodeData = useCallback((nodeId: string, newData: string, updatedDataType: MIND_MAP_NODE_DATA_ATTRIBUTE) => {

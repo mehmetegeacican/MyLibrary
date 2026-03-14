@@ -39,6 +39,8 @@ export interface INote {
 export interface IMindMap{
   _id:string;
   title:string;
+  nodes:IMindMapNode[],
+  edges:IMindMapEdge[]
   createdAt?:Date;
   updatedAt?:Date;
 }

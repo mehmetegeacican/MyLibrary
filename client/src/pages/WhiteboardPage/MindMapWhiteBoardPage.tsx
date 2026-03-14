@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     ReactFlow,
     Controls, Background, MiniMap, ReactFlowProvider,
@@ -12,7 +12,7 @@ import MindMapDetailBar from './components/MindMapDetailBar/MindMapDetailBar';
 import { IMindMap } from '../../interfaces/DataInterfaces';
 import { useParams } from 'react-router-dom';
 import { useMindMap } from '../../hooks/mindMapHooks';
-import { updateExistingMindMap } from '../../apis/mindMapApis';
+import { fetchMindMapByID, updateExistingMindMap } from '../../apis/mindMapApis';
 import { useAuthContext } from '../../hooks/contextHooks';
 import { useUtils } from '../../hooks/utils/useUtils';
 import { MESSAGE_TYPES } from '../../enums/enums';
@@ -28,7 +28,7 @@ export default function MindMapWhiteBoardPage() {
     const { id } = useParams();
     const { user } = useAuthContext();
     const [title, setTitle] = useState<string>("");
-    const {renderMessage,contextHolder} = useUtils();
+    const { renderMessage, contextHolder } = useUtils();
 
     const [settings, setSettings] = useState({
         miniMapOpen: true,
@@ -38,6 +38,7 @@ export default function MindMapWhiteBoardPage() {
     const {
         nodes,
         edges,
+        setNodes,
         selectedNode,
         onNodesChange,
         onEdgesChange,
@@ -46,17 +47,42 @@ export default function MindMapWhiteBoardPage() {
         updateNodeData,
     } = useMindMap();
 
-
+    const getMindMapById = async (id: string | undefined) => {
+        if (id && user) {
+            const data = await fetchMindMapByID(id, user.token)
+            console.log(data);
+            setTitle(data?.title);
+            const formattedNodes = data.nodes.map((node: any) => ({
+                ...node,
+                id: node._id
+            }));
+            setNodes(formattedNodes);
+        }
+    }
 
     const handleMindMapUpdate = async () => {
         if (id) {
-            const updatedMindMap: Pick<IMindMap, "title"> = {
+            const updatedNodes = nodes.map((node: any) => {
+                return {
+                    type:node?.type,
+                    position: node?.position,
+                    data: node?.data
+                }
+            })
+            console.log(nodes);
+            const updatedMindMap: Pick<any, "title" | "nodes"> = {
                 title: title,
+                nodes: updatedNodes
             }
             user && await updateExistingMindMap(id, updatedMindMap, user.token);
-            renderMessage(MESSAGE_TYPES.SUCCESS,"Mind Map Saved");
+            renderMessage(MESSAGE_TYPES.SUCCESS, "Mind Map Saved");
         }
     };
+
+
+    useEffect(() => {
+        getMindMapById(id);
+    }, []);
 
     return (
         <ReactFlowProvider>
@@ -91,7 +117,7 @@ export default function MindMapWhiteBoardPage() {
                     {<MindMapDetailBar selectedMindMapNode={selectedNode} updateNodeData={updateNodeData} />}
                     {contextHolder}
                 </Paper>
-                
+
             </div>
         </ReactFlowProvider>
 

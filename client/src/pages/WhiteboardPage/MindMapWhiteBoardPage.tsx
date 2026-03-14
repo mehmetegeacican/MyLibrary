@@ -102,7 +102,7 @@ export default function MindMapWhiteBoardPage() {
                         {settings.zoomOpen && <Controls />}
                         {settings.miniMapOpen && <MiniMap />}
                     </ReactFlow>
-                    <MindMapDetailBar selectedMindMapNode={selectedNode} updateNodeData={updateNodeData} />
+                    {<MindMapDetailBar selectedMindMapNode={selectedNode} updateNodeData={updateNodeData} />}
                 </Paper>
             </div>
         </ReactFlowProvider>

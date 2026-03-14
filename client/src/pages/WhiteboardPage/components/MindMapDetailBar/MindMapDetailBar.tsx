@@ -1,6 +1,6 @@
 import { ArrowForward, ArrowBack, ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Collapse, Fab, Paper, TextField, Typography } from "@mui/material";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useLibraryTheme } from "../../../../hooks/theme/useLibraryTheme";
 import StringValueField from "../../../../components/forms/StringValueField";
 import { IMindMapNode } from "../../../../interfaces/DataInterfaces";
@@ -19,6 +19,11 @@ export default function MindMapDetailBar({
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [detailPageOpen, setDetailPageOpen] = useState<boolean>(false);
     const { libTheme } = useLibraryTheme();
+
+
+    useEffect(() => {
+        setCollapsed(selectedMindMapNode === null)
+    },[selectedMindMapNode]);
 
     return (
         <Paper className='sidebar' sx={{

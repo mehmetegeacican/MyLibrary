@@ -7,6 +7,11 @@ export const MindMapNodeSchema = new mongoose.Schema({
     },
     type: { type:String, required:true,default:"default"},
     data: {
-        label: {type:String, required:true, default: 'New Node'}
+        label: {type:String, required:true, default: 'New Node'},
+        information:{
+            type:String,
+            required:false,
+            default:""
+        }
     }
 },{ timestamps: true });

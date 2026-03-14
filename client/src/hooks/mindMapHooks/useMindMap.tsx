@@ -41,7 +41,7 @@ export function useMindMap() {
                             [updatedDataType]: newData
                         }
                     };
-                    //setSelectedNode(result);
+                    setSelectedNode(result);
                     return result;
                 }
                 return node;
@@ -58,6 +58,8 @@ export function useMindMap() {
         setEdges,
         selectedNode,
         selectedEdge,
+        setSelectedNode,
+        setSelectedEdge,
         onNodesChange,
         onEdgesChange,
         onConnect,

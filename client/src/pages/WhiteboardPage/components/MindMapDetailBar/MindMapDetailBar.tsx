@@ -1,6 +1,6 @@
 import { ArrowForward, ArrowBack, ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Collapse, Fab, Paper, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLibraryTheme } from "../../../../hooks/theme/useLibraryTheme";
 import StringValueField from "../../../../components/forms/StringValueField";
 import { IMindMapNode } from "../../../../interfaces/DataInterfaces";
@@ -21,6 +21,11 @@ export default function MindMapDetailBar({
     const { libTheme } = useLibraryTheme();
 
 
+    const memoizedSelectedNote = useMemo(() => {
+        return selectedMindMapNode
+    },[selectedMindMapNode]);
+
+
     useEffect(() => {
         setCollapsed(selectedMindMapNode === null)
     },[selectedMindMapNode]);
@@ -39,8 +44,8 @@ export default function MindMapDetailBar({
                 gap: 3,
                 justifyContent: 'center'
             }}>
-                {!collapsed && <StringValueField label={'Node Title'} data={selectedMindMapNode?.data?.label ?? ""} setter={(e: any) => {
-                    selectedMindMapNode && updateNodeData(selectedMindMapNode?._id, e, MIND_MAP_NODE_DATA_ATTRIBUTE.LABEL);
+                {!collapsed && <StringValueField label={'Node Title'} data={memoizedSelectedNote?.data?.label ?? ""} setter={(e: any) => {
+                    selectedMindMapNode && updateNodeData(memoizedSelectedNote?._id, e, MIND_MAP_NODE_DATA_ATTRIBUTE.LABEL);
                 }} />}
             </div>
             <Collapse in={!collapsed} timeout={300} unmountOnExit>
@@ -68,7 +73,7 @@ export default function MindMapDetailBar({
                                 value={selectedMindMapNode?.data?.information}
                                 onChange={(e:any) => {
                                     const {value} = e?.target
-                                    selectedMindMapNode && updateNodeData(selectedMindMapNode?._id, value, MIND_MAP_NODE_DATA_ATTRIBUTE.INFO);
+                                    selectedMindMapNode && updateNodeData(memoizedSelectedNote?._id, value, MIND_MAP_NODE_DATA_ATTRIBUTE.INFO);
                                 }}
                             />
                         </AccordionDetails>

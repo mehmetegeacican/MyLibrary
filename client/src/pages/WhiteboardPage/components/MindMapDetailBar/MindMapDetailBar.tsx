@@ -70,7 +70,7 @@ export default function MindMapDetailBar({
                                 style={{
                                     width: "100%"
                                 }}
-                                value={selectedMindMapNode?.data?.information}
+                                value={selectedMindMapNode?.data?.information ?? ""}
                                 onChange={(e:any) => {
                                     const {value} = e?.target
                                     selectedMindMapNode && updateNodeData(memoizedSelectedNote?._id, value, MIND_MAP_NODE_DATA_ATTRIBUTE.INFO);

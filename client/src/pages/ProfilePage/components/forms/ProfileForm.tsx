@@ -1,27 +1,28 @@
-import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
-import React, { useEffect, useMemo, useState } from 'react'
+import { Avatar, Button, FormControl, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useAuthContext } from '../../../../hooks/contextHooks'
-import { VisibilityOff, Visibility, Person } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../../../components/buttons/uploadButton';
 import { getUserById, updateUser } from '../../../../apis/userApis';
 import { useDebounce } from '../../../../hooks/asyncHooks/useDebounce';
 import { Image, message } from 'antd';
 import { postNewImage } from '../../../../apis/imageApis';
+import LockResetIcon from '@mui/icons-material/LockReset';
+import ChangePasswordModal from '../modals/ChangePasswordModal';
 
 
 
 
 export default function ProfileForm() {
-  const { user , dispatch } = useAuthContext();
+  const { user, dispatch } = useAuthContext();
   const { libTheme } = useLibraryTheme();
   // Variables
   const [username, setUsername] = useState(user?.email || "");
   //const [debouncedUsername, setDebouncedUsername] = useState(user?.email || '');
 
-  const [password, setPassword] = useState("");
-
-  const [showPassword, setShowPassword] = React.useState(false);
+  const password = useRef("");
+  const [passwordModalOpen, setPasswordModalOpen] = React.useState<boolean>(false);
 
   // Upload
   const [imagePath, setImagePath] = React.useState<string>(user?.imagePath || "");
@@ -39,9 +40,9 @@ export default function ProfileForm() {
 
         // Update username in localStorage
         const updatedUser = { ...user, email: value };
-        dispatch({type:'LOGIN', payload:updatedUser});
+        dispatch({ type: 'LOGIN', payload: updatedUser });
         // For Local Storage
-        localStorage.setItem('user',JSON.stringify(updatedUser));
+        localStorage.setItem('user', JSON.stringify(updatedUser));
         message.success('Username changed successfully');
       } catch (error) {
         console.error("Failed to update user:", error);
@@ -51,40 +52,25 @@ export default function ProfileForm() {
   }, 4000);
 
   // Use debounce for Password Change as well
-  const debouncePassword = useDebounce(async (value:string) => {
+  const debouncePassword = useDebounce(async (value: string) => {
     if (user?.id) {
       try {
         // Update the username via API
-        await updateUser(user?.id.toString(), { username: user.email,password:value }, user?.token);
+        await updateUser(user?.id.toString(), { username: user.email, password: value }, user?.token);
         message.success('Password changed successfully');
       } catch (error) {
         console.error("Failed to update password:", error);
         message.error('Error occured! Could not change the password');
       }
     }
-  },4000);
+  }, 2000);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUsername(value);
     debounceUsername(value);
   };
-
-  const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPassword(value);
-    debouncePassword(value);
-  }
 
   const avatarColor = useMemo(() => {
     switch (libTheme) {
@@ -108,18 +94,18 @@ export default function ProfileForm() {
    */
   useEffect(() => {
     const fetchUserData = async () => {
-      if(user){
-        const res = await getUserById(user?.id.toString(),user?.token);
-        if(res.imagePath){
+      if (user) {
+        const res = await getUserById(user?.id.toString(), user?.token);
+        if (res.imagePath) {
           setImagePath(res.imagePath);
         }
-        if(res.password){
-          setPassword(res.password);
+        if (res.password) {
+          password.current = res.password;
         }
       }
     }
     fetchUserData();
-  },[]);
+  }, []);
 
 
   // Update imagePath dynamically
@@ -136,9 +122,9 @@ export default function ProfileForm() {
           await postNewImage(formData, user!.token);
 
           const updatedUser = { ...user, imagePath: imagePath };
-          dispatch({type:'LOGIN', payload:updatedUser});
+          dispatch({ type: 'LOGIN', payload: updatedUser });
 
-          localStorage.setItem('user',JSON.stringify(updatedUser));
+          localStorage.setItem('user', JSON.stringify(updatedUser));
 
           // Step 3 -- Deliver Success Message
           message.success('Profile picture updated successfully!');
@@ -160,7 +146,7 @@ export default function ProfileForm() {
         transition: '0.3s ease'
       }}>
         {!imagePath && <Person sx={{ height: 90, width: 90 }} />}
-        {imagePath && <Image src={`http://localhost:4008/images/profilepics/${imagePath}`} height={200} width={200}/>}
+        {imagePath && <Image src={`http://localhost:4008/images/profilepics/${imagePath}`} height={200} width={200} />}
       </Avatar>
       <Stack spacing={3} sx={{
         width: '83%'
@@ -180,19 +166,14 @@ export default function ProfileForm() {
             id="standard-adornment-password"
             color={libTheme}
             disabled={true}
-            type={showPassword ? 'text' : 'password'}
+            type={'password'}
             value={password}
             onChange={() => console.log("password change is unavailable")}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
+                <Button color={libTheme} startIcon={<LockResetIcon />} onClick={() => {
+                  setPasswordModalOpen(true);
+                }}> Change Password </Button>
               </InputAdornment>
             }
           />
@@ -211,6 +192,16 @@ export default function ProfileForm() {
           />
         </div>
       </Stack>
+      {passwordModalOpen &&
+        <ChangePasswordModal
+          open={passwordModalOpen}
+          password={password.current}
+          handleClose={() => setPasswordModalOpen(false)}
+          handleSave={() => {
+            console.log("Update Function");
+          }}
+        />
+      }
     </Stack>
   )
 }

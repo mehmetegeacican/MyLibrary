@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
-import { Button, Collapse, IconButton, Paper } from '@mui/material'
+import { Button, Collapse, IconButton, Paper, Tooltip } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import "./styles.css";
@@ -12,6 +12,7 @@ import Switch from '@mui/material/Switch';
 import { Fab } from '@mui/material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 import { useUtils } from '../../../../hooks/utils/useUtils';
+import SaveIcon from '@mui/icons-material/Save';
 
 
 
@@ -41,7 +42,7 @@ export default function MindMapSideBar({
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     const { libTheme } = useLibraryTheme();
-    const {generateMongoId} = useUtils();
+    const { generateMongoId } = useUtils();
 
 
     const handleNodeDrop = useCallback(
@@ -190,9 +191,26 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
-            <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' color={libTheme} onClick={() => {
-                save()
-            }}> Save </Button>
+            {!collapsed &&
+                <Button
+                    sx={{ alignItems: "center", maxWidth: 300 }}
+                    variant='outlined'
+                    color={libTheme}
+                    startIcon={<SaveIcon />}
+                    onClick={() => {
+                        save()
+                    }}> Save </Button>}
+            {collapsed &&
+                <Tooltip title="Save">
+                    <IconButton
+                        aria-label="save"
+                        color={libTheme}
+                        onClick={() => {
+                            save()
+                        }}>
+                        <SaveIcon />
+                    </IconButton>
+                </Tooltip>}
             <div style={{
                 marginTop: 'auto',
                 marginBottom: 20

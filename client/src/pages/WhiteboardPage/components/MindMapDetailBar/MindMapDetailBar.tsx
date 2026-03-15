@@ -22,7 +22,6 @@ export default function MindMapDetailBar({
 
 
     const memoizedSelectedNote = useMemo(() => {
-        console.log(selectedMindMapNode);
         return selectedMindMapNode
     },[selectedMindMapNode]);
 

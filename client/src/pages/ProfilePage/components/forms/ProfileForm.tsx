@@ -197,7 +197,9 @@ export default function ProfileForm() {
           open={passwordModalOpen}
           password={password.current}
           handleClose={() => setPasswordModalOpen(false)}
-          handleSave={debouncePassword}
+          handleSave={() => {
+            console.log("Update Function");
+          }}
         />
       }
     </Stack>

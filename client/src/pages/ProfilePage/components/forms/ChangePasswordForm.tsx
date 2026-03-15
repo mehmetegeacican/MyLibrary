@@ -3,8 +3,20 @@ import { useLibraryTheme } from "../../../../hooks/theme/useLibraryTheme";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+interface PasswordModalProps {
+    oldPassword:string;
+    setOldPassword:Function;
+    newPassword:string;
+    setNewPassword:Function;
+}
 
-export default function ChangePasswordForm() {
+
+export default function ChangePasswordForm({
+    //oldPassword,
+    //setOldPassword,
+    newPassword,
+    setNewPassword
+}:PasswordModalProps) {
 
     const { libTheme } = useLibraryTheme();
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -23,15 +35,15 @@ export default function ChangePasswordForm() {
         <Stack spacing={3} sx={{
             minWidth:400
         }}>
-            <FormControl variant='standard'>
+            {/* <FormControl variant='standard'>
                 <InputLabel htmlFor="standard-adornment-password" color={libTheme}>Old Password</InputLabel>
                 <Input
                     id="standard-adornment-password"
                     color={libTheme}
                     disabled={false}
                     type={showPassword ? 'text' : 'password'}
-                    value={""}
-                    onChange={() => console.log("password change is unavailable")}
+                    value={oldPassword}
+                    onChange={(e:any) => setOldPassword(e.target.value)}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -46,7 +58,7 @@ export default function ChangePasswordForm() {
                         </InputAdornment>
                     }
                 />
-            </FormControl>
+            </FormControl> */}
              <FormControl variant='standard'>
                 <InputLabel htmlFor="standard-adornment-password" color={libTheme}>New Password</InputLabel>
                 <Input
@@ -54,8 +66,10 @@ export default function ChangePasswordForm() {
                     color={libTheme}
                     disabled={false}
                     type={showPassword ? 'text' : 'password'}
-                    value={""}
-                    onChange={() => console.log("password change is unavailable")}
+                    value={newPassword}
+                    onChange={(e:any) => {
+                        setNewPassword(e.target.value);
+                    }}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton

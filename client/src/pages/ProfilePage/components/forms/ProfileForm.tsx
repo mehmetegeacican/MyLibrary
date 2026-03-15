@@ -1,5 +1,5 @@
 import { Avatar, Button, FormControl, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useAuthContext } from '../../../../hooks/contextHooks'
 import { Person } from '@mui/icons-material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
@@ -21,8 +21,7 @@ export default function ProfileForm() {
   const [username, setUsername] = useState(user?.email || "");
   //const [debouncedUsername, setDebouncedUsername] = useState(user?.email || '');
 
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
+  const password = useRef("");
   const [passwordModalOpen, setPasswordModalOpen] = React.useState<boolean>(false);
 
   // Upload
@@ -64,7 +63,7 @@ export default function ProfileForm() {
         message.error('Error occured! Could not change the password');
       }
     }
-  }, 4000);
+  }, 2000);
 
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,12 +71,6 @@ export default function ProfileForm() {
     setUsername(value);
     debounceUsername(value);
   };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPassword(value);
-    debouncePassword(value);
-  }
 
   const avatarColor = useMemo(() => {
     switch (libTheme) {
@@ -107,7 +100,7 @@ export default function ProfileForm() {
           setImagePath(res.imagePath);
         }
         if (res.password) {
-          setPassword(res.password);
+          password.current = res.password;
         }
       }
     }
@@ -173,19 +166,11 @@ export default function ProfileForm() {
             id="standard-adornment-password"
             color={libTheme}
             disabled={true}
-            type={showPassword ? 'text' : 'password'}
+            type={'password'}
             value={password}
             onChange={() => console.log("password change is unavailable")}
             endAdornment={
               <InputAdornment position="end">
-                {/* <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton> */}
                 <Button color={libTheme} startIcon={<LockResetIcon />} onClick={() => {
                   setPasswordModalOpen(true);
                 }}> Change Password </Button>
@@ -207,7 +192,14 @@ export default function ProfileForm() {
           />
         </div>
       </Stack>
-      {passwordModalOpen && <ChangePasswordModal open={passwordModalOpen} handleClose={() => setPasswordModalOpen(false)} />}
+      {passwordModalOpen &&
+        <ChangePasswordModal
+          open={passwordModalOpen}
+          password={password.current}
+          handleClose={() => setPasswordModalOpen(false)}
+          handleSave={debouncePassword}
+        />
+      }
     </Stack>
   )
 }

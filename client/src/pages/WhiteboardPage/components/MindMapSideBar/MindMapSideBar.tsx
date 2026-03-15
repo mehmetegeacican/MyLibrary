@@ -190,9 +190,9 @@ export default function MindMapSideBar({
                     </Accordion>
                 </div>}
             </Collapse>
-            <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' color={libTheme} onClick={() => {
+            {!collapsed && <Button sx={{ alignItems: "center", maxWidth: 300 }} variant='outlined' color={libTheme} onClick={() => {
                 save()
-            }}> Save </Button>
+            }}> Save </Button>}
             <div style={{
                 marginTop: 'auto',
                 marginBottom: 20

@@ -1,13 +1,14 @@
-import { Avatar, FormControl, IconButton, Input, InputAdornment, InputLabel, Stack } from '@mui/material'
+import { Avatar, Button, FormControl,Input, InputAdornment, InputLabel, Stack } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useAuthContext } from '../../../../hooks/contextHooks'
-import { VisibilityOff, Visibility, Person } from '@mui/icons-material';
+import {  Person } from '@mui/icons-material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../../../components/buttons/uploadButton';
 import { getUserById, updateUser } from '../../../../apis/userApis';
 import { useDebounce } from '../../../../hooks/asyncHooks/useDebounce';
 import { Image, message } from 'antd';
 import { postNewImage } from '../../../../apis/imageApis';
+import LockResetIcon from '@mui/icons-material/LockReset';
 
 
 
@@ -185,14 +186,15 @@ export default function ProfileForm() {
             onChange={() => console.log("password change is unavailable")}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
+                {/* <IconButton
                   aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   onMouseUp={handleMouseUpPassword}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
+                </IconButton> */}
+                <Button color={libTheme} startIcon={<LockResetIcon/>}> Change Password </Button>
               </InputAdornment>
             }
           />

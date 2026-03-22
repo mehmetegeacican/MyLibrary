@@ -6,7 +6,7 @@ const passwordValidationRules = [
         .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
         .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
         .matches(/[0-9]/).withMessage('Password must contain at least one number')
-        .matches(/[!@#$%^&*]/).withMessage('Password must contain at least one special character'),
+        .matches(/[!@#$%^&*-]/).withMessage('Password must contain at least one special character'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -6,10 +6,13 @@ import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 import UploadButton from '../../../../components/buttons/uploadButton';
 import { getUserById, updateUser } from '../../../../apis/userApis';
 import { useDebounce } from '../../../../hooks/asyncHooks/useDebounce';
-import { Image, message } from 'antd';
+import { Image } from 'antd';
 import { postNewImage } from '../../../../apis/imageApis';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import ChangePasswordModal from '../modals/ChangePasswordModal';
+import { useAuthForms } from '../../../../hooks/formHooks';
+import { useUtils } from '../../../../hooks/utils/useUtils';
+import { MESSAGE_TYPES } from '../../../../enums/enums';
 
 
 
@@ -17,8 +20,17 @@ import ChangePasswordModal from '../modals/ChangePasswordModal';
 export default function ProfileForm() {
   const { user, dispatch } = useAuthContext();
   const { libTheme } = useLibraryTheme();
+  const {
+    changeUserPassword,
+    message,
+    error
+  } = useAuthForms();
   // Variables
   const [username, setUsername] = useState(user?.email || "");
+  const {
+    renderMessage,
+    contextHolder
+  } = useUtils();
   //const [debouncedUsername, setDebouncedUsername] = useState(user?.email || '');
 
   const password = useRef("");
@@ -43,27 +55,27 @@ export default function ProfileForm() {
         dispatch({ type: 'LOGIN', payload: updatedUser });
         // For Local Storage
         localStorage.setItem('user', JSON.stringify(updatedUser));
-        message.success('Username changed successfully');
+        renderMessage(MESSAGE_TYPES.SUCCESS,'Username changed successfully')
       } catch (error) {
         console.error("Failed to update user:", error);
-        message.error('Error occured! Could not change the username');
+        renderMessage(MESSAGE_TYPES.ERROR,'Error occured! Could not change the username');
       }
     }
   }, 4000);
 
   // Use debounce for Password Change as well
-  const debouncePassword = useDebounce(async (value: string) => {
-    if (user?.id) {
-      try {
-        // Update the username via API
-        await updateUser(user?.id.toString(), { username: user.email, password: value }, user?.token);
-        message.success('Password changed successfully');
-      } catch (error) {
-        console.error("Failed to update password:", error);
-        message.error('Error occured! Could not change the password');
-      }
-    }
-  }, 2000);
+  // const debouncePassword = useDebounce(async (value: string) => {
+  //   if (user?.id) {
+  //     try {
+  //       // Update the username via API
+  //       await updateUser(user?.id.toString(), { username: user.email, password: value }, user?.token);
+  //       message.success('Password changed successfully');
+  //     } catch (error) {
+  //       console.error("Failed to update password:", error);
+  //       message.error('Error occured! Could not change the password');
+  //     }
+  //   }
+  // }, 2000);
 
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,17 +132,14 @@ export default function ProfileForm() {
           formData.append('location', 'profilepics');
           formData.append('image', uploadedPicture);
           await postNewImage(formData, user!.token);
-
           const updatedUser = { ...user, imagePath: imagePath };
           dispatch({ type: 'LOGIN', payload: updatedUser });
-
           localStorage.setItem('user', JSON.stringify(updatedUser));
-
           // Step 3 -- Deliver Success Message
-          message.success('Profile picture updated successfully!');
+          renderMessage(MESSAGE_TYPES.SUCCESS,'Profile picture updated successfully!');
         } catch (error) {
           console.error("Failed to update profile picture:", error);
-          message.error('Error occurred! Could not update the profile picture.');
+          renderMessage(MESSAGE_TYPES.ERROR,'Error occurred! Could not update the profile picture.')
         }
       };
       updateProfilePicture();
@@ -197,11 +206,14 @@ export default function ProfileForm() {
           open={passwordModalOpen}
           password={password.current}
           handleClose={() => setPasswordModalOpen(false)}
-          handleSave={() => {
+          handleSave={async (oldPassword:string,newPassword:string) => {
+            console.log(oldPassword,newPassword);
+            await changeUserPassword(oldPassword,newPassword)
             console.log("Update Function");
           }}
         />
       }
+      {contextHolder}
     </Stack>
   )
 }

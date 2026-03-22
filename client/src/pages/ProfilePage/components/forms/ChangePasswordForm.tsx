@@ -12,8 +12,8 @@ interface PasswordModalProps {
 
 
 export default function ChangePasswordForm({
-    //oldPassword,
-    //setOldPassword,
+    oldPassword,
+    setOldPassword,
     newPassword,
     setNewPassword
 }:PasswordModalProps) {
@@ -35,7 +35,7 @@ export default function ChangePasswordForm({
         <Stack spacing={3} sx={{
             minWidth:400
         }}>
-            {/* <FormControl variant='standard'>
+            <FormControl variant='standard'>
                 <InputLabel htmlFor="standard-adornment-password" color={libTheme}>Old Password</InputLabel>
                 <Input
                     id="standard-adornment-password"
@@ -58,7 +58,7 @@ export default function ChangePasswordForm({
                         </InputAdornment>
                     }
                 />
-            </FormControl> */}
+            </FormControl>
              <FormControl variant='standard'>
                 <InputLabel htmlFor="standard-adornment-password" color={libTheme}>New Password</InputLabel>
                 <Input

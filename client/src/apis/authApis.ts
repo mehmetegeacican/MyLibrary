@@ -43,14 +43,14 @@ export const signup = async (username: string, password: string) => {
 }
 
 interface changePasswordInterface {
-    oldPassword:string,
-    newPassword:string
+    oldPassword: string,
+    newPassword: string
 }
 
-export const changePasswordByAPI = async (userId:string,{
+export const changePasswordByAPI = async (userId: string | number, {
     oldPassword,
     newPassword
-}:changePasswordInterface) => {
+}: changePasswordInterface) => {
     try {
         const res = await axios.put(AUTH_ADDRESS + `/api/v1/auth/change-password/${userId}`, {
             oldPassword: oldPassword,

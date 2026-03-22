@@ -47,7 +47,7 @@ export default function ChangePasswordModal({
             </DialogContent>
 
             <DialogActions>
-                <Button color={libTheme} onClick={() => handleSave(newPassword)}>
+                <Button color={libTheme} onClick={() => handleSave(oldPassword,newPassword)}>
                     Save
                 </Button>
                 <Button color={libTheme} onClick={handleClose}>Cancel</Button>

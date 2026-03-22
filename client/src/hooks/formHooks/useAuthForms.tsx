@@ -1,8 +1,9 @@
 import React from "react";
-import { login, signup } from "../../apis/authApis";
+import { login, signup, changePasswordByAPI } from "../../apis/authApis";
 import { useAuthContext } from "../contextHooks";
 
 export const useAuthForms = () => {
+    const { user } = useAuthContext();
     const [error, setError] = React.useState<boolean>(false);
     const [message, setMessage] = React.useState<string>("");
     const { dispatch } = useAuthContext();
@@ -52,6 +53,18 @@ export const useAuthForms = () => {
         localStorage.setItem('user', JSON.stringify(loginResult));
         dispatch({ type: 'LOGIN', payload: loginResult });
     };
-    return { error, message, loginUser, signUpUser }
+
+    const changeUserPassword = async (oldPassword: string, newPassword: string) => {
+        setError(false);
+        setMessage("");
+        if (user?.id) {
+            await changePasswordByAPI(user.id, {
+                oldPassword,
+                newPassword
+            });
+        }
+
+    }
+    return { error, message, loginUser, signUpUser,changeUserPassword }
 
 }

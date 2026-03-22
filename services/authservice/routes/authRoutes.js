@@ -1,5 +1,8 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const {
+    passwordValidationRules
+} = require('../validator/validator');
 
 const { signUp, login, changePassword } = require('../controller/authController');
 
@@ -20,6 +23,6 @@ const loginRateLimiter = rateLimit({
 
 router.post('/signup', signUp);
 router.post('/login', loginRateLimiter, login);
-router.put('/change-password/:userId',changePassword);
+router.put('/change-password/:userId',passwordValidationRules,changePassword);
 
 module.exports = router;

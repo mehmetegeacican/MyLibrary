@@ -1,5 +1,31 @@
 const { connectDb, closeDb } = require('../dbconnection');
 const bcrypt = require('bcrypt');
+
+
+
+/**
+ * Model to Get A User By ID
+ * @param {*string} userId the Id of the user
+ * @returns {*Object[]} the Given user array, one fetches usually.
+ */
+const getUserById = async (userId) => {
+    let client = await connectDb();
+    try {
+        const checkQuery = `SELECT ID,username,password FROM "User"
+        WHERE ID = $1`;
+        const values = [userId];
+        const result = await client.query(checkQuery, values);
+        return result.rows;
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
+
 /**
  * Model to Add A New User to The DB
  */
@@ -12,6 +38,36 @@ const addNewUser = async (username, password) => {
         const values = [username,password];
         await client.query(insertQuery, values);
         return "Author Successfully inserted";
+    }
+    catch (e) {
+        console.log(e);
+        throw new Error("Db Connection Unsuccessful");
+    }
+    finally {
+        await closeDb(client);
+    }
+}
+
+/**
+ * Model to Update User Password
+ * @param {*} userId 
+ * @param {*} newPassword 
+ * @returns 
+ */
+const updateUserPasswordById = async (userId,newPassword) => {
+    let client = await connectDb();
+    try {
+        const updateQuery = `
+            UPDATE "User"
+            SET "password" = $1
+            WHERE "id" = $2
+        `;
+        const values = [newPassword, userId];
+        const result = await client.query(updateQuery, values);
+        if (result.rowCount === 0) {
+            throw new Error("User not found");
+        }
+        return "Password successfully updated";
     }
     catch (e) {
         console.log(e);
@@ -70,6 +126,8 @@ const getIdOfUser = async (username) => {
     }
 }
 
+
+
 /**
  * Model to Delete An Existing User from the DB
  */
@@ -87,7 +145,9 @@ const deleteUser = async (id) => {
 }
 
 module.exports = {
+    getUserById,
     addNewUser,
+    updateUserPasswordById,
     checkIfUserExists,
     getIdOfUser
 }

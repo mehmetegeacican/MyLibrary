@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
-const { addNewUser, checkIfUserExists, getIdOfUser } = require('../model/authModel');
+const { addNewUser, checkIfUserExists, getIdOfUser, getUserById, updateUserPasswordById } = require('../model/authModel');
+const { comparePasswords } = require('../utils/utils')
 dotenv.config();
 
 /**
@@ -79,22 +80,42 @@ const sendDeleteReq = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const changePassword = async (req,res) => {
-    const {userId, oldPassword, newPassword} = req.body;
-    try {
-        const userFetched = await getIdOfUser(username);
-        console.log(userFetched);
-        res.status(200).json({
-            message: "Password Change successful"
-        });
-        
-    } catch (error) {
-        console.log(error);
+const changePassword = async (req, res) => {
+    const { userId } = req.params;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+        return res.status(400).json({ message: "Missing required fields." });
     }
-}
+
+    try {
+
+        const fetchedUsers = await getUserById(userId);
+        if (!fetchedUsers || fetchedUsers.length === 0) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        const user = fetchedUsers[0];
+
+        const isMatch = await comparePasswords(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid current password." });
+        }
+
+        // Hash and Update
+        const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+        const resultMessage = await updateUserPasswordById(userId, hashedPassword);
+
+        return res.status(200).json({ message: resultMessage });
+
+    } catch (error) {
+        console.error("ChangePassword Error:", error);
+        return res.status(500).json({ message: "Internal server error." });
+    }
+};
 
 
 module.exports = {
     signUp, login, sendDeleteReq,
-     changePassword
+    changePassword
 }

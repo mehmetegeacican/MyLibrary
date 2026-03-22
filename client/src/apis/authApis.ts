@@ -41,3 +41,24 @@ export const signup = async (username: string, password: string) => {
         return null;
     }
 }
+
+interface changePasswordInterface {
+    oldPassword:string,
+    newPassword:string
+}
+
+export const changePasswordByAPI = async (userId:string,{
+    oldPassword,
+    newPassword
+}:changePasswordInterface) => {
+    try {
+        const res = await axios.put(AUTH_ADDRESS + `/api/v1/auth/change-password/${userId}`, {
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        });
+        return res.data ?? null;
+    } catch (e) {
+        console.log(e)
+        return null;
+    }
+}

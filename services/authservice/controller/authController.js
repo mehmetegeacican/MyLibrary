@@ -83,11 +83,6 @@ const sendDeleteReq = async (req, res) => {
 const changePassword = async (req, res) => {
     const { userId } = req.params;
     const { oldPassword, newPassword } = req.body;
-
-    if (!oldPassword || !newPassword) {
-        return res.status(400).json({ message: "Missing required fields." });
-    }
-
     try {
 
         const fetchedUsers = await getUserById(userId);
@@ -99,7 +94,7 @@ const changePassword = async (req, res) => {
 
         const isMatch = await comparePasswords(oldPassword, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: "Invalid current password." });
+            return res.status(400).json({ message: "Invalid current password." });
         }
 
         // Hash and Update
@@ -116,6 +111,8 @@ const changePassword = async (req, res) => {
 
 
 module.exports = {
-    signUp, login, sendDeleteReq,
+    signUp,
+    login,
+    sendDeleteReq,
     changePassword
 }

@@ -17,8 +17,17 @@ export const useAuthForms = () => {
             setMessage("Email or Password can not be empty");
         }
         const result = await login(email, password);
+        if (result.status === 400) {
+            setError(true);
+            const message = result.error || result.message;
+            setMessage(message);
+            return;
+        }
+
         localStorage.setItem('user', JSON.stringify(result));
         dispatch({ type: 'LOGIN', payload: result });
+
+
     };
 
     const signUpUser = async (email: string, password: string) => {

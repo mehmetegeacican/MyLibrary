@@ -55,15 +55,24 @@ export const useAuthForms = () => {
     };
 
     const changeUserPassword = async (oldPassword: string, newPassword: string) => {
-        setError(false);
-        setMessage("");
         if (user?.id) {
-            await changePasswordByAPI(user.id, {
+            const result = await changePasswordByAPI(user.id, {
                 oldPassword,
                 newPassword
             });
-        }
+            if(result.status === 400 || result.status === 500){
+                return {
+                    status:result.status || 400,
+                    message:result.message,
+                    errors:result.errors
+                }
+            }
+            return {
+                message:result.message,
+                status:200
+            }
 
+        }
     }
     return { error, message, loginUser, signUpUser,changeUserPassword }
 

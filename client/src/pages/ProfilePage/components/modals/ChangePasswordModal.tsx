@@ -8,7 +8,7 @@ interface IChangePasswordModalProps {
     open: boolean;
     handleClose: () => void;
     handleSave: Function;
-    password:string;
+    password: string;
 }
 
 export default function ChangePasswordModal({
@@ -17,10 +17,9 @@ export default function ChangePasswordModal({
     handleSave,
 }: IChangePasswordModalProps) {
     const { libTheme } = useLibraryTheme();
-    
+
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
-
     return (
         <Dialog
             open={open}
@@ -47,11 +46,10 @@ export default function ChangePasswordModal({
             </DialogContent>
 
             <DialogActions>
-                <Button color={libTheme} onClick={() => handleSave(oldPassword,newPassword)}>
+                <Button color={libTheme} onClick={() => handleSave(oldPassword, newPassword)}>
                     Save
                 </Button>
                 <Button color={libTheme} onClick={handleClose}>Cancel</Button>
-
             </DialogActions>
         </Dialog>
     )

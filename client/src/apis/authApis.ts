@@ -57,8 +57,13 @@ export const changePasswordByAPI = async (userId: string | number, {
             newPassword: newPassword
         });
         return res.data ?? null;
-    } catch (e) {
-        console.log(e)
-        return null;
+    } catch (e:any) {
+        const errorMsg = e.response.data.message;
+        const errorArr = e.response.data.errors;
+        return {
+            status:e.response.status,
+            message:errorMsg,
+            errors:errorArr
+        };
     }
 }

@@ -22,8 +22,6 @@ export default function ProfileForm() {
   const { libTheme } = useLibraryTheme();
   const {
     changeUserPassword,
-    message,
-    error
   } = useAuthForms();
   // Variables
   const [username, setUsername] = useState(user?.email || "");
@@ -55,10 +53,10 @@ export default function ProfileForm() {
         dispatch({ type: 'LOGIN', payload: updatedUser });
         // For Local Storage
         localStorage.setItem('user', JSON.stringify(updatedUser));
-        renderMessage(MESSAGE_TYPES.SUCCESS,'Username changed successfully')
+        renderMessage(MESSAGE_TYPES.SUCCESS, 'Username changed successfully')
       } catch (error) {
         console.error("Failed to update user:", error);
-        renderMessage(MESSAGE_TYPES.ERROR,'Error occured! Could not change the username');
+        renderMessage(MESSAGE_TYPES.ERROR, 'Error occured! Could not change the username');
       }
     }
   }, 4000);
@@ -136,10 +134,10 @@ export default function ProfileForm() {
           dispatch({ type: 'LOGIN', payload: updatedUser });
           localStorage.setItem('user', JSON.stringify(updatedUser));
           // Step 3 -- Deliver Success Message
-          renderMessage(MESSAGE_TYPES.SUCCESS,'Profile picture updated successfully!');
+          renderMessage(MESSAGE_TYPES.SUCCESS, 'Profile picture updated successfully!');
         } catch (error) {
           console.error("Failed to update profile picture:", error);
-          renderMessage(MESSAGE_TYPES.ERROR,'Error occurred! Could not update the profile picture.')
+          renderMessage(MESSAGE_TYPES.ERROR, 'Error occurred! Could not update the profile picture.')
         }
       };
       updateProfilePicture();
@@ -206,10 +204,21 @@ export default function ProfileForm() {
           open={passwordModalOpen}
           password={password.current}
           handleClose={() => setPasswordModalOpen(false)}
-          handleSave={async (oldPassword:string,newPassword:string) => {
-            console.log(oldPassword,newPassword);
-            await changeUserPassword(oldPassword,newPassword)
-            console.log("Update Function");
+          handleSave={async (oldPassword: string, newPassword: string) => {
+            const result = await changeUserPassword(oldPassword, newPassword);
+
+            if (result?.status === 400 && Array.isArray(result.errors)) {
+              result?.errors.forEach((error: any) => {
+                renderMessage(MESSAGE_TYPES.ERROR, error.msg);
+              })
+            }
+            else if (result?.status === 400 || result?.status === 500) {
+              renderMessage(MESSAGE_TYPES.ERROR, result.message);
+            }
+            else if (result?.status === 200) {
+              renderMessage(MESSAGE_TYPES.SUCCESS, result.message);
+              setPasswordModalOpen(false);
+            }
           }}
         />
       }

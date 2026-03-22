@@ -18,7 +18,7 @@ export const useAuthForms = () => {
             setMessage("Email or Password can not be empty");
         }
         const result = await login(email, password);
-        if (result.status === 400) {
+        if (result.status === 400 || result.status === 429 || result.status === 500) {
             setError(true);
             const message = result.error || result.message;
             setMessage(message);

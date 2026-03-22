@@ -20,8 +20,12 @@ export default function ChangePasswordForm({
 
     const { libTheme } = useLibraryTheme();
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showPasswordNew,setShowPasswordNew] = useState<boolean>(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword = (isNew:boolean) => {
+        isNew && setShowPasswordNew((show) => !show);
+        !isNew && setShowPassword((show) => !show);
+    };
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -48,7 +52,7 @@ export default function ChangePasswordForm({
                         <InputAdornment position="end">
                             <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={() => handleClickShowPassword(false)}
                                 onMouseDown={handleMouseDownPassword}
                                 onMouseUp={handleMouseUpPassword}
                             >
@@ -65,7 +69,7 @@ export default function ChangePasswordForm({
                     id="standard-adornment-password"
                     color={libTheme}
                     disabled={false}
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPasswordNew ? 'text' : 'password'}
                     value={newPassword}
                     onChange={(e:any) => {
                         setNewPassword(e.target.value);
@@ -74,11 +78,11 @@ export default function ChangePasswordForm({
                         <InputAdornment position="end">
                             <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={() => handleClickShowPassword(true)}
                                 onMouseDown={handleMouseDownPassword}
                                 onMouseUp={handleMouseUpPassword}
                             >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPasswordNew ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
 
                         </InputAdornment>

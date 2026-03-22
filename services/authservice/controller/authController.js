@@ -74,8 +74,27 @@ const login = async (req, res) => {
 const sendDeleteReq = async (req, res) => {
 
 }
+/**
+ * PUT Request in order to change the password
+ * @param {*} req 
+ * @param {*} res 
+ */
+const changePassword = async (req,res) => {
+    const {userId, oldPassword, newPassword} = req.body;
+    try {
+        const userFetched = await getIdOfUser(username);
+        console.log(userFetched);
+        res.status(200).json({
+            message: "Password Change successful"
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 module.exports = {
-    signUp, login, sendDeleteReq
+    signUp, login, sendDeleteReq,
+     changePassword
 }

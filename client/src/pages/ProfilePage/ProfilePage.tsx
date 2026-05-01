@@ -3,6 +3,7 @@ import { useAuthContext } from '../../hooks/contextHooks'
 import { ProfileForm } from './components';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { updateUser } from '../../apis/userApis';
+import LightAndDarkSwitch from './components/switch/LightAndDarkSwitch';
 
 export default function ProfilePage() {
 
@@ -50,7 +51,7 @@ export default function ProfilePage() {
                                 display: 'flex',
                                 flexDirection: 'row'
                             }}>
-                               
+                               <LightAndDarkSwitch/>
                             </div>
                         </RadioGroup>
                     </Paper>

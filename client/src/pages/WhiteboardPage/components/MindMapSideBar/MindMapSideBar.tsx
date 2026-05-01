@@ -29,7 +29,8 @@ export default function MindMapSideBar({
     settings: {
         miniMapOpen: boolean,
         zoomOpen: boolean,
-        fitView: boolean
+        fitView: boolean,
+        autoSave:boolean
     },
     setSettings: Function,
     save: Function
@@ -185,6 +186,13 @@ export default function MindMapSideBar({
                                         fitView: !prev.fitView
                                     }))
                                 }} />} label="Zoom in on initial insert" />
+
+                                <FormControlLabel control={<Switch checked={settings.autoSave} onChange={() => {
+                                    setSettings((prev: any) => ({
+                                        ...prev,
+                                        autoSave: !prev.autoSave
+                                    }))
+                                }} />} label="AutoSave" />
 
                             </FormGroup>
                         </AccordionDetails>

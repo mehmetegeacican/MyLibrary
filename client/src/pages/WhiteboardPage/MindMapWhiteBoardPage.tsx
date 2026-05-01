@@ -15,6 +15,7 @@ import { fetchMindMapByID, updateExistingMindMap } from '../../apis/mindMapApis'
 import { useAuthContext } from '../../hooks/contextHooks';
 import { useUtils } from '../../hooks/utils/useUtils';
 import { MESSAGE_TYPES } from '../../enums/enums';
+import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
 
 const nodeTypes = {
     input: CustomNode,
@@ -32,7 +33,8 @@ export default function MindMapWhiteBoardPage() {
     const [settings, setSettings] = useState({
         miniMapOpen: true,
         zoomOpen: true,
-        fitView: false
+        fitView: false,
+        autoSave: false
     });
     const {
         nodes,
@@ -69,12 +71,20 @@ export default function MindMapWhiteBoardPage() {
             const updatedMindMap: Pick<any, "title" | "nodes" | "edges"> = {
                 title: title,
                 nodes: updatedNodes,
-                edges:updatedEdges
+                edges: updatedEdges
             }
             user && await updateExistingMindMap(id, updatedMindMap, user.token);
             renderMessage(MESSAGE_TYPES.SUCCESS, "Mind Map Saved");
         }
     };
+
+    const debouncedSave = useDebounce(handleMindMapUpdate, 1500);
+
+    useEffect(() => {
+        if (settings.autoSave) {
+            debouncedSave();
+        }
+    }, [nodes, edges]);
 
 
     useEffect(() => {

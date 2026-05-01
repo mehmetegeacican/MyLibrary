@@ -19,3 +19,8 @@ export enum MESSAGE_TYPES {
     ERROR = "error",
     WARNING = "warning"
 }
+
+export enum LIGHT_THEMES {
+    LIGHT = "light",
+    DARK = "dark"
+}

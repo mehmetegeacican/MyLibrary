@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { IAuthor, IBook, ICategory, IMindMap, INote, IUser } from "./DataInterfaces";
+import { LIGHT_THEMES } from "../enums/enums";
 /**
  * State Interfaces regarding the LibraryDataContext
  */
@@ -22,7 +23,8 @@ export interface AuthState {
     user: IUser | null,
     themeColor: String | null,
     plan: string | null,
-    isInitialized:boolean
+    isInitialized:boolean,
+    theme:LIGHT_THEMES
 }
 /**
  * Action Interface for Auth Context
@@ -52,6 +54,11 @@ export interface SetPlanAction {
 
 export interface InitializeUser {
     type : 'INITIALIZE';
+}
+
+export interface SwitchTheme {
+    type: 'SWTICH_THEME',
+    payload: LIGHT_THEMES
 }
 /**
  * Action Interface Regarding the LibraryDataContext
@@ -113,7 +120,7 @@ export type LibraryDataAction = (GetBooksAction |
     TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface
     | GetNotesAction | TriggerNotesInterface | GetMindMapsAction | TriggerMindMapsInterface);
 
-export type AuthAction = (LoginAction | SignUpAction | LogoutAction | SetThemeColorAction | SetPlanAction | InitializeUser);
+export type AuthAction = (LoginAction | SignUpAction | LogoutAction | SetThemeColorAction | SetPlanAction | InitializeUser | SwitchTheme);
 /**
  * Dispatch Interface required for dispatch function
  */

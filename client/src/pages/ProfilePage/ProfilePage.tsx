@@ -3,6 +3,7 @@ import { useAuthContext } from '../../hooks/contextHooks'
 import { ProfileForm } from './components';
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { updateUser } from '../../apis/userApis';
+import LightAndDarkSwitch from './components/switch/LightAndDarkSwitch';
 
 export default function ProfilePage() {
 
@@ -42,6 +43,17 @@ export default function ProfilePage() {
                             height: 120,
                         }}
                     >
+                        <Typography sx={{
+                            marginBottom: 2
+                        }} variant='h6' color={libTheme}> Select Theme Mode </Typography>
+                        <RadioGroup name="use-radio-group" value={libTheme} onChange={handleColorSwitch}>
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'row'
+                            }}>
+                               <LightAndDarkSwitch/>
+                            </div>
+                        </RadioGroup>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>

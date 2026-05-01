@@ -23,7 +23,7 @@ export const mainListItems = (
         <ListItemIcon>
           <Dashboard />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" color='secondary' />
+        <ListItemText primary="Dashboard" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
 
@@ -32,7 +32,7 @@ export const mainListItems = (
         <ListItemIcon>
           <LocalLibrary />
         </ListItemIcon>
-        <ListItemText primary="Books" />
+        <ListItemText primary="Books" primaryTypographyProps={{ sx: { color: 'text.primary' } }}/>
       </ListItemButton>
     </Link>
 
@@ -41,7 +41,7 @@ export const mainListItems = (
         <ListItemIcon>
           <People/>
         </ListItemIcon>
-        <ListItemText primary="Authors" />
+        <ListItemText primary="Authors" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
 
@@ -50,7 +50,7 @@ export const mainListItems = (
         <ListItemIcon>
           <Category/>
         </ListItemIcon>
-        <ListItemText primary="Categories" />
+        <ListItemText primary="Categories" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
   </React.Fragment>
@@ -62,14 +62,14 @@ export const mainListItemsSignedOut = (
       <ListItemIcon>
         <Dashboard />
       </ListItemIcon>
-      <ListItemText primary="Introduction" color='secondary' />
+      <ListItemText primary="Introduction" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
     </ListItemButton>
     <Link to="/signup">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
           <Dashboard />
         </ListItemIcon>
-        <ListItemText primary="Sign Up" color='secondary' />
+        <ListItemText primary="Sign Up" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
     <Link to="/login">
@@ -77,7 +77,7 @@ export const mainListItemsSignedOut = (
         <ListItemIcon>
           <Dashboard />
         </ListItemIcon>
-        <ListItemText primary="Login" color='secondary' />
+        <ListItemText primary="Login" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
 
@@ -91,7 +91,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Assignment/>
         </ListItemIcon>
-        <ListItemText primary="My Essays" color='secondary' />
+        <ListItemText primary="My Essays" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
     <Link to="/profile">
@@ -99,7 +99,7 @@ export const secondaryListItems = (
         <ListItemIcon>
           <Person />
         </ListItemIcon>
-        <ListItemText primary="Profile" color='secondary' />
+        <ListItemText primary="Profile" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
   </React.Fragment>
@@ -112,7 +112,7 @@ export const proListItems = (
         <ListItemIcon>
           <AnalyticsSharp/>
         </ListItemIcon>
-        <ListItemText primary="Stats" />
+        <ListItemText primary="Stats" primaryTypographyProps={{ sx: { color: 'text.primary' } }}/>
         <LoyaltyOutlined sx={{ height: 23, marginRight: 1, color: 'silver' }} />
       </ListItemButton>
     </Link>
@@ -121,7 +121,7 @@ export const proListItems = (
         <ListItemIcon>
           <Map />
         </ListItemIcon>
-        <ListItemText primary="Mind Map" />
+        <ListItemText primary="Mind Map" primaryTypographyProps={{ sx: { color: 'text.primary' } }}/>
         <LoyaltyOutlined sx={{ height: 23, marginRight: 1, color: 'silver' }} />
       </ListItemButton>
     </Link>

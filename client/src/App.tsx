@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BookPage from "./pages/BooksPage";
 import Dashboard from "./pages/Dashboard";
@@ -16,7 +16,7 @@ import Statistics from "./pages/StatisticsPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import MindMapDashboardPage from "./pages/MindMapDashBoardPage";
 import MindMapWhiteBoardPage from "./pages/WhiteboardPage";
-import { SUBSCRIPTION_METHOD } from "./enums/enums";
+import { LIGHT_THEMES, SUBSCRIPTION_METHOD } from "./enums/enums";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLibraryTheme } from "./hooks/theme/useLibraryTheme";
@@ -25,20 +25,35 @@ import { useLibraryTheme } from "./hooks/theme/useLibraryTheme";
 
 const defaultTheme = createTheme();
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 function App() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const { user, plan, isInitialized } = useAuthContext();
-  const {libTheme} = useLibraryTheme();
+  const { user, plan, isInitialized, theme } = useAuthContext();
+  const { libTheme } = useLibraryTheme();
+
+  const memoizedTheme = useMemo(() => {
+    const style = theme === LIGHT_THEMES.DARK ? darkTheme : defaultTheme
+    return style
+  }, [theme]);
 
   if (!isInitialized) {
-    return  <CircularProgress color={libTheme}/>;
+    return <CircularProgress color={libTheme} />;
   }
 
+
+
+
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={memoizedTheme}>
       <BrowserRouter>
         <Routes>
           {/* Routes that use the main layout */}

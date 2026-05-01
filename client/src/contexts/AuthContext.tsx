@@ -28,6 +28,8 @@ const authReducer = (state: AuthState, action: AuthAction) => {
       return { ...state, plan: action.payload };
     case 'INITIALIZE':
       return { ...state, isInitialized: true };
+    case 'SWTICH_THEME':
+      return { ...state, theme: action.payload}
     default:
       return state;
   }

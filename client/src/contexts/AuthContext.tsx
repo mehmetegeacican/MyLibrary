@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import { AuthAction, AuthContextProviderProps, AuthContextType, AuthState } from "../interfaces/ReducerInterfaces";
-import { SUBSCRIPTION_METHOD } from "../enums/enums";
+import { LIGHT_THEMES, SUBSCRIPTION_METHOD } from "../enums/enums";
 import { IUser } from "../interfaces/DataInterfaces";
 
 export const AuthDataContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,8 +38,9 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
     themeColor: 'secondary',
+    theme:LIGHT_THEMES.LIGHT,
     plan: SUBSCRIPTION_METHOD.DEFAULT,
-    isInitialized: false
+    isInitialized: false,
   });
 
 

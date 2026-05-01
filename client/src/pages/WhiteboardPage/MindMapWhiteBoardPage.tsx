@@ -32,7 +32,8 @@ export default function MindMapWhiteBoardPage() {
     const [settings, setSettings] = useState({
         miniMapOpen: true,
         zoomOpen: true,
-        fitView: false
+        fitView: false,
+        autoSave:false
     });
     const {
         nodes,

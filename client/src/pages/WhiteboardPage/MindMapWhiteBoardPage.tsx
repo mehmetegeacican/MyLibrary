@@ -78,7 +78,7 @@ export default function MindMapWhiteBoardPage() {
         }
     };
 
-    const debouncedSave = useDebounce(handleMindMapUpdate, 3000);
+    const debouncedSave = useDebounce(handleMindMapUpdate, 1500);
 
     useEffect(() => {
         if (settings.autoSave) {

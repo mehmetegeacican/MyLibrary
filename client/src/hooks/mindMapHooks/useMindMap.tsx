@@ -108,6 +108,7 @@ export function useMindMap() {
             return {
                 source: edge?.source,
                 target: edge?.target,
+                data: edge?.data ?? {}
             }
         })
         return updatedEdges;
@@ -116,7 +117,7 @@ export function useMindMap() {
     const formatEdgesFromApiForState = (fetchedEdges: IMindMapEdge[]) => {
         return fetchedEdges?.map((edge: IMindMapEdge) => ({
             ...edge,
-            id: edge._id
+            id: edge._id,
         })) ?? [];
     }
 

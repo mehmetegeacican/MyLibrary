@@ -16,6 +16,12 @@ export enum MIND_MAP_NODE_DATA_ATTRIBUTE {
 
 export enum MIND_MAP_EDGE_DATA_ATTRIBUTE {
     STROKE_STYLE =  "strokeStyle",
+    COLOR = 'color'
+}
+
+export enum MIND_MAP_EDGE_STROKE_STYLES {
+    SOLID = 'solid',
+    DASHED = 'dashed'
 }
 
 export enum MESSAGE_TYPES {

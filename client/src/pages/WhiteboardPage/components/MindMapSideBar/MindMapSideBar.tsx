@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
-import { Button, Collapse, IconButton, Paper, Radio, RadioGroup, Tooltip } from '@mui/material'
+import { Button, Collapse, IconButton, Paper, Radio, RadioGroup, TextField, Tooltip } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import "./styles.css";
@@ -39,7 +39,7 @@ export default function MindMapSideBar({
     setSettings: Function,
     save: Function,
     selectedEdge: IMindMapEdge | null,
-    updateEdgeData:Function
+    updateEdgeData: Function
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
@@ -153,11 +153,21 @@ export default function MindMapSideBar({
                                     display: 'flex',
                                     flexDirection: 'row'
                                 }}>
-                                    <FormControlLabel value="default" control={<Radio color={libTheme}size='medium' />} label="Normal" />
+                                    <FormControlLabel value="default" control={<Radio color={libTheme} size='medium' />} label="Normal" />
                                     <FormControlLabel value="dashed" control={<Radio color={libTheme} size='medium' />} label="Dashed" />
                                 </div>
 
                             </RadioGroup>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            <TextField
+                                label="Edge Color"
+                                type="color"
+                                value={selectedEdge?.data?.color}
+                                onChange={(e) => updateEdgeData(selectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
+                                size="small"
+                                fullWidth
+                            />
                         </AccordionDetails>
                     </Accordion>
                 </div>}

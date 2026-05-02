@@ -1,7 +1,8 @@
 import { useConnection, EdgeProps, Edge, getBezierPath } from '@xyflow/react';
 import './styles.css';
+import { MIND_MAP_EDGE_STROKE_STYLES } from '../../../../enums/enums';
 
-type CustomEdgeData = Edge<{ color?: string; strokeStyle?: 'solid' | 'dashed' }, 'custom'>;
+type CustomEdgeData = Edge<{ color?: string; strokeStyle?: MIND_MAP_EDGE_STROKE_STYLES }, 'custom'>;
 
 export default function CustomEdge({
   id,
@@ -15,7 +16,7 @@ export default function CustomEdge({
   data,
 }: EdgeProps<CustomEdgeData>) {
   const { fromHandle } = useConnection();
-  const strokeColor = fromHandle?.id ?? '#b1b1b7';
+  const strokeColor = data?.color ?? fromHandle?.id ?? '#b1b1b7';
 
   const [d] = getBezierPath({ sourceX, sourceY, targetX, targetY });
 

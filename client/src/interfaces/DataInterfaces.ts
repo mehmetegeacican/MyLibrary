@@ -1,3 +1,5 @@
+import { MIND_MAP_EDGE_STROKE_STYLES } from "../enums/enums";
+
 export interface ICategory {
   id: number;
   name: string;
@@ -62,7 +64,8 @@ export interface IMindMapEdge {
   source:string;
   target:string;
   data?: {
-    strokeType?:'dashed' | 'default'
+    strokeType?: MIND_MAP_EDGE_STROKE_STYLES,
+    color?:string
   };
 }
 

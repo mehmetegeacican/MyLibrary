@@ -116,6 +116,7 @@ export default function MindMapWhiteBoardPage() {
                         selectedEdge={selectedEdge}
                         updateEdgeData={updateEdgeData}
                         save={handleMindMapUpdate}
+                        defaultEdgeConfig={defaultEdgeConfig}
                         updateDefaultEdgeConfig={updateDefaultEdgeConfig}
                     />
                     <ReactFlow

@@ -26,6 +26,7 @@ export default function MindMapSideBar({
     selectedEdge,
     updateEdgeData,
     updateDefaultEdgeConfig,
+    defaultEdgeConfig
 }: {
     title: string,
     setTitle: Function,
@@ -40,6 +41,10 @@ export default function MindMapSideBar({
     selectedEdge: IMindMapEdge | null,
     updateEdgeData: Function,
     updateDefaultEdgeConfig: Function
+    defaultEdgeConfig: {
+        strokeStyle:string;
+        color:string;
+    }
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
@@ -98,6 +103,19 @@ export default function MindMapSideBar({
         const open = selectedEdge !== null;
         setOpenEdgeAccordion(open);
     }, [selectedEdge]);
+
+    const memoizedEdgeConfigs = useMemo(() => {
+        if(selectedEdge?._id){
+            return {
+                strokeStyle: selectedEdge?.data?.strokeStyle,
+                color: selectedEdge?.data?.color
+            }
+        }
+        return {
+            strokeStyle:defaultEdgeConfig?.strokeStyle,
+            color:defaultEdgeConfig?.color
+        }
+    },[defaultEdgeConfig,selectedEdge]);
 
     return (
         <Paper className='sidebar' sx={{
@@ -160,7 +178,7 @@ export default function MindMapSideBar({
                         </AccordionSummary>
                         <AccordionDetails>
 
-                            <RadioGroup name="use-radio-group" key={memoizedSelectedEdge?._id} value={memoizedSelectedEdge?.data?.strokeStyle} onChange={(e: any) => {
+                            <RadioGroup name="use-radio-group" key={memoizedSelectedEdge?._id} value={memoizedEdgeConfigs.strokeStyle} onChange={(e: any) => {
                                 handleEdgeStyle(e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
                             }}>
                                 <div style={{
@@ -177,7 +195,7 @@ export default function MindMapSideBar({
                             <TextField
                                 label="Edge Color"
                                 type="color"
-                                value={selectedEdge?.data?.color}
+                                value={memoizedEdgeConfigs?.color}
                                 onChange={(e) => handleEdgeStyle(e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
                                 size="small"
                                 fullWidth

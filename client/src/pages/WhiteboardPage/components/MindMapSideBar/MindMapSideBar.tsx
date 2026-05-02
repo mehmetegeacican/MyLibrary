@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
 import { Button, Collapse, IconButton, Paper, Radio, RadioGroup, TextField, Tooltip } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
@@ -50,6 +50,11 @@ export default function MindMapSideBar({
 
     const { libTheme } = useLibraryTheme();
     const { generateMongoId } = useUtils();
+
+
+    const memoizedSelectedEdge = useMemo(() => {
+        return selectedEdge;
+    },[selectedEdge]);
 
     const handleNodeDrop = useCallback(
         (nodeType: string, screenPosition: XYPosition) => {
@@ -145,9 +150,9 @@ export default function MindMapSideBar({
                         </AccordionSummary>
                         <AccordionDetails>
 
-                            <RadioGroup name="use-radio-group" value={selectedEdge?.data?.strokeStyle} onChange={(e: any) => {
+                            <RadioGroup name="use-radio-group" value={memoizedSelectedEdge?.data?.strokeStyle} onChange={(e: any) => {
                                 console.log(e.target.value);
-                                selectedEdge?._id && updateEdgeData(selectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
+                                selectedEdge?._id && updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
                             }}>
                                 <div style={{
                                     display: 'flex',
@@ -164,7 +169,7 @@ export default function MindMapSideBar({
                                 label="Edge Color"
                                 type="color"
                                 value={selectedEdge?.data?.color}
-                                onChange={(e) => updateEdgeData(selectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
+                                onChange={(e) => updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
                                 size="small"
                                 fullWidth
                             />

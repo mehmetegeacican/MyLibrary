@@ -1,6 +1,6 @@
 import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from "@xyflow/react";
 import { useCallback, useState } from "react";
-import { MIND_MAP_EDGE_DATA_ATTRIBUTE, MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
+import { MIND_MAP_EDGE_DATA_ATTRIBUTE, MIND_MAP_EDGE_STROKE_STYLES, MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
 import { IMindMapEdge, IMindMapNode } from "../../interfaces/DataInterfaces";
 import { useUtils } from "../utils/useUtils";
 
@@ -27,6 +27,10 @@ export function useMindMap() {
             const assignedId = generateMongoId();
             const newEdge = {
                 ...params,
+                data: {
+                    strokeStyle: MIND_MAP_EDGE_STROKE_STYLES.SOLID,
+                    color: '#b1b1b7'
+                },
                 id: params?._id ?? assignedId,
                 _id: params?._id ?? assignedId,
             };

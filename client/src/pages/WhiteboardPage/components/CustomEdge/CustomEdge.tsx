@@ -1,6 +1,7 @@
 import { useConnection, EdgeProps, Edge, getBezierPath } from '@xyflow/react';
 import './styles.css';
 import { MIND_MAP_EDGE_STROKE_STYLES } from '../../../../enums/enums';
+import { useMemo } from 'react';
 
 type CustomEdgeData = Edge<{ color?: string; strokeStyle?: MIND_MAP_EDGE_STROKE_STYLES }, 'custom'>;
 
@@ -20,8 +21,16 @@ export default function CustomEdge({
 
   const [d] = getBezierPath({ sourceX, sourceY, targetX, targetY });
 
-  const isDashed = data?.strokeStyle === 'dashed';
-
+  const customStrokeStyle = useMemo(() => {
+    switch(data?.strokeStyle){
+      case MIND_MAP_EDGE_STROKE_STYLES.DASHED:
+        return 'marching-ants';
+      case MIND_MAP_EDGE_STROKE_STYLES.SOLID:
+        return 'default';
+      default:
+        return 'default';
+    }
+  },[data]);
   return (
     <>
       <path fill="none" stroke="transparent" strokeWidth={12} d={d} />
@@ -30,8 +39,8 @@ export default function CustomEdge({
         fill="none"
         stroke={strokeColor}
         strokeWidth={selected ? 2.5 : 1.5}
-        strokeDasharray={isDashed ? '6 3' : undefined}
-        className={isDashed ? 'marching-ants' : undefined}
+        strokeDasharray={customStrokeStyle === 'marching-ants' ? '6 3' : undefined}
+        className={customStrokeStyle}
         d={d}
         markerEnd={markerEnd}
         style={{

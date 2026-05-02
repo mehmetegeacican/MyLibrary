@@ -145,7 +145,7 @@ export default function MindMapSideBar({
                         </AccordionSummary>
                         <AccordionDetails>
 
-                            <RadioGroup name="use-radio-group" value={selectedEdge?.data?.strokeType} onChange={(e: any) => {
+                            <RadioGroup name="use-radio-group" value={selectedEdge?.data?.strokeStyle} onChange={(e: any) => {
                                 console.log(e.target.value);
                                 selectedEdge?._id && updateEdgeData(selectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
                             }}>
@@ -153,7 +153,7 @@ export default function MindMapSideBar({
                                     display: 'flex',
                                     flexDirection: 'row'
                                 }}>
-                                    <FormControlLabel value="default" control={<Radio color={libTheme} size='medium' />} label="Normal" />
+                                    <FormControlLabel value="solid" control={<Radio color={libTheme} size='medium' />} label="Normal" />
                                     <FormControlLabel value="dashed" control={<Radio color={libTheme} size='medium' />} label="Dashed" />
                                 </div>
 

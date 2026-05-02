@@ -64,7 +64,7 @@ export interface IMindMapEdge {
   source:string;
   target:string;
   data?: {
-    strokeType?: MIND_MAP_EDGE_STROKE_STYLES,
+    strokeStyle?: MIND_MAP_EDGE_STROKE_STYLES,
     color?:string
   };
 }

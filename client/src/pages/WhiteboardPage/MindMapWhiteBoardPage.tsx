@@ -97,6 +97,11 @@ export default function MindMapWhiteBoardPage() {
         getMindMapById(id);
     }, []);
 
+
+    useEffect(() => {
+        console.log(selectedEdge,"--",edges);
+    },[edges,selectedEdge]);
+
     return (
         <ReactFlowProvider>
             <div className='dndflow'>

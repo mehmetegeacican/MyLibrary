@@ -1,14 +1,20 @@
 import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from "@xyflow/react";
 import { useCallback, useState } from "react";
-import { MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
+import { MIND_MAP_EDGE_DATA_ATTRIBUTE, MIND_MAP_EDGE_STROKE_STYLES, MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
 import { IMindMapEdge, IMindMapNode } from "../../interfaces/DataInterfaces";
+import { useUtils } from "../utils/useUtils";
 
 export function useMindMap() {
 
     const [nodes, setNodes] = useState<any[]>([]);
     const [edges, setEdges] = useState<any[]>([]);
+    const [defaultEdgeConfig, setDefaultEdgeConfig] = useState({
+        strokeStyle: MIND_MAP_EDGE_STROKE_STYLES.SOLID,
+        color: '#b1b1b7'
+    });
     const [selectedNode, setSelectedNode] = useState<IMindMapNode | null>(null);
     const [selectedEdge, setSelectedEdge] = useState<IMindMapEdge | null>(null);
+    const { generateMongoId } = useUtils();
 
     const onNodesChange = useCallback(
         (changes: any) => setNodes((nodesSnapshot: any) => applyNodeChanges(changes, nodesSnapshot)),
@@ -21,8 +27,17 @@ export function useMindMap() {
     );
 
     const onConnect = useCallback(
-        (params: any) => setEdges((edgesSnapshot: any) => addEdge(params, edgesSnapshot)),
-        [],
+        (params: any) => {
+            const assignedId = generateMongoId();
+            const newEdge = {
+                ...params,
+                data: { ...defaultEdgeConfig },
+                id: params?._id ?? assignedId,
+                _id: params?._id ?? assignedId,
+            };
+            setEdges((edgesSnapshot: any) => addEdge(newEdge, edgesSnapshot))
+        },
+        [defaultEdgeConfig],
     );
 
     const onSelectionChange = useCallback((params: { nodes: any[]; edges: any[] }) => {
@@ -49,6 +64,31 @@ export function useMindMap() {
         );
     }, [setNodes]);
 
+    const updateEdgeData = useCallback((edgeId: string, newData: Record<string, any>, updatedDataType: MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
+        setEdges((edges) =>
+            edges.map((edge) => {
+                if (edge._id === edgeId) {
+                    const result = {
+                        ...edge,
+                        data: {
+                            ...edge?.data,
+                            [updatedDataType]: newData
+                        }
+                    };
+                    setSelectedEdge(result);
+                    return result;
+                }
+                return edge;
+            })
+        );
+    }, [setEdges]);
+
+    const updateDefaultEdgeConfig = useCallback((newData: string, updatedDataType: MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
+        setDefaultEdgeConfig(prev => {
+            const updated = { ...prev, [updatedDataType]: newData };
+            return updated;
+        });
+    }, []);
 
     const formatNodesFromApiForState = (fetchedNodes: IMindMapNode[]) => {
         return fetchedNodes?.map((node: IMindMapNode) => ({
@@ -63,7 +103,7 @@ export function useMindMap() {
                 type: node?.type,
                 position: node?.position,
                 data: node?.data,
-                _id:node?._id
+                _id: node?._id
             }
         })
         return updatedNodes;
@@ -74,6 +114,7 @@ export function useMindMap() {
             return {
                 source: edge?.source,
                 target: edge?.target,
+                data: edge?.data ?? {}
             }
         })
         return updatedEdges;
@@ -82,7 +123,7 @@ export function useMindMap() {
     const formatEdgesFromApiForState = (fetchedEdges: IMindMapEdge[]) => {
         return fetchedEdges?.map((edge: IMindMapEdge) => ({
             ...edge,
-            id: edge._id
+            id: edge._id,
         })) ?? [];
     }
 
@@ -101,6 +142,9 @@ export function useMindMap() {
         onConnect,
         onSelectionChange,
         updateNodeData,
+        updateEdgeData,
+        defaultEdgeConfig,
+        updateDefaultEdgeConfig,
         formatNodesFromApiForState,
         formatNodesFromStateForApi,
         formatEdgesFromStateForApi,

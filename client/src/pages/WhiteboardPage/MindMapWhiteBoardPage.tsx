@@ -16,11 +16,16 @@ import { useAuthContext } from '../../hooks/contextHooks';
 import { useUtils } from '../../hooks/utils/useUtils';
 import { MESSAGE_TYPES } from '../../enums/enums';
 import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
+import CustomEdge from './components/CustomEdge';
 
 const nodeTypes = {
     input: CustomNode,
     default: CustomNode,
     output: CustomNode,
+};
+
+const edgeTypes = {
+    custom: CustomEdge,
 };
 
 
@@ -42,11 +47,15 @@ export default function MindMapWhiteBoardPage() {
         setNodes,
         setEdges,
         selectedNode,
+        selectedEdge,
+        defaultEdgeConfig,
+        updateDefaultEdgeConfig,
         onNodesChange,
         onEdgesChange,
         onConnect,
         onSelectionChange,
         updateNodeData,
+        updateEdgeData,
         formatNodesFromApiForState,
         formatNodesFromStateForApi,
         formatEdgesFromStateForApi,
@@ -86,7 +95,6 @@ export default function MindMapWhiteBoardPage() {
         }
     }, [nodes, edges]);
 
-
     useEffect(() => {
         getMindMapById(id);
     }, []);
@@ -105,7 +113,11 @@ export default function MindMapWhiteBoardPage() {
                         setSettings={setSettings}
                         title={title}
                         setTitle={setTitle}
+                        selectedEdge={selectedEdge}
+                        updateEdgeData={updateEdgeData}
                         save={handleMindMapUpdate}
+                        defaultEdgeConfig={defaultEdgeConfig}
+                        updateDefaultEdgeConfig={updateDefaultEdgeConfig}
                     />
                     <ReactFlow
                         nodes={nodes}
@@ -115,6 +127,16 @@ export default function MindMapWhiteBoardPage() {
                         onConnect={onConnect}
                         onSelectionChange={onSelectionChange}
                         nodeTypes={nodeTypes}
+                        edgeTypes={edgeTypes}
+                        defaultEdgeOptions={{
+                            type: 'custom',
+                            data: defaultEdgeConfig,
+                        }}
+                        connectionLineStyle={{
+                            stroke: defaultEdgeConfig.color,
+                            strokeWidth: 1.5,
+                            strokeDasharray: defaultEdgeConfig.strokeStyle === 'dashed' ? '6 3' : undefined,
+                        }}
                         fitView={settings.fitView}
                     >
                         <Background />

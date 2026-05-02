@@ -1,3 +1,5 @@
+import { MIND_MAP_EDGE_STROKE_STYLES } from "../enums/enums";
+
 export interface ICategory {
   id: number;
   name: string;
@@ -61,6 +63,10 @@ export interface IMindMapEdge {
   _id:string,
   source:string;
   target:string;
+  data?: {
+    strokeStyle?: MIND_MAP_EDGE_STROKE_STYLES,
+    color?:string
+  };
 }
 
 

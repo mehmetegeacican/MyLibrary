@@ -1,0 +1,12 @@
+@keyframes marchingAnts {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -27;
+  }
+}
+
+.marching-ants {
+  animation: marchingAnts 1s linear infinite;
+}

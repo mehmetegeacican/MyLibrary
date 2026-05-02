@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
     ReactFlow,
     Controls, Background, MiniMap, ReactFlowProvider,
+    MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Paper } from '@mui/material';
@@ -16,11 +17,16 @@ import { useAuthContext } from '../../hooks/contextHooks';
 import { useUtils } from '../../hooks/utils/useUtils';
 import { MESSAGE_TYPES } from '../../enums/enums';
 import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
+import CustomEdge from './components/CustomEdge/CustomEdge';
 
 const nodeTypes = {
     input: CustomNode,
     default: CustomNode,
     output: CustomNode,
+};
+
+const edgeTypes = {
+    custom: CustomEdge,
 };
 
 
@@ -115,6 +121,10 @@ export default function MindMapWhiteBoardPage() {
                         onConnect={onConnect}
                         onSelectionChange={onSelectionChange}
                         nodeTypes={nodeTypes}
+                        edgeTypes={edgeTypes}
+                        defaultEdgeOptions={{
+                            type: 'custom'
+                        }}
                         fitView={settings.fitView}
                     >
                         <Background />

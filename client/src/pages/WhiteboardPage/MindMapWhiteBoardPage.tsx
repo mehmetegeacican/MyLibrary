@@ -48,6 +48,7 @@ export default function MindMapWhiteBoardPage() {
         setEdges,
         selectedNode,
         selectedEdge,
+        defaultEdgeConfig,
         updateDefaultEdgeConfig,
         onNodesChange,
         onEdgesChange,
@@ -127,7 +128,13 @@ export default function MindMapWhiteBoardPage() {
                         nodeTypes={nodeTypes}
                         edgeTypes={edgeTypes}
                         defaultEdgeOptions={{
-                            type: 'custom'
+                            type: 'custom',
+                            data: defaultEdgeConfig,
+                        }}
+                        connectionLineStyle={{
+                            stroke: defaultEdgeConfig.color,
+                            strokeWidth: 1.5,
+                            strokeDasharray: defaultEdgeConfig.strokeStyle === 'dashed' ? '6 3' : undefined,
                         }}
                         fitView={settings.fitView}
                     >

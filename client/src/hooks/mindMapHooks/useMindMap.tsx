@@ -8,6 +8,10 @@ export function useMindMap() {
 
     const [nodes, setNodes] = useState<any[]>([]);
     const [edges, setEdges] = useState<any[]>([]);
+    const [defaultEdgeConfig, setDefaultEdgeConfig] = useState({
+        strokeStyle: MIND_MAP_EDGE_STROKE_STYLES.SOLID,
+        color: '#b1b1b7'
+    });
     const [selectedNode, setSelectedNode] = useState<IMindMapNode | null>(null);
     const [selectedEdge, setSelectedEdge] = useState<IMindMapEdge | null>(null);
     const { generateMongoId } = useUtils();
@@ -27,16 +31,13 @@ export function useMindMap() {
             const assignedId = generateMongoId();
             const newEdge = {
                 ...params,
-                data: {
-                    strokeStyle: MIND_MAP_EDGE_STROKE_STYLES.SOLID,
-                    color: '#b1b1b7'
-                },
+                data: { ...defaultEdgeConfig },
                 id: params?._id ?? assignedId,
                 _id: params?._id ?? assignedId,
             };
             setEdges((edgesSnapshot: any) => addEdge(newEdge, edgesSnapshot))
         },
-        [],
+        [defaultEdgeConfig],
     );
 
     const onSelectionChange = useCallback((params: { nodes: any[]; edges: any[] }) => {
@@ -64,7 +65,6 @@ export function useMindMap() {
     }, [setNodes]);
 
     const updateEdgeData = useCallback((edgeId: string, newData: Record<string, any>, updatedDataType: MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
-        console.log(edgeId, "***", newData, updatedDataType);
         setEdges((edges) =>
             edges.map((edge) => {
                 if (edge._id === edgeId) {
@@ -83,6 +83,12 @@ export function useMindMap() {
         );
     }, [setEdges]);
 
+    const updateDefaultEdgeConfig = useCallback((newData: string, updatedDataType: MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
+        setDefaultEdgeConfig(prev => {
+            const updated = { ...prev, [updatedDataType]: newData };
+            return updated;
+        });
+    }, []);
 
     const formatNodesFromApiForState = (fetchedNodes: IMindMapNode[]) => {
         return fetchedNodes?.map((node: IMindMapNode) => ({
@@ -137,6 +143,8 @@ export function useMindMap() {
         onSelectionChange,
         updateNodeData,
         updateEdgeData,
+        defaultEdgeConfig,
+        updateDefaultEdgeConfig,
         formatNodesFromApiForState,
         formatNodesFromStateForApi,
         formatEdgesFromStateForApi,

@@ -17,8 +17,6 @@ import { IMindMapEdge } from '../../../../interfaces/DataInterfaces';
 import { MIND_MAP_EDGE_DATA_ATTRIBUTE } from '../../../../enums/enums';
 
 
-
-
 export default function MindMapSideBar({
     title,
     setTitle,
@@ -26,7 +24,8 @@ export default function MindMapSideBar({
     setSettings,
     save,
     selectedEdge,
-    updateEdgeData
+    updateEdgeData,
+    updateDefaultEdgeConfig,
 }: {
     title: string,
     setTitle: Function,
@@ -39,7 +38,8 @@ export default function MindMapSideBar({
     setSettings: Function,
     save: Function,
     selectedEdge: IMindMapEdge | null,
-    updateEdgeData: Function
+    updateEdgeData: Function,
+    updateDefaultEdgeConfig: Function
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
@@ -50,7 +50,6 @@ export default function MindMapSideBar({
 
     const { libTheme } = useLibraryTheme();
     const { generateMongoId } = useUtils();
-
 
     const memoizedSelectedEdge = useMemo(() => {
         return selectedEdge;
@@ -85,6 +84,15 @@ export default function MindMapSideBar({
         },
         [setNodes, screenToFlowPosition],
     );
+
+    const handleEdgeStyle = (value: string, updatedDataType: MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
+        if (selectedEdge?._id) {
+            updateEdgeData(selectedEdge._id, value, updatedDataType);
+        } else {
+            updateDefaultEdgeConfig(value, updatedDataType);
+        }
+    };
+
 
     useEffect(() => {
         const open = selectedEdge !== null;
@@ -153,7 +161,7 @@ export default function MindMapSideBar({
                         <AccordionDetails>
 
                             <RadioGroup name="use-radio-group" key={memoizedSelectedEdge?._id} value={memoizedSelectedEdge?.data?.strokeStyle} onChange={(e: any) => {
-                                memoizedSelectedEdge?._id && updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
+                                handleEdgeStyle(e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
                             }}>
                                 <div style={{
                                     display: 'flex',
@@ -170,7 +178,7 @@ export default function MindMapSideBar({
                                 label="Edge Color"
                                 type="color"
                                 value={selectedEdge?.data?.color}
-                                onChange={(e) => updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
+                                onChange={(e) => handleEdgeStyle(e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.COLOR)}
                                 size="small"
                                 fullWidth
                             />

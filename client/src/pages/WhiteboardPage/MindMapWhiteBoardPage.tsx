@@ -48,6 +48,7 @@ export default function MindMapWhiteBoardPage() {
         setEdges,
         selectedNode,
         selectedEdge,
+        updateDefaultEdgeConfig,
         onNodesChange,
         onEdgesChange,
         onConnect,
@@ -114,6 +115,7 @@ export default function MindMapWhiteBoardPage() {
                         selectedEdge={selectedEdge}
                         updateEdgeData={updateEdgeData}
                         save={handleMindMapUpdate}
+                        updateDefaultEdgeConfig={updateDefaultEdgeConfig}
                     />
                     <ReactFlow
                         nodes={nodes}

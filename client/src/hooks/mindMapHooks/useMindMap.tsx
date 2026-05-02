@@ -1,6 +1,6 @@
 import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from "@xyflow/react";
 import { useCallback, useState } from "react";
-import { MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
+import { MIND_MAP_EDGE_DATA_ATTRIBUTE, MIND_MAP_NODE_DATA_ATTRIBUTE } from "../../enums/enums";
 import { IMindMapEdge, IMindMapNode } from "../../interfaces/DataInterfaces";
 
 export function useMindMap() {
@@ -49,9 +49,23 @@ export function useMindMap() {
         );
     }, [setNodes]);
 
-    const updateEdgeData = useCallback((edgeId: string, newData: Record<string, any>) => {
-        setEdges(eds =>
-            eds.map(e => e.id === edgeId ? { ...e, data: { ...e.data, ...newData } } : e)
+    const updateEdgeData = useCallback((edgeId: string, newData: Record<string, any>, updatedDataType:MIND_MAP_EDGE_DATA_ATTRIBUTE) => {
+        console.log(edgeId,"***",newData,updatedDataType);
+        setEdges((edges) =>
+            edges.map((edge) => {
+                if (edge._id === edgeId) {
+                    const result = {
+                        ...edge,
+                        data: {
+                            ...edge?.data,
+                            [updatedDataType]: newData
+                        }
+                    };
+                    setSelectedEdge(result);
+                    return result;
+                }
+                return edge;
+            })
         );
     }, [setEdges]);
 

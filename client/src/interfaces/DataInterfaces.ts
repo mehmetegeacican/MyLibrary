@@ -61,6 +61,9 @@ export interface IMindMapEdge {
   _id:string,
   source:string;
   target:string;
+  data?: {
+    strokeType?:'dashed' | 'default'
+  };
 }
 
 

@@ -53,6 +53,7 @@ export default function MindMapWhiteBoardPage() {
         onConnect,
         onSelectionChange,
         updateNodeData,
+        updateEdgeData,
         formatNodesFromApiForState,
         formatNodesFromStateForApi,
         formatEdgesFromStateForApi,
@@ -92,14 +93,9 @@ export default function MindMapWhiteBoardPage() {
         }
     }, [nodes, edges]);
 
-
     useEffect(() => {
         getMindMapById(id);
     }, []);
-
-    useEffect(() => {
-        console.log("Selected Edge", selectedEdge);
-    },[selectedEdge]);
 
     return (
         <ReactFlowProvider>
@@ -115,6 +111,8 @@ export default function MindMapWhiteBoardPage() {
                         setSettings={setSettings}
                         title={title}
                         setTitle={setTitle}
+                        selectedEdge={selectedEdge}
+                        updateEdgeData={updateEdgeData}
                         save={handleMindMapUpdate}
                     />
                     <ReactFlow

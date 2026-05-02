@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import DraggableNode from '../DraggableNode/DraggableNode'
-import { Button, Collapse, IconButton, Paper, Tooltip } from '@mui/material'
+import { Button, Collapse, IconButton, Paper, Radio, RadioGroup, Tooltip } from '@mui/material'
 import { useReactFlow, XYPosition } from '@xyflow/react';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import "./styles.css";
@@ -13,6 +13,8 @@ import { Fab } from '@mui/material';
 import { useLibraryTheme } from '../../../../hooks/theme/useLibraryTheme';
 import { useUtils } from '../../../../hooks/utils/useUtils';
 import SaveIcon from '@mui/icons-material/Save';
+import { IMindMapEdge } from '../../../../interfaces/DataInterfaces';
+import { MIND_MAP_EDGE_DATA_ATTRIBUTE } from '../../../../enums/enums';
 
 
 
@@ -22,7 +24,9 @@ export default function MindMapSideBar({
     setTitle,
     settings,
     setSettings,
-    save
+    save,
+    selectedEdge,
+    updateEdgeData
 }: {
     title: string,
     setTitle: Function,
@@ -30,10 +34,12 @@ export default function MindMapSideBar({
         miniMapOpen: boolean,
         zoomOpen: boolean,
         fitView: boolean,
-        autoSave:boolean
+        autoSave: boolean
     },
     setSettings: Function,
-    save: Function
+    save: Function,
+    selectedEdge: IMindMapEdge | null,
+    updateEdgeData:Function
 }) {
 
     const { setNodes, screenToFlowPosition } = useReactFlow();
@@ -44,7 +50,6 @@ export default function MindMapSideBar({
 
     const { libTheme } = useLibraryTheme();
     const { generateMongoId } = useUtils();
-
 
     const handleNodeDrop = useCallback(
         (nodeType: string, screenPosition: XYPosition) => {
@@ -73,6 +78,11 @@ export default function MindMapSideBar({
         },
         [setNodes, screenToFlowPosition],
     );
+
+    useEffect(() => {
+        const open = selectedEdge !== null;
+        setOpenEdgeAccordion(open);
+    }, [selectedEdge]);
 
     return (
         <Paper className='sidebar' sx={{
@@ -132,10 +142,22 @@ export default function MindMapSideBar({
                             <Typography sx={{ width: '33%', flexShrink: 0 }} component={'span'} variant={'body2'} >
                                 Edges
                             </Typography>
-
                         </AccordionSummary>
                         <AccordionDetails>
 
+                            <RadioGroup name="use-radio-group" value={selectedEdge?.data?.strokeType} onChange={(e: any) => {
+                                console.log(e.target.value);
+                                selectedEdge?._id && updateEdgeData(selectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
+                            }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row'
+                                }}>
+                                    <FormControlLabel value="default" control={<Radio color={libTheme}size='medium' />} label="Normal" />
+                                    <FormControlLabel value="dashed" control={<Radio color={libTheme} size='medium' />} label="Dashed" />
+                                </div>
+
+                            </RadioGroup>
                         </AccordionDetails>
                     </Accordion>
                 </div>}

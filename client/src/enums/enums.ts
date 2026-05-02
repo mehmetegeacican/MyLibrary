@@ -14,6 +14,10 @@ export enum MIND_MAP_NODE_DATA_ATTRIBUTE {
     INFO = "information"
 }
 
+export enum MIND_MAP_EDGE_DATA_ATTRIBUTE {
+    STROKE_STYLE =  "strokeStyle",
+}
+
 export enum MESSAGE_TYPES {
     SUCCESS = "success",
     ERROR = "error",

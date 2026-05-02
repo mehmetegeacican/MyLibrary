@@ -49,6 +49,12 @@ export function useMindMap() {
         );
     }, [setNodes]);
 
+    const updateEdgeData = useCallback((edgeId: string, newData: Record<string, any>) => {
+        setEdges(eds =>
+            eds.map(e => e.id === edgeId ? { ...e, data: { ...e.data, ...newData } } : e)
+        );
+    }, [setEdges]);
+
 
     const formatNodesFromApiForState = (fetchedNodes: IMindMapNode[]) => {
         return fetchedNodes?.map((node: IMindMapNode) => ({
@@ -63,7 +69,7 @@ export function useMindMap() {
                 type: node?.type,
                 position: node?.position,
                 data: node?.data,
-                _id:node?._id
+                _id: node?._id
             }
         })
         return updatedNodes;
@@ -101,6 +107,7 @@ export function useMindMap() {
         onConnect,
         onSelectionChange,
         updateNodeData,
+        updateEdgeData,
         formatNodesFromApiForState,
         formatNodesFromStateForApi,
         formatEdgesFromStateForApi,

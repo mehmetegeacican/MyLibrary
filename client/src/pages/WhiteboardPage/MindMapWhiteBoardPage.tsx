@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import {
     ReactFlow,
     Controls, Background, MiniMap, ReactFlowProvider,
-    MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Paper } from '@mui/material';
@@ -48,6 +47,7 @@ export default function MindMapWhiteBoardPage() {
         setNodes,
         setEdges,
         selectedNode,
+        selectedEdge,
         onNodesChange,
         onEdgesChange,
         onConnect,
@@ -96,6 +96,10 @@ export default function MindMapWhiteBoardPage() {
     useEffect(() => {
         getMindMapById(id);
     }, []);
+
+    useEffect(() => {
+        console.log("Selected Edge", selectedEdge);
+    },[selectedEdge]);
 
     return (
         <ReactFlowProvider>

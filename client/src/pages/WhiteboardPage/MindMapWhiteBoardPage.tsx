@@ -16,7 +16,7 @@ import { useAuthContext } from '../../hooks/contextHooks';
 import { useUtils } from '../../hooks/utils/useUtils';
 import { MESSAGE_TYPES } from '../../enums/enums';
 import { useDebounce } from '../../hooks/asyncHooks/useDebounce';
-import CustomEdge from './components/CustomEdge/CustomEdge';
+import CustomEdge from './components/CustomEdge';
 
 const nodeTypes = {
     input: CustomNode,

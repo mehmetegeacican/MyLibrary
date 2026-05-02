@@ -1,1 +1,1 @@
-import CustomEdge from "./CustomEdge";
+export { default } from './CustomEdge';

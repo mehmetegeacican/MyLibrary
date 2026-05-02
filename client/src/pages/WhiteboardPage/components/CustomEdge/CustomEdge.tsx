@@ -22,6 +22,7 @@ export default function CustomEdge({
   const [d] = getBezierPath({ sourceX, sourceY, targetX, targetY });
 
   const customStrokeStyle = useMemo(() => {
+   
     switch(data?.strokeStyle){
       case MIND_MAP_EDGE_STROKE_STYLES.DASHED:
         return 'marching-ants';

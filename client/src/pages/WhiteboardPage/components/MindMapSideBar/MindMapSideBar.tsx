@@ -54,7 +54,9 @@ export default function MindMapSideBar({
 
     const memoizedSelectedEdge = useMemo(() => {
         return selectedEdge;
-    },[selectedEdge]);
+    }, [selectedEdge]);
+
+
 
     const handleNodeDrop = useCallback(
         (nodeType: string, screenPosition: XYPosition) => {
@@ -150,9 +152,8 @@ export default function MindMapSideBar({
                         </AccordionSummary>
                         <AccordionDetails>
 
-                            <RadioGroup name="use-radio-group" value={memoizedSelectedEdge?.data?.strokeStyle} onChange={(e: any) => {
-                                console.log(e.target.value);
-                                selectedEdge?._id && updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
+                            <RadioGroup name="use-radio-group" key={memoizedSelectedEdge?._id} value={memoizedSelectedEdge?.data?.strokeStyle} onChange={(e: any) => {
+                                memoizedSelectedEdge?._id && updateEdgeData(memoizedSelectedEdge?._id, e.target.value, MIND_MAP_EDGE_DATA_ATTRIBUTE.STROKE_STYLE);
                             }}>
                                 <div style={{
                                     display: 'flex',

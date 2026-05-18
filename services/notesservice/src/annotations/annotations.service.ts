@@ -42,7 +42,9 @@ export class AnnotationsService {
     return `This action updates a #${id} annotation`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} annotation`;
+  async remove(id: string): Promise<{ message: string }> {
+    const annotation = await this.findOne(id);
+    await this.annotationRepository.softDelete(annotation.id);
+    return { message: "Annotation have been successfully deleted" };
   }
 }

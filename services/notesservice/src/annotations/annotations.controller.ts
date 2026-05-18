@@ -1,33 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, HttpStatus, HttpCode } from '@nestjs/common';
 import { AnnotationsService } from './annotations.service';
 import { CreateAnnotationDto } from './dto/create-annotation.dto';
 import { UpdateAnnotationDto } from './dto/update-annotation.dto';
+import { ANNOTATION_MESSAGES, API_ROUTES } from 'common/constants';
 
-@Controller('api/v2/annotations')
+@Controller(`${API_ROUTES.BASE_PREFIX}/${API_ROUTES.ANNOTATIONS}`)
 export class AnnotationsController {
   constructor(private readonly annotationsService: AnnotationsService) { }
 
-  @Get('/all/:userId')
-  findAllByUserId(@Param('userId') userId: string) {
-    return this.annotationsService.findManyByUserId(userId);
+  @Get(`/${API_ROUTES.ALL}/${API_ROUTES.USER_ID_PARAM}`)
+  async findAllByUserId(@Param('userId') userId: string) {
+    const result = await this.annotationsService.findManyByUserId(userId);
+    return result;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.annotationsService.findOne(id);
+  @Get(API_ROUTES.ID_PARAM)
+  async findOne(@Param('id') id: string) {
+    const result = await this.annotationsService.findOne(id);
+    return result;
   }
 
   @Post()
-  create(@Body() createAnnotationDto: CreateAnnotationDto) {
-    return this.annotationsService.create(createAnnotationDto);
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createAnnotationDto: CreateAnnotationDto) {
+    const result = await this.annotationsService.create(createAnnotationDto);
+    return result;
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateAnnotationDto: UpdateAnnotationDto) {
-    return this.annotationsService.update(id, updateAnnotationDto);
+  @Put(API_ROUTES.ID_PARAM)
+  async update(@Param('id') id: string, @Body() updateAnnotationDto: UpdateAnnotationDto) {
+    const result =  await this.annotationsService.update(id, updateAnnotationDto);
+    return result;
   }
 
-  @Delete(':id')
+  @Delete(API_ROUTES.ID_PARAM)
   remove(@Param('id') id: string) {
     return this.annotationsService.remove(id);
   }

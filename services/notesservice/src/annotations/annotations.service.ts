@@ -4,7 +4,7 @@ import { UpdateAnnotationDto } from './dto/update-annotation.dto';
 import { Annotation } from './entities/annotation.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ANNOTATION_MESSAGES, EXCEPTION_MESSAGES } from 'common/constants';
+import { ANNOTATION_MESSAGES, EXCEPTION_MESSAGES } from '../../common/constants';
 
 @Injectable()
 export class AnnotationsService {

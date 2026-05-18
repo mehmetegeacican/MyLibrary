@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, HttpStatus, Htt
 import { AnnotationsService } from './annotations.service';
 import { CreateAnnotationDto } from './dto/create-annotation.dto';
 import { UpdateAnnotationDto } from './dto/update-annotation.dto';
-import { ANNOTATION_MESSAGES, API_ROUTES } from 'common/constants';
+import { ANNOTATION_MESSAGES, API_ROUTES } from '../../common/constants';
 
 @Controller(`${API_ROUTES.BASE_PREFIX}/${API_ROUTES.ANNOTATIONS}`)
 export class AnnotationsController {

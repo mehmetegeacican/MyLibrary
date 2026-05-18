@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AnnotationsController } from './annotations.controller';
-import { AnnotationsService } from './annotations.service';
+import { AnnotationsController } from '../annotations.controller';
+import { AnnotationsService } from '../annotations.service';
 
 describe('AnnotationsController', () => {
   let controller: AnnotationsController;

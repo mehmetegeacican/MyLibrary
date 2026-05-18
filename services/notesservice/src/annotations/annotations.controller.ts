@@ -3,7 +3,7 @@ import { AnnotationsService } from './annotations.service';
 import { CreateAnnotationDto } from './dto/create-annotation.dto';
 import { UpdateAnnotationDto } from './dto/update-annotation.dto';
 
-@Controller('annotations')
+@Controller('api/v2/annotations')
 export class AnnotationsController {
   constructor(private readonly annotationsService: AnnotationsService) {}
 
@@ -12,9 +12,9 @@ export class AnnotationsController {
     return this.annotationsService.create(createAnnotationDto);
   }
 
-  @Get()
-  findAll() {
-    return this.annotationsService.findAll();
+  @Get('/all/:userId')
+  findAllByUserId(@Param('userId') userId:string) {
+    return this.annotationsService.findManyByUserId(+userId);
   }
 
   @Get(':id')

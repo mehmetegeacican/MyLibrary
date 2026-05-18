@@ -4,6 +4,7 @@ import { UpdateAnnotationDto } from './dto/update-annotation.dto';
 import { Annotation } from './entities/annotation.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ANNOTATION_MESSAGES, EXCEPTION_MESSAGES } from 'common/constants';
 
 @Injectable()
 export class AnnotationsService {
@@ -34,7 +35,7 @@ export class AnnotationsService {
       where: { id },
     });
     if (!annotation) {
-      throw new NotFoundException("Annotation could not be found");
+      throw new NotFoundException(EXCEPTION_MESSAGES.NOT_FOUND);
     }
     return annotation;
   }
@@ -48,6 +49,6 @@ export class AnnotationsService {
   async remove(id: string): Promise<{ message: string }> {
     const annotation = await this.findOne(id);
     await this.annotationRepository.softDelete(annotation.id);
-    return { message: "Annotation have been successfully deleted" };
+    return { message: ANNOTATION_MESSAGES.DELETE_SUCCESS };
   }
 }

@@ -46,12 +46,12 @@ const reqAuth = async (req,res,next) => {
             next();
         }
         else {
-            res.status(401).error({error:"Request is not authorized"});
+            res.status(401).json({error:"Request is not authorized"});
         }
         
     }catch(e){
         console.log(e);
-        res.status(401).error({ error: "Request is not authorized" });
+        res.status(401).json({ error: "Request is not authorized" });
     }
 }
 

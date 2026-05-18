@@ -19,11 +19,6 @@ export class AnnotationsService {
     return await this.annotationRepository.save(annotation);
   }
 
-  findAll() {
-    return `This action returns all annotations`;
-  }
-
-
   async findManyByUserId(userId: string): Promise<Annotation[]> {
     return await this.annotationRepository.find({
       where: { userId },

@@ -13,8 +13,9 @@ export class AnnotationsService {
     private readonly annotationRepository: Repository<Annotation>,) {
   }
 
-  create(createAnnotationDto: CreateAnnotationDto) {
-    return 'This action adds a new annotation';
+  async create(createAnnotationDto: CreateAnnotationDto): Promise<Annotation> {
+    const annotation = this.annotationRepository.create(createAnnotationDto);
+    return await this.annotationRepository.save(annotation);
   }
 
   findAll() {
@@ -38,8 +39,10 @@ export class AnnotationsService {
     return annotation;
   }
 
-  update(id: number, updateAnnotationDto: UpdateAnnotationDto) {
-    return `This action updates a #${id} annotation`;
+  async update(id: string, updateAnnotationDto: UpdateAnnotationDto): Promise<Annotation> {
+    const annotation = await this.findOne(id);
+    Object.assign(annotation, updateAnnotationDto);
+    return await this.annotationRepository.save(annotation);
   }
 
   async remove(id: string): Promise<{ message: string }> {

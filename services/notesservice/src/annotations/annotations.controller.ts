@@ -24,7 +24,7 @@ export class AnnotationsController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateAnnotationDto: UpdateAnnotationDto) {
-    return this.annotationsService.update(+id, updateAnnotationDto);
+    return this.annotationsService.update(id, updateAnnotationDto);
   }
 
   @Delete(':id')

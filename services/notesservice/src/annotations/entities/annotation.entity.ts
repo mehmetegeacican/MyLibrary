@@ -10,11 +10,11 @@ import {
 
 @Entity('annotations')
 export class Annotation {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ type: 'integer', nullable: true })
-  userId: number; 
+  @Column({ type: 'varchar', nullable: true }) 
+  userId: string;
 
   @Column({ type: 'varchar', nullable: true })
   bookId: string;

@@ -22,13 +22,13 @@ export class AnnotationsService {
   }
 
 
-  async findManyByUserId(userId: number): Promise<Annotation[]> {
+  async findManyByUserId(userId: string): Promise<Annotation[]> {
     return await this.annotationRepository.find({
       where: { userId },
     });
   }
 
-  async findOne(id: number): Promise<Annotation> {
+  async findOne(id: string): Promise<Annotation> {
     const annotation = await this.annotationRepository.findOne({
       where: { id },
     });

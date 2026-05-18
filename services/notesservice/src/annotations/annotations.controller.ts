@@ -14,12 +14,12 @@ export class AnnotationsController {
 
   @Get('/all/:userId')
   findAllByUserId(@Param('userId') userId:string) {
-    return this.annotationsService.findManyByUserId(+userId);
+    return this.annotationsService.findManyByUserId(userId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.annotationsService.findOne(+id);
+    return this.annotationsService.findOne(id);
   }
 
   @Patch(':id')

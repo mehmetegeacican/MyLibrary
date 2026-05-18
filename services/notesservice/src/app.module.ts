@@ -7,6 +7,7 @@ import { NotesModule } from './notes/notes.module';
 import { Note } from './notes/entities/note.entity';
 import { AuthMiddleware } from 'common/middleware/auth.middleware';
 import { AnnotationsModule } from './annotations/annotations.module';
+import { Annotation } from './annotations/entities/annotation.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AnnotationsModule } from './annotations/annotations.module';
           username: configService.get('PGUSER'),
           password: configService.get('PGPASSWORD'),
           database: configService.get('PGDATABASE'),
-          entities: [Note],
+          entities: [Note,Annotation],
           // synchronize is used for migration
           //synchronize:true
       })

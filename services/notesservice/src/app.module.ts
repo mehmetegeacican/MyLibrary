@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotesModule } from './notes/notes.module';
 import { Note } from './notes/entities/note.entity';
 import { AuthMiddleware } from 'common/middleware/auth.middleware';
+import { AnnotationsModule } from './annotations/annotations.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { AuthMiddleware } from 'common/middleware/auth.middleware';
           //synchronize:true
       })
     }),
-    NotesModule
+    NotesModule,
+    AnnotationsModule
   ],
   controllers: [AppController],
   providers: [AppService],

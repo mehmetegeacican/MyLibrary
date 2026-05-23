@@ -69,7 +69,7 @@ describe('AnnotationsController', () => {
   describe('create', () => {
     it('should pass data transfer payloads to the service layer and yield the created entity', async () => {
       // Given
-      const createDto = { userId: 'u-1', bookId: 'b-1', comment: 'Instant highlight', pageNumber: 12 };
+      const createDto = { userId: 'u-1', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Instant highlight', pageNumber: 12 , annotation: 'This is a key insight.'};
       const expectedResult = { id: 'new-uuid', ...createDto };
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult as any);
 
@@ -86,7 +86,7 @@ describe('AnnotationsController', () => {
     it('should forward parameters along with request payload details to apply modifications safely', async () => {
       // Given
       const targetId = 'annotation-uuid-789';
-      const updateDto = { userId: 'u-1', bookId: 'b-1', comment: 'Modified text notes', pageNumber: 12 };
+      const updateDto = { userId: 'u-1', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Modified text notes', pageNumber: 12 , annotation: 'This is a key insight.'};
       const expectedResult = { id: targetId, ...updateDto };
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult as any);
 

@@ -41,7 +41,7 @@ describe('AnnotationsService', () => {
   describe('create', () => {
     it('should successfully build and save a new annotation instance', async () => {
       // Given
-      const dto = { userId: 'user-uuid', bookId: 'book-123', comment: 'Great read!', pageNumber: 10 };
+      const dto = { userId: 'user-uuid', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Great read!', pageNumber: 10 , annotation: 'This is a key insight.'};
       const expectedResult = { id: 'annotation-uuid', ...dto };
 
       mockAnnotationRepository.create.mockReturnValue(expectedResult);
@@ -69,7 +69,7 @@ describe('AnnotationsService', () => {
       const result = await service.findManyByUserId(userId);
 
       // Then
-      expect(repository.find).toHaveBeenCalledWith({ where: { userId } });
+      expect(repository.find).toHaveBeenCalledWith({ where: { userId }, relations: ['book'] });
       expect(result).toEqual(expectedCollection);
     });
   });
@@ -86,7 +86,7 @@ describe('AnnotationsService', () => {
       const result = await service.findOne(targetId);
 
       // Then
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: targetId } });
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: targetId }, relations: ['book'] });
       expect(result).toEqual(expectedRecord);
     });
 
@@ -136,7 +136,7 @@ describe('AnnotationsService', () => {
       const result = await service.remove(targetId);
 
       // Then
-      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: targetId } });
+      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: targetId }, relations: ['book'] });
       expect(repository.softDelete).toHaveBeenCalledWith(targetId);
       expect(result).toEqual({ message: 'Annotation has been securely soft-deleted.' });
     });
@@ -151,7 +151,7 @@ describe('AnnotationsService', () => {
         new NotFoundException(NOT_FOUND),
       );
       
-      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: badId } });
+      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: badId }, relations: ['book'] });
       expect(repository.softDelete).not.toHaveBeenCalled();
     });
   });

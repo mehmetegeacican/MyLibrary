@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn, 
-  VersionColumn     
+  VersionColumn,     
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
+import { Book } from './book.entity';
 
 @Entity('annotations')
 export class Annotation {
@@ -16,8 +19,12 @@ export class Annotation {
   @Column({ type: 'varchar', nullable: true }) 
   userId: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   bookId: string;
+
+
+  @Column({ type: 'text', nullable: true })
+  annotation: string;
 
   @Column({ type: 'text', nullable: true })
   comment: string;
@@ -36,4 +43,10 @@ export class Annotation {
 
   @VersionColumn()
   version: number;
+
+  @ManyToOne(() => Book, (book) => book.annotations)
+  @JoinColumn({ name: 'bookId', referencedColumnName: 'uuid' })
+  book: Book;
+
+
 }

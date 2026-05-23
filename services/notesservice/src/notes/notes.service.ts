@@ -32,7 +32,7 @@ export class NotesService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.noteRepository.findOne({
       where:{
         id
@@ -40,7 +40,7 @@ export class NotesService {
     });
   }
 
-  async update(id: number, updateNoteDto: UpdateNoteDto) {
+  async update(id: string, updateNoteDto: UpdateNoteDto) {
 
     const note = await this.findOne(id);
     if(!note){
@@ -50,7 +50,7 @@ export class NotesService {
     return await this.noteRepository.save(note);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const note = await this.findOne(id);
     if(!note){
       throw new NotFoundException();

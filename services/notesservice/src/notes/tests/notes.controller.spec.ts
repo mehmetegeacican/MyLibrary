@@ -39,7 +39,7 @@ describe('NotesController', () => {
       // Given
       const mockNotes: Note[] = [
         {
-          id: 1,
+          id: "9094032e-f981-44aa-9b01-327028a711a4",
           userId: 1,
           title: 'Test Note 1',
           content: 'Test Content 1',
@@ -48,7 +48,7 @@ describe('NotesController', () => {
           updatedAt: new Date(),
         },
         {
-          id: 2,
+          id: "b8c9d0e1-f2g3-h4i5-j6k7-l8m9n0o1p2q3",
           userId: 1,
           title: 'Test Note 2',
           content: 'Test Content 2',
@@ -97,7 +97,7 @@ describe('NotesController', () => {
     it('should return a single note', async () => {
       // Given
       const mockNote: Note = {
-        id: 1,
+        id: "9094032e-f981-44aa-9b01-327028a711a4",
         userId: 1,
         title: 'Test Note',
         content: 'Test Content',
@@ -107,18 +107,18 @@ describe('NotesController', () => {
       };
       jest.spyOn(service, 'findOne').mockResolvedValue(mockNote);
       // When
-      const result = await controller.findOne('1');
+      const result = await controller.findOne('9094032e-f981-44aa-9b01-327028a711a4');
       // Then
-      expect(service.findOne).toHaveBeenCalledWith(1); // Check if findOne was called with the correct ID
+      expect(service.findOne).toHaveBeenCalledWith('9094032e-f981-44aa-9b01-327028a711a4'); // Check if findOne was called with the correct ID
       expect(result).toEqual(mockNote); // Check if the result matches the mock note
     });
     it('should return null if no note is found', async () => {
       // Given
       jest.spyOn(service, 'findOne').mockResolvedValue(null);
       //When
-      const result = await controller.findOne('1');
+      const result = await controller.findOne('9094032e-f981-44aa-9b01-327028a711a4');
       // Then
-      expect(service.findOne).toHaveBeenCalledWith(1); // Check if findOne was called with the correct ID
+      expect(service.findOne).toHaveBeenCalledWith('9094032e-f981-44aa-9b01-327028a711a4'); // Check if findOne was called with the correct ID
       expect(result).toBeNull();                      // Check if the result is null
     });
   });
@@ -133,7 +133,7 @@ describe('NotesController', () => {
       };
 
       const mockNote: Note = {
-        id: 1,
+        id: "9094032e-f981-44aa-9b01-327028a711a4",
         userId: 1,
         title: 'Test Note',
         content: 'Test Content',
@@ -188,7 +188,7 @@ describe('NotesController', () => {
       };
 
       const mockNote: Note = {
-        id: 1,
+        id: "9094032e-f981-44aa-9b01-327028a711a4",
         userId: 1,
         title: 'Updated Title',
         content: 'Updated Content',
@@ -200,10 +200,10 @@ describe('NotesController', () => {
       // Mock the service's update method
       jest.spyOn(service, 'update').mockResolvedValue(mockNote);
 
-      const result = await controller.update('1', updateNoteDto);
+      const result = await controller.update('9094032e-f981-44aa-9b01-327028a711a4', updateNoteDto);
 
       expect(result).toEqual(mockNote); // Ensure the result matches the updated note
-      expect(service.update).toHaveBeenCalledWith(1, updateNoteDto); // Check if service.update was called with correct parameters
+      expect(service.update).toHaveBeenCalledWith('9094032e-f981-44aa-9b01-327028a711a4', updateNoteDto); // Check if service.update was called with correct parameters
     });
     it('should throw NotFoundException if note does not exist', async () => {
       const updateNoteDto: UpdateNoteDto = {
@@ -215,29 +215,29 @@ describe('NotesController', () => {
       // Mock the service's update method to throw a NotFoundException
       jest.spyOn(service, 'update').mockRejectedValue(new NotFoundException('Note not found'));
 
-      await expect(controller.update('99', updateNoteDto)).rejects.toThrow(NotFoundException);
-      expect(service.update).toHaveBeenCalledWith(99, updateNoteDto); // Ensure the service was called with the correct ID
+      await expect(controller.update('9094032e-f981-44aa-9b01-327028a711a4', updateNoteDto)).rejects.toThrow(NotFoundException);
+      expect(service.update).toHaveBeenCalledWith('9094032e-f981-44aa-9b01-327028a711a4', updateNoteDto); // Ensure the service was called with the correct ID
     });
   });
 
   describe('delete', () => {
     it('should delete a single note', async () => {
-      const mockNoteId = 1;
+      const mockNoteId = "9094032e-f981-44aa-9b01-327028a711a4";
 
       // Mock the service's remove method
       jest.spyOn(service, 'remove').mockResolvedValue(undefined); // or any other return value you expect
 
-      await controller.remove('1');
+      await controller.remove('9094032e-f981-44aa-9b01-327028a711a4'); // Call the controller method with the note ID
 
       expect(service.remove).toHaveBeenCalledWith(mockNoteId); // Ensure service.remove was called with correct ID
     });
     it('should throw NotFoundException if note does not exist', async () => {
-      const mockNoteId = 99;
+      const mockNoteId = "9094032e-f981-44aa-9b01-327028a711a4";
   
       // Mock the service's remove method to throw a NotFoundException
       jest.spyOn(service, 'remove').mockRejectedValue(new NotFoundException('Note not found'));
   
-      await expect(controller.remove('99')).rejects.toThrow(NotFoundException);
+      await expect(controller.remove('9094032e-f981-44aa-9b01-327028a711a4')).rejects.toThrow(NotFoundException);
       expect(service.remove).toHaveBeenCalledWith(mockNoteId); // Ensure service was called with the correct ID
     });
   });

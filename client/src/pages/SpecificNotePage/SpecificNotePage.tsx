@@ -16,7 +16,7 @@ export default function SpecificNotePage() {
 
     const fetchData = useCallback(async () => {
         if(id){
-            const result = await fetchOneNote(parseInt(id),user!.token);
+            const result = await fetchOneNote(id,user!.token);
             setNote(result);
         }
         else {

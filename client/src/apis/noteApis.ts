@@ -26,7 +26,7 @@ export const fetchAllNotes = async (id:number,token:string) => {
 }
 
 
-export const fetchOneNote = async (id:number,token:string) => {
+export const fetchOneNote = async (id:string,token:string) => {
     try {
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }

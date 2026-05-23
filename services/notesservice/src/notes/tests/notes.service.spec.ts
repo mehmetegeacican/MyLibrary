@@ -38,7 +38,7 @@ describe('NotesService', () => {
 
   describe('findAll', () => {
     it('should return an array of notes', async () => {
-      const notesArray = [{ id: 1, title: 'Note 1' }, { id: 2, title: 'Note 2' }];
+      const notesArray = [{ id: "9094032e-f981-44aa-9b01-327028a711a4", title: 'Note 1' }, { id: "b8c7d6e5-f4a3-4b2c-8d1e-9f0a1b2c3d4e", title: 'Note 2' }];
 
       mockNoteRepository.find.mockResolvedValue(notesArray);
 
@@ -52,7 +52,7 @@ describe('NotesService', () => {
   describe('findMany', () => {
     it('should return notes for a specific user', async () => {
       const userId = 1;
-      const notesArray = [{ id: 1, userId, title: 'Note 1' }];
+      const notesArray = [{ id: "9094032e-f981-44aa-9b01-327028a711a4", userId, title: 'Note 1' }];
 
       mockNoteRepository.find.mockResolvedValue(notesArray);
 
@@ -67,7 +67,7 @@ describe('NotesService', () => {
 
   describe('findOne', () => {
     it('should return a note by ID', async () => {
-      const noteId = 1;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
       const note = { id: noteId, title: 'Note 1' };
 
       mockNoteRepository.findOne.mockResolvedValue(note);
@@ -79,7 +79,7 @@ describe('NotesService', () => {
     });
 
     it('should throw NotFoundException if note does not exist', async () => {
-      const noteId = 99;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
 
       mockNoteRepository.findOne.mockRejectedValue(new NotFoundException);
 
@@ -111,7 +111,7 @@ describe('NotesService', () => {
 
   describe('update', () => {
     it('should update a note', async () => {
-      const noteId = 1;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
       const updateNoteDto = { title: 'Updated Title' };
       const existingNote = { id: noteId, title: 'Old Title' };
 
@@ -126,7 +126,7 @@ describe('NotesService', () => {
     });
 
     it('should throw NotFoundException if note does not exist', async () => {
-      const noteId = 99;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
       const updateNoteDto = { title: 'Updated Title' };
 
       mockNoteRepository.findOne.mockResolvedValue(null);
@@ -138,7 +138,7 @@ describe('NotesService', () => {
 
   describe('remove', () => {
     it('should remove a note', async () => {
-      const noteId = 1;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
       const existingNote = { id: noteId, title: 'Note 1' };
 
       mockNoteRepository.findOne.mockResolvedValue(existingNote);
@@ -151,7 +151,7 @@ describe('NotesService', () => {
     });
 
     it('should throw NotFoundException if note does not exist', async () => {
-      const noteId = 99;
+      const noteId = "9094032e-f981-44aa-9b01-327028a711a4";
 
       mockNoteRepository.findOne.mockResolvedValue(null);
 

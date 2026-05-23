@@ -28,7 +28,7 @@ export interface IBook {
 }
 
 export interface INote {
-  id: number;
+  id: string;
   userId: number;
   title: string;
   content?: string;

@@ -8,7 +8,7 @@ export class CreateAnnotationDto {
     @Min(1, {message:"Page number must be at least 1"})
     pageNumber:number;
     @IsNotEmpty()
-    @IsString()
+    @IsUUID()
     bookId:string;
     @IsNotEmpty()
     @IsString()

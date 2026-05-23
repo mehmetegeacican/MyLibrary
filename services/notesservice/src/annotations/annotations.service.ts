@@ -22,12 +22,14 @@ export class AnnotationsService {
   async findManyByUserId(userId: string): Promise<Annotation[]> {
     return await this.annotationRepository.find({
       where: { userId },
+      relations: ['book']
     });
   }
 
   async findOne(id: string): Promise<Annotation> {
     const annotation = await this.annotationRepository.findOne({
       where: { id },
+      relations: ['book']
     });
     if (!annotation) {
       throw new NotFoundException(EXCEPTION_MESSAGES.NOT_FOUND);

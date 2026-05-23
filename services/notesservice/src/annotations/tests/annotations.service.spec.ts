@@ -69,7 +69,7 @@ describe('AnnotationsService', () => {
       const result = await service.findManyByUserId(userId);
 
       // Then
-      expect(repository.find).toHaveBeenCalledWith({ where: { userId } });
+      expect(repository.find).toHaveBeenCalledWith({ where: { userId }, relations: ['book'] });
       expect(result).toEqual(expectedCollection);
     });
   });
@@ -86,7 +86,7 @@ describe('AnnotationsService', () => {
       const result = await service.findOne(targetId);
 
       // Then
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: targetId } });
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: targetId }, relations: ['book'] });
       expect(result).toEqual(expectedRecord);
     });
 
@@ -136,7 +136,7 @@ describe('AnnotationsService', () => {
       const result = await service.remove(targetId);
 
       // Then
-      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: targetId } });
+      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: targetId }, relations: ['book'] });
       expect(repository.softDelete).toHaveBeenCalledWith(targetId);
       expect(result).toEqual({ message: 'Annotation has been securely soft-deleted.' });
     });
@@ -151,7 +151,7 @@ describe('AnnotationsService', () => {
         new NotFoundException(NOT_FOUND),
       );
       
-      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: badId } });
+      expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: badId }, relations: ['book'] });
       expect(repository.softDelete).not.toHaveBeenCalled();
     });
   });

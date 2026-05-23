@@ -22,6 +22,10 @@ export class Annotation {
   @Column({ type: 'uuid', nullable: true })
   bookId: string;
 
+
+  @Column({ type: 'text', nullable: true })
+  annotation: string;
+
   @Column({ type: 'text', nullable: true })
   comment: string;
 

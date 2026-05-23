@@ -1,5 +1,10 @@
 import { IsNotEmpty, IsString, IsInt, IsUUID, Min } from 'class-validator';
 export class CreateAnnotationDto {
+
+    @IsString()
+    @IsNotEmpty()
+    annotation:string;
+
     @IsNotEmpty()
     @IsString()
     comment:string;

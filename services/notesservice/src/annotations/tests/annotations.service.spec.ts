@@ -41,7 +41,7 @@ describe('AnnotationsService', () => {
   describe('create', () => {
     it('should successfully build and save a new annotation instance', async () => {
       // Given
-      const dto = { userId: 'user-uuid', bookId: 'book-123', comment: 'Great read!', pageNumber: 10 };
+      const dto = { userId: 'user-uuid', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Great read!', pageNumber: 10 , annotation: 'This is a key insight.'};
       const expectedResult = { id: 'annotation-uuid', ...dto };
 
       mockAnnotationRepository.create.mockReturnValue(expectedResult);

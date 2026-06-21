@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Stack, TextField } from "@mui/material";
 import { IAnnotation } from "../../interfaces/DataInterfaces";
 import { useLibraryTheme } from "../../hooks/theme/useLibraryTheme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface AnnotationModalInterface {
     open: boolean;
@@ -13,6 +13,23 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
     const [annotationContent, setAnnotationContent] = useState(annotation?.annotation || "");
     const [comment, setComment] = useState(annotation?.comment || "");
     const [pageNumber, setPageNumber] = useState(annotation?.pageNumber || "");
+
+    useEffect(() => {
+        if (open && annotation) {
+            setAnnotationContent(annotation?.annotation || "");
+            setComment(annotation?.comment || "");
+            setPageNumber(annotation?.pageNumber || "");
+
+        }
+        else {
+            setAnnotationContent("");
+            setComment("");
+            setPageNumber("");
+        }
+
+
+    }, [annotation]);
+
     return (
         <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth >
             <DialogTitle>{!annotation ? 'Add Annotation' : 'Edit Annotation'}</DialogTitle>

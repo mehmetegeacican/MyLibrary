@@ -14,7 +14,6 @@ export default function AnnotationsPage() {
     const [query, setQuery] = useState("");
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openViewModal, setOpenViewModal] = useState(false);
-    const [openEditModal, setOpenEditModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const { libTheme } = useLibraryTheme();
     const { user } = useAuthContext();
@@ -30,6 +29,13 @@ export default function AnnotationsPage() {
     };
 
     // Handlers
+
+
+    const handleUpdateNote = (annotation: IAnnotation) => {
+        setOpenAddModal(true);
+        setSelectedAnnotation(annotation);
+    }
+
     const handleDeleteAnnotation = (annotation: IAnnotation) => {
         setOpenDeleteModal(true);
         setSelectedAnnotation(annotation);
@@ -169,7 +175,7 @@ export default function AnnotationsPage() {
                                             <Button size="small" color="success" sx={{ borderRadius: 2 }}>
                                                 Read
                                             </Button>
-                                            <Button size="small" color="info" sx={{ borderRadius: 2 }}>
+                                            <Button size="small" color="info" sx={{ borderRadius: 2 }} onClick={() => handleUpdateNote(annotation)}>
                                                 Edit
                                             </Button>
                                             <Button size="small" color="error" sx={{ borderRadius: 2 }} onClick={() => handleDeleteAnnotation(annotation)}>

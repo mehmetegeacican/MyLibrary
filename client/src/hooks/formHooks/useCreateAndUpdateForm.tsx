@@ -240,7 +240,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  const updateNote = async (id: number, title: string, content: string,imagePath?:string) => {
+  const updateNote = async (id: string, title: string, content: string,imagePath?:string) => {
       setMessage("");
       setError(false);
       setSuccess(false);

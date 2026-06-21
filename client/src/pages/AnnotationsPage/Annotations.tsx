@@ -8,6 +8,7 @@ import { IAnnotation } from '../../interfaces/DataInterfaces';
 import defaultImg from '../../assets/default.jpg';
 import { formatDistanceToNow } from 'date-fns';
 import { DeleteModal } from '../../components/modals';
+import AnnotationAddEditModal from '../../components/modals/AnnotationAddEditModal';
 
 export default function AnnotationsPage() {
     const [query, setQuery] = useState("");
@@ -179,6 +180,7 @@ export default function AnnotationsPage() {
                                 </Grid>
                             ))}
                         </Grid>
+                        {<AnnotationAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)} annotation={selectedAnnotation} />}
                         {selectedAnnotation && <DeleteModal open={openDeleteModal} handleClose={() => setOpenDeleteModal(false)} data={selectedAnnotation} />}
                     </Paper>
                 </Grid>

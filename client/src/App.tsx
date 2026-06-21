@@ -20,6 +20,7 @@ import { LIGHT_THEMES, SUBSCRIPTION_METHOD } from "./enums/enums";
 import MainLayout from "./layout/MainLayout/MainLayout";
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLibraryTheme } from "./hooks/theme/useLibraryTheme";
+import { AnnotationsPage } from "./pages/AnnotationsPage";
 
 
 
@@ -63,6 +64,7 @@ function App() {
             <Route path="/authors" element={user ? <AuthorsPage /> : <Navigate to={'/login'} />} />
             <Route path="/categories" element={user ? <CategoriesPage /> : <Navigate to={'/login'} />} />
             <Route path="/notes" element={user ? <NotesPage /> : <Navigate to={'/login'} />} />
+            <Route path="/annotations" element={user ? <AnnotationsPage /> : <Navigate to={'/login'} />} />
             <Route path="/statistics" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <Statistics /> : <Navigate to={'/subscriptions'} />} />
             <Route path="/mindmap" element={user && plan === SUBSCRIPTION_METHOD.PRO ? <MindMapDashboardPage /> : <Navigate to={'/subscriptions'} />} />
             <Route path="/subscriptions" element={user ? <SubscriptionPage /> : <Navigate to={'/login'} />} />

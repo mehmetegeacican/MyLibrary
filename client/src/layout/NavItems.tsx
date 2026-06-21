@@ -94,6 +94,14 @@ export const secondaryListItems = (
         <ListItemText primary="My Essays" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>
     </Link>
+    <Link to="/annotations">
+      <ListItemButton sx={{ color: "black" }}>
+        <ListItemIcon>
+          <Assignment/>
+        </ListItemIcon>
+        <ListItemText primary="My Annotations" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
+      </ListItemButton>
+    </Link>
     <Link to="/profile">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>

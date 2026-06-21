@@ -12,7 +12,8 @@ import {
   Category,
   People,
   Person,
-  Map
+  Map,
+  SpeakerNotes
 } from '@mui/icons-material';
 
 
@@ -97,7 +98,7 @@ export const secondaryListItems = (
     <Link to="/annotations">
       <ListItemButton sx={{ color: "black" }}>
         <ListItemIcon>
-          <Assignment/>
+          <SpeakerNotes/>
         </ListItemIcon>
         <ListItemText primary="My Annotations" primaryTypographyProps={{ sx: { color: 'text.primary' } }} />
       </ListItemButton>

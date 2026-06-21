@@ -1,12 +1,40 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, MenuItem, Paper, TextField, Typography } from '@mui/material'
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SearchRounded, PostAdd } from '@mui/icons-material'
 import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
+import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
+import { fetchAllAnnotations } from '../../apis/annotationApis';
 
 export default function AnnotationsPage() {
     const [query, setQuery] = useState("");
     const [openAddModal, setOpenAddModal] = useState(false);
     const { libTheme } = useLibraryTheme();
+    const { user } = useAuthContext();
+    const { annotations, dispatch, annotationTrigger } = useLibraryDataContext();
+    const [selectedAnnotation, setSelectedAnnotation] = useState<any | null>(null);
+
+    const PORT = import.meta.env.VITE_IMAGESERVICE_PORT;
+    const IMAGE_ADDRESS = `http://localhost:${PORT}/images`;
+
+    //UseCallBack 
+    const fetchData = useCallback(async () => {
+        if (user) {
+            const res = await fetchAllAnnotations(user.id, user.token);
+            dispatch({ type: 'GET_ANNOTATIONS', payload: res });
+        }
+    }, [annotationTrigger]);
+
+
+    //UseEffect
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    useEffect(() => {
+        console.log("Annotations " , annotations);
+    }, [annotations]);
+
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -66,8 +94,8 @@ export default function AnnotationsPage() {
                         overflow: 'auto'
                     }}>
                         <Grid container spacing={2}>
-                            
-                           
+
+
                         </Grid>
                     </Paper>
                 </Grid>

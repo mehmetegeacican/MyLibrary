@@ -37,6 +37,25 @@ export interface INote {
   updatedAt: Date;
 }
 
+export interface IAnnotation {
+  id: string;
+  userId: string;
+  bookId: string;
+  annotation: string | null;
+  comment: string | null;
+  pageNumber: number;
+  createdAt: Date;
+  updatedat: Date;
+  deletedAt: Date | null;
+  version: number;
+  book: {
+    uuid: string;
+    name: string;
+    authors:string[];
+    imagePath?: string;
+  };
+}
+
 
 export interface IMindMap{
   _id:string;

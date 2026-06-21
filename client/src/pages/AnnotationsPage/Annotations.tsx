@@ -40,8 +40,16 @@ export default function AnnotationsPage() {
         setOpenDeleteModal(true);
         setSelectedAnnotation(annotation);
     }
+
+    const handleCloseDeleteModal = () => {
+        setOpenDeleteModal(false);
+        if (selectedAnnotation) {
+            setSelectedAnnotation(null);
+        }
+    }
     const handleCloseAddUpdate = () => {
         setOpenAddModal(false);
+        setOpenViewModal(false);
         if (selectedAnnotation) {
             setSelectedAnnotation(null);
         }
@@ -179,7 +187,10 @@ export default function AnnotationsPage() {
 
                                         </CardActionArea>
                                         <CardActions sx={{ p: 1, pt: 0, justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                            <Button size="small" color="success" sx={{ borderRadius: 2 }}>
+                                            <Button size="small" color="success" sx={{ borderRadius: 2 }} onClick={() => {
+                                                setSelectedAnnotation(annotation);
+                                                setOpenViewModal(true);
+                                            }}>
                                                 Read
                                             </Button>
                                             <Button size="small" color="info" sx={{ borderRadius: 2 }} onClick={() => handleUpdateNote(annotation)}>
@@ -193,8 +204,9 @@ export default function AnnotationsPage() {
                                 </Grid>
                             ))}
                         </Grid>
-                        {<AnnotationAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} annotation={selectedAnnotation} />}
-                        {selectedAnnotation && <DeleteModal open={openDeleteModal} handleClose={() => setOpenDeleteModal(false)} data={selectedAnnotation} />}
+                        {<AnnotationAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} annotation={selectedAnnotation} viewOnly={false} />}
+                        {selectedAnnotation && <DeleteModal open={openDeleteModal} handleClose={() => handleCloseDeleteModal()} data={selectedAnnotation} />}
+                        {<AnnotationAddEditModal open={openViewModal} handleClose={() => handleCloseAddUpdate()} annotation={selectedAnnotation} viewOnly={true} />}
                     </Paper>
                 </Grid>
             </Grid>

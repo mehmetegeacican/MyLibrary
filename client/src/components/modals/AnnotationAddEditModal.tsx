@@ -10,13 +10,14 @@ interface AnnotationModalInterface {
     open: boolean;
     handleClose: () => void;
     annotation?: IAnnotation | null;
+    viewOnly?: boolean;
 }
 
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function AnnotationAddEditModal({ open, handleClose, annotation }: AnnotationModalInterface) {
+export default function AnnotationAddEditModal({ open, handleClose, annotation, viewOnly = false }: AnnotationModalInterface) {
     const { libTheme } = useLibraryTheme();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -93,7 +94,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
             <DialogTitle>{!annotation ? 'Add Annotation' : 'Edit Annotation'}</DialogTitle>
             <Divider />
             <DialogContent>
-                <DialogContentText color={libTheme}>
+                <DialogContentText color={libTheme} sx={{ mb: 2 }}>
                     Add or Update Annotations from here.
                 </DialogContentText>
                 <TextField
@@ -109,6 +110,9 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                     value={annotationContent}
                     onChange={(e) => setAnnotationContent(e.target.value)}
                     type="text"
+                    InputProps={{
+                        readOnly: viewOnly,
+                    }}
                     fullWidth
                     variant="outlined"
                 />
@@ -160,7 +164,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                             autoFocus
                             required
                             color={libTheme}
-                            margin="none" // Changed from dense to none to align better with Autocomplete height
+                            margin="none"
                             id="Page"
                             name="Page"
                             label="Page Number"
@@ -169,6 +173,9 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                             type="number"
                             fullWidth
                             variant="outlined"
+                            InputProps={{
+                                readOnly: viewOnly,
+                            }}
                         />
                     </Box>
                 </Stack>
@@ -189,13 +196,20 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                     type="text"
                     fullWidth
                     variant="outlined"
+                    InputProps={{
+                        readOnly: viewOnly,
+                    }}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => {
                     handleCloseModal();
                 }} color={libTheme} >Cancel</Button>
-                <Button onClick={handleSave} color={libTheme}>Add</Button>
+                {!viewOnly && (
+                    <Button onClick={handleSave} color={libTheme}>
+                        Add
+                    </Button>
+                )}
             </DialogActions>
         </Dialog>
     )

@@ -19,3 +19,20 @@ export const fetchAllAnnotations = async (id:number,token:string) => {
         return [];
     }
 }
+
+
+export const deleteAnnotationById = async (id: string,token:string) => {
+    try {
+        const config = {
+            headers: { 'Authorization': 'Bearer ' + token }
+        };
+        const res = await axios.delete(NOTE_ADDRESS + `/api/v2/annotations/${id}`,config);
+        return res.data;
+    }
+    catch (e) {
+        return e;
+    }
+}
+
+
+

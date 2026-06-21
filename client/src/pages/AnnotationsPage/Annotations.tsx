@@ -5,13 +5,16 @@ import { useLibraryTheme } from '../../hooks/theme/useLibraryTheme';
 import { useAuthContext, useLibraryDataContext } from '../../hooks/contextHooks';
 import { fetchAllAnnotations } from '../../apis/annotationApis';
 import { IAnnotation } from '../../interfaces/DataInterfaces';
-import { Link } from 'react-router-dom';
 import defaultImg from '../../assets/default.jpg';
 import { formatDistanceToNow } from 'date-fns';
+import { DeleteModal } from '../../components/modals';
 
 export default function AnnotationsPage() {
     const [query, setQuery] = useState("");
     const [openAddModal, setOpenAddModal] = useState(false);
+    const [openViewModal, setOpenViewModal] = useState(false);
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const { libTheme } = useLibraryTheme();
     const { user } = useAuthContext();
     const { annotations, dispatch, annotationTrigger } = useLibraryDataContext();
@@ -24,6 +27,12 @@ export default function AnnotationsPage() {
         if (!text) return "...";
         return text.length > limit ? text.substring(0, limit) + "..." : text;
     };
+
+    // Handlers
+    const handleDeleteAnnotation = (annotation: IAnnotation) => {
+        setOpenDeleteModal(true);
+        setSelectedAnnotation(annotation);
+    }
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -42,6 +51,8 @@ export default function AnnotationsPage() {
         }
 
     }, [annotations, query]);
+
+
 
 
     //UseEffect
@@ -125,45 +136,42 @@ export default function AnnotationsPage() {
 
                                         }}
                                     >
-                                        <Link to={'/annotations/' + annotation.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                            <CardActionArea sx={{ flexGrow: 1 }}>
-                                                <CardMedia
-                                                    component="img"
-                                                    sx={{ height: 160, objectFit: 'cover' }}
-                                                    image={annotation?.book?.imagePath ? IMAGE_ADDRESS + "/books/" + annotation?.book?.imagePath : defaultImg}
-                                                    title={annotation?.book?.name}
-                                                />
-                                                <CardContent sx={{ p: 2 }}>
-                                                    {/* Main Annotation Title */}
-                                                    <Typography variant="h6" gutterBottom color={libTheme} sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                                        {truncateText(annotation?.annotation || "", 50) ?? "Untitled"}
+
+                                        <CardActionArea sx={{ flexGrow: 1 }}>
+                                            <CardMedia
+                                                component="img"
+                                                sx={{ height: 160, objectFit: 'cover' }}
+                                                image={annotation?.book?.imagePath ? IMAGE_ADDRESS + "/books/" + annotation?.book?.imagePath : defaultImg}
+                                                title={annotation?.book?.name}
+                                            />
+                                            <CardContent sx={{ p: 2 }}>
+                                                {/* Main Annotation Title */}
+                                                <Typography variant="h6" gutterBottom color={libTheme} sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                                                    {truncateText(annotation?.annotation || "", 50) ?? "Untitled"}
+                                                </Typography>
+                                                {/* Secondary Info */}
+                                                <Box sx={{ mt: 2 }}>
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+                                                        {annotation?.book?.name}
                                                     </Typography>
-                                                    {/* Secondary Info */}
-                                                    <Box sx={{ mt: 2 }}>
-                                                        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-                                                            {annotation?.book?.name}
-                                                        </Typography>
-                                                        <Typography variant="caption" display="block" color="text.secondary">
-                                                            Page: {annotation?.pageNumber}
-                                                        </Typography>
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            Updated: {formatDistanceToNow(new Date(annotation.updatedat))} ago
-                                                        </Typography>
-                                                    </Box>
-                                                </CardContent>
+                                                    <Typography variant="caption" display="block" color="text.secondary">
+                                                        Page: {annotation?.pageNumber}
+                                                    </Typography>
+                                                    <Typography variant="caption" color="text.secondary">
+                                                        Updated: {formatDistanceToNow(new Date(annotation.updatedat))} ago
+                                                    </Typography>
+                                                </Box>
+                                            </CardContent>
 
-                                            </CardActionArea>
-                                        </Link>
-
-                                        {/* Footer with Timestamp and Action */}
+                                        </CardActionArea>
                                         <CardActions sx={{ p: 1, pt: 0, justifyContent: 'space-evenly', alignItems: 'center' }}>
-                                            <Button size="small"  color="success" sx={{ borderRadius: 2 }}>
+                                            <Button size="small" color="success" sx={{ borderRadius: 2 }}>
                                                 Read
                                             </Button>
                                             <Button size="small" color="info" sx={{ borderRadius: 2 }}>
                                                 Edit
                                             </Button>
-                                            <Button size="small"  color="error" sx={{ borderRadius: 2 }}>
+                                            <Button size="small" color="error" sx={{ borderRadius: 2 }} onClick={() => handleDeleteAnnotation(annotation)}>
                                                 Delete
                                             </Button>
                                         </CardActions>
@@ -171,6 +179,7 @@ export default function AnnotationsPage() {
                                 </Grid>
                             ))}
                         </Grid>
+                        {selectedAnnotation && <DeleteModal open={openDeleteModal} handleClose={() => setOpenDeleteModal(false)} data={selectedAnnotation} />}
                     </Paper>
                 </Grid>
             </Grid>

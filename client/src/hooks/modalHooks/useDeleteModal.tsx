@@ -6,6 +6,7 @@ import { useLibraryDataContext, useAuthContext } from "../contextHooks";
 import { deleteAnAuthor } from "../../apis/authorApi";
 import { deleteNotes } from "../../apis/noteApis";
 import { deleteMindMapById } from "../../apis/mindMapApis";
+import { deleteAnnotationById } from "../../apis/annotationApis";
 
 export const useDeleteModal = () => {
     //Hooks
@@ -13,7 +14,7 @@ export const useDeleteModal = () => {
     const [error, setError] = React.useState<boolean>(false);
     const [success, setSuccess] = React.useState<boolean>(false);
     const [message, setMessage] = React.useState<string>("");
-    const { dispatch, bookTrigger, categoryTrigger, authorTrigger, noteTrigger, mindMapTrigger } = useLibraryDataContext();
+    const { dispatch, bookTrigger, categoryTrigger, authorTrigger, noteTrigger, mindMapTrigger, annotationTrigger } = useLibraryDataContext();
     //Functions
     const processResult = (res: ApiResult) => {
         if (res.message && !res.response) {
@@ -78,7 +79,7 @@ export const useDeleteModal = () => {
             dispatch({ type: 'TRIGGER_AUTHORS', payload: !authorTrigger });
         }
     }
-    const deleteNote = async (id: number) => {
+    const deleteNote = async (id: string) => {
         let stringId = id.toString();
         //Step 0 -- Reset
         setError(false);
@@ -106,6 +107,18 @@ export const useDeleteModal = () => {
         }
 
     }
+    const deleteAnnotation = async (id: string) => {
+        setError(false);
+        setMessage("");
+        setSuccess(false);
+        if (user) {
+            const res = await deleteAnnotationById(id, user.token);
+            const check = processResult(res);
+            if (check) {
+                dispatch({ type: 'TRIGGER_ANNOTATIONS', payload: !annotationTrigger });
+            }
+        }
+    }
     //Return Values
-    return { deleteBook, deleteCategory, deleteAuthor, deleteNote,deleteMindMap, error, message, success };
+    return { deleteBook, deleteCategory, deleteAuthor, deleteNote,deleteMindMap,deleteAnnotation, error, message, success };
 }

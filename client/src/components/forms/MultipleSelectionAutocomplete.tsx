@@ -1,11 +1,11 @@
 import { Autocomplete, Checkbox, TextField } from '@mui/material'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { IAuthor, ICategory } from '../../interfaces/DataInterfaces';
-import { isIAuthor, isICategory } from '../tables/DataRow';
+import { IAuthor, IBook, ICategory } from '../../interfaces/DataInterfaces';
+import { isIAuthor, isIBook, isICategory } from '../tables/DataRow';
 
 
-type IDataSet = ICategory | IAuthor;
+type IDataSet = ICategory | IAuthor | IBook; // Extend this union type if you want to use this component for other datasets as well
 
 interface AutocompleteInterface {
     label: string;
@@ -38,6 +38,9 @@ export default function MultipleSelectionAutocomplete({ label, placeholder, data
                 else if(isIAuthor(option)){
                     return option.authorName
                 }
+                else if(isIBook(option)){
+                    return option.name
+                }
                 return "";
             }}
             value={selected}
@@ -51,6 +54,7 @@ export default function MultipleSelectionAutocomplete({ label, placeholder, data
                     />
                     {isIAuthor(option) && option.authorName}
                     {isICategory(option) && option.name}
+                    {isIBook(option) && option.name}
                 </li>
             )}
             renderInput={(params) => (

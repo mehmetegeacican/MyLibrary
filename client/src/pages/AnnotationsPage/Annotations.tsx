@@ -40,6 +40,12 @@ export default function AnnotationsPage() {
         setOpenDeleteModal(true);
         setSelectedAnnotation(annotation);
     }
+    const handleCloseAddUpdate = () => {
+        setOpenAddModal(false);
+        if (selectedAnnotation) {
+            setSelectedAnnotation(null);
+        }
+    }
 
     //UseCallBack 
     const fetchData = useCallback(async () => {
@@ -58,6 +64,7 @@ export default function AnnotationsPage() {
         }
 
     }, [annotations, query]);
+
 
 
 
@@ -186,7 +193,7 @@ export default function AnnotationsPage() {
                                 </Grid>
                             ))}
                         </Grid>
-                        {<AnnotationAddEditModal open={openAddModal} handleClose={() => setOpenAddModal(false)} annotation={selectedAnnotation} />}
+                        {<AnnotationAddEditModal open={openAddModal} handleClose={() => handleCloseAddUpdate()} annotation={selectedAnnotation} />}
                         {selectedAnnotation && <DeleteModal open={openDeleteModal} handleClose={() => setOpenDeleteModal(false)} data={selectedAnnotation} />}
                     </Paper>
                 </Grid>

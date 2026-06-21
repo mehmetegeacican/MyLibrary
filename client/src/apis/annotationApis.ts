@@ -57,7 +57,7 @@ export const updateExistingAnnotationById = async (id: string, reqBody: object, 
         const config = {
             headers: { 'Authorization': 'Bearer ' + token }
         };
-        const res = await axios.patch(NOTE_ADDRESS + `/api/v2/annotations/${id}`, reqBody, config);
+        const res = await axios.put(NOTE_ADDRESS + `/api/v2/annotations/${id}`, reqBody, config);
         return res.data;
     }
     catch (e) {

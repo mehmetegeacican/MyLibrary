@@ -2,6 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { IAnnotation } from "../../interfaces/DataInterfaces";
 import { useLibraryTheme } from "../../hooks/theme/useLibraryTheme";
 import { useEffect, useState } from "react";
+import { useCreateAndUpdateForm } from "../../hooks/formHooks";
+import { useLibraryDataContext } from "../../hooks/contextHooks";
 
 interface AnnotationModalInterface {
     open: boolean;
@@ -10,9 +12,34 @@ interface AnnotationModalInterface {
 }
 export default function AnnotationAddEditModal({ open, handleClose, annotation }: AnnotationModalInterface) {
     const { libTheme } = useLibraryTheme();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("");
+    const { createAnnotation, updateAnnotation } = useCreateAndUpdateForm(error, setError, message, setMessage, success, setSuccess);
+    const {annotationTrigger, dispatch} = useLibraryDataContext();
     const [annotationContent, setAnnotationContent] = useState(annotation?.annotation || "");
     const [comment, setComment] = useState(annotation?.comment || "");
     const [pageNumber, setPageNumber] = useState(annotation?.pageNumber || "");
+
+
+    const handleSave = async () => {
+        const reqBody = {
+            annotation: annotationContent,
+            comment: comment,
+            pageNumber: pageNumber
+        }
+        if (!annotation) {
+            await createAnnotation(reqBody);
+        }
+        else {
+            await updateAnnotation(annotation.id, reqBody);
+        }
+        dispatch({
+            type: 'TRIGGER_ANNOTATIONS',
+            payload: !annotationTrigger
+        })
+        handleClose();
+    }
 
     useEffect(() => {
         if (open && annotation) {
@@ -85,7 +112,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                         name="Page"
                         label="Page Number"
                         value={pageNumber}
-                        onChange={(e) => setPageNumber(e.target.value)}
+                        onChange={(e) => setPageNumber(parseInt(e.target.value) || "")}
                         type="number"
                         fullWidth
                         variant="standard"
@@ -97,7 +124,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation }
                 <Button onClick={() => {
                     handleClose();
                 }} color={libTheme} >Cancel</Button>
-                <Button onClick={async () => console.log("Saved ")} color={libTheme}>Add</Button>
+                <Button onClick={handleSave} color={libTheme}>Add</Button>
             </DialogActions>
         </Dialog>
     )

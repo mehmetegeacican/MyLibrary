@@ -250,7 +250,7 @@ export default function AnnotationsPage() {
                                 <TableFooter>
                                     <TableRow>
                                         <TablePagination
-                                            rowsPerPageOptions={[6, 12, 24]}
+                                            rowsPerPageOptions={[4, 8, 12]}
                                             colSpan={100}
                                             count={memoizedAnnotations.length}
                                             rowsPerPage={rowsPerPage}

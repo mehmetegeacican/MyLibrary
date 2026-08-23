@@ -152,7 +152,7 @@ export default function AnnotationsPage() {
                                         sx={{
                                             borderRadius: 4,
                                             minHeight: 350,
-                                            maxWidth: 320,
+                                            maxWidth: 300,
                                             display: 'flex',
                                             flexDirection: 'column',
 
@@ -168,9 +168,12 @@ export default function AnnotationsPage() {
                                             />
                                             <CardContent sx={{ p: 2 }}>
                                                 {/* Main Annotation Title */}
-                                                <Typography variant="h6" gutterBottom color={libTheme} sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                                    {truncateText(annotation?.annotation || "", 10) ?? "Untitled"}
-                                                </Typography>
+                                                <Box>
+                                                    <Typography variant="body2" gutterBottom color={libTheme} sx={{ fontWeight: 600, lineHeight: 1.2 }}>
+                                                        {truncateText(annotation?.annotation || "", 100) ?? "Untitled"}
+                                                    </Typography>
+                                                </Box>
+
                                                 {/* Secondary Info */}
                                                 <Box sx={{ mt: 2 }}>
                                                     <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>

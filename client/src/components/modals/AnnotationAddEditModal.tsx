@@ -60,7 +60,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation, 
             type: 'TRIGGER_ANNOTATIONS',
             payload: !annotationTrigger
         })
-        handleClose();
+        handleCloseModal();
     }
 
 

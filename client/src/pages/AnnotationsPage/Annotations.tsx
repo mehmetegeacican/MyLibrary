@@ -237,18 +237,14 @@ export default function AnnotationsPage() {
                                             </Grid>
                                         )
                                     }
-                                    if(memoizedAnnotations.length === 0) {
-                                        console.log("No annotations found.");
-                                        return (
-                                            <Grid key={index} item xs={12}>
-                                                <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-                                                    No annotations found.
-                                                </Typography>
-                                            </Grid>
-                                        );
-                                    }
                                 })}
-
+                                {memoizedAnnotations.length === 0 && (
+                                    <Grid item xs={12} spacing={2} height={320} display="flex" justifyContent="center" alignItems="center">
+                                        <Typography variant="body1" color="text.secondary" align="center">
+                                            No annotations found.
+                                        </Typography>
+                                    </Grid>
+                                )}
                             </Grid>
                             <Table>
                                 <TableFooter>

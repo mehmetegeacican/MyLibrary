@@ -9,9 +9,11 @@ import defaultImg from '../../assets/default.jpg';
 import { formatDistanceToNow } from 'date-fns';
 import { DeleteModal } from '../../components/modals';
 import AnnotationAddEditModal from '../../components/modals/AnnotationAddEditModal';
+import { QUERY_FILTER_TYPES } from '../../enums/enums';
 
 export default function AnnotationsPage() {
     const [query, setQuery] = useState("");
+    const [filterType, setFilterType] = useState(QUERY_FILTER_TYPES.BOOK_NAME);
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openViewModal, setOpenViewModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -63,15 +65,21 @@ export default function AnnotationsPage() {
         }
     }, [annotationTrigger]);
 
+    const FILTER_STRATEGIES: Record<QUERY_FILTER_TYPES, (annotation: IAnnotation, query: string) => boolean> = {
+        [QUERY_FILTER_TYPES.BOOK_NAME]: (annotation, query) => annotation.book?.name?.toLowerCase().includes(query.toLowerCase()),
+        [QUERY_FILTER_TYPES.AUTHOR_NAME]: (annotation, query) => annotation.book?.authors?.some((author) => author.toLowerCase().includes(query.toLowerCase())),
+    };
+
     const memoizedAnnotations = useMemo(() => {
         if (query !== "") {
-            return annotations.filter((annotation: IAnnotation) => annotation.annotation?.toLowerCase().includes(query.toLowerCase()));
+            const matches = FILTER_STRATEGIES[filterType];
+            return matches ? annotations.filter((annotation) => matches(annotation, query)) : annotations
         }
         else {
             return annotations;
         }
 
-    }, [annotations, query]);
+    }, [annotations, query, filterType]);
 
 
 
@@ -120,13 +128,13 @@ export default function AnnotationsPage() {
                                 select
                                 label="Filter based on"
                                 color={libTheme}
-                                defaultValue="0"
+                                defaultValue={QUERY_FILTER_TYPES.BOOK_NAME}
                                 sx={{
                                     width: '14%'
                                 }}
                             >
-                                {[{ value: '0', label: 'Book Name' }, { value: '1', label: 'Author Name' }].map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
+                                {[{ value: QUERY_FILTER_TYPES.BOOK_NAME, label: 'Book Name' }, { value: QUERY_FILTER_TYPES.AUTHOR_NAME, label: 'Author Name' }].map((option) => (
+                                    <MenuItem key={option.value} value={option.value} onClick={() => setFilterType(option.value)}>
                                         {option.label}
                                     </MenuItem>
                                 ))}

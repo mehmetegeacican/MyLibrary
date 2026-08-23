@@ -14,6 +14,7 @@ describe('AnnotationsService', () => {
   const mockAnnotationRepository = {
     create: jest.fn(),
     save: jest.fn(),
+    update: jest.fn(),
     find: jest.fn(),
     findOne: jest.fn(),
     softDelete: jest.fn(),
@@ -35,13 +36,13 @@ describe('AnnotationsService', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks(); 
+    jest.clearAllMocks();
   });
 
   describe('create', () => {
     it('should successfully build and save a new annotation instance', async () => {
       // Given
-      const dto = { userId: 'user-uuid', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Great read!', pageNumber: 10 , annotation: 'This is a key insight.'};
+      const dto = { userId: 'user-uuid', bookId: '9094032e-f981-44aa-9b01-327028a711a4', comment: 'Great read!', pageNumber: 10, annotation: 'This is a key insight.' };
       const expectedResult = { id: 'annotation-uuid', ...dto };
 
       mockAnnotationRepository.create.mockReturnValue(expectedResult);
@@ -103,23 +104,34 @@ describe('AnnotationsService', () => {
   });
 
   describe('update', () => {
-    it('should merge modifications and save changes on an active record', async () => {
+    it('should update the record and return the fresh result', async () => {
       // Given
       const targetId = 'annotation-uuid';
-      const originalRecord = { id: targetId, comment: 'Old text', bookId: 'b1', userId: 'u1' };
       const updateDto = { comment: 'Updated text', bookId: 'b1', userId: 'u1' };
-      const mergedRecord = { ...originalRecord, ...updateDto };
+      const updatedRecord = { id: targetId, ...updateDto };
 
-      jest.spyOn(service, 'findOne').mockResolvedValue(originalRecord as any);
-      mockAnnotationRepository.save.mockResolvedValue(mergedRecord);
+      mockAnnotationRepository.update.mockResolvedValue({ affected: 1, raw: {}, generatedMaps: [] });
+      jest.spyOn(service, 'findOne').mockResolvedValue(updatedRecord as any);
 
       // When
       const result = await service.update(targetId, updateDto);
 
       // Then
+      expect(repository.update).toHaveBeenCalledWith(targetId, updateDto);
       expect(service.findOne).toHaveBeenCalledWith(targetId);
-      expect(repository.save).toHaveBeenCalledWith(mergedRecord);
-      expect(result).toEqual(mergedRecord);
+      expect(result).toEqual(updatedRecord);
+    });
+    
+    it('should throw NotFoundException when no record is affected', async () => {
+      // Given
+      const targetId = 'nonexistent-uuid';
+      const updateDto = { comment: 'Updated text' };
+
+      mockAnnotationRepository.update.mockResolvedValue({ affected: 0, raw: {}, generatedMaps: [] });
+
+      // When / Then
+      await expect(service.update(targetId, updateDto as any)).rejects.toThrow(NotFoundException);
+      expect(repository.update).toHaveBeenCalledWith(targetId, updateDto);
     });
   });
 
@@ -150,7 +162,7 @@ describe('AnnotationsService', () => {
       await expect(service.remove(badId)).rejects.toThrow(
         new NotFoundException(NOT_FOUND),
       );
-      
+
       expect(mockAnnotationRepository.findOne).toHaveBeenCalledWith({ where: { id: badId }, relations: ['book'] });
       expect(repository.softDelete).not.toHaveBeenCalled();
     });

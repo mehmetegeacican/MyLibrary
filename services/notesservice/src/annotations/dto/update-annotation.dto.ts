@@ -8,5 +8,6 @@ export class UpdateAnnotationDto extends PartialType(CreateAnnotationDto) {
 
     @IsNotEmpty()
     @IsString()
+    @IsUUID()
     bookId: string;
 }

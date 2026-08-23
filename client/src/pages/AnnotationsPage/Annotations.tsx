@@ -65,12 +65,13 @@ export default function AnnotationsPage() {
         }
     }, [annotationTrigger]);
 
-    const FILTER_STRATEGIES: Record<QUERY_FILTER_TYPES, (annotation: IAnnotation, query: string) => boolean> = {
-        [QUERY_FILTER_TYPES.BOOK_NAME]: (annotation, query) => annotation.book?.name?.toLowerCase().includes(query.toLowerCase()),
-        [QUERY_FILTER_TYPES.AUTHOR_NAME]: (annotation, query) => annotation.book?.authors?.some((author) => author.toLowerCase().includes(query.toLowerCase())),
-    };
+
 
     const memoizedAnnotations = useMemo(() => {
+        const FILTER_STRATEGIES: Record<QUERY_FILTER_TYPES, (annotation: IAnnotation, query: string) => boolean> = {
+            [QUERY_FILTER_TYPES.BOOK_NAME]: (annotation, query) => annotation.book?.name?.toLowerCase().includes(query.toLowerCase()),
+            [QUERY_FILTER_TYPES.AUTHOR_NAME]: (annotation, query) => annotation.book?.authors?.some((author) => author.toLowerCase().includes(query.toLowerCase())),
+        };
         if (query !== "") {
             const matches = FILTER_STRATEGIES[filterType];
             return matches ? annotations.filter((annotation) => matches(annotation, query)) : annotations

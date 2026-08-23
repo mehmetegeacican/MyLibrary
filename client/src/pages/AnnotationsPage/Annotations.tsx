@@ -169,7 +169,7 @@ export default function AnnotationsPage() {
                                             <CardContent sx={{ p: 2 }}>
                                                 {/* Main Annotation Title */}
                                                 <Typography variant="h6" gutterBottom color={libTheme} sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                                    {truncateText(annotation?.annotation || "", 50) ?? "Untitled"}
+                                                    {truncateText(annotation?.annotation || "", 10) ?? "Untitled"}
                                                 </Typography>
                                                 {/* Secondary Info */}
                                                 <Box sx={{ mt: 2 }}>

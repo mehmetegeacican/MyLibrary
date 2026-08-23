@@ -41,6 +41,10 @@ const libraryDataReducer = (state: LibraryDataState, action: LibraryDataAction) 
       return { ...state, notes: action.payload };
     case 'TRIGGER_NOTES':
       return { ...state, noteTrigger: action.payload };
+    case 'GET_ANNOTATIONS':
+      return { ...state, annotations: action.payload };
+    case 'TRIGGER_ANNOTATIONS':
+      return { ...state, annotationTrigger: action.payload };
     case 'GET_MIND_MAPS':
       return { ...state, mindMaps: action.payload };
     case 'TRIGGER_MIND_MAPS':
@@ -62,7 +66,9 @@ export const LibraryDataContextProvider: React.FC<LibraryDataContextProviderProp
     noteTrigger: false,
     mindMaps: [
     ],
-    mindMapTrigger: false
+    mindMapTrigger: false,
+    annotations: [],
+    annotationTrigger: false
   });
 
   return (

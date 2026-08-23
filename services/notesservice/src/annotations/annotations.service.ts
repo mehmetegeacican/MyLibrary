@@ -38,9 +38,11 @@ export class AnnotationsService {
   }
 
   async update(id: string, updateAnnotationDto: UpdateAnnotationDto): Promise<Annotation> {
-    const annotation = await this.findOne(id);
-    Object.assign(annotation, updateAnnotationDto);
-    return await this.annotationRepository.save(annotation);
+    const result = await this.annotationRepository.update(id, updateAnnotationDto);
+    if (result.affected === 0) {
+      throw new NotFoundException(EXCEPTION_MESSAGES.NOT_FOUND);
+    }
+    return this.findOne(id);
   }
 
   async remove(id: string): Promise<{ message: string }> {

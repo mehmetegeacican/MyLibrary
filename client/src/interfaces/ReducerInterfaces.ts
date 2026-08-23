@@ -15,6 +15,8 @@ export interface LibraryDataState {
     noteTrigger: boolean;
     mindMaps: IMindMap[];
     mindMapTrigger: boolean;
+    annotations: any[];
+    annotationTrigger: boolean;
     //Add possible others too
     //authors: IAuthor[] | null;
 }
@@ -111,6 +113,16 @@ export interface TriggerMindMapsInterface {
 }
 
 
+export interface GetAnnotationsAction {
+    type: 'GET_ANNOTATIONS';
+    payload: any[];
+}
+
+export interface TriggerAnnotationsInterface {
+    type: 'TRIGGER_ANNOTATIONS';
+    payload: boolean;
+}
+
 
 
 
@@ -118,7 +130,7 @@ export interface TriggerMindMapsInterface {
 export type LibraryDataAction = (GetBooksAction |
     TriggerBookInterface | GetAuthorsAction |
     TriggerAuthorsAction | GetCategoriesAction | TriggerCategoriesInterface
-    | GetNotesAction | TriggerNotesInterface | GetMindMapsAction | TriggerMindMapsInterface);
+    | GetNotesAction | TriggerNotesInterface | GetMindMapsAction | TriggerMindMapsInterface | GetAnnotationsAction | TriggerAnnotationsInterface);
 
 export type AuthAction = (LoginAction | SignUpAction | LogoutAction | SetThemeColorAction | SetPlanAction | InitializeUser | SwitchTheme);
 /**

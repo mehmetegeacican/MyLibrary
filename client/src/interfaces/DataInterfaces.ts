@@ -25,6 +25,7 @@ export interface IBook {
   imagePath?: string;
   liked?:string;
   influence?:string;
+  uuid?: string;
 }
 
 export interface INote {
@@ -35,6 +36,28 @@ export interface INote {
   imagePath?:string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+
+export interface IAnnotationBook {
+  uuid: string;
+  name: string;
+  authors: string[];
+  imagePath?: string;
+}
+
+export interface IAnnotation {
+  id: string;
+  userId: string;
+  bookId: string;
+  annotation: string | null;
+  comment: string | null;
+  pageNumber: number;
+  createdAt: Date;
+  updatedat: Date;
+  deletedAt: Date | null;
+  version: number;
+  book: IAnnotationBook;
 }
 
 

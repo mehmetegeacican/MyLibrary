@@ -34,3 +34,8 @@ export enum LIGHT_THEMES {
     LIGHT = "light",
     DARK = "dark"
 }
+
+export enum QUERY_FILTER_TYPES {
+    BOOK_NAME = "Book Name",
+    AUTHOR_NAME = "Author Name"
+}

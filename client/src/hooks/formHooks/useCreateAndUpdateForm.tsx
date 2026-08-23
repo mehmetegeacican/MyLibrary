@@ -7,6 +7,7 @@ import { postNewCategory, updateExistingCategory } from '../../apis/categoryApi'
 import { postNewAuthor, updateAnAuthor } from '../../apis/authorApi';
 import { useAuthContext, useLibraryDataContext } from '../contextHooks';
 import { postNewNote, updateExistingNote } from '../../apis/noteApis';
+import { updateExistingAnnotationById, postNewAnnotation } from '../../apis/annotationApis';
 
 
 //get strings of the categories
@@ -41,7 +42,7 @@ export const getIAuthors = (authors: string[], allAuthors: IAuthor[]) => {
 export const useCreateAndUpdateForm = (error: boolean, setError: Function, message: string, setMessage: Function, success: boolean, setSuccess: Function) => {
   //Hooks & Contexts
   const { user } = useAuthContext();
-  const { bookTrigger, categoryTrigger, authorTrigger, noteTrigger, dispatch } = useLibraryDataContext();
+  const { bookTrigger, categoryTrigger, authorTrigger, noteTrigger, annotationTrigger, dispatch } = useLibraryDataContext();
 
 
   useEffect(() => {
@@ -100,7 +101,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
   /**
    * Functions that are used for Data Addition
    */
-  const createBook = async (bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string, language?:string, liked?:number,influence?:number) => {
+  const createBook = async (bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?: string, language?: string, liked?: number, influence?: number) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -113,8 +114,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookCategories: selectedCategories,
       bookStatus: selectedStatus,
       userId: authId,
-      imagePath:imagePath,
-      language:language || "",
+      imagePath: imagePath,
+      language: language || "",
       liked: liked || null,
       influence: influence || null
     }
@@ -127,7 +128,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   };
 
-  const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?:string,language?:string,liked?:number,influence?:number) => {
+  const updateBook = async (id: string, bookName: string, desc: string, selectedCategories: string[], selectedStatus: string, selectedAuthors: string[], imagePath?: string, language?: string, liked?: number, influence?: number) => {
     //Step 0 -- Reset
     setMessage("");
     setError(false);
@@ -140,8 +141,8 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       bookCategories: selectedCategories,
       bookStatus: selectedStatus,
       userId: user!.id,
-      imagePath:imagePath,
-      language:language || "",
+      imagePath: imagePath,
+      language: language || "",
       liked: liked || null,
       influence: influence || null
     }
@@ -223,7 +224,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  const createNote = async (title: string, content: string, imagePath? : string) => {
+  const createNote = async (title: string, content: string, imagePath?: string) => {
     setMessage("");
     setError(false);
     setSuccess(false);
@@ -231,7 +232,7 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
       title: title,
       content: content,
       userId: user!.id, // This might be problematic -- Add a check here
-      imagePath:imagePath
+      imagePath: imagePath
     }
     const result = await postNewNote(requestBody, user!.token);
     const check = processResult(result);
@@ -240,23 +241,47 @@ export const useCreateAndUpdateForm = (error: boolean, setError: Function, messa
     }
   }
 
-  const updateNote = async (id: number, title: string, content: string,imagePath?:string) => {
-      setMessage("");
-      setError(false);
-      setSuccess(false);
-      const requestBody = {
-        title: title,
-        content: content,
-        userId: user!.id, // This might be problematic -- Add a check here
-        imagePath:imagePath ?? ""
-      }
-      const result = await updateExistingNote(id.toString(),requestBody,user!.token);
-      const check = processResult(result);
-      if (check) {
-        dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
-      }
+  const updateNote = async (id: string, title: string, content: string, imagePath?: string) => {
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    const requestBody = {
+      title: title,
+      content: content,
+      userId: user!.id, // This might be problematic -- Add a check here
+      imagePath: imagePath ?? ""
+    }
+    const result = await updateExistingNote(id.toString(), requestBody, user!.token);
+    const check = processResult(result);
+    if (check) {
+      dispatch({ type: 'TRIGGER_NOTES', payload: !noteTrigger });
+    }
   }
 
-  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor, updateAuthor, createNote, updateNote };
+
+  const createAnnotation = async (reqBody: object) => {
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    const result = await postNewAnnotation(reqBody, user!.token);
+    const check = processResult(result);
+    if (check) {
+      dispatch({ type: 'TRIGGER_ANNOTATIONS', payload: !annotationTrigger });
+    }
+  }
+
+
+  const updateAnnotation = async (id: string, reqBody: object) => {
+    setMessage("");
+    setError(false);
+    setSuccess(false);
+    const result = await updateExistingAnnotationById(id.toString(), reqBody, user!.token);
+    const check = processResult(result);
+    if (check) {
+      dispatch({ type: 'TRIGGER_ANNOTATIONS', payload: !annotationTrigger });
+    }
+  }
+
+  return { error, success, message, createBook, updateBook, createCategory, updateCategory, createAuthor, updateAuthor, createNote, updateNote, createAnnotation, updateAnnotation };
 }
 

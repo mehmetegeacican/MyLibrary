@@ -103,7 +103,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation, 
                     color={libTheme}
                     margin="dense"
                     multiline
-                    rows={10}
+                    rows={7}
                     id="annotation"
                     name="Annotation"
                     label="Annotation Content"
@@ -185,7 +185,7 @@ export default function AnnotationAddEditModal({ open, handleClose, annotation, 
                     autoFocus
                     required
                     multiline
-                    rows={10}
+                    rows={8}
                     color={libTheme}
                     margin="dense"
                     id="annotation"

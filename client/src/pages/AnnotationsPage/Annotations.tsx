@@ -170,7 +170,7 @@ export default function AnnotationsPage() {
                         p: 2.7,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 450,
+                        height: 500,
                         overflow: 'auto'
                     }}>
                         <Stack gap={3.2}>
@@ -182,7 +182,7 @@ export default function AnnotationsPage() {
                                                 <Card
                                                     sx={{
                                                         borderRadius: 4,
-                                                        height: 320,
+                                                        height: 370,
                                                         maxWidth: 320,
                                                         display: 'flex',
                                                         flexDirection: 'column',

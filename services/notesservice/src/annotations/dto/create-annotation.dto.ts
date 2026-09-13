@@ -5,7 +5,6 @@ export class CreateAnnotationDto {
     @IsNotEmpty()
     annotation:string;
 
-    @IsNotEmpty()
     @IsString()
     comment:string;
     @IsNotEmpty()

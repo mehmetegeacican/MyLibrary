@@ -186,10 +186,18 @@ export default function AnnotationsPage() {
                                                         maxWidth: 320,
                                                         display: 'flex',
                                                         flexDirection: 'column',
+                                                        overflow: 'hidden'
                                                     }}
                                                 >
 
-                                                    <CardActionArea sx={{ flexGrow: 1 }}>
+                                                    <CardActionArea
+                                                        sx={{
+                                                            flexGrow: 1,
+                                                            overflow: 'hidden', 
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            alignItems: 'stretch',
+                                                        }}>
                                                         <CardMedia
                                                             component="img"
                                                             sx={{ height: 160, objectFit: 'cover' }}
